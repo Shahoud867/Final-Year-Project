@@ -2,6 +2,8 @@
 
 *A complete What/How/Why walkthrough of the entire Granite FYP project — every heading, every feature, every spike, every decision, explained from first principles. Compiled 2026-08-24/25 from all project source documents. If any number here ever disagrees with the plan doc, risk register, PDF, or artifact, those are the source of truth — this file is a teaching document built from them, not a second source of truth.*
 
+> **⚠️ Status: internal narrative record, not a deliverable — and a point-in-time snapshot.** Do not present from this file, and do not treat it as spec. It was compiled *before* the 2026-08-25 pre-defense audit, so several passages below are **knowingly stale** — most notably it discusses team ownership (R6) as unassigned, the committed core as a flat 10-item list, and FR4 as promising *deterministic* re-execution. All three have since changed: ownership is assigned (R24), the core is tiered with pre-registered Mid-1 gates (R23), and the replay claim is now "controlled counterfactual replay" (R25). Those passages are deliberately left unedited so this file remains a faithful record of what was true when it was written; go to the plan doc and risk register for current state.
+
 ---
 
 # READ THIS FIRST — Granite in Plain English

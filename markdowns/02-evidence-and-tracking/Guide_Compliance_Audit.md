@@ -26,7 +26,7 @@ Done — §0.05, SDG 9, one paragraph, not expanded beyond context. ✓
 
 ## §2 R&D Embedded — sub-table
 
-Solution landscape ✓ (Full_Literature_Landscape_Analysis.md + Commercial_Product_Comparison.md). Technical foundation ✓ (9+ papers read in full). Reproduction/adaptation/experimentation ✓ (7 spikes). Evaluation and learning ✓ (§11 evaluation plan). All four R&D elements have proposal-stage evidence, not just assertions.
+Solution landscape ✓ (Full_Literature_Landscape_Analysis.md + Commercial_Product_Comparison.md). Technical foundation ✓ (9+ papers read in full). Reproduction/adaptation/experimentation ✓ (8 spikes). Evaluation and learning ✓ (§11 evaluation plan). All four R&D elements have proposal-stage evidence, not just assertions.
 
 ## §3 CCP — all 9 characteristics
 8/9 clear, #6 (diverse stakeholders) open pending real contact. Unchanged from prior checks, still accurate.
@@ -39,13 +39,13 @@ Contribution types mapped: data/resource (benchmark), method (silent-failure + g
 | Scope principle | Status |
 |---|---|
 | One shared central problem | ✓ — all 3 roles trace back to the same ErrorProbe delta |
-| Meaningful primary ownership | ⚠️ **Roles defined, not assigned to people** (R6) |
+| Meaningful primary ownership | ✅ **Closed 2026-08-25 — assigned and recorded** (R24, supersedes R6): Shahoud Shahid — Data/Benchmark, Muhammad Noor — Diagnosis Engine, Saif Shahzad — Platform. Moved ahead of its old "before Mid-1" target because the guide's Gate 1 row requires ownership allocated to each member *at the proposal defense*, making the deferral a hard requirement miss at the defense itself |
 | Interdependent work | ✓ — pipeline hops are sequential/dependent (architecture-sketch.md) |
 | Shared engineering responsibilities | ✓ — evaluation (core item 7) is explicitly collective |
 | Balanced depth, not identical tasks | ✓ — 3 distinctly different subsystems |
 | Evolving division of work | Not yet tested — no reallocation has happened, nothing to evolve yet |
 
-**Scope sufficiency questions** (6): all answerable except *"does each member have a defensible technical role"* — technically undermined until the ownership assignment (R6) actually happens. Same root gap as above, not a new one.
+**Scope sufficiency questions** (6): **all six now answerable.** The previously-failing one — *"does each member have a defensible technical role"* — was undermined only by the missing ownership assignment, which closed on 2026-08-25 (R24). Each named owner's lane maps to a distinct contribution type and to spikes they can walk through; what remains is rehearsal, not a documentation gap.
 
 ### §5.1 Five gates — done, plan doc §12, updated with real evidence
 ### §5.2 Client — done, §0.06
@@ -96,6 +96,28 @@ No pattern present: not a routine CRUD portal, not a bare chatbot wrapper, has a
 
 ## Net new findings from this deeper pass
 
-1. **Security/privacy feasibility (§12) — genuinely missing, not previously flagged.** The most substantive finding in this audit.
+1. **Security/privacy feasibility (§12) — genuinely missing, not previously flagged.** The most substantive finding in this audit. *(Since resolved — threat model written 2026-08-23, risk-register R16.)*
 2. **§6's one-sentence vagueness-test format** — cosmetic, content exists but not fused into the guide's exact compound-sentence form.
 3. Everything else confirms or restates already-known opens (stakeholder contact, role assignment, prior-FYP check, explain-out-loud) — no other new gaps at this finer granularity.
+
+---
+
+## Re-audit, 2026-08-25 — independent pre-defense pass
+
+*A second, independent audit against the full guide was run three days before the defense; its verdict and full working are in [`01_Executive_Audit_and_Verdict.md`](../../01_Executive_Audit_and_Verdict.md) at the repository root. It found six vulnerabilities, all now applied and recorded in risk-register.md R23–R26. What changed against the rows above:*
+
+| Item | Was | Now |
+|---|---|---|
+| Meaningful primary ownership (§5) | ⚠️ Roles defined, nobody assigned (R6) | ✅ **Closed** — assigned and recorded (R24). This was the audit's most concrete compliance finding: the guide's Gate 1 row requires ownership allocated *at the proposal defense*, so "before Mid-1" was a hard miss, not a pending task |
+| Committed scope vs. extensions (§5.3) | ✅ Separated | ✅ Separated **and tiered by evidence**, with pre-registered Mid-1 gates on the two items carrying the weakest evidence (R23) |
+| Specifiability — FR4 (§6) | ✅ Present, but promised *deterministic* re-execution of an LLM workflow | ✅ Corrected to **controlled counterfactual replay** (R25) — the protocol is deterministic, LLM-step variance is measured. The prior wording was technically indefensible |
+| Evaluation plan (§13) | ✅ Metrics defined | ✅ Plus **silent-failure coverage/abstention rate**, and a **pre-registered reproduction acceptance band** with an Annex A.2 fallback |
+| Feasibility — cost (§12) | ⚠️ R5 open, no number attached | ✅ **Quantified** from measured token counts across all 184 Who&When cases — cost-estimate.md (R26) |
+| POC count (§12) | Recorded inconsistently as 4 / 7 / 8 across documents | ✅ **8 spikes**, stated consistently everywhere |
+
+**Still open after this pass, and not closeable by any document** — these are the honest residuals to state at the defense rather than paper over:
+
+1. **Real stakeholder contact** (I2) — CCP characteristic #6 stays at 8/9 until it happens. The single highest-value remaining action.
+2. **Prior-departmental-FYP comparison** (§10, second half) — requires the team's own department archive; cannot be completed externally.
+3. **"Explain your subsystem out loud, no notes"** (§14.1) — rehearsal, not documentation. Each owner should be able to walk one spike end-to-end unaided.
+4. **Deployment evidence** (§1.2) — correctly not producible at proposal stage; owed by Final-2.

@@ -9,7 +9,7 @@
 **A Self-Healing Multi-Agent System for Semantic Error Diagnosis, Verified Repair and Recovery**
 *(short title: Granite — adopted 2026-08-24, from `Agentic_AI_Market_Survey_BS_FYP.docx` §6)*
 
-Stream: A (research-derived) | Members: [names] | Supervisor: [name]
+Stream: A (research-derived) | Members: Shahoud Shahid (23i-2515), Muhammad Noor (23i-2520), Saif Shahzad (23i-2634) | Supervisor: [name — fill before defense]
 
 > Build a failure-attribution and recovery system that generalizes to multi-agent architectures no prior paper has tested on, catches the "silent failures" the strongest existing method (ErrorProbe) admits it cannot detect, and ships as an installable, framework-agnostic testing product.
 
@@ -46,43 +46,83 @@ Full detail: [Full_Literature_Landscape_Analysis.md](../03-market-and-literature
 
 > Existing methods achieve up to 59.5% step accuracy but remain weak under two conditions: none is evaluated on an architecture absent from its own benchmark construction, and the strongest method explicitly fails on silent failures. We contribute a cross-architecture fault-injection benchmark, a diagnosis pipeline with task-constraint Semantic Error Diagnostic, a Repair Agent that generates candidate fixes (a gap confirmed by an independent 7-framework market survey — none ship this natively), and a Verified Automatic Repair engine that verifies and applies them — packaged as a framework-agnostic SDK.
 
-Architecture: [architecture-sketch.md](../01-planning-and-scope/architecture-sketch.md). External components correctly classified (LLM = Core-assist, not the contribution) with a committed ~15-20% API-dependency budget.
+**The pipeline in one line:** trace → execution graph → **Semantic Error Diagnostic** (deterministic; scoped to machine-checkable task constraints, *abstains and reports coverage* where none exist) → backward causal tracing (ErrorProbe method) → **Repair Agent** (candidate fix) → **controlled counterfactual replay** (recovery rate measured over N replays, decoding parameters pinned) → confidence-gated recommendation.
+
+**Two things to say unprompted on this slide** — each closes an attack before it opens:
+1. *"Controlled, not deterministic."* The replay **protocol** is deterministic and every non-LLM computation is bit-identical; LLM-step variance is measured over N replays, not assumed away. A panelist who knows LLMs aren't deterministic at temperature 0 is right, and we've already said so (R25).
+2. *"We do not claim to detect arbitrary semantic wrongness."* The Semantic Error Diagnostic is scoped to task specifications that yield machine-checkable constraints — true for both active substrates — and **abstains** elsewhere, with abstention/coverage reported as a metric so the boundary is measured, not asserted.
+
+Architecture: [architecture-sketch.md](../01-planning-and-scope/architecture-sketch.md). External components correctly classified (LLM = Core-assist, not the contribution) with a committed ~15-20% API-dependency budget — 80–85% of components never call a model at all, by committed mechanism, not by label.
 
 ## Slide 7 — POC / technical spike (mandatory, guide §12)
 
-**7 spikes run, independently reproduced — exceeds the 1-spike minimum:**
+**8 spikes run, independently reproduced — exceeds the 1-spike minimum by 8×.** Guide §12 requires evidence *shown*, not described: put the JSON outputs or a live terminal on screen, don't just read this table.
 
 | Spike | Result |
 |---|---|
-| 1. ErrorProbe reproduction | 75% agent / 12.5% step accuracy (simplified pipeline, n=8) — real signal, full version still needed |
-| 2. CrewAI instrumentation | Traced cleanly, resolved |
-| 3. Fault injection | Ground truth recoverable, resolved |
-| 4. Silent-failure detector | Zero false positives on known-wrong values (n=3 live cases, no natural failure observed yet) |
-| 5. Counterfactual replay | Recovery mechanism confirmed (`recovery_success: true`) |
-| 6. Cyclic graph handling | Terminates correctly on a true cycle; control case proves the safety bound is load-bearing |
+| 1. ErrorProbe reproduction | 75% agent / 12.5% step accuracy (simplified 2-stage pipeline, local 3B model, n=8) — real signal, full version still needed |
+| 2. CrewAI instrumentation | Traced cleanly into 3 nodes / 2 correctly-ordered edges, resolved |
+| 3 + 3b. Fault injection | Ground truth recoverable and unambiguous; first attempt was *self-corrected* by the agent — kept as a finding, so the benchmark records both propagation and self-correction |
+| 4. Semantic Error Diagnostic | Catches known-wrong values including a plausible-magnitude near-miss ($20.00 vs $19.75 true), zero false positives |
+| 5. Controlled counterfactual replay | Corrupted trace 97.2 → recovered 108.0 (`recovery_success: true`) |
+| 6. Cyclic graph handling | Terminates correctly on a true cycle; control case with the bound disabled hit the 10,000-step cap — proves the safety bound is load-bearing, not a no-op |
 | 7. Preventive classifier | **Honest negative result**: precision/recall/f1 = 0.25 with simple features — real finding, mitigation plan in risk-register.md R15 |
+| 8. Repair Agent | **repair_success_rate 0.667 (4/6)**, n=6, chained into Spike 5's replay logic. Both failures share **one** fixable interface cause (model returned the derived result instead of the corrected parameter) — risk-register.md R17 |
 
-**Every foundational item now has a spike, including the newest.** Repair Agent (added 2026-08-24, plan doc §7.0 item #6) — the candidate-fix-generation step, distinct from Verified Automatic Repair's already-spiked verify/replay step — was run same-day as Spike 8: repair_success_rate 0.667 (4/6), n=6, chained into Spike 5's replay logic. Both failures traced to one precise, fixable interface-specification issue (model returns a computed result instead of the specific corrected parameter), not a reasoning gap. See risk-register.md R17.
+**Lead with the two honest negatives, don't bury them:** spike 7's near-random classifier and spike 8's two failures are the most credible things on this slide. The guide's own words — *"a POC that disproved the assumption is usually more valuable"* — are worth quoting here.
+
+**Every Tier 1 foundational item has a spike behind it.** The two Tier 2 items are exactly the two without passing evidence, which is why they carry pre-registered decision gates (slide 9) rather than assurances.
 
 ## Slide 8 — Evaluation plan
 
-Baseline: ErrorProbe, reproduced from its published methodology. Data: Who&When (184 real cases, MIT), plus the project's own new cross-architecture benchmark. Metrics: agent/step accuracy, propagation-path F1, silent-failure precision/recall, task completion rate, diagnostic latency overhead, counterfactual recovery rate, repair success rate, false repair rate. Full plan: plan doc §11.
+**Baseline:** ErrorProbe, reproduced from its published methodology — with a **pre-registered acceptance band**: accepted within ±10 points of the published 59.5% on a comparable-class backbone; otherwise both numbers are reported side by side per guide Annex A.2 ("faithful reproduction with transparent reporting" is itself a named contribution). Declared before the run, so the criterion can't be adjusted to fit the result.
+
+**Data:** Who&When (184 real cases, MIT, in hand) + our own new cross-architecture benchmark (floor 500 / stretch 1,000 traces; TracerTraj conditional and on record, R11).
+
+**Metrics:** agent/step accuracy · propagation-path F1 · silent-failure precision/recall **and coverage (abstention rate)** · task completion rate · diagnostic latency overhead (<50%, the measurable NFR) · recovery rate · repair success rate · **false repair rate** (via verification-gate ablation — the metric that keeps "verified" honest rather than asserted). Full plan: plan doc §11.
+
+**What this evidence cannot support** — stated up front, not extracted: production-scale reliability claims beyond the tested frameworks and task domains.
+
+**Success bands, if asked "what counts as success":** *failure* = no measurable improvement over baseline anywhere; *acceptable* = parity on Who&When + any measured cross-architecture result + silent-failure detection at nonzero coverage with high precision; *strong* = beats baseline on unseen architectures and >70% silent-failure recall at that precision; *exceptional* = strong, plus verified-repair recovery on >50% of previously-failed runs at a low false-repair rate.
 
 ## Slide 9 — Scope, risks and dependencies
 
-**Committed core:** 10 items (plan doc §7.0, extended 2026-08-24 three times) — fault-injection harness, cross-architecture benchmark, Culprit Agent, Error Step Localization, Verification Agent, **Repair Agent** (new — generates the candidate fix; a gap surfaced by `Agentic_AI_Market_Survey_BS_FYP.docx`'s own feature matrix, which rates automatic repair generation Not native / Custom / Experimental across all 7 surveyed frameworks; POC run same-day, Spike 8: repair_success_rate 0.667 (4/6), risk-register.md R17), Semantic Error Diagnostic, Verified Automatic Repair, **Recovery Controller** (new, no POC yet — applies a verified repair and resumes from a safe checkpoint instead of restarting the whole workflow), and **Verified Repair Memory** (re-added by explicit user decision after one real prior test failed — 0/8 commits, local 3B backbone). The last two were briefly extensions #9–10, then reclassified into the foundational core the same day (2026-08-24) because the market survey's own Table 1 rates both "Core" for the Proposed FYP column, same as the other 6 foundational items.
+**Committed core: 10 items, structured into two evidence tiers** (plan doc §7.0). All 10 are committed — the tiering records what evidence each already has, and attaches a decision rule where that evidence is weakest.
+
+**Tier 1 — evidence-backed, unconditionally committed (8 items, every one with a spike behind it):** fault-injection harness · cross-architecture benchmark · Culprit Agent · Error Step Localization · Verification Agent · **Repair Agent** (generates the candidate fix — a gap surfaced by the market survey's own feature matrix, which rates automatic repair generation Not native / Custom / Experimental across all 7 surveyed frameworks; Spike 8: 4/6, R17) · Semantic Error Diagnostic · Verified Automatic Repair.
+
+**Tier 2 — committed, with pre-registered Mid-1 decision gates (criteria written now, before any result exists):**
+
+| Item | Honest status | Gate by Mid-1 | Recorded fallback |
+|---|---|---|---|
+| **Recovery Controller** | **No POC yet** — genuinely new mechanical work | LangGraph checkpoint/resume PoC, resume-from-verified-repair-point on ≥1 real workflow | Re-scope to resumption via controlled replay (Tier 1 already delivers it), recorded per §5.3 |
+| **Verified Repair Memory** | **One real test, and it failed** — 0/8 memory commits, agent accuracy regressed 75%→50% on a 3B backbone | Re-test on a stronger backbone, same 8 Who&When cases | Ships as a memory-on/off **ablation study** — an evaluation contribution under §4's table, not a dropped feature |
+
+*Say this as confidence, not confession: we pre-registered the decision rules before the results exist, which is exactly what §5.3 asks. In the worst case where both gates fail, self-healing still ships — repair, verification and replay-based resumption are all Tier 1.*
 **8 extensions**, filtered for CCP strength + market novelty + architectural fit: fault-taxonomy widening, 3rd architecture, cyclic-graph support, confidence calibration, preventive classifier, propagation map, explainable confidence reasoning, and **Framework Compatibility Layer** (new 2026-08-24):
 
 > **Framework Compatibility Layer** — draws capabilities and evidence from all 7 surveyed orchestration frameworks (OpenAI Agents SDK, LangGraph, CrewAI, Google ADK, Microsoft Agent Framework, Amazon Bedrock AgentCore, BabyAGI), not narrowed to a single one as the market survey's own §7 recommends (that recommendation was already rejected — see risk-register.md R19). Distinct from the foundational cross-architecture benchmark: the committed core's 2–3 frameworks (CrewAI, LangGraph, +1 via extension #2) get *full* fault-injection and benchmarked evaluation; this extension is deliberately lighter — confirming the diagnosis pipeline can instrument and parse execution traces from each of the remaining frameworks, without building a full fault-injection benchmark for each. Broad *compatibility*, not broad *benchmarking*. Gated behind the core, same as every other extension; no POC yet.
 
 **2 explicitly deprioritized**, not planned: cross-domain transfer testing, chaos testing.
 **Total frozen feature count: 20** (10 foundational + 8 extensions + 2 deprioritized), plan doc §7.0.
-**Top risks** (full register: [risk-register.md](../02-evidence-and-tracking/risk-register.md)): R1 (reproduction gap to 59.5%), R7 (literature-crowding, accepted risk, documented), R15 (preventive classifier's weak first result), R16 (security/privacy, resolved with a threat model), R17 (Repair Agent — Spike 8 run, 4/6 success, one fixable cause identified for the 2 failures), R18 (Verified Repair Memory — built and tested once 2026-08-23, real negative result; re-added and reclassified 2026-08-24 as foundational item #10 by explicit user decision, on the explicit condition that a re-test on a stronger backbone happens before Mid-1), R19 (single-framework scope-narrowing advice, rejected, resolved positively via extension #8), R20 (Framework Compatibility Layer itself — no POC yet, gated behind the core).
+**Top risks** (full register: [risk-register.md](../02-evidence-and-tracking/risk-register.md)): R1 (reproduction gap to 59.5% — **acceptance band now declared and pre-registered**, Annex A.2 fallback recorded), R5 (**cost — closed, quantified**, see the cost line below), R7 (literature-crowding, accepted risk, documented, standing gate-check), R15 (preventive classifier's weak first result), R16 (security/privacy, resolved with a threat model), R17 (Repair Agent — Spike 8, 4/6, one fixable cause behind both failures), R21/R22 (the two Tier 2 items — **gate criteria pre-registered 2026-08-25**), R23–R26 (this pre-defense audit's own decisions, recorded).
+
+**Cost (closes R5, computed from measured token counts across all 184 real Who&When cases — not an estimate):** recommended plan **≈ $353** total (benchmark generation on Haiku 4.5 + Batch API ≈ $18; ErrorProbe reproduction across ~20 dev iterations ≈ $224; 10 full evaluation runs ≈ $112); pessimistic ceiling **≈ $881**. All 8 spikes to date cost **$0** (local Ollama). Non-obvious finding worth stating: the dominant cost is *reproduction iteration*, not benchmark generation — the reverse of what R5 originally assumed. Full working: [cost-estimate.md](../01-planning-and-scope/cost-estimate.md).
 **Professional and ethical compliance:** advisory-only diagnosis output with human-gated fix approval (extension #6), informed consent required before using any real user's trace data, synthetic fault injection restricted to own/consenting systems only — full statement: plan doc §0.09.
 
 ## Slide 10 — Team responsibilities and iterations
 
-Three role areas defined (plan doc §9): Data/Benchmark Owner, Diagnosis Owner, Platform Owner — **assignment to specific team members still pending** (risk-register.md R6), to be resolved before Mid-1. Two-semester timeline mapped to all 5 gates: plan doc §12.
+**Named ownership, assigned 2026-08-25 and recorded per guide §5.3** (plan doc §9, risk-register.md R24 — supersedes R6):
+
+| Member | Owns | If removed, what disappears |
+|---|---|---|
+| **Shahoud Shahid** (23i-2515) | Data/Benchmark — instrumentation (CrewAI, LangGraph), injection operators, benchmark, licensing/release | The entire new benchmark; no cross-architecture evaluation is possible |
+| **Muhammad Noor** (23i-2520) | Diagnosis — execution graph, ErrorProbe reproduction, Semantic Error Diagnostic, causal tracing | The attribution algorithm and the silent-failure detection claim |
+| **Saif Shahzad** (23i-2634) | Platform — controlled replay/recovery engine, SDK, backend, dashboard, deployment | The product itself — nothing installable outside the dev machine |
+
+Shared: architecture and integration, cross-subsystem QA, ethics/privacy commitments, defense preparation. Each member states their own subsystem aloud from this slide — the panel is applying guide §14.1's four ownership questions, and hearing three voices sets that tone early.
+
+Two-semester timeline mapped to all 5 gates: plan doc §12, with the two Tier-2 decision gates and the full-reproduction milestone marked at Mid-1.
 
 ---
 

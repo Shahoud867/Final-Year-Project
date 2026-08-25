@@ -11,6 +11,7 @@ Core scope, architecture, and resourcing — the living plan the rest of the pro
 - [architecture-sketch.md](01-planning-and-scope/architecture-sketch.md) — one-page system architecture sketch
 - [datasets.md](01-planning-and-scope/datasets.md) — datasets used/considered, licensing, access notes
 - [resources.md](01-planning-and-scope/resources.md) — compute, models, tooling, and cost resourcing
+- [cost-estimate.md](01-planning-and-scope/cost-estimate.md) — API cost estimate and model plan, computed from measured token counts across all 184 Who&When cases (closes risk-register R5)
 
 ## [02-evidence-and-tracking/](02-evidence-and-tracking/)
 Ongoing project bookkeeping — risk, AI-usage, and compliance records.
@@ -51,6 +52,21 @@ Earlier, since-narrowed drafts kept for history — not live spec, not to be upd
 
 - [TraceCause_AgentTestLab_Pitch.md](06-archive-superseded/TraceCause_AgentTestLab_Pitch.md) — the original, un-scoped ~10-layer "AgentTestLab" pitch, frozen intentionally
 - [TraceCause_Product_Vision_UI.md](06-archive-superseded/TraceCause_Product_Vision_UI.md) — aspirational "Mission Control Center" UI vision, not part of the FYP scope
+
+## [07-full-project-explanation/](07-full-project-explanation/)
+- [Granite_Full_Project_Explanation.md](07-full-project-explanation/Granite_Full_Project_Explanation.md) — **internal narrative record, not a deliverable.** Long-form explanation kept for the team's own reference; do not present from it and do not treat it as spec — the plan doc (§01) is the source of truth.
+
+---
+
+## Pre-defense audit deliverables (repository root)
+
+Produced 2026-08-25 by an independent critical audit of this repository against the full FAST FYP guide. The audit's verdict was *"approvable, with six specific vulnerabilities"* — all six have since been applied to the documents above, with each decision recorded in risk-register.md R23–R26.
+
+- [`01_Executive_Audit_and_Verdict.md`](../01_Executive_Audit_and_Verdict.md) — the audit itself: verdict, six vulnerabilities ranked, compliance matrix, scorecard, prioritized change log
+- [`02_Panel_Defense_Question_Bank.md`](../02_Panel_Defense_Question_Bank.md) — adversarial rejection attempt (A1–A10) + full question bank (Q1–Q24), each with the ≤30-second answer to say aloud. **Rehearse Part A first**
+- [`03_Proposal_Slides_with_Speaker_Notes.md`](../03_Proposal_Slides_with_Speaker_Notes.md) — the 10-slide deck with speaker notes and the question each slide triggers
+- [`04_Granite_Knowledge_Base.md`](../04_Granite_Knowledge_Base.md) — every load-bearing concept at four levels (layman → undergraduate → how Granite uses it → the likely panel question)
+- [`05_Repository_Change_and_Commit_Plan.md`](../05_Repository_Change_and_Commit_Plan.md) — the file-by-file change plan executed on 2026-08-25
 
 ---
 

@@ -1,6 +1,6 @@
 # Granite — Full POC Spike Outputs, With Reasoning
 
-*All 7 spikes, real output pulled directly from the JSON files on disk (`dev/spikes/poc/`), not summarized from memory. For sharing with teammates who need to understand what was actually run and why the result means what it means.*
+*All 8 spikes, real output pulled directly from the JSON files on disk (`dev/spikes/poc/`), not summarized from memory. For sharing with teammates who need to understand what was actually run and why the result means what it means.*
 
 ---
 
@@ -81,7 +81,7 @@ Injected: true value "closes 9:40 PM" corrupted to "closes 6:15 PM" at the `Stor
 
 ---
 
-## Spike 5 — Counterfactual Replay
+## Spike 5 — Controlled Counterfactual Replay
 
 **What it tests:** if you correct one step's output and deterministically re-execute downstream, does the pipeline's final outcome actually flip from failure back to success?
 
@@ -95,7 +95,9 @@ Counterfactual replay:   price corrected to 100 → total=108.0 → PASS
 recovery_success: true
 ```
 
-**Reasoning:** this confirms the *mechanism* — correcting a step and deterministically re-computing downstream really does recover the correct final answer. It's intentionally narrow: it tests only the replay logic, not whether an LLM can correctly *guess* the right correction on a real failure. That's a separate, still-open question. But the architectural assumption the whole counterfactual-replay feature depends on — "if we fix the right thing, does re-computation actually produce the right answer" — is now proven, not assumed.
+**Reasoning:** this confirms the *mechanism* — correcting a step and re-computing downstream really does recover the correct final answer. It's intentionally narrow: it tests only the replay logic, not whether an LLM can correctly *guess* the right correction on a real failure. That's a separate, still-open question. But the architectural assumption the whole replay feature depends on — "if we fix the right thing, does re-computation actually produce the right answer" — is now proven, not assumed.
+
+**Scope note on the word "deterministic" (added 2026-08-25, risk-register.md R25):** this spike was genuinely, fully deterministic — but *only because its 3-step pipeline is pure arithmetic with no LLM in it*. That does **not** generalize to real workflows whose steps are LLM calls, which are not deterministic even at temperature 0 on most serving stacks. The committed feature is therefore **controlled counterfactual replay**, not deterministic re-execution: the *protocol* is deterministic (which steps re-run, frozen upstream context, pinned decoding parameters) and all non-LLM computation is bit-identical, while LLM-step variance is measured — recovery rate over N replays, reported with its variance. Stating the boundary here, in the evidence file itself, so nobody reads this spike's clean `recovery_success: true` as proof of something broader than it tested.
 
 ---
 
@@ -151,7 +153,7 @@ recovery_success: true
 2. **CrewAI mapping** — clean, resolved
 3. **Fault injection** — works, and taught us to prefer unverifiable-fact corruptions over well-known-fact ones
 4. **Silent-failure detector** — mechanism proven, real-world frequency still unmeasured
-5. **Counterfactual replay** — mechanism proven, recovery confirmed
+5. **Controlled counterfactual replay** — mechanism proven, recovery confirmed (on a pure-arithmetic pipeline; the LLM-step variance claim is measured, not inherited from this spike)
 6. **Cyclic graph handling** — proven, including proof the safety bound is load-bearing
 7. **Preventive classifier** — honest failure, mitigation plan identified, not yet fixed
 8. **Repair Agent** — works 4/6, both failures traced to one fixable interface-specification issue, not a reasoning gap

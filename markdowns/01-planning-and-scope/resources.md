@@ -14,7 +14,9 @@ Per the plan doc §6, the LLM is classified as **Core-assist**, not Core-replace
 | Diagnosis team reasoning (Strategist / Investigator / Arbiter, reproducing ErrorProbe's pipeline) | Same backbone(s) as above, kept consistent with what's used for the ErrorProbe reproduction so the baseline comparison is fair | Comparing your reproduction against ErrorProbe's published numbers is only meaningful if backbone choice is controlled for and disclosed, per the caveat already in [ErrorProbe_Baseline_Selection.md](../03-market-and-literature-research/ErrorProbe_Baseline_Selection.md) |
 | Preventive clarification classifier (extension #7) | A small open-weight model or a traditional classifier (not necessarily an LLM at all) — this is deliberately scoped as supervised, not RL, per the plan doc | Keeps this extension light rather than a training-stability project of its own |
 
-**Budget planning:** the fault-injection benchmark generation (500–1,000 traces × however many agent turns each) is the single largest API cost driver — estimate this early in the Weeks 1–6 FYP-2 block once real per-trace token counts are known from the POC, and pick cheaper models for high-volume generation, reserving stronger models for the diagnosis-engine evaluation runs where accuracy is being measured.
+**Budget planning — now quantified, see [cost-estimate.md](cost-estimate.md) (2026-08-25, closes risk-register.md R5).** Headline: **≈ $353 recommended for the whole project, ≈ $881 pessimistic ceiling**, computed from measured token counts across all 184 real Who&When cases rather than estimated.
+
+**Correction worth noting:** this section previously assumed benchmark generation was "the single largest API cost driver." Measurement showed the opposite — generation is ~5% of the budget (it runs on the cheap tier, in batch, and is quality-insensitive), while **ErrorProbe reproduction iteration is ~63%** (it must run on a fair-comparison backbone and must be re-run many times before it's correct). The practice that follows: iterate reproduction on a fixed 20-case subset (~$1.20/run) and reserve full 184-case runs for checkpoints. Model plan in cost-estimate.md §5 — cheap/local for volume, **Sonnet 5** reserved for reproduction and evaluation as the fair comparator to ErrorProbe's published Claude 3.7 Sonnet setup.
 
 ---
 
@@ -34,9 +36,9 @@ Cross-check any additional framework choice against the full "already used" list
 
 | Subsystem | Owner | Likely libraries/tools |
 |---|---|---|
-| Fault injection + benchmark packaging | Data/Benchmark Owner *(role not yet assigned)* | The multi-agent frameworks above; a Python-based orchestration/scripting layer; Hugging Face `datasets` for packaging and release |
-| Execution-graph construction + diagnosis engine | Diagnosis Owner *(role not yet assigned)* | A graph library (e.g. `networkx` for the DAG/graph representation and cycle detection needed for extension #3); standard ML/eval tooling for the confidence-calibration study (extension #5) |
-| Counterfactual engine + SDK + backend + deployment | Platform Owner *(role not yet assigned)* | A backend API framework (e.g. FastAPI); a lightweight database for trace/diagnosis records (start with SQLite or Postgres — Postgres if the per-project namespacing in extension #4 needs real multi-row isolation testing); Docker for containerized deployment; a minimal dashboard (a simple React/Next.js frontend, or a lighter framework like Streamlit if UI polish is deprioritized in favor of backend rigor) |
+| Fault injection + benchmark packaging | **Shahoud Shahid** — Data/Benchmark Owner | The multi-agent frameworks above; a Python-based orchestration/scripting layer; Hugging Face `datasets` for packaging and release |
+| Execution-graph construction + diagnosis engine | **Muhammad Noor** — Diagnosis Owner | A graph library (e.g. `networkx` for the DAG/graph representation and cycle detection needed for extension #3); standard ML/eval tooling for the confidence-calibration study (extension #5) |
+| Controlled counterfactual replay engine + SDK + backend + deployment | **Saif Shahzad** — Platform Owner | A backend API framework (e.g. FastAPI); a lightweight database for trace/diagnosis records (start with SQLite or Postgres — Postgres if the per-project namespacing in extension #4 needs real multi-row isolation testing); Docker for containerized deployment; a minimal dashboard (a simple React/Next.js frontend, or a lighter framework like Streamlit if UI polish is deprioritized in favor of backend rigor) |
 
 Keep the dashboard framework choice deliberately light in FYP-1 — per the plan doc, the dashboard is explicitly *not* where the CCP lives, so time invested there should not come at the expense of the diagnosis engine or benchmark.
 

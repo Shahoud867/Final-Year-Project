@@ -79,7 +79,9 @@
 
 ---
 
-**Correction, 2026-08-23:** the three boxes above are labeled by *role* (Data/Benchmark, Diagnosis, Platform) — earlier drafts numbered them "Student 1/2/3" as if specific people were already assigned, which hasn't happened. Assign real owners before Mid-1 and update this diagram once decided.
+**Ownership, assigned 2026-08-25 (plan doc §9, risk-register.md R24):** the three lanes above map to named owners — **DATA/BENCHMARK = Shahoud Shahid (23i-2515)**, **DIAGNOSIS = Muhammad Noor (23i-2520)**, **PLATFORM = Saif Shahzad (23i-2634)**. Each owner must be able to defend their own lane under guide §14.1's four questions without notes.
+
+**Correction, 2026-08-23 (kept on record, now resolved):** earlier drafts numbered these boxes "Student 1/2/3" as if specific people were already assigned, which at that point hadn't happened; the lanes were then relabeled by *role* only. The assignment has since been made and recorded — see the line above. The correction stays here so the record shows the gap and its closure.
 
 ## Component boundaries (per FAST guide §14 — what's owned vs. what's Core-assist)
 
@@ -99,11 +101,11 @@ Locked in per plan doc §6, since "Own work" alone doesn't prove *how* — a com
 | Execution-graph construction | Structural parsing of reference identifiers (GraphTracer-style), not LLM-asked | No |
 | Backward causal tracing | Pure graph traversal (BFS) | No |
 | Confidence scoring | Graph features (out-degree, betweenness centrality), not LLM-asked | No |
-| **Semantic Error Diagnostic** | **Rule/schema-based checks against task-spec constraints — not an LLM judgment call.** This is the load-bearing commitment; the headline novel claim must not just be an LLM wrapper | No |
+| **Semantic Error Diagnostic** | **Rule/schema-based checks against task-spec constraints — not an LLM judgment call.** This is the load-bearing commitment; the headline novel claim must not just be an LLM wrapper. Scoped to specs yielding machine-checkable constraints; **abstains** where none exist, and the abstention/coverage rate is itself a reported metric (plan doc §7.0 item 7, §11) | No |
 | SDK, backend, dashboard | Own code | No |
 | Agent-under-test behavior | LLM (necessarily — it's the test fixture, not the contribution) | Yes, but not counted against the budget by §14's own logic |
 | **Repair Agent** (new 2026-08-24) | LLM (necessarily — generating a candidate fix is a language/reasoning task, not a deterministic rule) | Yes |
-| Verified Automatic Repair's re-execution step | LLM (necessarily — re-running the corrected step) | Yes |
+| Verified Automatic Repair's re-execution step | LLM (necessarily — re-running the corrected step). The **replay protocol** wrapping it — step selection, frozen upstream context, pinned decoding parameters, N-replay variance measurement — is own code and calls nothing | Yes, the re-execution call only |
 | ErrorProbe baseline reproduction (Strategist/Investigator/Arbiter) | LLM-heavy, isolated to the baseline-comparison code path only | Yes, scoped to reproduction only |
 
 ## Data flow, one sentence per hop
@@ -112,7 +114,7 @@ Locked in per plan doc §6, since "Own work" alone doesn't prove *how* — a com
 2. Trace → execution graph (nodes = agent actions/tool calls, edges = dependencies).
 3. Graph → Semantic Error Diagnostic check (task-constraint verification) + backward causal trace → candidate root cause with confidence.
 4. Root cause → Repair Agent generates a candidate fix (prompt, tool argument, structured output, or function logic) — new 2026-08-24, POC run same day (Spike 8: repair_success_rate 0.667, 4/6, risk-register.md R17).
-5. Candidate fix → Verified Automatic Repair deterministically re-executes downstream and reports a measured recovery rate → recovery suggestion, gated by confidence threshold.
+5. Candidate fix → Verified Automatic Repair re-executes downstream under a **controlled replay protocol** — frozen upstream context, pinned decoding parameters — and reports a measured recovery rate over N replays → recovery suggestion, gated by confidence threshold. *The protocol and all non-LLM computation are deterministic; LLM-step variance is measured, not assumed away (plan doc §0.07 FR4, risk-register.md R25).*
 6. Full diagnosis record → stored → surfaced on the dashboard / returned via the SDK.
 
 ## Deployment target (per plan doc §13)

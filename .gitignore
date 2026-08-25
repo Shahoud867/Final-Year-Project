@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+
+# Environment / secrets — never commit API keys
+.env
+.env.*
+!.env.example
+*.key
+credentials.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Notes
+# --------------------------------------------------------------------
+# dev/datasets/ is currently TRACKED in this repository (~46MB of
+# third-party datasets and one fully vendored upstream repo).
+#
+# That is a deliberate, temporary state, not an oversight. Before this
+# repository is made public, read dev/datasets/DOWNLOAD.md — it records
+# each dataset's source, license and retrieval command, and flags GAIA,
+# whose gated access terms make redistribution a licensing problem.
+#
+# When the team acts on that, uncomment the line below and replace the
+# tracked directory with DOWNLOAD.md's retrieval scripts:
+#
+# dev/datasets/
+#
+# Do NOT ignore dev/spikes/poc/*.json — those output files are
+# proposal-defense evidence (guide §12) and belong in git.
+# --------------------------------------------------------------------

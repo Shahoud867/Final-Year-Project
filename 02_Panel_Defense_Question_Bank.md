@@ -1,0 +1,107 @@
+# Granite — Adversarial Rejection Attempt + Panel Defense Bank
+
+*Format per question: the short answer to say out loud (≤30 seconds), then backup depth. Part A is a panelist genuinely trying to reject the project; Part B is the full question bank. Rehearse Part A first — those are the ones that end defenses.*
+
+---
+
+## Part A — The rejection attempt (strongest objections, in the order a hostile panelist would fire them)
+
+### A1. "Your title says *Self-Healing … Verified Repair and Recovery*. Show me the evidence for the healing part. As far as I can see, one of those components has never been built and the other one failed its only test."
+**Validity: VALID as of 08-24's flat 10-item core. Fixed by the two-tier restructure.**
+
+**Say:** "Correct, and we've structured the commitment around exactly that evidence gap rather than hiding it. Eight of our ten core items have proof-of-concept evidence behind them — including repair generation at 4/6 and verified replay recovering a corrupted trace. The two closed-loop items, Recovery Controller and Verified Repair Memory, are committed with pre-registered decision gates at Mid-1, written before the results are known: a checkpoint-resume PoC on LangGraph for the first, and a stronger-backbone re-test for the second, each with a recorded fallback. In the worst case, self-healing is still delivered — repair, verification, and resumption via controlled replay are all Tier-1, evidenced items; what the gates decide is *how* resumption and memory ship, not *whether* the loop closes."
+
+**Backup:** VRM's failed test (0/8 commits, 75%→50% regression on a 3B backbone) is on record in R18/R22 — lead with it, because a panel that finds it in the register after you didn't mention it concludes concealment. The fallback for VRM is itself a legitimate §4 contribution type (evaluation contribution: memory-on vs memory-off ablation).
+
+### A2. "This is three projects: reproduce a SOTA paper, build a new benchmark, and ship a product. Three students, one year. Pick one."
+**Validity: PARTIALLY VALID — feasibility is the project's weakest score. The defense is structural, not rhetorical.**
+
+**Say:** "They're one pipeline, not three projects, and each stage feeds the next: the harness produces the benchmark, the benchmark is what the diagnosis engine is evaluated on, and the SDK is the packaging of that same engine — there's no component built for one deliverable and unused by another. The scope controls are already recorded: extensions are gated behind the core; the benchmark has a floor and a stretch target; the third framework is an extension, not core; and the guide's own Annex A.3 says engineering a published method into an operable system is where most Stream A projects' largest contribution lives. The genuinely new algorithmic surface is deliberately small — we adopt ErrorProbe's attribution method rather than inventing one."
+
+**Backup:** if pressed on hours: 3 people × ~2 semesters; the three role areas map one-to-one to the three deliverable groups, each independently defensible under §14.1.
+
+### A3. "ErrorProbe hit 59.5% with Claude 3.7 Sonnet and a three-stage pipeline with memory. Your reproduction is at 12.5% on a 3B local model. Your entire delta is measured against a baseline you cannot reproduce."
+**Validity: VALID as an open risk (R1). Defensible because it is quantified and planned.**
+
+**Say:** "That 12.5% is a deliberately minimal spike — simplified two-stage pipeline, no tool grounding, no memory, a free 3-billion-parameter local model, eight cases — run to prove the approach produces signal before spending money, and it did: 75% agent accuracy from that minimal setup. The full reproduction on a comparable-class backbone is scheduled before Mid-1 with a declared acceptance band, and if we land materially below the published number we report both figures transparently — the guide's Annex A.2 names 'faithful reproduction with transparent reporting' as a legitimate contribution precisely because published numbers are often hard to reproduce. Either outcome is a result; only an unreported gap would be a failure."
+
+### A4. "Why isn't this just ChatGPT? I can paste a failing trace into Claude and ask what went wrong."
+**Validity: INVALID, but must be answered with mechanism, not indignation.**
+
+**Say:** "Pasting a trace into a chatbot is unbenchmarked single-shot opinion — no ground truth, no measured accuracy, no way to know if the diagnosis is right, and nothing that catches a failure nobody noticed happened. Granite is the parts a chat can't be: a fault-injection harness that creates traces where the true culprit is known by construction, so accuracy is a measured number, not a vibe; a deterministic constraint verifier that flags silent failures with zero LLM calls — you can't ask a model to catch the failures that produce no signal, that's the confessed blind spot of the best published method; controlled replay that *tests* a fix before anyone trusts it; and by our committed architecture, 80–85% of the system never calls a model at all. The LLM sits where ErrorProbe's published method puts it, as one classified core-assist component."
+
+**Backup:** literal evidence that "just ask an LLM" is insufficient: Who&When's best single-model baseline was 14.2% step accuracy — that *is* the paste-it-into-a-chatbot number, and it loses to ErrorProbe's structured pipeline by 45 points.
+
+### A5. "LangSmith Engine and Arize Alyx shipped automated root-cause analysis this year, with far more engineers than you. You're rebuilding a funded product."
+**Validity: PARTIALLY VALID — the naive version of the differentiation died in R9; the corrected version holds.**
+
+**Say:** "We checked both directly, and corrected our own positioning when we found them — it's in our risk register. What neither ships, as documented, evaluated capabilities: multi-agent *step-level* attribution with published accuracy on any benchmark; general silent-failure detection beyond RAG-groundedness; counterfactual fix-testing with a measured recovery rate; or anything framework-agnostic — both are locked to their own tracing stacks. Our differentiation is precisely the part a vendor feature-page can't answer: benchmarked numbers on a public cross-architecture benchmark. And if a vendor does ship all of it next spring, the benchmark we release is how anyone — including them — would prove it."
+
+### A6. "Detecting *semantic* errors with rules is a contradiction. Either your rules only check schemas — trivial — or you're claiming rules understand meaning — impossible. Which is it?"
+**Validity: VALID against the unbounded claim. Fixed by the scope sentence.**
+
+**Say:** "Neither, because the claim is scoped. We don't claim to detect arbitrary semantic wrongness. We claim that where the task specification yields machine-checkable constraints — true for both active substrates, GSM8K's numeric answers and tau-bench's policy rules and action sequences — a deterministic verifier catches well-formed-but-wrong outputs that every anomaly-gated method in this literature admits it cannot see. Where no checkable constraint exists, the module abstains, and we report the abstention rate as a metric, so the boundary of the claim is measured rather than asserted. Spike 4 already validated the mechanism, including a plausible-magnitude near-miss, with zero false positives."
+
+### A7. "You claim *deterministic* re-execution of a workflow whose steps are LLM calls. LLMs aren't deterministic. Your FR4 is unimplementable as written."
+**Validity: VALID against the old wording. Fixed by the protocol rename.**
+
+**Say:** "The right word is *controlled*, not deterministic, and we've corrected it. The replay protocol is deterministic — which steps re-run, with what frozen upstream context, with pinned decoding parameters — and every non-LLM computation in the replay is bit-identical. The LLM steps are run at temperature zero and, where residual variance exists, recovery rate is reported over N replays with that variance. What we never do is trust a single lucky replay: 'verified' means the recovery rate was measured, which is exactly the property a nondeterministic component demands."
+
+### A8. "This whole design came out of a market-survey document. Whose project is this?"
+**Validity: must be met head-on — evasion here is fatal; ownership is the panel's core test.**
+
+**Say:** "The survey was one input among nine papers and seven commercial platforms, and our record shows we treated it as an input, not an instruction: we adopted its title and its Repair-Agent gap analysis — where our own FR4 confirmed the gap independently — and we *rejected* its central scope recommendation, single-framework narrowing, with the reason recorded in R19, because it would have deleted one of our two research questions. Three of its four recommended modules already existed in our design under other names before we read it. Every one of those accept/reject decisions is dated in the risk register, and each of us can defend the components we own under the guide's four ownership questions."
+
+### A9. "Your benchmark is workflows you wrote, with faults you injected. You're grading yourself on an exam you set."
+**Validity: PARTIALLY VALID — the honest answer concedes the limit and cites the precedent.**
+
+**Say:** "Ground-truth-by-construction is the field's own established methodology — AgenTracer built TracerTraj exactly this way, at ICLR, specifically because manual annotation cost 30 hours per annotator and still produced disputed labels. Realism comes from the substrates, which we didn't write: tau-bench retail's real policy rules and action sequences, and GSM8K tasks. What injection buys is the one thing natural failures can't give you: certainty about the true culprit, without which attribution accuracy isn't measurable at all. And Spike 3 already surfaced — and we kept — the honest complication: agents sometimes self-correct injected faults, so the benchmark records both propagation and self-correction rather than assuming failures always propagate. The stated limitation, which we put in the evaluation plan ourselves: results support claims about the tested frameworks and domains, not production-scale reliability in general."
+
+### A10. "Couldn't Claude Code or Cursor build this whole system in two weeks?"
+**Validity: the mandated §7 question; the answer must name what a generated version gets wrong.**
+
+**Say:** "A generated version would demo well and fail exactly where the project actually lives. It would get wrong: the differing message-passing and tool-call semantics of each framework, which our spikes show need real instrumentation work — spike 2's timestamps were already a lesson there; the benchmark, which is days of controlled generation and validation labor no code generator shortens; a faithful three-stage reproduction good enough that a head-to-head against a published number is fair; constraint schemas that survive real near-misses rather than string-matching — spike 3's first attempt failed precisely that way and we redesigned it; and every measured trade-off in the evaluation. We use AI assistance throughout and log it, as the guide's Level 2 expects. The difficulty was never the volume of code — it's the data, the evaluation design, and the deployment reality, which is where the guide says a defensible FYP's difficulty must live."
+
+---
+
+## Part B — Full question bank
+
+### Problem & stakeholders
+**Q1. Who actually has this problem, today, in Pakistan or anywhere?** Teams shipping multi-agent systems into production — customer support, coding agents, research tools. Concretely: our notional client is the operator of a tau-bench-retail-style customer-support workflow, and [name the 2 stakeholders contacted — *fill in before Thursday*]. Their current workflow: capture traces in an observability tool, then a human reads the trace and guesses.
+**Q2. How frequent are these failures?** Best-in-field step attribution is 59.5% — meaning even when a failure *is* noticed, the strongest published method misidentifies the originating step 4 times in 10. Silent-failure frequency in the wild is genuinely unmeasured — which is part of what our benchmark exists to bound (and we say "unmeasured" rather than inventing a number).
+**Q3. What happens when Granite itself is wrong?** Diagnosis output is advisory and confidence-gated (extension #12's threshold); no fix is applied without verification via replay, and false-repair rate is a first-class metric measured by verification-gate ablation. A wrong diagnosis costs review time; it cannot silently ship a bad fix.
+
+### Novelty & research
+**Q4. What exactly is novel, in one sentence?** The measurement nobody has run: whether a failure-attribution pipeline holds up on architectures it was never tuned for, and whether one deterministic constraint check catches the failure class every anomaly-gated method confesses it cannot see — delivered as a public benchmark and an installable system.
+**Q5. "You just combined existing techniques."** Conceded before you ask — plan §4.1 says every individual mechanism is established. The contribution is the number the combination produces, which none of the seven papers, GraphTracer, FALAT, or any commercial platform has produced. Strip the parts away and what remains is a measurement: generalizes or doesn't; catches silent failures or doesn't.
+**Q6. Why ErrorProbe as baseline and not the newest paper?** Performance, not recency: it beats both ancestors on their own benchmarks and SDBL on identical splits; step-level is where its lead is largest and where the field admits the problem is unsolved. Backbone confound acknowledged (R4) and controlled within our own experiments.
+**Q7. What if someone publishes your gap before Final-2?** Standing literature check at all five gates (R7); if it happens we report it as a finding and cite it — the benchmark and the deployable SDK are contributions no simultaneous paper deletes. Two high-threat preprints (DoVer-class) are already on the watch list, triaged, deliberately not chased because they're unreviewed.
+**Q8. Research questions?** RQ1: can ErrorProbe's method be faithfully reproduced and at what accuracy? RQ2: does attribution accuracy survive transfer to architectures absent from any prior benchmark? RQ3: what fraction of silent failures does deterministic constraint verification catch, at what precision and coverage? RQ4: what fraction of diagnosed failures can be repaired and verifiably recovered, at what false-repair rate?
+
+### Feasibility
+**Q9. Hardest component, and what if it fails?** The full ErrorProbe reproduction (R1). Fallback declared: transparent-reproduction reporting per Annex A.2, both numbers side-by-side; the cross-architecture and silent-failure results stand on our own implementation either way, since every method is run under one controlled protocol.
+**Q10. API costs?** [Present the one-page estimate — *produce before Thursday*.] Structure: high-volume trace generation on free/cheap tiers (local models where quality suffices, Gemini-Flash-class otherwise); strong hosted models reserved for evaluation runs only; ErrorProbe reproduction is the single accuracy-critical spend. All 8 spikes to date cost $0 (local Ollama).
+**Q11. Why two frameworks and not one, when your own market survey said one?** Recorded rejection, R19: single-framework would delete RQ2, one of two lead claims, already partially evidenced (spike 2). The survey's advice is right for a differently-shaped project; the compatibility layer (extension #8) is the scoped way we still honor its breadth concern.
+**Q12. Individual ownership?** [Names — *assign before Thursday*]: Data/Benchmark — harness, instrumentation, benchmark, release; Diagnosis — graph construction, reproduction, SED, tracing; Platform — replay/recovery engine, SDK, backend, dashboard, deployment. Remove any one and a named deliverable disappears — the guide's own scope test.
+
+### Technical
+**Q13. Why multi-agent diagnosis pipeline rather than one model call?** It's the published SOTA's architecture (Strategist/Investigator/Arbiter), adopted as baseline-faithful; and Who&When's single-call baseline sits at 14.2% step accuracy — the field already ran that ablation.
+**Q14. Why graph traversal instead of asking the LLM what depended on what?** Determinism, cost, and honesty of the 15–20% API budget: reference-identifier parsing is GraphTracer's own validated approach, is byte-identical under model swap, and keeps the differentiating logic out of the API. Same reasoning for graph-feature confidence scoring.
+**Q15. Cycles?** LangGraph natively supports cyclic workflows, so our own committed framework forces this. Spike 6: true Researcher↔Critic cycle terminates under a revisit bound; the control run with the bound disabled hit the safety cap — proving the bound is load-bearing.
+**Q16. How does the SDK attach to a user's workflow?** Callback/hook instrumentation per framework adapter (CrewAI, LangGraph), emitting a normalized trace schema; the diagnosis engine consumes only the schema, so FR5's "no modification to the core algorithm" holds. Honest adoption barrier, stated in the plan: instrumenting an arbitrary third framework is real effort — that's why the compat layer is an extension, not a promise.
+**Q17. Privacy of ingested traces?** R16 threat model: three data categories; regex PII redaction before storage, per-project namespacing, time-bounded retention, minimum-context-per-call to any LLM; real-user data only with informed consent.
+
+### Evaluation
+**Q18. Baseline and metrics?** ErrorProbe (reproduced) on Who&When + our benchmark; agent/step accuracy, propagation-path F1, silent-failure precision/recall **and coverage**, task completion rate, recovery rate, repair success rate, false repair rate, latency overhead. Failure/success bands: *failure* = no measurable improvement over baseline anywhere; *acceptable* = parity on Who&When + any measured cross-architecture result + silent-failure detection at nonzero coverage with high precision; *strong* = beats baseline on unseen architectures and >70% silent-failure recall at that precision; *exceptional* = strong + verified-repair recovery >50% of previously-failed runs at low false-repair rate.
+**Q19. What can this evidence NOT support?** Production-scale reliability claims beyond the tested frameworks and domains — stated in plan §11 before you asked.
+**Q20. Acceptance testing?** Proxy participants declared now, per §13.1's substitution rule: peers/faculty who build multi-agent systems, integrating the SDK against their own workflow, sessions recorded with consent; what proxies can and can't tell us stated in the report.
+
+### Product
+**Q21. Why would anyone switch from LangSmith?** They wouldn't switch — Granite is positioned as a diagnosis layer *complementary* to trace-capture platforms (recorded repositioning, R9), and the open-source SDK + public benchmark is the adoption path, matching the field's own norm.
+**Q22. Killer feature?** The verified fix: not "here's what we think went wrong," but "here's the fix, and here's the measured recovery rate when we replayed the workflow with it."
+
+### AI usage
+**Q23. How much of this did AI write?** Logged per activity in the AI usage log the guide requires, disclosed not concealed; CCP-relevant components carry the verification note the guide asks for; and the test that matters is §14.1's — each of us can explain, justify, predict breakage in, and modify our own subsystem, which we're prepared to do now.
+
+### Scope boundaries
+**Q24. What is explicitly out of scope?** Multi-tenant auth/billing/SaaS; unrestricted agent-architecture rewriting as "repair" (repairs are targeted: prompt, tool argument, structured output, small function); full benchmarking of all 7 frameworks (compatibility only, and only as a gated extension); cross-domain transfer and chaos testing (parked, on record).

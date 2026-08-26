@@ -67,6 +67,7 @@ Produced 2026-08-25 by an independent critical audit of this repository against 
 - [`03_Proposal_Slides_with_Speaker_Notes.md`](../03_Proposal_Slides_with_Speaker_Notes.md) — the 10-slide deck with speaker notes and the question each slide triggers
 - [`04_Granite_Knowledge_Base.md`](../04_Granite_Knowledge_Base.md) — every load-bearing concept at four levels (layman → undergraduate → how Granite uses it → the likely panel question)
 - [`05_Repository_Change_and_Commit_Plan.md`](../05_Repository_Change_and_Commit_Plan.md) — the file-by-file change plan executed on 2026-08-25
+- [`06_Expanded_Scope_and_Feasibility_Plan.md`](../06_Expanded_Scope_and_Feasibility_Plan.md) — the scope expansion + feasibility engineering pass: limitation inventory, eleven methodology additions, Core/Advanced/Stretch/Future bands, effort budget, descope ladder, MDP-per-gate, panel objections both ways (risk-register R27)
 
 ---
 

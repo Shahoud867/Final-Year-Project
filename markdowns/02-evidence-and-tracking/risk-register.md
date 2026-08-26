@@ -152,6 +152,14 @@ The triage surfaced two things: threat levels for the original 6, and — import
 
 ---
 
+## New decision — scope reopened and re-frozen with methodology additions only, 2026-08-25 (second pass, same day as R23–R26)
+
+| ID | Item | Decision | Status |
+|---|---|---|---|
+| R27 | **Scope expansion pass** (`06_Expanded_Scope_and_Feasibility_Plan.md`, repo root) — the audit's 5/10 feasibility score was the binding constraint; the fix chosen is restructured ambition, not a longer feature list. The frozen 20-mechanism set was explicitly reopened per §7.0's own rule and **re-frozen the same day with zero mechanisms added, removed, or renamed** | Added: eleven methodology/process/measurement commitments (statistical protocol with bootstrap CIs; clean-control traces + false-alarm study — 15–20% of the benchmark; ablation matrix; benchmark datasheet with MAST alignment + propagation labels + contamination statement; human-baseline micro-study inside the UAT window; self-correction dynamics analysis; cost–latency–accuracy frontier; time-to-integrate metric; reproducibility kit; walking skeleton by Mid-1; CI from week 1). Added the Core/Advanced/Stretch/Future bands + pre-registered descope ladder (plan §7.2), the ~1,130-hour effort budget, MDP-per-gate, and five fallback ladders. Eight candidate expansions **rejected on record** (06 doc §2), including the plugin architecture the audit already vetoed and "beat ErrorProbe" as a commitment | **Closed — decision recorded.** The individual commitments land via plan §7.2/§11/§12 and are graded at the gates like everything else |
+
+---
+
 ## Appendix: Market Survey Evidence Backing R17–R20 (full excerpt)
 
 *This is the full source excerpt from `Agentic_AI_Market_Survey_BS_FYP.docx` (via [Agentic_AI_Market_Survey_Full_Content_and_Integration.md](../03-market-and-literature-research/Agentic_AI_Market_Survey_Full_Content_and_Integration.md)) that forms the evidence base for R17/R18/R19 above, reproduced verbatim so this register is self-contained.*

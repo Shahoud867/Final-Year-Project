@@ -105,3 +105,19 @@
 
 ### Scope boundaries
 **Q24. What is explicitly out of scope?** Multi-tenant auth/billing/SaaS; unrestricted agent-architecture rewriting as "repair" (repairs are targeted: prompt, tool argument, structured output, small function); full benchmarking of all 7 frameworks (compatibility only, and only as a gated extension); cross-domain transfer and chaos testing (parked, on record).
+
+---
+
+## Addendum, 2026-08-25 — feasibility ammunition from the scope expansion pass (`06_Expanded_Scope_and_Feasibility_Plan.md`)
+
+The A2 ("three projects, pick one") and Q9–Q11 answers above now carry numbers instead of structure alone. Deliver these when feasibility is pressed:
+
+- **The effort budget exists and sums.** ~1,130 plannable person-hours (3 × ~15 h/week × ~28 remaining weeks, minus a 10% exam haircut) against ~1,130 budgeted line-by-line — FYP-1 ≈490 h, FYP-2 ≈640 h, per-line owners named. Stretch work is *unbudgeted by rule*: it spends only surplus.
+- **Integration risk is retired at the first gate, not the last.** A walking skeleton — one thin thread from instrumented trace to dashboard row — is a Mid-1 deliverable, so the three subsystems agree on interfaces two semesters before Final-2 instead of colliding in the last month.
+- **Every gate has a pre-defined worst-case demo** (Minimum Defensible Product, 06 doc §5.3) — a bad month changes what we show, never whether we have something defensible to show.
+- **Slippage has a pre-registered descope ladder** (Stretch first, then named Advanced items in order, Core never) — schedule pressure produces recorded scope decisions, not quiet quality decay.
+- **"1,000 traces" is two idle weekends or eighteen dollars**: 5–10 min/trace on the local model (~80–170 machine-hours, not person-hours) or ≈$17.50 on a cheap-tier batch API. And the retreat is principled: 300 traces under the statistical protocol beats 1,000 bare point estimates.
+- **The evaluation got harder, not the feature list longer**: clean-control traces (15–20% of the benchmark) enabling the corpus's first false-alarm-rate measurement, bootstrap CIs on every headline number, a four-ablation matrix, a human-baseline micro-study inside the already-scheduled UAT window, and a cost–latency–accuracy frontier. Zero new mechanisms — the frozen 20 stand (R27).
+
+**New question this creates, with its answer — Q25. "You added a human study three days before the defense. Isn't that scope creep?"**
+**Say:** "No new mechanism was added — the study runs inside the acceptance-testing window the plan already committed, with the participant pool §13.1 already names, and it closes three guide requirements at once: stakeholder evidence, acceptance testing, and the baseline our own premise implies. Our first slide says a human currently reads the trace and guesses — the study simply measures that human. Six participant-hours, consent per our ethics section, and a pre-registered fallback if recruitment falls short."

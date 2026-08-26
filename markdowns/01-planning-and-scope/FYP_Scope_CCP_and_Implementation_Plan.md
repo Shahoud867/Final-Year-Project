@@ -285,6 +285,23 @@ Deliberately dropped from this list: a hosted multi-tenant SaaS signup/billing f
 
 ---
 
+### 7.2 Scope bands and descope ladder (added 2026-08-25 — see `06_Expanded_Scope_and_Feasibility_Plan.md` at the repo root for the full analysis, effort budget, and rationale; risk-register.md R27)
+
+The frozen mechanism list above is unchanged. This section adds the **grading and sequencing layer** over it, plus eleven methodology/process commitments (statistical protocol, clean-control false-alarm study, ablation matrix, benchmark datasheet with propagation labels, human-baseline micro-study, self-correction analysis, cost–latency frontier, time-to-integrate metric, reproducibility kit, walking skeleton by Mid-1, CI from week 1) — none of which is a mechanism.
+
+| Band | Contents | Rule |
+|---|---|---|
+| **Core** (mandatory) | 10 foundational items (Tier 1 + gated Tier 2) · evaluation v1 under the statistical protocol with FPR/clean controls, coverage, and the ablation matrix · benchmark ≥500 incl. clean controls + datasheet · SDK + backend + 3-screen dashboard · deployment · reproducibility kit · walking skeleton + CI | Never descoped; Tier 2 resolves via its gates only |
+| **Advanced** (strengthens significantly) | Human baseline · self-correction analysis · cost–latency frontier · time-to-integrate · ext #1 (taxonomy→3) · ext #3 (cyclic) · ext #4 (calibration) | Budgeted; droppable only via the ladder below, each drop recorded per §5.3 |
+| **Stretch** (only if Core lands early) | ext #2 (3rd architecture) · ext #5 (preventive classifier) · ext #6–7 (map, explainable confidence) · ext #8 (compat layer) · leaderboard · webhook/report/chart items | Unbudgeted — spends surplus hours only |
+| **Future** (outside the FYP) | Cross-domain · chaos · RL · 7-framework benchmarking · SaaS/auth/billing · custom-model training | Report future-work section only |
+
+**Pre-registered descope ladder** (drops happen in exactly this order, recorded): all Stretch → time-to-integrate → self-correction analysis → frontier → calibration → taxonomy 3→2 → benchmark 1,000→500 → cyclic (last among Advanced; claim-coupled to LangGraph) → **Core never drops**.
+
+**Effort budget headline** (full table in the 06 doc §5.1): ~1,130 plannable person-hours (3 × ~15 h/wk × ~28 weeks, minus a 10% exam haircut) against ~1,130 budgeted — FYP-1 ≈490 h, FYP-2 ≈640 h — with Stretch unbudgeted, the ladder governing slippage, and scaffolding lines priced at Level-2 AI-assisted velocity. **Minimum Defensible Product per gate** is defined in the 06 doc §5.3 and the timeline note under §12 below.
+
+---
+
 ## 8. Datasets — public, and reused vs. newly built
 
 | Purpose | Dataset | Public? | Size | Role |
@@ -335,6 +352,10 @@ Per Section 12: this must be *demonstrated with evidence* at the proposal defens
 |---|---|
 | Algorithmic foundation | Our diagnosis engine's attribution logic is built on ErrorProbe's published method (own implementation, since its license for code reuse is unconfirmed — see [Full_Literature_Landscape_Analysis.md §3](../03-market-and-literature-research/Full_Literature_Landscape_Analysis.md)); its published numbers are the point its real-world accuracy gets measured against |
 | **Reproduction acceptance band (pre-registered 2026-08-25, before any full-reproduction run)** | The reproduction is **accepted** if it lands within **±10 points of ErrorProbe's published 59.5%** step accuracy on a comparable-class backbone. If it lands materially below that band, we do **not** quietly re-baseline: both our measured number and the published number are reported side by side, per the guide's Annex A.2, which names *"faithful reproduction with transparent reporting"* as a legitimate contribution in its own right — precisely because published numbers are often hard to reproduce. Declared **now**, ahead of the run, so the criterion cannot be adjusted to fit the result — §5.3's own rule. Either outcome is a result; only an unreported gap would be a failure. Cost of the run and the model plan behind "comparable-class backbone": [cost-estimate.md](cost-estimate.md) (risk-register.md R26) |
+| **Statistical protocol (pre-registered, 2026-08-25)** | Bootstrap 95% CIs over cases for every headline metric; fixed seeds; recovery rates reported over N=5 replays with variance; per-backbone reporting (as ErrorProbe itself does). One shared stats module used by every evaluation script. The analysis plan is finalized at Mid-1, before results exist |
+| **Negative controls / false-alarm rate (added 2026-08-25)** | 15–20% of the benchmark (≥75 of 500 traces) are **clean controls** (harness run with injection disabled) — every corpus benchmark contains only failures, so pipeline-level FPR on healthy runs is unreported in the literature we reviewed. Reported: pipeline FPR + SED false-alarm rate, with CIs; provisional target <5%, finalized at Mid-1 |
+| **Human baseline + time-to-integrate (added 2026-08-25)** | Inside the §13.1 UAT window: 6–10 proxy participants attribute 8–10 benchmark traces each under a 5-min/trace cap (accuracy + time vs. Granite — doubles as stakeholder and acceptance evidence), and each session measures minutes from `pip install` to first diagnosis on the participant's own workflow (target median <30 min). Small-N, descriptive, stated as such |
+| **Ablation matrix** | Four pre-declared ablations, each isolating one claim: verification gate off → false-repair rate; memory on/off → VRM contribution; SED off → silent failures caught without it; graph-feature vs. LLM-stated confidence → justifies the 0%-API scoring choice |
 | Data / cases | Who&When (baseline reproduction — fully available, 184 cases confirmed in hand) + our new cross-architecture benchmark (novel-architecture generalization test). TracerTraj comparison is conditional on AgenTracer's actual data release, not committed (see risk-register.md R11) |
 | Metrics | Top-1 agent accuracy, top-1 step accuracy, propagation-path F1, **silent-failure precision/recall** (corrected 2026-08-24 — precision was missing; recall alone can't distinguish a real detector from one that flags everything) **and silent-failure coverage / abstention rate** (added 2026-08-25 — the fraction of cases the Semantic Error Diagnostic is applicable to at all; without it, "high precision" could describe a verifier that abstains on almost everything, and the scope boundary of §7.0 item 7's claim would be asserted rather than measured), diagnostic latency overhead (%), recovery success rate (task success before vs. after counterfactual intervention, i.e. of *previously-failed* runs specifically), **task completion rate** (overall task success, baseline MAS vs. self-healing MAS, across *all* runs — distinct from recovery rate, added 2026-08-24 from `Agentic_AI_Market_Survey_BS_FYP.docx` Table 4, was missing from the first pass), **repair success rate** (% of Repair Agent's generated corrections that actually fix the task, with vs. without Verification Agent gating — added 2026-08-24, same source), **false repair rate** (incorrect repairs the system accepted, measured via a verification-gate ablation — same source; this is the metric that keeps "verified" in Verified Automatic Repair honest, not just asserted). **Deliberately still excluded**: re-execution cost and repair reuse benefit — both measure Checkpointing and Verified Repair Memory, neither of which is in scope; adding the metric before the feature exists would be premature, not an oversight |
 | Failure cases that matter | Silent failures (valid-looking, semantically wrong outputs); failures on architectures never seen during development; failures under injected latency/cost budget pressure |
@@ -425,6 +446,10 @@ Weeks 14–16 Documentation set completed (SRS, SDS, traceability matrix,
             test/deployment/handover plan); final packaging.
             ▶ GATE 5 — Final-2 (deployed system + project report)
 ```
+
+---
+
+**Minimum Defensible Product per gate (added 2026-08-25 — the worst-case demo each gate must still deliver; full table in `06_Expanded_Scope_and_Feasibility_Plan.md` §5.3):** Mid-1 = walking skeleton end-to-end + full reproduction number with band verdict + both Tier-2 gate outcomes + 50-trace pilot with clean controls + the two baselined design docs (hook interface, checkpoint schema). Final-1 = core integrated on real workflows in both frameworks, benchmark ≥200, SDK installable by a non-builder. Mid-2 = benchmark ≥500 with controls, evaluation v1 with CIs/FPR/≥2 ablations, deployed off the dev machine. Final-2 = full evaluation + human baseline + UAT + datasheet + reproducibility kit + release.
 
 ---
 

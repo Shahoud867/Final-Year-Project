@@ -44,12 +44,17 @@ MAX_CONTENT_CHARS = 220  # per-step truncation, keeps prompt size sane for a 3B 
 
 
 def ollama_generate(prompt: str, max_tokens: int = 500) -> str:
+    # Timeout raised 300s -> 900s on 2026-08-26 re-run: the original 300s
+    # client-side timeout killed a genuinely in-progress (not hung) local
+    # CPU generation on case 2, after case 1 alone took 242s cold-start.
+    # This is a network-robustness change only -- prompt, model, and
+    # temperature are unchanged, so it does not affect scoring.
     resp = requests.post(OLLAMA_URL, json={
         "model": MODEL,
         "prompt": prompt,
         "stream": False,
         "options": {"num_predict": max_tokens, "temperature": 0.2},
-    }, timeout=300)
+    }, timeout=900)
     resp.raise_for_status()
     return resp.json().get("response", "")
 
@@ -62,6 +67,24 @@ def extract_json(text: str):
     try:
         return json.loads(m.group(0))
     except json.JSONDecodeError:
+        return None
+
+
+def as_int(v):
+    """Robust int coercion for step-index comparison.
+
+    Bug fixed 2026-08-26: case["mistake_step"] is stored as a STRING in the
+    Who&When data files (e.g. "5"), while the Arbiter's parsed JSON step is
+    an int (5). The original `pred_step == gt_step` therefore silently
+    returned False even when the values were numerically identical -- e.g.
+    case 6, gt_step="5" vs pred_step=5 -- which drove step_accuracy to a
+    reported 0.0 instead of the actual 12.5% (1/8). Coercing both sides to
+    int before comparing fixes this without masking genuine mismatches:
+    a real disagreement (e.g. "5" vs 20) still scores as incorrect.
+    """
+    try:
+        return int(str(v).strip())
+    except (TypeError, ValueError):
         return None
 
 
@@ -147,7 +170,8 @@ def main():
         pred_agent = arb["parsed"].get("agent")
         pred_step = arb["parsed"].get("step")
         a_ok = isinstance(pred_agent, str) and pred_agent.strip().lower() == gt_agent.strip().lower()
-        s_ok = pred_step == gt_step
+        gt_step_int, pred_step_int = as_int(gt_step), as_int(pred_step)
+        s_ok = gt_step_int is not None and pred_step_int is not None and gt_step_int == pred_step_int
         agent_correct += int(a_ok)
         step_correct += int(s_ok)
 

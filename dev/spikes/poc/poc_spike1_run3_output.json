@@ -1,0 +1,243 @@
+{
+  "summary": {
+    "n_cases": 8,
+    "n_parse_failures": 1,
+    "n_scored": 7,
+    "agent_accuracy": 0.714,
+    "step_accuracy": 0.143,
+    "note": "2-stage simplified reproduction (Strategist->Arbiter, no tool-grounded Investigator, no memory), backbone=llama3.2:3b local, NOT directly comparable to ErrorProbe's own reported 59.5% (stronger backbones, full pipeline)."
+  },
+  "results": [
+    {
+      "case": "1.json",
+      "status": "ok",
+      "question": "Where can I take martial arts classes within a five-minute walk from the New York Stock Exchange after work (7-9 pm)?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "12",
+      "pred_agent": "WebSurfer",
+      "pred_step": 20,
+      "confidence": 0.8,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 224.6,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 3,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "The request was not fully carried out yet."
+          },
+          {
+            "step": 8,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "Incorrect click on the webpage"
+          },
+          {
+            "step": 20,
+            "agent": "WebSurfer",
+            "reason": "Failed to verify addresses and class schedules correctly"
+          }
+        ]
+      }
+    },
+    {
+      "case": "2.json",
+      "status": "ok",
+      "question": "What is the worst rated series (according to Rotten Tomatoes) with more than 1 season that Ted Danson has starred in and is available on Amazon Prime Video (US)?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "4",
+      "pred_agent": "Orchestrator",
+      "pred_step": 57,
+      "confidence": 0.8,
+      "agent_correct": false,
+      "step_correct": false,
+      "elapsed_sec": 677.7,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 68,
+            "agent": "WebSurfer",
+            "reason": "Still searching for the full list of TV series Ted Danson has starred in"
+          },
+          {
+            "step": 57,
+            "agent": "Orchestrator",
+            "reason": "Still gathering Rotten Tomatoes ratings and number of seasons for each series"
+          },
+          {
+            "step": 53,
+            "agent": "WebSurfer",
+            "reason": "Missed detail: still extracting the list of TV series Ted Danson has starred in from the IMDb search results"
+          }
+        ]
+      }
+    },
+    {
+      "case": "3.json",
+      "status": "ok",
+      "question": "During the first week of August 2015, one of the NASA Astronomy Pictures of the Day shows the lights of a city on the horizon. The namesake of this city also has a landmark building in Chicago named after him. What is the name of the architectural firm that designed this landmark building? Give the first name appearing in the name of the firm as of June 2023.",
+      "gt_agent": "WebSurfer",
+      "gt_step": "32",
+      "pred_agent": "WebSurfer",
+      "pred_step": 90,
+      "confidence": 0.8,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 667.7,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 73,
+            "agent": "WebSurfer",
+            "reason": "Failed to navigate to the correct APOD page"
+          },
+          {
+            "step": 82,
+            "agent": "Orchestrator",
+            "reason": "Did not break out of loop early enough"
+          },
+          {
+            "step": 90,
+            "agent": "WebSurfer",
+            "reason": "Failed to identify the correct APOD image"
+          }
+        ]
+      }
+    },
+    {
+      "case": "4.json",
+      "status": "ok",
+      "question": "What popular hiking trails to waterfalls in Yosemite National Park (more than 1,000 reviews on TripAdvisor) have been recommended to be fully accessible to wheelchairs by at least three different people and are highly rated (4.5/5 or more on average)?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "8",
+      "pred_agent": "WebSurfer",
+      "pred_step": 12,
+      "confidence": 0.8,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 150.5,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 4,
+            "agent": "WebSurfer",
+            "reason": "Incorrect search query"
+          },
+          {
+            "step": 6,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "Insufficient verification of search results"
+          },
+          {
+            "step": 12,
+            "agent": "WebSurfer",
+            "reason": "Missed detail: not verifying the specific trail's reviews and ratings"
+          }
+        ]
+      }
+    },
+    {
+      "case": "5.json",
+      "status": "ok",
+      "question": "What is the last word before the second chorus of the King of Pop's fifth single from his sixth studio album?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "12",
+      "pred_agent": "Orchestrator (thought)",
+      "pred_step": 12,
+      "confidence": 0.8,
+      "agent_correct": false,
+      "step_correct": true,
+      "elapsed_sec": 154.1,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 3,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "Incorrect search query may have led to incorrect information about the sixth studio album"
+          },
+          {
+            "step": 10,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "Wrong assumption that lyrics for 'Human Nature' would be available and accurate"
+          },
+          {
+            "step": 12,
+            "agent": "Orchestrator (thought)",
+            "reason": "Incorrect interpretation of search results may have led to incorrect information about the lyrics"
+          }
+        ]
+      }
+    },
+    {
+      "case": "6.json",
+      "status": "strategist_parse_failed",
+      "gt_agent": "Orchestrator",
+      "gt_step": "5",
+      "raw_strategist": "{\"hypotheses\": [{\"step\": 3, \"agent\": \"WebSurfer\", \"reason\": \"Incorrect search query\"}, {\"step\": 4, \"agent\": \"WebSurfer\", \"reason\": \"Insufficient search results\"}, {\"step\": 5\", \"agent\": \"Orchestrator (thought)\", \"reason\": \"Inaccurate information from web result\"}]}"
+    },
+    {
+      "case": "7.json",
+      "status": "ok",
+      "question": "In the video https://www.youtube.com/watch?v=L1vXCYZAYYM, what is the highest number of bird species to be on camera simultaneously?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "8",
+      "pred_agent": "WebSurfer",
+      "pred_step": 4,
+      "confidence": 0.8,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 206.2,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 3,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "The request was not fully addressed yet as the web surfer did not directly access the video and instead opened a search page."
+          },
+          {
+            "step": 4,
+            "agent": "WebSurfer",
+            "reason": "The web surfer failed to correctly open the YouTube video."
+          },
+          {
+            "step": 20,
+            "agent": "WebSurfer",
+            "reason": "The web surfer scrolled up one page in the browser instead of scrolling down, potentially missing relevant timestamps."
+          }
+        ]
+      }
+    },
+    {
+      "case": "8.json",
+      "status": "ok",
+      "question": "Which of the people in the monday.com C-suite did not have a C-suite position during the company's IPO?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "8",
+      "pred_agent": "WebSurfer",
+      "pred_step": 96,
+      "confidence": 0.8,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 659.9,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 109,
+            "agent": "WebSurfer",
+            "reason": "Failed to click on relevant link"
+          },
+          {
+            "step": 104,
+            "agent": "WebSurfer",
+            "reason": "Did not scroll through NoCamels article thoroughly"
+          },
+          {
+            "step": 96,
+            "agent": "WebSurfer",
+            "reason": "Used incorrect search query"
+          }
+        ]
+      }
+    }
+  ]
+}

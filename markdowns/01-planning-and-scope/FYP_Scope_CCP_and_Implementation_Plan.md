@@ -390,8 +390,9 @@ Weeks 3–5   Proposal-stage POC (§10) executed — **ahead of plan as of
 Week  5–6   ▶ GATE 1 — Proposal defense (scope approved)
 Weeks 6–10  Stakeholder-informed requirements, SRS/SDS baselined,
             data/licensing cleared, riskiest subsystem prototyped.
-            **Top priority, per spike 1's own result (12.5% step accuracy,
-            simplified pipeline, n=8, local 3B model)**: build the full
+            **Top priority, per spike 1's own result (0-25% step accuracy across
+            5 independent runs, mean 13%, simplified pipeline, n=8, local
+            3B model)**: build the full
             3-stage ErrorProbe reproduction (tool-grounded Investigator +
             Verified Episodic Memory) on a stronger backbone — the
             simplified version is nowhere near 59.5% and a fair baseline

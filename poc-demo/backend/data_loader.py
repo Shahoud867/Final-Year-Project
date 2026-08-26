@@ -16,18 +16,19 @@ to the repo as proposal-defense POC evidence. Where a field genuinely
 does not apply to a given spike (e.g. no repair was attempted), it is
 left null -- never backfilled with a plausible-looking placeholder.
 
-One honest finding surfaced while building this loader, disclosed here
-rather than silently "corrected": poc_spike1_errorprobe_repro_output.json
-records step_accuracy = 0.0 (every case's step_correct is False), not the
-12.5% figure that appears throughout the written documentation. The
-likely cause, visible in the raw data: ground-truth step indices are
-strings ("12") while predicted steps are ints (20), and the scoring
-script's `pred_step == gt_step` comparison silently fails for the one
-case where the values are numerically equal (case 6: gt_step="5",
-pred_step=5). This loader reports the number that's actually in the
-file -- 0.0 -- and computes a corrected comparison alongside it so both
-are visible. See the chat response for what to do about it before the
-defense.
+Resolved 2026-08-26: an earlier version of this loader flagged that
+poc_spike1_errorprobe_repro_output.json's step_accuracy field (0.0) did
+not match the 12.5% cited throughout the docs, due to a str/int
+comparison bug (gt_step="5" vs pred_step=5). That bug is now fixed in
+poc_spike1_errorprobe_repro.py, and the spike was re-run 5 independent
+times rather than once, because the first bug-free run (50%/0%) turned
+out to differ materially from the old cached number -- real LLM sampling
+variance at n=8, not a bug. This loader now sources headline agent/step
+accuracy from poc_spike1_multirun_summary.json (mean + range across the
+5 runs) rather than any single run's snapshot; per-case trace detail for
+the Runs & Diagnoses / graph views is read from poc_spike1_run1_output.json
+specifically (a fixed, intentional choice -- the first bug-free run --
+rather than whichever file happens to be on disk last).
 """
 import json
 from pathlib import Path
@@ -94,7 +95,10 @@ def _who_when_case(fp: Path) -> dict:
 # Spike 1 -- ErrorProbe reproduction (8 Who&When cases)
 # ---------------------------------------------------------------------------
 def load_spike1(runs: list, findings: dict):
-    data = _load("poc_spike1_errorprobe_repro_output.json")
+    # Per-case trace detail comes from run 1 specifically (a fixed, stable
+    # choice) -- headline accuracy numbers come from the 5-run aggregate,
+    # loaded separately below.
+    data = _load("poc_spike1_run1_output.json")
     summary = data["summary"]
 
     corrected_step_correct = 0
@@ -158,6 +162,13 @@ def load_spike1(runs: list, findings: dict):
     findings["spike1_step_accuracy_raw"] = summary["step_accuracy"]
     findings["spike1_step_accuracy_type_safe"] = round(corrected_step_correct / summary["n_scored"], 3)
     findings["spike1_agent_accuracy"] = summary["agent_accuracy"]
+
+    # Multi-run aggregate (5 independent samples, 2026-08-26) -- the real
+    # headline numbers. A single run is one noisy sample; see
+    # poc_spike1_multirun_runner.py for why this exists.
+    multirun_fp = SPIKES_DIR / "poc_spike1_multirun_summary.json"
+    if multirun_fp.exists():
+        findings["spike1_multirun"] = json.loads(multirun_fp.read_text(encoding="utf-8"))
 
 
 # ---------------------------------------------------------------------------

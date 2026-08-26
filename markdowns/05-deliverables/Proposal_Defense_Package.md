@@ -60,7 +60,7 @@ Architecture: [architecture-sketch.md](../01-planning-and-scope/architecture-ske
 
 | Spike | Result |
 |---|---|
-| 1. ErrorProbe reproduction | 75% agent / 12.5% step accuracy (simplified 2-stage pipeline, local 3B model, n=8) — real signal, full version still needed |
+| 1. ErrorProbe reproduction | agent 50-71% / step 0-25% (means 61%/13%), simplified 2-stage pipeline, local 3B model, n=8 cases × 5 independent runs — range reported, not a single point estimate; real signal the approach works, full version still needed |
 | 2. CrewAI instrumentation | Traced cleanly into 3 nodes / 2 correctly-ordered edges, resolved |
 | 3 + 3b. Fault injection | Ground truth recoverable and unambiguous; first attempt was *self-corrected* by the agent — kept as a finding, so the benchmark records both propagation and self-correction |
 | 4. Semantic Error Diagnostic | Catches known-wrong values including a plausible-magnitude near-miss ($20.00 vs $19.75 true), zero false positives |

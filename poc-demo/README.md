@@ -61,20 +61,29 @@ re-run a spike and refresh the browser to see updated numbers.
 
 ---
 
-## Data discrepancy found while building this (read before the defense)
+## Data discrepancy found while building this — resolved 2026-08-26
 
-`poc_spike1_errorprobe_repro_output.json`'s own `summary.step_accuracy` field is **0.0** — every case's
-`step_correct` flag is `false` in the raw file — while every other document in this repo (audit, slides,
-question bank) states **12.5%**.
+`poc_spike1_errorprobe_repro_output.json`'s own `summary.step_accuracy` field originally read **0.0** —
+every case's `step_correct` flag was `false` in the raw file — while every other document in this repo
+(audit, slides, question bank) stated **12.5%**.
 
-**Likely root cause**, visible in the raw data: ground-truth step indices are stored as strings
-(e.g. `"5"`), predicted steps as ints (`5`). The scoring script's `pred_step == gt_step` comparison silently
-returns `False` for a value that's numerically correct — visible directly in case 6:
-`gt_step="5"`, `pred_step=5`.
+**Root cause**, confirmed: ground-truth step indices are stored as strings (e.g. `"5"`), predicted steps as
+ints (`5`). The scoring script's `pred_step == gt_step` comparison silently returned `False` for a value
+that was numerically correct — visible directly in case 6: `gt_step="5"`, `pred_step=5`.
 
-This console computes and displays **both** numbers side by side (see the Overview page's flagged stat
-tile and callout) rather than silently picking one. **Recommended fix before the defense:** patch
-`poc_spike1_errorprobe_repro.py`'s scoring line to `pred_step == int(gt_step)` (or equivalent) and re-run
-the spike so the committed JSON file itself says 12.5%, matching every document that already cites that
-number. If a panelist opens the raw JSON on screen (which your own defense strategy explicitly plans to
-do), it currently would not match your slides.
+**Fixed and re-run for real** — `poc_spike1_errorprobe_repro.py` now coerces both sides to int before
+comparing (`as_int()`). The fix surfaced something bigger than the bug itself: a single bug-free re-run
+produced **50% agent / 0% step accuracy**, materially different from the old cited 75%/12.5%. Rather than
+treat either number as authoritative, the spike was run **5 independent times** and the range reported
+honestly:
+
+| | Agent accuracy | Step accuracy |
+|---|---|---|
+| Mean | 61.1% | 13.2% |
+| Range | 50.0–71.4% | 0.0–25.0% |
+
+The old 75%/12.5% figures were real, but they were one favorable sample, not a stable result — the mean
+across 5 runs is meaningfully lower on agent accuracy in particular. Full per-run data:
+`dev/spikes/poc/poc_spike1_run{1..5}_output.json`; aggregate: `poc_spike1_multirun_summary.json`. This
+console's Overview screen now reports the multi-run mean/range instead of a single run's snapshot — see
+`backend/main.py`'s `/api/stats` endpoint, which reads `poc_spike1_multirun_summary.json` directly.

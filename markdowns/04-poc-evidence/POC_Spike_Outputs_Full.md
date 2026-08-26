@@ -10,22 +10,38 @@
 
 **Setup:** 2-stage pipeline (Strategist → Arbiter only — no tool-grounded Investigator, no Verified Episodic Memory), backbone = local `llama3.2:3b` via Ollama (free), n=8 real Who&When-Hand-Crafted cases.
 
-**Headline numbers:** `agent_accuracy: 0.75` (6/8 correct) · `step_accuracy: 0.0` (0/8 exact-step correct) · `n_parse_failures: 0`
+**Bug found and fixed, 2026-08-26:** an earlier version of this write-up flagged case 6 as a likely scorer type-mismatch (predicted step matched ground truth exactly, yet `step_accuracy` read 0.0) — that flag was correct. The scoring script compared `gt_step` (a string in the Who&When data, e.g. `"5"`) against `pred_step` (an int from the LLM's JSON, e.g. `5`) with `==`, which silently returns `False` for numerically-identical values. Fixed in `poc_spike1_errorprobe_repro.py` with a robust `as_int()` coercion — a genuine mismatch still scores as wrong, only the false negatives from type mismatch are fixed.
 
-| Case | Question (shortened) | Ground truth (agent / step) | Predicted (agent / step) | Agent correct? | Step correct? |
-|---|---|---|---|---|---|
-| 1 | Martial arts classes near NYSE | WebSurfer / 12 | WebSurfer / 20 | ✅ | ❌ |
-| 2 | Worst-rated Ted Danson series | WebSurfer / 4 | WebSurfer / 68 | ✅ | ❌ |
-| 3 | Chicago landmark architect firm | WebSurfer / 32 | Orchestrator / 87 | ❌ | ❌ |
-| 4 | Wheelchair-accessible Yosemite trails | WebSurfer / 8 | Orchestrator / 3 | ❌ | ❌ |
-| 5 | MJ fifth single, last word before chorus | WebSurfer / 12 | WebSurfer / 15 | ✅ | ❌ |
-| 6 | Mission Bay high-rise sale price | Orchestrator / 5 | Orchestrator / 5 | ✅ | ✅* |
-| 7 | Bird species in YouTube video | WebSurfer / 8 | WebSurfer / 4 | ✅ | ❌ |
-| 8 | monday.com C-suite at IPO | WebSurfer / 8 | WebSurfer / 109 | ✅ | ❌ |
+**Real re-run, 5 independent samples, 2026-08-26 (not a rescore — 5 fresh runs against local Ollama, ~45–50 min each):**
 
-*Case 6 predicted the exact right step (5) but the scoring script's `step_accuracy: 0.0` suggests a type-mismatch or off-by-one in the automated scorer, not a real miss — worth the team double-checking this one specifically when re-running.
+| Run | n scored | Agent accuracy | Step accuracy |
+|---|---|---|---|
+| 1 | 8/8 | 50.0% | 0.0% |
+| 2 | 8/8 | 62.5% | 25.0% |
+| 3 | 7/8 (1 parse failure) | 71.4% | 14.3% |
+| 4 | 8/8 | 50.0% | 12.5% |
+| 5 | 7/8 (1 parse failure) | 71.4% | 14.3% |
+| **Mean** | — | **61.1%** | **13.2%** |
+| **Range** | — | **50.0–71.4%** | **0.0–25.0%** |
 
-**Reasoning:** the model gets *who* did it right most of the time (75%, close to what you'd expect from a system that generally identifies the right agent role) but consistently misses *exactly which step* — it tends to predict steps much later than the true origin (e.g., case 8: predicted step 109 vs. true step 8). This matches the field-wide pattern every paper in this space reports: agent-level attribution is the easier half, step-level is where everything breaks down. A 2-stage simplified pipeline on a free 3B model getting agent-level right 75% of the time is a genuinely encouraging signal — it means the *approach* is sound. The 0% step accuracy is expected at this simplified stage, not a failure of the idea; the full 3-stage pipeline (tool-grounded Investigator + memory) on a stronger backbone is what's needed to approach ErrorProbe's own reported 59.5%.
+Full data: `poc_spike1_run{1..5}_output.json` + aggregated `poc_spike1_multirun_summary.json`.
+
+**Per-case consistency across the 5 runs — a real, stable pattern, not noise:**
+
+| Case | Question (shortened) | Agent correct (of 5 runs) | Step correct (of 5 runs) |
+|---|---|---|---|
+| 1 | Martial arts classes near NYSE | 5/5 | 0/5 |
+| 2 | Worst-rated Ted Danson series | 0/5 | 0/5 |
+| 3 | Chicago landmark architect firm | 4/5 | 0/5 |
+| 4 | Wheelchair-accessible Yosemite trails | 4/5 | 0/5 |
+| 5 | MJ fifth single, last word before chorus | 1/5 | 3/5 |
+| 6 | Mission Bay high-rise sale price | 0/4 scored | 2/4 scored |
+| 7 | Bird species in YouTube video | 5/5 | 0/5 |
+| 8 | monday.com C-suite at IPO | 4/4 scored | 0/4 scored |
+
+**Reasoning:** across 5 independent samples, the model reliably identifies *who* (cases 1, 3, 4, 7 hit agent-correct in 4–5 of 5 runs) but essentially never pins down *exactly which step* — those same four cases score 0/5 on step accuracy every time, not sometimes. That is a stable, real pattern, not sampling noise: the model consistently predicts steps much later than the true origin (case 8 alone: predicted steps 95–109 across runs vs. true step 8). This matches the field-wide pattern every paper in this space reports — agent-level attribution is the easier half, step-level is where everything breaks down. Case 6 is the one interesting exception: agent accuracy is *low* there (0/4) because the model consistently answers "Orchestrator (thought)" rather than the ground truth's plain "Orchestrator" — an exact-string-match artifact of the trajectory format's role labels, worth a team decision on whether to normalize before Mid-1, not silently patched here. Case 2 is the cleanest failure: 0/5 on both agent and step, every run — a genuinely hard case for this simplified pipeline, not a fluke.
+
+A mean of 13.2% step accuracy on a 2-stage simplified pipeline, free local 3B model, is a genuinely encouraging floor — it means the *approach* produces signal, not that it's close to ErrorProbe's reported 59.5%. The full 3-stage pipeline (tool-grounded Investigator + memory) on a stronger backbone is what's needed to approach that number, and the acceptance band in plan §11 (±10 points, comparable-class backbone) is judged against that full run, not this simplified spike.
 
 ---
 
@@ -149,7 +165,7 @@ recovery_success: true
 
 ## One-line summary per spike, for a quick read
 
-1. **ErrorProbe repro** — agent-level attribution works (75%), step-level needs the full pipeline
+1. **ErrorProbe repro** — agent-level attribution works (50–71% across 5 runs, mean 61%), step-level needs the full pipeline (0–25%, mean 13%)
 2. **CrewAI mapping** — clean, resolved
 3. **Fault injection** — works, and taught us to prefer unverifiable-fact corruptions over well-known-fact ones
 4. **Silent-failure detector** — mechanism proven, real-world frequency still unmeasured

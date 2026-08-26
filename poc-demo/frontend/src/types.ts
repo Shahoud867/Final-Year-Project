@@ -104,6 +104,15 @@ export interface SpikeMeta {
 }
 
 export interface Stats {
+  agent_accuracy_mean: number;
+  agent_accuracy_min: number | null;
+  agent_accuracy_max: number | null;
+  step_accuracy_mean: number;
+  step_accuracy_min: number | null;
+  step_accuracy_max: number | null;
+  n_reproduction_runs: number;
+  reproduction_bug_fixed: boolean;
+  reproduction_bug_note: string;
   agent_accuracy: number;
   step_accuracy_raw: number;
   step_accuracy_type_safe: number;

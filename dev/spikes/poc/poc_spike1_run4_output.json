@@ -1,0 +1,268 @@
+{
+  "summary": {
+    "n_cases": 8,
+    "n_parse_failures": 0,
+    "n_scored": 8,
+    "agent_accuracy": 0.5,
+    "step_accuracy": 0.125,
+    "note": "2-stage simplified reproduction (Strategist->Arbiter, no tool-grounded Investigator, no memory), backbone=llama3.2:3b local, NOT directly comparable to ErrorProbe's own reported 59.5% (stronger backbones, full pipeline)."
+  },
+  "results": [
+    {
+      "case": "1.json",
+      "status": "ok",
+      "question": "Where can I take martial arts classes within a five-minute walk from the New York Stock Exchange after work (7-9 pm)?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "12",
+      "pred_agent": "WebSurfer",
+      "pred_step": 8,
+      "confidence": 0.6,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 217.2,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 3,
+            "agent": "Orchestrator",
+            "reason": "Initial plan was not fully executed"
+          },
+          {
+            "step": 8,
+            "agent": "WebSurfer",
+            "reason": "Incorrect click on webpage"
+          },
+          {
+            "step": 20,
+            "agent": "WebSurfer",
+            "reason": "Failed to gather relevant information from webpage"
+          }
+        ]
+      }
+    },
+    {
+      "case": "2.json",
+      "status": "ok",
+      "question": "What is the worst rated series (according to Rotten Tomatoes) with more than 1 season that Ted Danson has starred in and is available on Amazon Prime Video (US)?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "4",
+      "pred_agent": "Orchestrator",
+      "pred_step": 51,
+      "confidence": 0.8,
+      "agent_correct": false,
+      "step_correct": false,
+      "elapsed_sec": 671.9,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 68,
+            "agent": "WebSurfer",
+            "reason": "Still searching for the full list of TV series Ted Danson has starred in"
+          },
+          {
+            "step": 51,
+            "agent": "Orchestrator",
+            "reason": "Missed detail: still missing Rotten Tomatoes ratings and number of seasons for each series"
+          },
+          {
+            "step": 25,
+            "agent": "WebSurfer",
+            "reason": "Wrong click: scrolled down one page in the browser too many times without gathering enough information"
+          }
+        ]
+      }
+    },
+    {
+      "case": "3.json",
+      "status": "ok",
+      "question": "During the first week of August 2015, one of the NASA Astronomy Pictures of the Day shows the lights of a city on the horizon. The namesake of this city also has a landmark building in Chicago named after him. What is the name of the architectural firm that designed this landmark building? Give the first name appearing in the name of the firm as of June 2023.",
+      "gt_agent": "WebSurfer",
+      "gt_step": "32",
+      "pred_agent": "WebSurfer",
+      "pred_step": 80,
+      "confidence": 0.8,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 664.8,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 73,
+            "agent": "WebSurfer",
+            "reason": "Failed to navigate to the correct APOD archive page"
+          },
+          {
+            "step": 80,
+            "agent": "WebSurfer",
+            "reason": "Missed the correct image description in the APOD entry for August 1st"
+          },
+          {
+            "step": 92,
+            "agent": "WebSurfer",
+            "reason": "Incorrectly navigated to the wrong APOD page"
+          }
+        ]
+      }
+    },
+    {
+      "case": "4.json",
+      "status": "ok",
+      "question": "What popular hiking trails to waterfalls in Yosemite National Park (more than 1,000 reviews on TripAdvisor) have been recommended to be fully accessible to wheelchairs by at least three different people and are highly rated (4.5/5 or more on average)?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "8",
+      "pred_agent": "Orchestrator (thought)",
+      "pred_step": 3,
+      "confidence": 0.8,
+      "agent_correct": false,
+      "step_correct": false,
+      "elapsed_sec": 153.1,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 4,
+            "agent": "WebSurfer",
+            "reason": "Incorrect search query"
+          },
+          {
+            "step": 12,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "Missed detail: not verifying reviews and ratings for all trails"
+          },
+          {
+            "step": 3,
+            "agent": "Orchestrator (thought)",
+            "reason": "Insufficient planning and initial search strategy"
+          }
+        ]
+      }
+    },
+    {
+      "case": "5.json",
+      "status": "ok",
+      "question": "What is the last word before the second chorus of the King of Pop's fifth single from his sixth studio album?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "12",
+      "pred_agent": "Orchestrator (thought)",
+      "pred_step": 12,
+      "confidence": 0.8,
+      "agent_correct": false,
+      "step_correct": true,
+      "elapsed_sec": 158.0,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 12,
+            "agent": "Orchestrator (thought)",
+            "reason": "Incorrectly assumed the lyrics were available and ready to be examined without verifying the search results."
+          },
+          {
+            "step": 13,
+            "agent": "Orchestrator (thought)",
+            "reason": "Failed to verify the accuracy of the previous step's conclusion about the lyrics being available."
+          },
+          {
+            "step": 4,
+            "agent": "WebSurfer",
+            "reason": "Incorrectly identified the sixth studio album as 'Thriller' instead of Michael Jackson's actual sixth studio album."
+          }
+        ]
+      }
+    },
+    {
+      "case": "6.json",
+      "status": "ok",
+      "question": "What's the highest price a high-rise apartment was sold for in Mission Bay, San Francisco, in 2021?",
+      "gt_agent": "Orchestrator",
+      "gt_step": "5",
+      "pred_agent": "Orchestrator (thought)",
+      "pred_step": 1,
+      "confidence": 0.8,
+      "agent_correct": false,
+      "step_correct": false,
+      "elapsed_sec": 99.3,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 3,
+            "agent": "WebSurfer",
+            "reason": "Incorrect search query or website selection"
+          },
+          {
+            "step": 4,
+            "agent": "WebSurfer",
+            "reason": "Insufficient character limit for search query"
+          },
+          {
+            "step": 1,
+            "agent": "Orchestrator (thought)",
+            "reason": "Inadequate initial plan and request satisfaction status update"
+          }
+        ]
+      }
+    },
+    {
+      "case": "7.json",
+      "status": "ok",
+      "question": "In the video https://www.youtube.com/watch?v=L1vXCYZAYYM, what is the highest number of bird species to be on camera simultaneously?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "8",
+      "pred_agent": "WebSurfer",
+      "pred_step": 4,
+      "confidence": 0.8,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 245.2,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 3,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "The request was not fully addressed yet as the web surfer did not directly access the video."
+          },
+          {
+            "step": 4,
+            "agent": "WebSurfer",
+            "reason": "The web surfer provided a search result instead of accessing the video directly."
+          },
+          {
+            "step": 15,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "The web surfer clicked 'Pause (k)' which may have interrupted the task and prevented further progress."
+          }
+        ]
+      }
+    },
+    {
+      "case": "8.json",
+      "status": "ok",
+      "question": "Which of the people in the monday.com C-suite did not have a C-suite position during the company's IPO?",
+      "gt_agent": "WebSurfer",
+      "gt_step": "8",
+      "pred_agent": "WebSurfer",
+      "pred_step": 95,
+      "confidence": 0,
+      "agent_correct": true,
+      "step_correct": false,
+      "elapsed_sec": 666.4,
+      "strategist_hypotheses": {
+        "hypotheses": [
+          {
+            "step": 95,
+            "agent": "WebSurfer",
+            "reason": "Failed to extract relevant information from search results"
+          },
+          {
+            "step": 104,
+            "agent": "WebSurfer",
+            "reason": "Missed detail in NoCamels article about monday.com IPO"
+          },
+          {
+            "step": 127,
+            "agent": "WebSurfer",
+            "reason": "Failed to find relevant information using specific keywords"
+          }
+        ]
+      }
+    }
+  ]
+}

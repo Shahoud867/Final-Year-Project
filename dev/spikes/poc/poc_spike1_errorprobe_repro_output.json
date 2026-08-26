@@ -1,10 +1,10 @@
 {
   "summary": {
     "n_cases": 8,
-    "n_parse_failures": 0,
-    "n_scored": 8,
-    "agent_accuracy": 0.5,
-    "step_accuracy": 0.0,
+    "n_parse_failures": 1,
+    "n_scored": 7,
+    "agent_accuracy": 0.714,
+    "step_accuracy": 0.143,
     "note": "2-stage simplified reproduction (Strategist->Arbiter, no tool-grounded Investigator, no memory), backbone=llama3.2:3b local, NOT directly comparable to ErrorProbe's own reported 59.5% (stronger backbones, full pipeline)."
   },
   "results": [
@@ -15,11 +15,11 @@
       "gt_agent": "WebSurfer",
       "gt_step": "12",
       "pred_agent": "WebSurfer",
-      "pred_step": 8,
-      "confidence": 0.9,
+      "pred_step": 16,
+      "confidence": 0.8,
       "agent_correct": true,
       "step_correct": false,
-      "elapsed_sec": 452.3,
+      "elapsed_sec": 228.4,
       "strategist_hypotheses": {
         "hypotheses": [
           {
@@ -28,14 +28,14 @@
             "reason": "The request was not fully carried out yet."
           },
           {
-            "step": 8,
+            "step": 16,
             "agent": "WebSurfer",
-            "reason": "The browser back button was clicked multiple times."
+            "reason": "Failed to navigate back to the list of martial arts schools"
           },
           {
             "step": 20,
             "agent": "WebSurfer",
-            "reason": "The 'Details' link was clicked without verifying the webpage's relevance to the task."
+            "reason": "Failed to access the 'Details' page of a martial arts school"
           }
         ]
       }
@@ -47,27 +47,27 @@
       "gt_agent": "WebSurfer",
       "gt_step": "4",
       "pred_agent": "Orchestrator",
-      "pred_step": 65,
+      "pred_step": 73,
       "confidence": 0.8,
       "agent_correct": false,
       "step_correct": false,
-      "elapsed_sec": 656.9,
+      "elapsed_sec": 662.4,
       "strategist_hypotheses": {
         "hypotheses": [
           {
-            "step": 70,
-            "agent": "WebSurfer",
-            "reason": "still needed to collect Rotten Tomatoes ratings"
-          },
-          {
             "step": 68,
-            "agent": "Orchestrator",
-            "reason": "still needed to collect Rotten Tomatoes ratings"
+            "agent": "WebSurfer",
+            "reason": "Failed to gather complete list of TV series from Bing search results"
           },
           {
-            "step": 65,
+            "step": 73,
             "agent": "Orchestrator",
-            "reason": "new plan not fully addressed yet"
+            "reason": "Did not identify worst-rated series with more than 1 season from TV Guide website"
+          },
+          {
+            "step": 85,
+            "agent": "WebSurfer",
+            "reason": "Failed to gather full list of TV series from TV Guide page"
           }
         ]
       }
@@ -78,28 +78,28 @@
       "question": "During the first week of August 2015, one of the NASA Astronomy Pictures of the Day shows the lights of a city on the horizon. The namesake of this city also has a landmark building in Chicago named after him. What is the name of the architectural firm that designed this landmark building? Give the first name appearing in the name of the firm as of June 2023.",
       "gt_agent": "WebSurfer",
       "gt_step": "32",
-      "pred_agent": "Assistant",
-      "pred_step": 85,
+      "pred_agent": "WebSurfer",
+      "pred_step": 80,
       "confidence": 0.8,
-      "agent_correct": false,
+      "agent_correct": true,
       "step_correct": false,
-      "elapsed_sec": 674.6,
+      "elapsed_sec": 685.3,
       "strategist_hypotheses": {
         "hypotheses": [
           {
             "step": 73,
             "agent": "WebSurfer",
-            "reason": "Manually reviewing the page instead of using specific dates and links to directly access APOD images"
+            "reason": "Failed to access APOD archive page"
           },
           {
-            "step": 79,
-            "agent": "Orchestrator",
-            "reason": "Not fully satisfying the request as the city's name was not extracted from the image description"
+            "step": 80,
+            "agent": "WebSurfer",
+            "reason": "Missed detail in reviewing APOD entries for August 1-7, 2015"
           },
           {
-            "step": 85,
-            "agent": "Assistant",
-            "reason": "Streamlining the process by using specific dates and links to directly access APOD images"
+            "step": 92,
+            "agent": "WebSurfer",
+            "reason": "Incorrectly accessed specific APOD link"
           }
         ]
       }
@@ -111,27 +111,27 @@
       "gt_agent": "WebSurfer",
       "gt_step": "8",
       "pred_agent": "WebSurfer",
-      "pred_step": 4,
+      "pred_step": 12,
       "confidence": 0.8,
       "agent_correct": true,
       "step_correct": false,
-      "elapsed_sec": 149.6,
+      "elapsed_sec": 158.2,
       "strategist_hypotheses": {
         "hypotheses": [
           {
-            "step": 4,
-            "agent": "WebSurfer",
-            "reason": "Incorrect search query"
+            "step": 3,
+            "agent": "Orchestrator (-> WebSurfer)",
+            "reason": "Inadequate search query"
           },
           {
-            "step": 6,
-            "agent": "Orchestrator (-> WebSurfer)",
-            "reason": "Insufficient verification of search results"
+            "step": 8,
+            "agent": "Orchestrator (thought)",
+            "reason": "Insufficient filtering of search results"
           },
           {
             "step": 12,
             "agent": "WebSurfer",
-            "reason": "Inadequate webpage loading and screenshot capture"
+            "reason": "Incorrect click on TripAdvisor page"
           }
         ]
       }
@@ -142,28 +142,28 @@
       "question": "What is the last word before the second chorus of the King of Pop's fifth single from his sixth studio album?",
       "gt_agent": "WebSurfer",
       "gt_step": "12",
-      "pred_agent": "Orchestrator (-> WebSurfer)",
-      "pred_step": 10,
+      "pred_agent": "WebSurfer",
+      "pred_step": 15,
       "confidence": 0.8,
-      "agent_correct": false,
+      "agent_correct": true,
       "step_correct": false,
-      "elapsed_sec": 155.9,
+      "elapsed_sec": 159.0,
       "strategist_hypotheses": {
         "hypotheses": [
           {
-            "step": 3,
-            "agent": "Orchestrator (-> WebSurfer)",
-            "reason": "Incorrectly selected the sixth studio album as 'Thriller' instead of the correct one"
-          },
-          {
-            "step": 10,
-            "agent": "Orchestrator (-> WebSurfer)",
-            "reason": "Missed the correct lyrics search result for 'Human Nature' and relied on Bing's results"
+            "step": 6,
+            "agent": "WebSurfer",
+            "reason": "Incorrect webpage screenshot taken"
           },
           {
             "step": 12,
             "agent": "Orchestrator (thought)",
-            "reason": "Incorrectly assumed the existence of a 'Michael Jackson 'Human Nature' lyrics' search result"
+            "reason": "Inadequate search query for lyrics"
+          },
+          {
+            "step": 15,
+            "agent": "WebSurfer",
+            "reason": "Insufficient attention to detail in identifying the last word before the second chorus"
           }
         ]
       }
@@ -175,11 +175,11 @@
       "gt_agent": "Orchestrator",
       "gt_step": "5",
       "pred_agent": "Orchestrator (thought)",
-      "pred_step": 1,
+      "pred_step": 5,
       "confidence": 0.8,
       "agent_correct": false,
-      "step_correct": false,
-      "elapsed_sec": 97.0,
+      "step_correct": true,
+      "elapsed_sec": 92.0,
       "strategist_hypotheses": {
         "hypotheses": [
           {
@@ -193,9 +193,9 @@
             "reason": "Insufficient search results"
           },
           {
-            "step": 1,
+            "step": 5,
             "agent": "Orchestrator (thought)",
-            "reason": "Inadequate initial plan"
+            "reason": "Inaccurate information from web search"
           }
         ]
       }
@@ -211,58 +211,33 @@
       "confidence": 0.8,
       "agent_correct": true,
       "step_correct": false,
-      "elapsed_sec": 213.9,
+      "elapsed_sec": 203.3,
       "strategist_hypotheses": {
         "hypotheses": [
           {
             "step": 3,
             "agent": "Orchestrator (-> WebSurfer)",
-            "reason": "The task was assigned to the wrong agent, leading to a failure in execution."
+            "reason": "The request was not fully addressed yet as the web surfer did not directly access the video."
           },
           {
             "step": 4,
             "agent": "WebSurfer",
-            "reason": "The web surfer failed to access the correct URL, resulting in an incomplete search result."
+            "reason": "The web surfer provided a search link instead of the direct URL."
           },
           {
-            "step": 18,
+            "step": 6,
             "agent": "Orchestrator (-> WebSurfer)",
-            "reason": "The agent asked the web surfer to scan through the video again, which may have caused the web surfer to miss important details or timestamps."
+            "reason": "The request was not fully addressed yet as the web surfer did not identify timestamps where multiple bird species are present on camera simultaneously."
           }
         ]
       }
     },
     {
       "case": "8.json",
-      "status": "ok",
-      "question": "Which of the people in the monday.com C-suite did not have a C-suite position during the company's IPO?",
+      "status": "strategist_parse_failed",
       "gt_agent": "WebSurfer",
       "gt_step": "8",
-      "pred_agent": "WebSurfer",
-      "pred_step": 100,
-      "confidence": 0.8,
-      "agent_correct": true,
-      "step_correct": false,
-      "elapsed_sec": 671.0,
-      "strategist_hypotheses": {
-        "hypotheses": [
-          {
-            "step": 100,
-            "agent": "WebSurfer",
-            "reason": "Repeatedly asking for information without finding the correct source"
-          },
-          {
-            "step": 114,
-            "agent": "WebSurfer",
-            "reason": "Not extracting detailed information from the press release link"
-          },
-          {
-            "step": 120,
-            "agent": "WebSurfer",
-            "reason": "Not searching correctly with specific keywords"
-          }
-        ]
-      }
+      "raw_strategist": "{\"hypotheses\": [{\"step\": 95, \"agent\": \"WebSurfer\", \"reason\": \"Failed to find relevant information in search results\"}, {\"step\": 104, \"agent\": \"WebSurfer\", \"reason\": \"Missed detail about C-suite members in NoCamels article\"}, {\"step\": 127, \"agent\": \"WebSurfer\", \"reason\": \"Failed to find specific information using targeted keywords\"}}"
     }
   ]
 }

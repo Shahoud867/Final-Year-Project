@@ -43,13 +43,25 @@ export function Overview() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14, marginBottom: 26 }}>
-        <StatTile label="Agent accuracy" value={`${(stats.agent_accuracy * 100).toFixed(0)}%`} sub={`n=${stats.n_reproduction_cases}, Spike 1`} tone="good" />
+        <StatTile
+          label="Agent accuracy"
+          value={`${(stats.agent_accuracy_mean * 100).toFixed(0)}%`}
+          sub={
+            stats.agent_accuracy_min != null
+              ? `mean, range ${(stats.agent_accuracy_min * 100).toFixed(0)}–${(stats.agent_accuracy_max! * 100).toFixed(0)}% across ${stats.n_reproduction_runs} runs`
+              : `n=${stats.n_reproduction_cases}, Spike 1`
+          }
+          tone="good"
+        />
         <StatTile
           label="Step accuracy"
-          value={`${(stats.step_accuracy_type_safe * 100).toFixed(1)}%`}
-          sub="n=8, corrected comparison — see flag below"
+          value={`${(stats.step_accuracy_mean * 100).toFixed(1)}%`}
+          sub={
+            stats.step_accuracy_min != null
+              ? `mean, range ${(stats.step_accuracy_min * 100).toFixed(0)}–${(stats.step_accuracy_max! * 100).toFixed(0)}% across ${stats.n_reproduction_runs} runs`
+              : "n=8, corrected comparison"
+          }
           tone="warn"
-          flag="Raw file reports 0.0% due to a str/int type-mismatch bug in the scoring script — see the discrepancy note below."
         />
         <StatTile
           label="Repair success rate"
@@ -77,22 +89,21 @@ export function Overview() {
         />
       </div>
 
-      {stats.step_accuracy_discrepancy_flag && (
+      {stats.reproduction_bug_fixed && (
         <div
           className="card card-pad fade-in"
-          style={{ marginBottom: 26, borderColor: "var(--amber)", display: "flex", gap: 12 }}
+          style={{ marginBottom: 26, borderColor: "var(--green)", display: "flex", gap: 12 }}
         >
-          <div style={{ fontSize: 20 }}>⚑</div>
+          <div style={{ fontSize: 20, color: "var(--green)" }}>✓</div>
           <div>
-            <div style={{ fontWeight: 700, marginBottom: 4 }}>Data discrepancy found while building this console</div>
+            <div style={{ fontWeight: 700, marginBottom: 4 }}>
+              Scoring bug found and fixed — then re-run 5× to report a real range, not one lucky sample
+            </div>
             <div className="text-secondary" style={{ fontSize: 13, lineHeight: 1.6 }}>
-              <code className="mono">poc_spike1_errorprobe_repro_output.json</code>'s own <code className="mono">summary.step_accuracy</code> field
-              reads <b>0.0</b> — every case's <code className="mono">step_correct</code> flag is <code className="mono">false</code> — while the
-              documentation throughout this project (audit, slides, question bank) states <b>12.5%</b>. The likely cause, visible in the raw
-              data: ground-truth step indices are stored as strings (e.g. <code className="mono">"5"</code>) while predicted steps are ints
-              (<code className="mono">5</code>), so <code className="mono">pred_step == gt_step</code> silently returns <code className="mono">False</code> even
-              when the values are numerically equal — case 6 is exactly this: <code className="mono">gt_step="5"</code>, <code className="mono">pred_step=5</code>.
-              This console reports both the raw file's number and a type-safe recomputation side by side, rather than picking one silently.
+              {stats.reproduction_bug_note} The fresh, bug-free numbers above are the mean of 5 independent
+              runs against local Ollama — agent accuracy 50–71%, step accuracy 0–25%. The old single-run
+              75%/12.5% figures were real but not stable; reporting a range instead of a point estimate is
+              the same statistical-rigor commitment the project's evaluation plan makes for the full build.
             </div>
           </div>
         </div>

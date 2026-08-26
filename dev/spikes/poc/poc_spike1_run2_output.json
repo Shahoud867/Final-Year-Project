@@ -3,9 +3,9 @@
     "n_cases": 8,
     "n_parse_failures": 0,
     "n_scored": 8,
-    "agent_accuracy": 0.625,
+    "agent_accuracy": 0.75,
     "step_accuracy": 0.25,
-    "note": "2-stage simplified reproduction (Strategist->Arbiter, no tool-grounded Investigator, no memory), backbone=llama3.2:3b local, NOT directly comparable to ErrorProbe's own reported 59.5% (stronger backbones, full pipeline)."
+    "note": "2-stage simplified reproduction (Strategist->Arbiter, no tool-grounded Investigator, no memory), backbone=llama3.2:3b local, NOT directly comparable to ErrorProbe's own reported 59.5% (stronger backbones, full pipeline). [Rescored 2026-08-26: agent-name comparison now normalizes turn-type suffixes like '(thought)' -- see normalize_agent() in poc_spike1_errorprobe_repro.py. Raw predictions unchanged.]"
   },
   "results": [
     {
@@ -177,7 +177,7 @@
       "pred_agent": "Orchestrator (thought)",
       "pred_step": 5,
       "confidence": 0.9,
-      "agent_correct": false,
+      "agent_correct": true,
       "step_correct": true,
       "elapsed_sec": 97.1,
       "strategist_hypotheses": {

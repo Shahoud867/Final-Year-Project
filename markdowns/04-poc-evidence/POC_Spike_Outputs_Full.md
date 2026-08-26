@@ -12,17 +12,17 @@
 
 **Bug found and fixed, 2026-08-26:** an earlier version of this write-up flagged case 6 as a likely scorer type-mismatch (predicted step matched ground truth exactly, yet `step_accuracy` read 0.0) — that flag was correct. The scoring script compared `gt_step` (a string in the Who&When data, e.g. `"5"`) against `pred_step` (an int from the LLM's JSON, e.g. `5`) with `==`, which silently returns `False` for numerically-identical values. Fixed in `poc_spike1_errorprobe_repro.py` with a robust `as_int()` coercion — a genuine mismatch still scores as wrong, only the false negatives from type mismatch are fixed.
 
-**Real re-run, 5 independent samples, 2026-08-26 (not a rescore — 5 fresh runs against local Ollama, ~45–50 min each):**
+**Real re-run, 5 independent samples, 2026-08-26** — 5 fresh LLM runs against local Ollama, ~45–50 min each, not a rescore of cached generations. Agent-accuracy figures below reflect one further correction applied *after* generation: an agent-name normalization fix (case 6, detailed below) rescored the already-collected raw predictions the same day — no new LLM calls, just a corrected comparison over real, unchanged model output:
 
 | Run | n scored | Agent accuracy | Step accuracy |
 |---|---|---|---|
-| 1 | 8/8 | 50.0% | 0.0% |
-| 2 | 8/8 | 62.5% | 25.0% |
+| 1 | 8/8 | 62.5% | 0.0% |
+| 2 | 8/8 | 75.0% | 25.0% |
 | 3 | 7/8 (1 parse failure) | 71.4% | 14.3% |
-| 4 | 8/8 | 50.0% | 12.5% |
-| 5 | 7/8 (1 parse failure) | 71.4% | 14.3% |
-| **Mean** | — | **61.1%** | **13.2%** |
-| **Range** | — | **50.0–71.4%** | **0.0–25.0%** |
+| 4 | 8/8 | 62.5% | 12.5% |
+| 5 | 7/8 (1 parse failure) | 85.7% | 14.3% |
+| **Mean** | — | **71.4%** | **13.2%** |
+| **Range** | — | **62.5–85.7%** | **0.0–25.0%** |
 
 Full data: `poc_spike1_run{1..5}_output.json` + aggregated `poc_spike1_multirun_summary.json`.
 
@@ -35,11 +35,11 @@ Full data: `poc_spike1_run{1..5}_output.json` + aggregated `poc_spike1_multirun_
 | 3 | Chicago landmark architect firm | 4/5 | 0/5 |
 | 4 | Wheelchair-accessible Yosemite trails | 4/5 | 0/5 |
 | 5 | MJ fifth single, last word before chorus | 1/5 | 3/5 |
-| 6 | Mission Bay high-rise sale price | 0/4 scored | 2/4 scored |
+| 6 | Mission Bay high-rise sale price | 4/4 scored | 2/4 scored |
 | 7 | Bird species in YouTube video | 5/5 | 0/5 |
 | 8 | monday.com C-suite at IPO | 4/4 scored | 0/4 scored |
 
-**Reasoning:** across 5 independent samples, the model reliably identifies *who* (cases 1, 3, 4, 7 hit agent-correct in 4–5 of 5 runs) but essentially never pins down *exactly which step* — those same four cases score 0/5 on step accuracy every time, not sometimes. That is a stable, real pattern, not sampling noise: the model consistently predicts steps much later than the true origin (case 8 alone: predicted steps 95–109 across runs vs. true step 8). This matches the field-wide pattern every paper in this space reports — agent-level attribution is the easier half, step-level is where everything breaks down. Case 6 is the one interesting exception: agent accuracy is *low* there (0/4) because the model consistently answers "Orchestrator (thought)" rather than the ground truth's plain "Orchestrator" — an exact-string-match artifact of the trajectory format's role labels, worth a team decision on whether to normalize before Mid-1, not silently patched here. Case 2 is the cleanest failure: 0/5 on both agent and step, every run — a genuinely hard case for this simplified pipeline, not a fluke.
+**Reasoning:** across 5 independent samples, the model reliably identifies *who* (cases 1, 3, 4, 7 hit agent-correct in 4–5 of 5 runs) but essentially never pins down *exactly which step* — those same four cases score 0/5 on step accuracy every time, not sometimes. That is a stable, real pattern, not sampling noise: the model consistently predicts steps much later than the true origin (case 8 alone: predicted steps 95–109 across runs vs. true step 8). This matches the field-wide pattern every paper in this space reports — agent-level attribution is the easier half, step-level is where everything breaks down. Case 6 is a second bug this study caught, fixed the same day: agent accuracy there initially scored 0/4 because the model consistently answers "Orchestrator (thought)" — the exact role-label the trajectory format uses for the Orchestrator's internal reasoning turns — rather than the ground truth's plain "Orchestrator." Confirmed as a genuine same-agent-different-turn-type label, not a different answer: `poc_spike1_errorprobe_repro.py` now normalizes both sides through `normalize_agent()` (strips any parenthetical turn-type suffix) before comparing. Verified conservative before applying — checked against all 5 runs first: cases 4 and 5, where the model separately answered "Orchestrator (-> WebSurfer)" against a ground truth of "WebSurfer," correctly stay wrong after normalization, since the base agent really is different there. Only case 6 flips, in 4 of 5 runs (run 3's case 6 has a parse failure, so it never scored either way) — reflected in the corrected 4/4 above and the revised 62.5–85.7% agent-accuracy range. Case 2 is the cleanest failure: 0/5 on both agent and step, every run — a genuinely hard case for this simplified pipeline, not a fluke.
 
 A mean of 13.2% step accuracy on a 2-stage simplified pipeline, free local 3B model, is a genuinely encouraging floor — it means the *approach* produces signal, not that it's close to ErrorProbe's reported 59.5%. The full 3-stage pipeline (tool-grounded Investigator + memory) on a stronger backbone is what's needed to approach that number, and the acceptance band in plan §11 (±10 points, comparable-class backbone) is judged against that full run, not this simplified spike.
 
@@ -165,7 +165,7 @@ recovery_success: true
 
 ## One-line summary per spike, for a quick read
 
-1. **ErrorProbe repro** — agent-level attribution works (50–71% across 5 runs, mean 61%), step-level needs the full pipeline (0–25%, mean 13%)
+1. **ErrorProbe repro** — agent-level attribution works (62.5–85.7% across 5 runs, mean 71%), step-level needs the full pipeline (0–25%, mean 13%)
 2. **CrewAI mapping** — clean, resolved
 3. **Fault injection** — works, and taught us to prefer unverifiable-fact corruptions over well-known-fact ones
 4. **Silent-failure detector** — mechanism proven, real-world frequency still unmeasured

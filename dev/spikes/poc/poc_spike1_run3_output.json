@@ -5,7 +5,7 @@
     "n_scored": 7,
     "agent_accuracy": 0.714,
     "step_accuracy": 0.143,
-    "note": "2-stage simplified reproduction (Strategist->Arbiter, no tool-grounded Investigator, no memory), backbone=llama3.2:3b local, NOT directly comparable to ErrorProbe's own reported 59.5% (stronger backbones, full pipeline)."
+    "note": "2-stage simplified reproduction (Strategist->Arbiter, no tool-grounded Investigator, no memory), backbone=llama3.2:3b local, NOT directly comparable to ErrorProbe's own reported 59.5% (stronger backbones, full pipeline). [Rescored 2026-08-26: agent-name comparison now normalizes turn-type suffixes like '(thought)' -- see normalize_agent() in poc_spike1_errorprobe_repro.py. Raw predictions unchanged.]"
   },
   "results": [
     {

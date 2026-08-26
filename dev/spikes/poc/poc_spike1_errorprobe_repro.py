@@ -70,6 +70,30 @@ def extract_json(text: str):
         return None
 
 
+def normalize_agent(name):
+    """Strip turn-type suffixes the Who&When trajectory format attaches to an
+    agent's own role label (e.g. "Orchestrator (thought)", "Orchestrator
+    (-> WebSurfer)") down to the base agent identity ("Orchestrator").
+
+    Bug fixed 2026-08-26: the Arbiter prompt's numbered trajectory shows
+    these compound labels verbatim (build_numbered_trajectory uses the raw
+    `role` field), and the model sometimes echoes the compound label back
+    as its answer rather than the bare agent name ground truth always uses.
+    An exact-match comparison then scores "Orchestrator (thought)" as a
+    *different* agent from "Orchestrator" -- case 6 across 4 of 5 runs in
+    the 2026-08-26 multi-run study. This is the same agent, a different
+    turn type, and normalizing does NOT inflate genuinely wrong answers:
+    "Orchestrator (-> WebSurfer)" against ground truth "WebSurfer" still
+    normalizes to "Orchestrator" and correctly stays a miss (verified
+    against all 5 real runs before this fix was applied -- see
+    poc_spike1_rescore.py).
+    """
+    if not isinstance(name, str):
+        return name
+    base = name.split("(", 1)[0].strip()
+    return base if base else name.strip()
+
+
 def as_int(v):
     """Robust int coercion for step-index comparison.
 
@@ -169,7 +193,8 @@ def main():
 
         pred_agent = arb["parsed"].get("agent")
         pred_step = arb["parsed"].get("step")
-        a_ok = isinstance(pred_agent, str) and pred_agent.strip().lower() == gt_agent.strip().lower()
+        gt_agent_n, pred_agent_n = normalize_agent(gt_agent), normalize_agent(pred_agent)
+        a_ok = isinstance(pred_agent_n, str) and pred_agent_n.strip().lower() == gt_agent_n.strip().lower()
         gt_step_int, pred_step_int = as_int(gt_step), as_int(pred_step)
         s_ok = gt_step_int is not None and pred_step_int is not None and gt_step_int == pred_step_int
         agent_correct += int(a_ok)

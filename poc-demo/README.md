@@ -79,11 +79,18 @@ honestly:
 
 | | Agent accuracy | Step accuracy |
 |---|---|---|
-| Mean | 61.1% | 13.2% |
-| Range | 50.0–71.4% | 0.0–25.0% |
+| Mean | 71.4% | 13.2% |
+| Range | 62.5–85.7% | 0.0–25.0% |
 
-The old 75%/12.5% figures were real, but they were one favorable sample, not a stable result — the mean
-across 5 runs is meaningfully lower on agent accuracy in particular. Full per-run data:
-`dev/spikes/poc/poc_spike1_run{1..5}_output.json`; aggregate: `poc_spike1_multirun_summary.json`. This
-console's Overview screen now reports the multi-run mean/range instead of a single run's snapshot — see
-`backend/main.py`'s `/api/stats` endpoint, which reads `poc_spike1_multirun_summary.json` directly.
+The old 75%/12.5% figures were real, but they were one favorable sample, not a stable result. A second bug
+was found and fixed the same day while investigating the 5-run range: the agent-name comparison scored
+"Orchestrator (thought)" (the model's answer) against a ground truth of plain "Orchestrator" as a
+*different* agent — an exact-string-match artifact of the trajectory format's turn-type labels, not a real
+disagreement. Fixed with `normalize_agent()` in `poc_spike1_errorprobe_repro.py`, verified conservative
+first (checked it doesn't inflate genuinely wrong predictions elsewhere — cases where the model separately
+answered "Orchestrator (-> WebSurfer)" against ground truth "WebSurfer" correctly stay wrong), then applied
+by rescoring the already-collected real predictions (no new LLM calls needed — the raw model outputs were
+already on disk). Full per-run data: `dev/spikes/poc/poc_spike1_run{1..5}_output.json`; aggregate:
+`poc_spike1_multirun_summary.json`. This console's Overview screen reports the multi-run mean/range
+instead of a single run's snapshot — see `backend/main.py`'s `/api/stats` endpoint, which reads
+`poc_spike1_multirun_summary.json` directly.

@@ -43,6 +43,25 @@ Full data: `poc_spike1_run{1..5}_output.json` + aggregated `poc_spike1_multirun_
 
 A mean of 13.2% step accuracy on a 2-stage simplified pipeline, free local 3B model, is a genuinely encouraging floor — it means the *approach* produces signal, not that it's close to ErrorProbe's reported 59.5%. The full 3-stage pipeline (tool-grounded Investigator + memory) on a stronger backbone is what's needed to approach that number, and the acceptance band in plan §11 (±10 points, comparable-class backbone) is judged against that full run, not this simplified spike.
 
+**Follow-up finding, 2026-08-26 — why Case 2 fails completely (0/5 both dimensions) when nothing else does.** Investigated rather than left as an unexplained outlier. Checked against all 8 cases' real trajectory length and fault position before writing anything down, because the first hypothesis tried (longer trajectory → worse) turned out to be wrong and had to be discarded:
+
+| Case | Trajectory length | Fault position (% into trajectory) | Agent correct (of runs) | Step correct (of runs) |
+|---|---|---|---|---|
+| 1 | 29 steps | 41.4% | 5/5 | 0/5 |
+| **2** | **86 steps** | **4.7%** | **0/5** | **0/5** |
+| 3 | 93 steps | 34.4% | 4/5 | 0/5 |
+| 4 | 17 steps | 47.1% | 4/5 | 0/5 |
+| 5 | 20 steps | 60.0% | 1/5 | 3/5 |
+| 6 | 8 steps | 62.5% | 4/4 | 2/4 |
+| 7 | 25 steps | 32.0% | 5/5 | 0/5 |
+| 8 | **129 steps** | **6.2%** | 4/4 | 0/4 |
+
+**The simple hypothesis (longer trajectory → recency bias → worse attribution) does not survive contact with the full data.** Case 8 is the longest trajectory in the set (129 steps, longer than Case 2's 86) and has an *earlier* fault position (6.2% in, vs. Case 2's 4.7%) — and still gets the agent right 4/4 times. Trajectory length and fault position alone do not explain why Case 2 uniquely fails on agent identification while Case 8 does not.
+
+What does correlate, on inspection of the ground-truth failure descriptions themselves: **whether the mistake is a concrete, describable action versus an abstract information-quality judgment.** Case 8's failure reason is mechanical — *"The WebSurfer does not click on useful information"* — a pattern a model can catch by noticing a click went to the wrong place. Case 2's failure reason is evaluative — *"The information obtained by WebSurfer is neither reliable nor satisfies the requirements of the Orchestrator"* — there is no single wrong action to point at; catching it requires judging whether retrieved content actually answers the question, which is closer to the kind of grounded verification this simplified 2-stage spike deliberately has none of (no tool-grounded Investigator, no Verified Episodic Memory).
+
+**Stated as a hypothesis, not a proven causal claim** — n=8 cases is nowhere near enough to establish this statistically, and other cases (6, in particular) also carry judgment-flavored failure reasons without failing as badly, likely because a short 8-step trajectory makes even a fuzzy judgment easier to check. What this *does* provide: a concrete, falsifiable prediction to test once the real benchmark reaches hundreds of cases — that step/agent accuracy correlates with whether ground truth is a discrete action error or an information-quality judgment, more than with trajectory length — and a sharper answer to "why do you need the tool-grounded Investigator stage at all": this spike shows, on a real case, exactly the class of failure a bare 2-stage pipeline cannot catch.
+
 ---
 
 ## Spike 2 — CrewAI Instrumentation

@@ -68,6 +68,7 @@ Produced 2026-08-25 by an independent critical audit of this repository against 
 - [`04_Granite_Knowledge_Base.md`](../04_Granite_Knowledge_Base.md) — every load-bearing concept at four levels (layman → undergraduate → how Granite uses it → the likely panel question)
 - [`05_Repository_Change_and_Commit_Plan.md`](../05_Repository_Change_and_Commit_Plan.md) — the file-by-file change plan executed on 2026-08-25
 - [`06_Expanded_Scope_and_Feasibility_Plan.md`](../06_Expanded_Scope_and_Feasibility_Plan.md) — the scope expansion + feasibility engineering pass: limitation inventory, eleven methodology additions, Core/Advanced/Stretch/Future bands, effort budget, descope ladder, MDP-per-gate, panel objections both ways (risk-register R27)
+- [`poc-demo/`](../poc-demo/) — a working, locally-runnable proposal-defense prototype (FastAPI + React/TypeScript). Wired to the **real** 8 spike outputs, not simulated data — see `poc-demo/README.md` for what's real vs. illustrative, run instructions, and a data discrepancy the build surfaced in Spike 1's step-accuracy figure that should be fixed before the defense
 
 ---
 

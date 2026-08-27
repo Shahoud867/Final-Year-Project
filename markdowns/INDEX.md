@@ -12,6 +12,7 @@ Core scope, architecture, and resourcing — the living plan the rest of the pro
 - [datasets.md](01-planning-and-scope/datasets.md) — datasets used/considered, licensing, access notes
 - [resources.md](01-planning-and-scope/resources.md) — compute, models, tooling, and cost resourcing
 - [cost-estimate.md](01-planning-and-scope/cost-estimate.md) — API cost estimate and model plan, computed from measured token counts across all 184 Who&When cases (closes risk-register R5)
+- [Software_Design_Specification.md](01-planning-and-scope/Software_Design_Specification.md) — component/data/API/schema-level design (Mid-1-track, not proposal-defense material): system context, component architecture, data flow, ER diagram, API contract, sequence/state diagrams, deployment — strictly within the frozen scope, nothing added
 
 ## [02-evidence-and-tracking/](02-evidence-and-tracking/)
 Ongoing project bookkeeping — risk, AI-usage, and compliance records.

@@ -2,6 +2,8 @@
 
 *Supports [FYP_Scope_CCP_and_Implementation_Plan.md](FYP_Scope_CCP_and_Implementation_Plan.md) §9 (ownership) and §13 (deployment). Built for FAST guide §16 slide 6 ("high-level architecture, major components, boundaries and intended deployment target") — sketchable at proposal stage, expected to change; this is not a final design.*
 
+*For component/data/API/schema-level detail beyond what a one-page sketch should carry — appropriate for Mid-1, not this defense — see [Software_Design_Specification.md](Software_Design_Specification.md).*
+
 ---
 
 ## The diagram

@@ -15,6 +15,7 @@ export function EvidencePanel({ run }: { run: RunDetail }) {
   const a = run.attribution;
   const sed = run.sed;
   const fault = run.fault;
+  const clf = run.classifier;
 
   return (
     <div className="card card-pad fade-in">
@@ -84,6 +85,24 @@ export function EvidencePanel({ run }: { run: RunDetail }) {
             <span className="mono">
               expected {sed.correct_answer} · stated {sed.stated_answer} · model wrong: {String(sed.model_was_actually_wrong)}
             </span>
+          </Row>
+        </>
+      )}
+
+      {clf && (
+        <>
+          <Row label="True label">
+            <span className="mono" style={{ color: clf.true_label === "corrupted" ? "var(--amber)" : "var(--green)" }}>
+              {clf.true_label}
+            </span>
+          </Row>
+          <Row label="Predicted">
+            <span className="mono" style={{ color: clf.correct ? "var(--green)" : "var(--red)" }}>
+              {clf.predicted_label} {clf.correct ? "✓" : "✗"}
+            </span>
+          </Row>
+          <Row label="Method">
+            <span className="text-secondary" style={{ fontSize: 12 }}>{clf.method}</span>
           </Row>
         </>
       )}

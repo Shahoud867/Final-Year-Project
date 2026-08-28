@@ -5,7 +5,7 @@ import type { RunSummary } from "../types";
 import { RunsTable } from "../components/RunsTable";
 import { LoadingSkeleton, EmptyState, ErrorState } from "../components/States";
 
-const SPIKE_FILTERS = ["All", "Spike 1", "Spike 2", "Spike 3", "Spike 3b", "Spike 4", "Spike 5", "Spike 6", "Spike 8"];
+const SPIKE_FILTERS = ["All", "Spike 1", "Spike 2", "Spike 3", "Spike 3b", "Spike 4", "Spike 5", "Spike 6", "Spike 7", "Spike 8"];
 const STATUS_FILTERS: { value: string; label: string }[] = [
   { value: "", label: "All statuses" },
   { value: "attributed_correct", label: "Correctly attributed" },
@@ -17,6 +17,8 @@ const STATUS_FILTERS: { value: string; label: string }[] = [
   { value: "repaired_verified", label: "Repaired & verified" },
   { value: "repair_failed", label: "Repair failed" },
   { value: "cyclic_bounded", label: "Cycle bounded" },
+  { value: "classified_correct", label: "Classified correctly" },
+  { value: "classified_incorrect", label: "Misclassified" },
 ];
 
 export function RunsList() {

@@ -10,6 +10,8 @@ const CONFIG: Record<RunStatus, { label: string; color: string; bg: string }> = 
   repaired_verified: { label: "Repaired & verified", color: "var(--green)", bg: "var(--green-soft)" },
   repair_failed: { label: "Repair failed", color: "var(--red)", bg: "var(--red-soft)" },
   cyclic_bounded: { label: "Cycle bounded correctly", color: "var(--blue)", bg: "var(--blue-soft)" },
+  classified_correct: { label: "Classified correctly", color: "var(--green)", bg: "var(--green-soft)" },
+  classified_incorrect: { label: "Misclassified", color: "var(--red)", bg: "var(--red-soft)" },
 };
 
 export function StatusBadge({ status }: { status: RunStatus }) {

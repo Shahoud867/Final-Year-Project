@@ -7,7 +7,9 @@ export type RunStatus =
   | "fault_propagated"
   | "repaired_verified"
   | "repair_failed"
-  | "cyclic_bounded";
+  | "cyclic_bounded"
+  | "classified_correct"
+  | "classified_incorrect";
 
 export interface RunSummary {
   id: string;
@@ -20,6 +22,7 @@ export interface RunSummary {
   has_fault: boolean;
   has_repair: boolean;
   has_sed: boolean;
+  has_classifier: boolean;
 }
 
 export interface GraphNode {
@@ -84,6 +87,13 @@ export interface ReplayData {
   n_replays: number;
 }
 
+export interface ClassifierData {
+  true_label: "clean" | "corrupted";
+  predicted_label: "clean" | "corrupted";
+  correct: boolean;
+  method: string;
+}
+
 export interface RunDetail extends RunSummary {
   final_answer: string | null;
   graph: Graph;
@@ -92,6 +102,7 @@ export interface RunDetail extends RunSummary {
   fault: FaultData | null;
   repair: RepairData | null;
   replay: ReplayData | null;
+  classifier: ClassifierData | null;
   ground_truth_note: string | null;
   elapsed_sec: number | null;
 }

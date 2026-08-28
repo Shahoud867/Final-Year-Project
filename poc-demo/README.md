@@ -19,7 +19,7 @@ demo for slide 6 and slide 9, built so it's honest rather than a mockup.
   `06_Expanded_Scope_and_Feasibility_Plan.md` §6.5 already pinned:
   1. **Overview** — stat tiles (agent/step accuracy, repair success rate, recovery rate, cyclic-bound rate,
      preventive-classifier honest negative), computed live, plus the two honest findings led with, not buried.
-  2. **Runs & diagnoses** — all 23 real diagnosis runs generated from the 8 spikes, filterable by spike and
+  2. **Runs & diagnoses** — all 31 real diagnosis runs generated from the 8 spikes, filterable by spike and
      status, searchable.
   3. **Run detail** — tabbed: *Trace & graph view* (the real execution graph, culprit/fault node highlighted,
      evidence panel) and *Repair & replay report* (candidate fix, before/after replay numbers,

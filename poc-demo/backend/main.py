@@ -116,6 +116,7 @@ def list_runs(status: Optional[str] = None, spike: Optional[str] = None, q: Opti
             "has_fault": r["fault"] is not None,
             "has_repair": r["repair"] is not None,
             "has_sed": r["sed"] is not None,
+            "has_classifier": r.get("classifier") is not None,
         }
         for r in out
     ]

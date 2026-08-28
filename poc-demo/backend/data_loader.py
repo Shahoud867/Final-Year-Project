@@ -446,13 +446,84 @@ def load_spike8(runs: list, findings: dict):
     findings["spike8_summary"] = data["summary"]
 
 
-def load_spike7_finding(findings: dict):
+def load_spike7(runs: list, findings: dict):
+    """Preventive clarification classifier (extension #5) -- TF-IDF + logistic
+    regression on hand-written clean/corrupted agent-handoff messages.
+
+    Originally loaded as an aggregate finding only (precision/recall/f1),
+    with no individual cases in the Runs & Diagnoses list -- flagged as a
+    real gap: every other spike's evidence is individually browsable,
+    Spike 7's wasn't, even though it's one of the two honest negatives this
+    whole console is built to lead with.
+
+    The saved output JSON (poc_spike7_output.json) only stores y_test /
+    predictions as bare label arrays -- no case text, no way to tell which
+    of the 20 hand-written handoffs ended up in the 8-case test split. The
+    source script's train_test_split uses a fixed random_state=42, so the
+    split is fully deterministic. Reconstructed it by re-running the exact
+    same split against the real CLEAN_HANDOFFS/CORRUPTED_HANDOFFS text in
+    poc_spike7_preventive_classifier.py, and verified the reconstructed
+    y_test matches the saved file's y_test exactly before trusting it --
+    this is real, deterministic recovery of already-real data, not
+    invented content.
+    """
+    import importlib.util
+    from sklearn.model_selection import train_test_split
+
+    # poc_spike7_preventive_classifier.py lives in dev/spikes/poc/, not on
+    # this backend's Python path -- load it by explicit file path rather
+    # than polluting sys.path globally.
+    spec = importlib.util.spec_from_file_location(
+        "poc_spike7_preventive_classifier", SPIKES_DIR / "poc_spike7_preventive_classifier.py"
+    )
+    spike7_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(spike7_module)
+    CLEAN_HANDOFFS, CORRUPTED_HANDOFFS = spike7_module.CLEAN_HANDOFFS, spike7_module.CORRUPTED_HANDOFFS
+
     data = _load("poc_spike7_output.json")
     findings["spike7_preventive_classifier"] = {
         "n_total": data["n_total"], "n_test": data["n_test"],
         "precision": data["precision"], "recall": data["recall"], "f1": data["f1"],
         "honest_caveat": data["honest_caveat"],
     }
+
+    texts = CLEAN_HANDOFFS + CORRUPTED_HANDOFFS
+    labels = [0] * len(CLEAN_HANDOFFS) + [1] * len(CORRUPTED_HANDOFFS)
+    _, X_test, _, y_test = train_test_split(texts, labels, test_size=0.4, random_state=42, stratify=labels)
+    assert y_test == data["y_test"], "Spike 7 test-split reconstruction does not match the saved output -- do not trust it"
+
+    for i, (text, true_label, pred_label) in enumerate(zip(X_test, y_test, data["predictions"])):
+        correct = true_label == pred_label
+        true_str = "corrupted" if true_label == 1 else "clean"
+        pred_str = "corrupted" if pred_label == 1 else "clean"
+        graph = {
+            "nodes": [
+                {"id": "n0", "agent": "AgentHandoff", "role": "message", "label": text, "is_fault_injected": true_label == 1},
+                {"id": "n1", "agent": "PreventiveClassifier", "role": "TF-IDF + LogisticRegression", "label": f"predicted: {pred_str}", "is_culprit": not correct},
+            ],
+            "edges": [{"from": "n0", "to": "n1"}],
+        }
+        runs.append({
+            "id": f"spike7-{i}",
+            "spike": "Spike 7",
+            "scenario": "Preventive clarification classifier (extension #5, hand-written handoffs)",
+            "framework": "Synthetic handoff classification (TF-IDF + logistic regression, no LLM)",
+            "question": f'Classify this agent handoff as clean or corrupted: "{text}"',
+            "final_answer": None,
+            "status": "classified_correct" if correct else "classified_incorrect",
+            "graph": graph,
+            "attribution": None, "sed": None, "fault": None, "repair": None, "replay": None,
+            "classifier": {
+                "true_label": true_str, "predicted_label": pred_str, "correct": correct,
+                "method": "TF-IDF (1,2-gram) + Logistic Regression, n_train=12/n_test=8",
+            },
+            "ground_truth_note": (
+                None if correct else
+                "One of 6 misclassifications out of 8 test cases (precision/recall/f1 = 0.25) -- "
+                "near-random with simple bag-of-words features on n=20 hand-written examples. " + data["honest_caveat"]
+            ),
+            "elapsed_sec": None,
+        })
 
 
 def load_all():
@@ -466,5 +537,5 @@ def load_all():
     load_spike5(runs, findings)
     load_spike6(runs, findings)
     load_spike8(runs, findings)
-    load_spike7_finding(findings)
+    load_spike7(runs, findings)
     return runs, findings

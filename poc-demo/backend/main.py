@@ -16,6 +16,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from data_loader import load_all
+from scope_data import get_scope
 
 app = FastAPI(title="Granite POC Demo API", version="0.1.0")
 
@@ -128,6 +129,16 @@ def get_run(run_id: str):
     if not run:
         raise HTTPException(404, f"No run with id '{run_id}'")
     return run
+
+
+@app.get("/api/scope")
+def get_scope_endpoint():
+    """Committed scope, per-item real status, and the (illustrative) SDK
+    adoption journey. See scope_data.py — every entry is transcribed from a
+    committed project document with its source cited, and no status is
+    upgraded: items with no POC say so, and Tier 2's failed test stays
+    reported as a failure."""
+    return get_scope()
 
 
 @app.get("/")

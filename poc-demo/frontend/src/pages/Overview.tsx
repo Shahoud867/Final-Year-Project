@@ -37,9 +37,14 @@ export function Overview() {
             output files, not simulated. {stats.total_runs} diagnosis runs across {stats.n_spikes} spikes.
           </p>
         </div>
-        <Link to="/runs" className="btn btn-primary">
-          Browse all runs →
-        </Link>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <Link to="/product" className="btn">
+            Product & scope
+          </Link>
+          <Link to="/runs" className="btn btn-primary">
+            Browse all runs →
+          </Link>
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14, marginBottom: 26 }}>

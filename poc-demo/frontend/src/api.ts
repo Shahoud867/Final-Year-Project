@@ -1,4 +1,4 @@
-import type { RunDetail, RunSummary, Stats } from "./types";
+import type { RunDetail, RunSummary, Scope, Stats } from "./types";
 
 const BASE = "/api";
 
@@ -21,4 +21,5 @@ export const api = {
     return get<RunSummary[]>(`/runs${suffix}`);
   },
   run: (id: string) => get<RunDetail>(`/runs/${id}`),
+  scope: () => get<Scope>("/scope"),
 };

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { api } from "../api";
 import type { RunSummary } from "../types";
 import { RunsTable } from "../components/RunsTable";
+import { RunsAggregate } from "../components/RunsAggregate";
 import { LoadingSkeleton, EmptyState, ErrorState } from "../components/States";
 
 const SPIKE_FILTERS = ["All", "Spike 1", "Spike 2", "Spike 3", "Spike 3b", "Spike 4", "Spike 5", "Spike 6", "Spike 7", "Spike 8"];
@@ -90,7 +91,12 @@ export function RunsList() {
       {!error && runs && runs.length === 0 && (
         <EmptyState title="No runs match these filters" sub="Try clearing the search or status filter." />
       )}
-      {!error && runs && runs.length > 0 && <RunsTable runs={runs} />}
+      {!error && runs && runs.length > 0 && (
+        <>
+          <RunsAggregate runs={runs} />
+          <RunsTable runs={runs} />
+        </>
+      )}
     </div>
   );
 }

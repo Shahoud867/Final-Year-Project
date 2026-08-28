@@ -107,6 +107,49 @@ export interface RunDetail extends RunSummary {
   elapsed_sec: number | null;
 }
 
+export interface Tier1Item {
+  n: number;
+  name: string;
+  what: string;
+  evidence: string;
+  spike: string | null;
+}
+
+export interface Tier2Item {
+  n: number;
+  name: string;
+  what: string;
+  status: string;
+  gate: string;
+  fallback: string;
+  risk: string;
+}
+
+export interface ScopeBand {
+  band: string;
+  rule: string;
+  tone: "core" | "advanced" | "stretch" | "future";
+  items: string[];
+}
+
+export interface SdkStep {
+  step: number;
+  title: string;
+  detail: string;
+  code: string | null;
+  lang: string | null;
+}
+
+export interface Scope {
+  tier_1: Tier1Item[];
+  tier_2: Tier2Item[];
+  bands: ScopeBand[];
+  descope_ladder: string[];
+  sdk_journey: SdkStep[];
+  sdk_illustrative: boolean;
+  sdk_disclaimer: string;
+}
+
 export interface SpikeMeta {
   id: string;
   name: string;

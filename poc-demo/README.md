@@ -15,16 +15,20 @@ demo for slide 6 and slide 9, built so it's honest rather than a mockup.
 - **Backend**: FastAPI (Python) — loads and normalizes all 8 spikes into a unified diagnosis-run schema,
   serves it over a small REST API. See `backend/data_loader.py`'s module docstring for exactly how each
   spike maps to the schema, and the one real data discrepancy this build surfaced.
-- **Frontend**: React + TypeScript + Vite — three screens, matching the dashboard scope your own
-  `06_Expanded_Scope_and_Feasibility_Plan.md` §6.5 already pinned:
+- **Frontend**: React + TypeScript + Vite. The three product screens pinned in
+  `06_Expanded_Scope_and_Feasibility_Plan.md` §6.5 (items 1–3 below), plus two defense-support screens
+  (4–5) that exist to make the *plan* legible, not to add product surface:
   1. **Overview** — stat tiles (agent/step accuracy, repair success rate, recovery rate, cyclic-bound rate,
      preventive-classifier honest negative), computed live, plus the two honest findings led with, not buried.
   2. **Runs & diagnoses** — all 31 real diagnosis runs generated from the 8 spikes, filterable by spike and
-     status, searchable.
+     status, searchable, with a collection-level outcome distribution that recomputes with the active filters.
   3. **Run detail** — tabbed: *Trace & graph view* (the real execution graph, culprit/fault node highlighted,
      evidence panel) and *Repair & replay report* (candidate fix, before/after replay numbers,
      recovery verdict).
   4. **POC evidence** — an index back to the 8 spikes, for "show, don't describe" during the defense.
+  5. **Product & scope** — the SDK adoption journey (**explicitly labelled illustrative, not built**) plus the
+     committed scope with each item's real status: Tier 1's evidence, Tier 2's gates and recorded fallbacks
+     (including the one whose only test failed), the four scope bands, and the pre-registered descope ladder.
 
 ## Run it locally
 
@@ -57,6 +61,8 @@ re-run a spike and refresh the browser to see updated numbers.
 | The 23 execution graphs (trace/graph view) | **Real** — built from actual trace data (spike 2/3/3b) or actual Who&When case histories (spike 1), truncated for display the same way Spike 1's own script truncates prompts |
 | The "self-corrected" and "repair failed" findings | **Real** — these are the actual honest/negative results from spikes 3 and 8, not curated to look good |
 | The confidence gate on the Repair & Replay tab | **Illustrative** — visualizes extension #12's design (confidence-gated fix approval). Where a spike genuinely has no confidence score, it says "not measured," not a fabricated number |
+| The SDK adoption journey on **Product & scope** | **Illustrative, and labelled as such on-screen with a persistent banner** — zero lines of the SDK exist. Included because the project's own one-line pitch ends "ships as an installable SDK," so a panel needs to see what that means. The code snippets show the design implied by FR5 (callback/hook per framework adapter, normalized trace schema), not working code |
+| The scope/status data on **Product & scope** | **Real** — every Tier 1/Tier 2 entry, gate criterion, fallback, band, and ladder step is transcribed from a committed document, cited per item in `backend/scope_data.py`. No status is upgraded: items with no POC say so, and Verified Repair Memory's failed test stays reported as a failure |
 | The overall product shell (sidebar, navigation, "install SDK" positioning) | **Illustrative** — no SDK exists yet; this is the product-vision layer the guide's §16 slide 6 asks for ("high-level architecture... intended deployment target"), not a claim that the SDK is built |
 
 ---

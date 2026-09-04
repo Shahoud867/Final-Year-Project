@@ -41,7 +41,10 @@ Proof-of-concept spike results and the silent-failure-detection research behind 
 Supervisor- and panel-facing deliverables, including the two Python generator scripts and their outputs.
 
 - [FYP_Registration_Form_Answers.md](05-deliverables/FYP_Registration_Form_Answers.md) — official FYP registration form answers
-- [Proposal_Defense_Package.md](05-deliverables/Proposal_Defense_Package.md) — proposal defense slide-by-slide package
+- [Proposal_Defense_Package.md](05-deliverables/Proposal_Defense_Package.md) — proposal defense slide-by-slide package (markdown content)
+- [Proposal_Defense_Slide_Content_Spec.md](05-deliverables/Proposal_Defense_Slide_Content_Spec.md) — full slide-by-slide spec (purpose, on-slide content, visual, evidence, presenter emphasis) behind the pptx deck, plus final slide order, narrative, [TO BE PROVIDED] list, and panel attack points
+- [generate_proposal_deck.js](05-deliverables/generate_proposal_deck.js) — pptxgenjs generator for `Granite_Proposal_Defense.pptx` (run with `node generate_proposal_deck.js` from within this folder)
+- `Granite_Proposal_Defense.pptx` — the actual 10-slide defense deck (output of `generate_proposal_deck.js`), supervisor Dr. Adil Majeed, project code F26-060-Granite
 - [Supervisor_Briefing.md](05-deliverables/Supervisor_Briefing.md) — plain-language condensed briefing for the supervisor meeting
 - [generate_supervisor_pdf.py](05-deliverables/generate_supervisor_pdf.py) — generator script for `Granite_Supervisor_Briefing.pdf` (run from within this folder)
 - [generate_ccp_docx.py](05-deliverables/generate_ccp_docx.py) — generator script for `Granite_CCP_Justification.docx` (run from within this folder)

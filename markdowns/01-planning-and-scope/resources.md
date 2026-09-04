@@ -8,15 +8,17 @@
 
 Per the plan doc §6, the LLM is classified as **Core-assist**, not Core-replacement: it powers agent behavior and the diagnosis team's reasoning, but the system must still function (structurally) if swapped.
 
-| Use | Candidate models | Why |
+**Committed model plan, 2026-09-04 (cost-estimate.md §0): local Ollama for every row below, no paid API tier anywhere. Total committed cost: $0.**
+
+| Use | Committed model | Why |
 |---|---|---|
-| Agent-under-test behavior (the multi-agent systems being diagnosed) | Any instruction-following model reachable via API — pick 1 primary for development, 1 secondary for the generalization/backbone-sensitivity check | Mirrors how every paper in the corpus varies its own backbone (ErrorProbe used Claude 3.7 Sonnet, GPT-OSS-120B, Qwen3-32B) |
-| Diagnosis team reasoning (Strategist / Investigator / Arbiter, reproducing ErrorProbe's pipeline) | Same backbone(s) as above, kept consistent with what's used for the ErrorProbe reproduction so the baseline comparison is fair | Comparing your reproduction against ErrorProbe's published numbers is only meaningful if backbone choice is controlled for and disclosed, per the caveat already in [ErrorProbe_Baseline_Selection.md](../03-market-and-literature-research/ErrorProbe_Baseline_Selection.md) |
-| Preventive clarification classifier (extension #7) | A small open-weight model or a traditional classifier (not necessarily an LLM at all) — this is deliberately scoped as supervised, not RL, per the plan doc | Keeps this extension light rather than a training-stability project of its own |
+| Agent-under-test behavior (the multi-agent systems being diagnosed) | Local Ollama (the same class already used for all 8 real POC spikes) | $0, already proven to work for this at POC stage |
+| Diagnosis team reasoning (Strategist / Investigator / Arbiter, reproducing ErrorProbe's pipeline) | Local Ollama — same backbone as the reproduction target below | Kept internally consistent; the fair-comparison backbone match to ErrorProbe's own Claude 3.7 Sonnet setup is knowingly given up for cost, not overlooked — see the tradeoff recorded in cost-estimate.md §0 |
+| Preventive clarification classifier (extension #7) | A small open-weight model or a traditional classifier (not necessarily an LLM at all) — deliberately scoped as supervised, not RL | $0 either way |
 
-**Budget planning — now quantified, see [cost-estimate.md](cost-estimate.md) (2026-08-25, closes risk-register.md R5).** Headline: **≈ $353 recommended for the whole project, ≈ $881 pessimistic ceiling**, computed from measured token counts across all 184 real Who&When cases rather than estimated.
+**Budget: $0 committed** (cost-estimate.md §0, 2026-09-04 decision). The **≈$353 recommended / ≈$881 ceiling** figures below describe the paid-tier alternative that was priced and explicitly not chosen — kept for reference, not the plan.
 
-**Correction worth noting:** this section previously assumed benchmark generation was "the single largest API cost driver." Measurement showed the opposite — generation is ~5% of the budget (it runs on the cheap tier, in batch, and is quality-insensitive), while **ErrorProbe reproduction iteration is ~63%** (it must run on a fair-comparison backbone and must be re-run many times before it's correct). The practice that follows: iterate reproduction on a fixed 20-case subset (~$1.20/run) and reserve full 184-case runs for checkpoints. Model plan in cost-estimate.md §5 — cheap/local for volume, **Sonnet 5** reserved for reproduction and evaluation as the fair comparator to ErrorProbe's published Claude 3.7 Sonnet setup.
+**Correction worth noting, still true regardless of which model plan is chosen:** this section previously assumed benchmark generation was "the single largest API cost driver." Measurement showed the opposite — generation is ~5% of what a paid-tier budget would spend, while **ErrorProbe reproduction iteration is ~63%** of it (it must be re-run many times before it's correct). Under the committed $0 plan this is moot for cost, but the practice still applies for *time*: iterate reproduction on a fixed 20-case subset before running all 184 cases, to keep local-model turnaround manageable.
 
 ---
 

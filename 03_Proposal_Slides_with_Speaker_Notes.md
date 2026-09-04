@@ -7,7 +7,7 @@
 ## Slide 1 — Title and one-line problem
 **Content:**
 - **A Self-Healing Multi-Agent System for Semantic Error Diagnosis, Verified Repair and Recovery** — short title **Granite**
-- Stream **A (research-derived)** · Shahoud Shahid 23i-2515 · Muhammad Noor 23i-2520 · Saif Shahzad 23i-2634 · Supervisor: [name — fill before Thursday]
+- Stream **A (research-derived)** · Shahoud Shahid 23i-2515 · Muhammad Noor 23i-2520 · Saif Shahzad 23i-2634 · Supervisor: Dr. Adil Majeed · Project code: F26-060-Granite
 - One sentence: *When a team of AI agents fails — including when the answer looks right but isn't — no published method can reliably say which agent went wrong at which step, and none can test a fix before it's trusted. Granite diagnoses, repairs, verifies, and recovers — and ships as an installable SDK.*
 
 **Visual:** none beyond the title block. **Speaker notes:** 20 seconds; do not explain the title word-by-word — slide 6 does. **Triggers:** "self-healing? show me" → A1.
@@ -66,8 +66,8 @@
 - **Scope bands, added 2026-08-25 (plan §7.2):** Core (never descoped) → Advanced (budgeted, droppable only via a pre-registered ladder: human study, self-correction analysis, frontier, calibration, taxonomy, benchmark scale, cyclic support — in that order) → Stretch (unbudgeted, surplus-only: 3rd architecture, preventive classifier, propagation map, explainable confidence, compat layer) → Future (out of scope: cross-domain, chaos testing, SaaS/billing)
 - **The effort budget:** ~1,130 plannable person-hours (3 × ~15 h/wk × ~28 weeks, minus exam haircut) budgeted line-by-line against ~1,130 — FYP-1 ≈490 h, FYP-2 ≈640 h, named owners per line. Stretch spends only surplus.
 - **Walking skeleton at Mid-1:** one thin thread, instrumented trace → graph → attribution → SED → replay → dashboard row, running end-to-end before Final-1 — retires integration risk at the *first* gate, not the last
-- Top risks with status: R1 reproduction gap (band + fallback declared) · R5 cost (closed, quantified: ≈$353 recommended / $881 ceiling) · R7 literature crowding (gate-check standing order) · R21/R22 Tier-2 gates (criteria pre-registered) · R27 (scope-expansion decision, recorded)
-- **Cost line:** ≈$353 recommended total (benchmark generation on cheap-tier batch ≈$18; ErrorProbe reproduction across ~20 dev iterations ≈$224; 10 full evaluation runs ≈$112); ≈$881 pessimistic ceiling. All 8 spikes to date: $0
+- Top risks with status: R1 reproduction gap (band + fallback declared; now expected to trigger, since the $0 decision below means the backbone isn't comparable-class) · R5/R37 cost (closed: committed plan is $0) · R7 literature crowding (gate-check standing order) · R21/R22 Tier-2 gates (criteria pre-registered) · R27 (scope-expansion decision, recorded)
+- **Cost line:** **$0 committed** — every model call runs on local Ollama, including the reproduction and evaluation (R37, 2026-09-04). The paid-tier alternative was priced and rejected: a comparable-class backbone would have cost ≈$353 recommended / ≈$881 ceiling. All 8 spikes to date: $0
 - Ethics: advisory-only output, consent for real trace data, injection only on own/consenting systems
 
 **Visual:** two-tier core diagram with gate icons on Tier 2, plus a four-band scope funnel (Core/Advanced/Stretch/Future) and a one-line effort-budget bar chart (FYP-1 490h / FYP-2 640h against capacity). **Speaker notes:** this slide *is* the A1/A2 defense — deliver it as confidence, not confession: "we pre-registered the decision rules before the results exist, which is what §5.3 asks of us, and the same discipline now covers the whole scope, not just the two Tier-2 items." If feasibility is pressed, this is the slide with the numbers — point at the budget table, don't just reassure. **Triggers:** A1, A2, Q9–Q11, Q24, addendum Q25.

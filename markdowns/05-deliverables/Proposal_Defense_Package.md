@@ -9,7 +9,7 @@
 **A Self-Healing Multi-Agent System for Semantic Error Diagnosis, Verified Repair and Recovery**
 *(short title: Granite — adopted 2026-08-24, from `Agentic_AI_Market_Survey_BS_FYP.docx` §6)*
 
-Stream: A (research-derived) | Members: Shahoud Shahid (23i-2515), Muhammad Noor (23i-2520), Saif Shahzad (23i-2634) | Supervisor: [name — fill before defense]
+Stream: A (research-derived) | Members: Shahoud Shahid (23i-2515), Muhammad Noor (23i-2520), Saif Shahzad (23i-2634) | Supervisor: Dr. Adil Majeed | Project code: F26-060-Granite
 
 > Build a failure-attribution and recovery system that generalizes to multi-agent architectures no prior paper has tested on, catches the "silent failures" the strongest existing method (ErrorProbe) admits it cannot detect, and ships as an installable, framework-agnostic testing product.
 
@@ -109,7 +109,7 @@ Architecture: [architecture-sketch.md](../01-planning-and-scope/architecture-ske
 **Total frozen feature count: 20** (10 foundational + 8 extensions + 2 deprioritized), plan doc §7.0.
 **Top risks** (full register: [risk-register.md](../02-evidence-and-tracking/risk-register.md)): R1 (reproduction gap to 59.5% — **acceptance band now declared and pre-registered**, Annex A.2 fallback recorded), R5 (**cost — closed, quantified**, see the cost line below), R7 (literature-crowding, accepted risk, documented, standing gate-check), R15 (preventive classifier's weak first result), R16 (security/privacy, resolved with a threat model), R17 (Repair Agent — Spike 8, 4/6, one fixable cause behind both failures), R21/R22 (the two Tier 2 items — **gate criteria pre-registered 2026-08-25**), R23–R26 (this pre-defense audit's own decisions, recorded).
 
-**Cost (closes R5, computed from measured token counts across all 184 real Who&When cases — not an estimate):** recommended plan **≈ $353** total (benchmark generation on Haiku 4.5 + Batch API ≈ $18; ErrorProbe reproduction across ~20 dev iterations ≈ $224; 10 full evaluation runs ≈ $112); pessimistic ceiling **≈ $881**. All 8 spikes to date cost **$0** (local Ollama). Non-obvious finding worth stating: the dominant cost is *reproduction iteration*, not benchmark generation — the reverse of what R5 originally assumed. Full working: [cost-estimate.md](../01-planning-and-scope/cost-estimate.md).
+**Cost: $0, committed** (R37, 2026-09-04 decision) — every model call, including the reproduction and evaluation, runs on local Ollama, the same free backbone as all 8 real spikes to date (also $0). The paid-tier alternative was priced from measured token counts, not estimated, then explicitly rejected: a comparable-class backbone (Sonnet 5) for the reproduction alone would have cost ≈$353 recommended / ≈$881 pessimistic ceiling. One accepted tradeoff follows: the reproduction is now expected to land outside the pre-registered ±10-point acceptance band on backbone strength alone — reported honestly via Annex A.2 dual-reporting, not treated as a failure. Full working: [cost-estimate.md](../01-planning-and-scope/cost-estimate.md) §0.
 **Professional and ethical compliance:** advisory-only diagnosis output with human-gated fix approval (extension #6), informed consent required before using any real user's trace data, synthetic fault injection restricted to own/consenting systems only — full statement: plan doc §0.09.
 
 ## Slide 10 — Team responsibilities and iterations

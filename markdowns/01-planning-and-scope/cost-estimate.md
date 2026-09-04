@@ -6,6 +6,25 @@
 
 ---
 
+## 0. Committed decision, 2026-09-04 — the full project runs at $0, on local models throughout
+
+**Explicit user decision, recorded per §5.3 change-control:** the committed model plan for the *entire* project — agent-under-test behavior, diagnosis-team reasoning, benchmark generation, the ErrorProbe reproduction, and every evaluation run — is **local Ollama, the same free backbone class already used for all 8 real POC spikes.** No paid API tier is committed anywhere in the plan. **Total committed cost: $0.**
+
+Everything from §1 onward in this document — the $353 recommended / $881 ceiling figures — describes a **different, more expensive plan that was considered and is not the committed one**: reserving a paid, comparable-class backbone (Sonnet 5) specifically for the reproduction and evaluation, to match ErrorProbe's own published Claude 3.7 Sonnet setup. That analysis is kept below, unedited, because it's the real cost of the alternative and the honest reason the $0 path has a real, named tradeoff — not because it's still the plan.
+
+**Why the paid tier existed in the first place:** ErrorProbe's 59.5% step accuracy was measured on Claude 3.7 Sonnet. Reproducing it on a much weaker free model risks the objection *"of course your number is lower — you used a worse model, that tells us nothing about whether the method works."* That's the backbone-confound risk already named in risk-register R4. Going local-only doesn't remove that risk — it accepts it as the primary, expected characteristic of the reproduction result, not a minor caveat.
+
+**What changes as a result:**
+- The **reproduction acceptance band** (§11 of the plan doc: ±10 points of 59.5% on a "comparable-class backbone") is **not redefined to make a local model pass more easily** — moving the goalpost after choosing the constraint would be a real integrity problem, not a budget decision. The band stays exactly as originally declared, against the same comparable-class target. A local-model reproduction landing outside it is now the **anticipated** outcome, not a failure.
+- The fallback this project already committed to — **Annex A.2's "faithful reproduction with transparent reporting,"** reporting Granite's real (local-model) number and ErrorProbe's published number side by side, with the backbone gap named as the leading explanatory hypothesis — becomes the **expected reporting path**, not an edge case.
+- **Benchmark generation, already mostly local**, becomes **fully local, no Batch-API fallback** — the cheap-tier paid option is dropped, not just deprioritized.
+- **Model quality is now a team choice within $0, not fixed at `llama3.2:3b`.** If the team's own hardware supports a larger local model (e.g. an 8B-class model via Ollama) for the reproduction and evaluation specifically, that narrows the backbone gap somewhat at zero marginal cost — worth testing, not assumed. **[TO BE PROVIDED — team's available local compute / largest model their hardware can run at acceptable speed.]**
+- The **per-backbone sensitivity check** (§5, "mirrors ErrorProbe's own 3-backbone reporting") is descoped from 3 paid backbones to whatever local model variants are actually run — real, but smaller in scope than originally planned.
+
+**What does not change:** the 8 real POC spikes stay exactly as they are (already $0, already real). The statistical protocol (bootstrap CIs, N-replay variance, the ablation matrix) is unaffected — it's a property of the evaluation design, not the backbone. Reported honestly either way.
+
+---
+
 ## 1. What the 184 cases actually contain (measured)
 
 | Split | n | Steps/case (mean) | Trajectory tokens, truncated | Trajectory tokens, full |
@@ -58,7 +77,7 @@ Trace generation is **not latency-sensitive** — it is a bulk offline job — s
 
 ---
 
-## 4. Total project budget
+## 4. Total project budget — **the paid-tier alternative, not the committed plan (see §0)**
 
 | Line item | Plan | Cost |
 |---|---|---|
@@ -75,7 +94,7 @@ At ~Rs 280/USD: **≈ Rs 99,000 recommended, ≈ Rs 247,000 worst case.** Studen
 
 ---
 
-## 5. Model plan (what actually gets used where)
+## 5. Model plan — **the paid-tier alternative, not the committed plan (see §0). Committed plan: local Ollama, every row.**
 
 | Workload | Model | Why |
 |---|---|---|

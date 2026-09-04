@@ -1,4 +1,6 @@
-# AI Usage Log — TraceCause
+# AI Usage Log — Granite
+
+*(Header only, updated 2026-09-04 to the current project name for a reader opening this file cold — metadata, not a body edit. Every dated session entry below keeps whatever name — TraceCause or Granite — was actually in use at the time, per this log's own stated practice of not retroactively correcting history; see the seventh-session entry for the rename record itself.)*
 
 *Maintained per FAST guide §8.4. Recorded as work happened, not reconstructed afterward — this covers the AI-assisted session that produced the project's literature review, baseline selection, scope/CCP planning, and proof-of-concept work. Update this file as the project continues; do not let it go stale. Countersign with your supervisor per the guide's requirement.*
 

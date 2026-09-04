@@ -64,9 +64,17 @@ Stream A rule: *"The intended operator or user of the resulting system acts as t
 
 ---
 
-## 0.09 Ethical compliance (guide §16 slide 9, §17 item 21)
+## 0.09 DEI and Ethical compliance (guide §16 slide 10, Form 1 "DEI, Ethical/legal issues," §17 item 21)
 
-Distinct from R16's security/privacy threat model — this is the "ethical" line the guide names separately. Three considerations, stated plainly: (1) the diagnosis engine's output (root cause, confidence) is advisory, not autonomous — a human reviews before any fix is applied (already committed via extension #6, confidence-gated fix approval), so the system cannot silently take an action with real consequences. (2) Trace data from a real customer's system is handled per R16's redaction/namespacing/retention commitments, and involving any real user or organization's data in testing requires their informed consent, arranged before use, not assumed. (3) The benchmark's synthetic fault injection is applied only to the project's own toy/test workflows or to consenting pilot users' systems — never to a third party's production system without explicit permission. No new build work follows from this section; it's a stated position the team should be able to defend if asked, same standard as everything else in this document.
+**Added 2026-09-04**, closing a gap surfaced re-reading the fuller `docs/BS-FYP-Handbook-2026_DRAFT.pdf` (3rd Edition): C.16's slide 10 and Form 1's rubric both name **DEI** as a line item distinct from "ethical/legal" — this document previously stated only the ethical half. Recorded per §5.3 as an addition, not a correction of anything wrong.
+
+**DEI, stated concretely rather than as a decorative label — two considerations:**
+1. **Access equity.** Automated multi-agent failure-diagnosis tooling today sits almost entirely behind commercial, paid observability platforms (LangSmith, Arize, Braintrust — see [Commercial_Product_Comparison.md](../03-market-and-literature-research/Commercial_Product_Comparison.md)). Granite's benchmark and SDK are planned for open-source release (MIT/CC BY 4.0, §14), so a resource-constrained team, a student project, or a researcher in a lower-resource setting gets the same diagnostic capability a well-funded enterprise team would otherwise pay for. This is a direct extension of the SDG 9 alignment already stated in §0.05, not a separate or decorative claim.
+2. **Accessibility and coverage limits, stated honestly rather than assumed.** The dashboard's status indicators use color coding (green/amber/red — see `poc-demo/frontend/src/components/StatusBadge.tsx`) alongside text labels, so the design does not encode meaning by color alone; this is a concrete, checkable commitment for the FYP-2 dashboard build, not yet verified against WCAG contrast ratios (owed by Final-1, per the deployment-readiness table in the handbook's C.1.2). Separately: the active benchmark substrates (GSM8K, tau-bench retail) and every real spike case are English-language only, so the system's accuracy claims do not extend to non-English agent traces — stated here as a scope limitation, not silently assumed away.
+
+**Ethical, unchanged from the prior version of this section — three considerations, stated plainly:** (1) the diagnosis engine's output (root cause, confidence) is advisory, not autonomous — a human reviews before any fix is applied (already committed via extension #6, confidence-gated fix approval), so the system cannot silently take an action with real consequences. (2) Trace data from a real customer's system is handled per R16's redaction/namespacing/retention commitments, and involving any real user or organization's data in testing requires their informed consent, arranged before use, not assumed. (3) The benchmark's synthetic fault injection is applied only to the project's own toy/test workflows or to consenting pilot users' systems — never to a third party's production system without explicit permission.
+
+No new build work follows from either half of this section beyond the WCAG check already owed by Final-1; it's a stated position the team should be able to defend if asked, same standard as everything else in this document.
 
 ---
 
@@ -125,6 +133,21 @@ This satisfies the guide's own instruction for row 9 ("students should show how 
 *(Presentation note, 2026-08-22: wording above shifted from "reproduce ErrorProbe as our baseline" to "build our diagnosis engine on ErrorProbe's method" — same underlying work and numbers, panel-facing framing now leads with the product being built, not a paper being compared against. The guide's own Section 4 template and evaluation requirements are unchanged underneath; see §4 and §11 for the technical detail this still rests on.)*
 
 This maps to two contribution types from Section 4's table: **Data/resource contribution** (the new benchmark) and **Method contribution at an identified gap** (silent-failure verification + cross-architecture generalization) — plus **System/architecture contribution** (the deployable SDK, which the guide notes is "in most Stream A projects... the largest and most defensible contribution," §A.3).
+
+### 3.1 Framing discipline — added 2026-09-04, per explicit user decision (R34): this is a **Development project that draws on research for rigor**, not a Research project whose output is a paper
+
+**The distinction is about what gets said first, not about what gets built or evaluated.** Nothing below changes the CCP, the Stream A declaration, the contribution statement's required template, the evaluation plan, or any committed mechanism — all of that stays exactly as written throughout this document, because the handbook itself mandates that structure for Stream A projects (C.4's contribution-statement template, C.16 slide 4's "research and technical basis," C.13's evaluation plan). What changes is the **spoken and free-form framing** — the pitch, the elevator answer to "what is this project," slide delivery where the content isn't a fixed template — which should lead with **what Granite does and for whom**, with the research (ErrorProbe, the benchmark, the delta) following as the evidence that it works, not as the headline.
+
+| Context | Rule |
+|---|---|
+| Free-form pitch, elevator answer, slide 1's spoken delivery, slide 6's opening beat | **Product first.** "We built an SDK that diagnoses and repairs multi-agent AI failures" — then the gap it closes, then the evidence |
+| Contribution statement (§3 above), delta statement (§4 below), Slide 4's written content | **Unchanged — stays in the handbook's required academic form.** These are graded, templated artifacts (C.4, C.16), not free-form pitch material, and rewriting them to be "product-first" would violate the format the guide itself specifies |
+| Registration form's Project Scope paragraph (`FYP_Registration_Form_Answers.md`) | Already product-first ("Granite is a deployable SDK and diagnosis platform that identifies why multi-agent AI systems fail...") — no change needed, confirmed on this pass |
+| Evaluation plan, RQs, ablations, acceptance bands | **Unchanged in substance — reframed only in how they're introduced.** These remain real, necessary rigor (the handbook requires systematic evaluation regardless of Development-vs-Research framing, C.13); when presenting them, introduce them as "here's how we prove the product works," not "here's what we're researching" |
+
+**Why this doesn't require a Stream switch:** Stream A/B (C.1.1) is about where the idea originated (published research vs. an observed problem), not about whether the project is presented as a product or a paper. A Stream A project that ships a deployable system is explicitly the strongest, most common shape the guide describes (C.18.3: "in most Stream A projects [engineering the method into an operable system] is... the largest and most defensible contribution") — this framing decision is Granite leaning fully into that shape, not departing from Stream A.
+
+Logged as risk-register.md R34.
 
 ---
 

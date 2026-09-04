@@ -80,6 +80,8 @@
 
 **Visual:** the gate timeline with three colored ownership lanes, the walking-skeleton diamond at Mid-1, and one MDP line per gate underneath. **Speaker notes:** each member states their own subsystem in one sentence, aloud, from this slide — the panel is checking §14.1, and hearing three voices early sets that tone. **Triggers:** Q12, Q23.
 
+**DEI and ethical/legal line, added 2026-09-04 (guide C.16 slide 10; plan doc §0.09) — say if this slide's footer is asked about:** open-source release (MIT/CC BY 4.0) puts enterprise-grade diagnostic tooling within reach of resource-constrained teams, not just well-funded ones (a direct extension of the SDG 9 framing on slide 2); the dashboard pairs color status with text, not color alone, with a WCAG check owed by Final-1; accuracy claims are English-only, stated as a limitation, not assumed away. Ethical: advisory-only output, human-gated fix approval, informed consent for real trace data.
+
 ---
 
 **Story spine check (Problem → Evidence → Gap → Solution → Novelty → Architecture → Research → Evaluation → Feasibility → Ownership):** slides 1-2 problem, 3-4 evidence+gap, 5 why it's capstone-level, 6 solution+novelty+architecture, 7 feasibility evidence, 8 proof plan (now with clean controls, CIs, human baseline), 9 scope discipline (now with bands, budget, skeleton), 10 people + MDP-per-gate. Total talk time target: 12–14 minutes, leaving the panel maximum questioning time — which this package is built to want.

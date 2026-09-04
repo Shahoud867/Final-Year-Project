@@ -124,6 +124,8 @@ Architecture: [architecture-sketch.md](../01-planning-and-scope/architecture-ske
 
 Shared: architecture and integration, cross-subsystem QA, ethics/privacy commitments, defense preparation. Each member states their own subsystem aloud from this slide — the panel is applying guide §14.1's four ownership questions, and hearing three voices sets that tone early.
 
+**DEI and ethical/legal (guide C.16 slide 10, added 2026-09-04 — plan doc §0.09):** DEI — the benchmark/SDK are planned open-source (MIT/CC BY 4.0), putting enterprise-grade diagnostic tooling within reach of resource-constrained teams, not just well-funded ones; the dashboard's status indicators pair color with text labels (not color alone), with a WCAG contrast check owed by Final-1; accuracy claims are stated as English-only (GSM8K, tau-bench), not silently generalized. Ethical/legal — advisory-only diagnosis output with human-gated fix approval, informed consent before using any real user's trace data, synthetic fault injection restricted to own/consenting systems only.
+
 Two-semester timeline mapped to all 5 gates: plan doc §12, with the two Tier-2 decision gates and the full-reproduction milestone marked at Mid-1.
 
 ---

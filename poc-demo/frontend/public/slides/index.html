@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Granite — Animated Proposal Defense</title>
+<style>
+  :root{
+    --bg:#0a0c12; --bg2:#0e1119; --panel:#12151f; --panel2:#171b28;
+    --line:#242a3c; --line-soft:#1b1f2c;
+    --ink:#eef1f8; --ink-dim:#9aa3ba; --ink-faint:#5f6780;
+    --gold:#d9a15c; --gold-bright:#f0c084; --gold-dim:rgba(217,161,92,.14);
+    --teal:#4fb3c4; --orange:#e08a55; --blue:#6ea8e0;
+    --green:#57c98f; --amber:#e0b555; --red:#e37070;
+    --font-display:"Georgia","Cambria",serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;
+    --font-mono:"Consolas","SFMono-Regular",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+  body{color:var(--ink);font-family:var(--font-body);font-size:15px;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--gold-dim);color:var(--gold-bright)}
+  h1,h2,h3{margin:0}
+  .mono{font-family:var(--font-mono)}
+
+  #stage{position:fixed;inset:0;overflow:hidden;
+    background:radial-gradient(120% 90% at 15% -10%,rgba(217,161,92,.09),transparent 55%),
+               radial-gradient(120% 100% at 90% 110%,rgba(79,179,196,.07),transparent 55%),
+               linear-gradient(180deg,var(--bg2),var(--bg) 45%);}
+
+  /* ambient graph */
+  #ambient{position:absolute;inset:0;pointer-events:none;opacity:.5}
+  .anode{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.5),rgba(217,161,92,.45) 45%,transparent 72%);
+    box-shadow:0 0 18px 2px rgba(217,161,92,.2);animation:drift 34s ease-in-out infinite alternate;}
+  @keyframes drift{from{transform:translate(0,0)}to{transform:translate(18px,-14px)}}
+  .aedge{position:absolute;height:1px;background:linear-gradient(90deg,rgba(217,161,92,0),rgba(217,161,92,.3),rgba(217,161,92,0));transform-origin:0 50%}
+
+  #track{position:absolute;top:0;left:0;height:100%;display:flex;
+    transition:transform .68s cubic-bezier(.65,0,.24,1);will-change:transform;touch-action:pan-y;}
+  #track.dragging{transition:none;cursor:grabbing}
+  .slide{flex:0 0 100vw;height:100%;display:flex;align-items:center;justify-content:center;position:relative;}
+  .board{width:min(1400px,92vw);max-height:90vh;overflow-y:auto;padding:8px 6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent;}
+  .board::-webkit-scrollbar{width:7px}.board::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+
+  .kicker{display:flex;align-items:center;gap:10px;margin-bottom:8px;opacity:0;transform:translateY(8px);transition:all .5s ease;}
+  .kicker.in{opacity:1;transform:translateY(0)}
+  .kicker .n{font-family:var(--font-mono);font-weight:700;font-size:12px;color:var(--gold-bright);letter-spacing:.14em;}
+  .kicker .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+  .kicker .tag{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-faint);text-transform:uppercase}
+
+  .title{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,3.6vw,46px);line-height:1.06;
+    margin-bottom:6px;opacity:0;transform:translateY(14px);transition:all .6s cubic-bezier(.2,.8,.2,1) .08s;}
+  .title.in{opacity:1;transform:translateY(0)}
+  .title em{font-style:normal;color:var(--gold-bright)}
+  .sub{color:var(--ink-dim);font-size:13.5px;max-width:82ch;margin-bottom:18px;line-height:1.6;
+    opacity:0;transform:translateY(10px);transition:all .55s ease .16s;}
+  .sub.in{opacity:1;transform:translateY(0)}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;position:relative;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.6);opacity:0;transform:translateY(18px) scale(.985);
+    transition:all .55s cubic-bezier(.2,.8,.2,1);}
+  .card.in{opacity:1;transform:translateY(0) scale(1)}
+  .card::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:3px;background:var(--accent-c,var(--gold))}
+  .card{padding-left:24px}
+  .card h4{font-family:var(--font-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+  .card p{margin:0 0 8px;color:var(--ink-dim);font-size:12.5px;line-height:1.6}
+  .card p:last-child{margin-bottom:0}
+  .card b{color:var(--ink);font-weight:600}
+  .grid{display:grid;gap:14px}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9.5px;font-weight:700;
+    padding:3px 9px;border-radius:999px;border:1px solid;letter-spacing:.02em;opacity:0;transform:scale(.7);
+    transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+  .pill.in{opacity:1;transform:scale(1)}
+  .pill.green{color:var(--green);border-color:var(--green);background:rgba(87,201,143,.14)}
+  .pill.amber{color:var(--amber);border-color:var(--amber);background:rgba(224,181,85,.16)}
+  .pill.red{color:var(--red);border-color:var(--red);background:rgba(227,112,112,.16)}
+  .pill.teal{color:var(--teal);border-color:var(--teal);background:rgba(79,179,196,.14)}
+
+  table.t{width:100%;border-collapse:collapse;font-size:11.5px}
+  table.t th,table.t td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  table.t th{font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint)}
+  table.t tr:last-child td{border-bottom:none}
+  table.t tr{opacity:0;transform:translateX(-14px);transition:all .4s ease}
+  table.t tr.in{opacity:1;transform:translateX(0)}
+  .twrap{overflow-x:auto}
+
+  .stat{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:700;color:var(--gold-bright)}
+  .bignum{font-family:var(--font-display);font-size:34px;font-weight:700;color:var(--ink)}
+
+  .ladder{display:flex;align-items:flex-end;gap:14px;height:130px;margin:8px 0 6px}
+  .ladder .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}
+  .ladder .fill{width:100%;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--gold-bright),var(--gold));height:0;transition:height 1.1s cubic-bezier(.2,.8,.2,1) .3s;}
+  .ladder .lbl{font-size:9px;color:var(--ink-faint);font-family:var(--font-mono);text-align:center}
+  .ladder .val{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--gold-bright);opacity:0;transition:opacity .4s ease 1.1s}
+  .ladder .val.in{opacity:1}
+
+  .checkrow{display:flex;align-items:flex-start;gap:10px;padding:6px 0;opacity:0;transform:translateX(-10px);transition:all .4s ease}
+  .checkrow.in{opacity:1;transform:translateX(0)}
+  .checkrow .dot{width:20px;height:20px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;margin-top:1px;}
+  .checkrow .dot.ok{background:rgba(87,201,143,.18);color:var(--green);border:1px solid var(--green)}
+  .checkrow .dot.weak{background:rgba(224,181,85,.18);color:var(--amber);border:1px solid var(--amber)}
+  .checkrow .ct{font-size:12px;color:var(--ink-dim)}
+  .checkrow .ct b{color:var(--ink)}
+
+  .pipeline{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:8px 0}
+  .pstep{font-family:var(--font-mono);font-size:10px;padding:6px 10px;border-radius:7px;background:var(--panel2);
+    border:1px solid var(--line);color:var(--ink-dim);opacity:0;transform:scale(.8);transition:all .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+  .pstep.in{opacity:1;transform:scale(1)}
+  .parrow{color:var(--ink-faint);padding:0 5px;opacity:0;transition:opacity .3s ease}
+  .parrow.in{opacity:1}
+
+  .band{flex:1;text-align:center;padding:7px 4px;border-radius:7px;font-size:9px;font-family:var(--font-mono);
+    border:1px solid var(--line);color:var(--ink-faint);opacity:0;transform:translateY(6px);transition:all .35s ease}
+  .band.in{opacity:1;transform:translateY(0)}
+  .band.fail{border-color:var(--red);color:var(--red)}.band.ok2{border-color:var(--ink-faint)}
+  .band.strong{border-color:var(--teal);color:var(--teal)}.band.exc{border-color:var(--green);color:var(--green)}
+
+  .effortbar{display:flex;height:20px;border-radius:6px;overflow:hidden;border:1px solid var(--line);margin:8px 0 4px}
+  .effortbar .seg{width:0;transition:width 1s cubic-bezier(.2,.8,.2,1) .2s}
+  .effortbar .seg1{background:linear-gradient(90deg,var(--teal),var(--blue))}
+  .effortbar .seg2{background:linear-gradient(90deg,var(--orange),var(--gold))}
+
+  /* live trace exhibit (real diagnosis animation) */
+  .trace-rig{display:flex;align-items:center;justify-content:center;gap:0;margin:10px 0 6px;perspective:900px}
+  .tnode{width:130px;padding:12px 10px;border-radius:11px;background:var(--panel2);border:1.5px solid var(--line);
+    text-align:center;transition:all .5s ease;transform:scale(.94);opacity:.55}
+  .tnode.on{opacity:1;transform:translateZ(20px) scale(1);border-color:var(--gold);box-shadow:0 10px 24px -8px rgba(217,161,92,.35)}
+  .tnode.bad{border-color:var(--red);box-shadow:0 0 18px rgba(227,112,112,.28)}
+  .tnode.good{border-color:var(--green);box-shadow:0 0 18px rgba(87,201,143,.28)}
+  .tnode .tn-name{font-size:10.5px;font-weight:700;color:var(--ink)}
+  .tnode .tn-val{font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);margin-top:3px}
+  .tedge{width:38px;height:2px;background:var(--line);transition:background .4s}
+  .tedge.on{background:var(--gold)}
+  .trace-caption{text-align:center;font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);min-height:32px;padding:0 20px}
+  .trace-caption b{color:var(--gold-bright)}
+
+  .teamrow{display:flex;gap:12px;align-items:flex-start;padding:8px 0;opacity:0;transform:translateX(-12px);transition:all .45s ease}
+  .teamrow.in{opacity:1;transform:translateX(0)}
+  .avatar{width:32px;height:32px;border-radius:8px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:700;font-size:14px;color:#0a0c12}
+  .teamrow .name{font-size:12.5px;font-weight:700;color:var(--ink)}
+  .teamrow .lane{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint)}
+  .teamrow .removed{font-size:11px;color:var(--ink-dim);font-style:italic;margin-top:2px}
+
+  /* nav */
+  #navdots{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:flex;gap:9px;z-index:60}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);cursor:pointer;transition:all .25s ease;padding:0}
+  .dot.on{background:var(--gold);border-color:var(--gold);box-shadow:0 0 8px rgba(217,161,92,.5);transform:scale(1.25)}
+  #navbtns{position:fixed;bottom:16px;right:26px;display:flex;gap:10px;z-index:60}
+  .navbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink-dim);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .2s ease}
+  .navbtn:hover{border-color:var(--gold);color:var(--gold-bright)}
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-bright));
+    transition:width .5s cubic-bezier(.2,.8,.2,1);z-index:60}
+  .brandmark{position:fixed;top:20px;left:26px;z-index:60;display:flex;align-items:center;gap:9px;pointer-events:none}
+  .brandmark .g{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:13px;color:#1a1204}
+  .brandmark .t{font-family:var(--font-mono);font-weight:700;font-size:12px;letter-spacing:.1em;color:var(--ink-dim)}
+  #hint{position:fixed;top:20px;right:26px;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);z-index:60}
+  #hint kbd{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--ink-dim)}
+  #slidenum{position:fixed;top:20px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);z-index:60}
+  #slidenum b{color:var(--gold-bright)}
+
+  @media(max-width:820px){
+    .grid{grid-template-columns:1fr !important}
+    #hint{display:none}
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="ambient"></div>
+  <div id="progress" style="width:10%"></div>
+  <div class="brandmark"><div class="g">G</div><div class="t">GRANITE — PROPOSAL DEFENSE</div></div>
+  <div id="hint"><kbd>&#8592;</kbd> <kbd>&#8594;</kbd> or drag to navigate</div>
+  <div id="slidenum"><b id="curNum">1</b> / 10</div>
+  <div id="track"></div>
+  <div id="navdots"></div>
+  <div id="navbtns">
+    <button class="navbtn" id="prevBtn">&#8592;</button>
+    <button class="navbtn" id="nextBtn">&#8594;</button>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   Granite — Animated Proposal Defense (10 slides, real motion throughout)
+   Every fact transcribed from Proposal_Defense_Slide_Content_Spec.md.
+   Tax-example diagnosis (Slide 7) chained from committed spike output:
+     dev/spikes/poc/poc_spike5_output.json, poc_spike8_output.json
+   ===================================================================== */
+const track = document.getElementById('track');
+const N = 10;
+let current = 0;
+let dragging = false, dragStartX = 0, dragBaseOffset = 0, dragDelta = 0;
+
+function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstElementChild; }
+function frag(container, htmls){ htmls.forEach(h=>container.appendChild(el(h))); }
+function head(kicker, tag, title, sub){
+  return `<div class="kicker"><span class="n">${kicker}</span><span class="rule"></span><span class="tag">${tag}</span></div>
+    <h1 class="title">${title}</h1>${sub?`<p class="sub">${sub}</p>`:''}`;
+}
+
+/* ---------------- Slide builders ---------------- */
+function s1(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 01','Title & Problem','Granite — <em>A Self-Healing Multi-Agent System</em><br>for Semantic Error Diagnosis, Verified Repair &amp; Recovery','')}
+    <div class="card" style="--accent-c:var(--gold);margin-top:6px;">
+      <h4>One-line problem</h4>
+      <p style="font-size:15px;font-style:italic;color:var(--ink);line-height:1.6">&ldquo;When a multi-agent AI system fails — including when the wrong answer looks completely right — no published method can reliably say which agent caused it, and none can verify a fix before trusting it.&rdquo;</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:12px;">
+      <div class="card" style="--accent-c:var(--teal)"><h4>Project</h4><p><b>F26-060-Granite</b><br>Stream A — Research-derived</p></div>
+      <div class="card" style="--accent-c:var(--orange)"><h4>Supervisor</h4><p><b>Dr. Adil Majeed</b></p></div>
+      <div class="card" style="--accent-c:var(--blue)"><h4>Team</h4><p>Shahoud Shahid<br>Muhammad Noor<br>Saif Shahzad</p></div>
+      <div class="card" style="--accent-c:var(--green)"><h4>SDG</h4><p><b>9.5</b> — Industry, Innovation &amp; Infrastructure</p></div>
+    </div>
+  `;
+}
+function s2(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 02','Stakeholders & Workflow','Who Has This Problem — And Where It Breaks','Primary: engineering teams running multi-agent systems near production (tau-bench retail). Auditors and downstream product teams depend on the diagnosis output.')}
+    <div class="pipeline" id="wf"></div>
+    <div class="grid" style="grid-template-columns:1.3fr 1fr;margin-top:12px;">
+      <div class="card" style="--accent-c:var(--red)"><h4>Where it fails today</h4>
+        <p>No automated attribution with published accuracy. No systematic check for <b>silent failures</b> — a confident, well-formed, wrong answer with no error signal. No way to test a fix before redeploying.</p>
+        <p style="color:var(--gold-bright)">Consequence: a missed silent failure ships an incorrect answer to an end user, undetected.</p>
+      </div>
+      <div class="card" style="--accent-c:var(--gold)"><h4>Field baseline</h4>
+        <div class="bignum" id="baselineNum">0.0%</div>
+        <p>step accuracy (Who&amp;When) — &ldquo;just reading the trace.&rdquo; The number this project has to beat.</p>
+      </div>
+    </div>
+  `;
+  const wf = board.querySelector('#wf');
+  ['Capture trace','Human reads','Guesses root cause'].forEach((s,i)=>{
+    wf.appendChild(el(`<div class="pstep">${s}</div>`));
+    if(i<2) wf.appendChild(el(`<span class="parrow">&rarr;</span>`));
+  });
+  wf.appendChild(el(`<span class="pill red" style="margin-left:10px">unmeasured</span>`));
+}
+function s3(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 03','Existing Solutions & Gap','The Gap Is Structural, Not a Missing Feature','')}
+    <div class="card" style="--accent-c:var(--orange)">
+      <div class="twrap"><table class="t" id="gapTable">
+        <tr><th>Approach</th><th>Attribution</th><th>Silent-failure</th><th>Fix-verify</th><th>Framework-agnostic</th></tr>
+        <tr><td>ErrorProbe (ACL 26)</td><td>59.5%</td><td style="color:var(--red)">admits it cannot</td><td style="color:var(--red)">&mdash;</td><td>2 arch. only</td></tr>
+        <tr><td>LangSmith / Arize (26)</td><td>unpublished</td><td>unconfirmed</td><td style="color:var(--red)">&mdash;</td><td>stack-locked</td></tr>
+        <tr><td>Langfuse/Braintrust/etc.</td><td>human-driven</td><td>RAG-groundedness only</td><td style="color:var(--red)">&mdash;</td><td style="color:var(--red)">&mdash;</td></tr>
+        <tr><td>Manual workflow (today)</td><td>14.2%</td><td style="color:var(--red)">&mdash;</td><td style="color:var(--red)">&mdash;</td><td>N/A</td></tr>
+        <tr><td><b>Granite (proposed)</b></td><td style="color:var(--green)">building on 59.5%</td><td style="color:var(--green)">scoped + measured</td><td style="color:var(--green)">recovery rate, N replays</td><td style="color:var(--green)">CrewAI+LangGraph, unseen</td></tr>
+      </table></div>
+    </div>
+    <div class="card" style="--accent-c:var(--gold);margin-top:12px;"><h4>Real gap</h4>
+      <p>No system checked confirms attribution <b>+</b> silent-failure detection <b>+</b> counterfactual verification <b>+</b> cross-architecture generalization, evaluated as one pipeline.</p>
+    </div>
+  `;
+}
+function s4(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 04','Research & Technical Basis','Read For Decisions, Not Decoration','')}
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="card" style="--accent-c:var(--gold)"><h4>Research lineage</h4>
+        <div class="ladder" id="ladder"></div>
+      </div>
+      <div class="card" style="--accent-c:var(--teal)"><h4>Decisions, not defaults</h4>
+        <p>ErrorProbe chosen as baseline on <b>performance, not recency</b>.</p>
+        <p>CrewAI + LangGraph committed — used by <b>none</b> of the 9 papers reviewed: the actual generalization test.</p>
+        <p>Constraint-based SED chosen — LLM judges score &le;0.65 AUROC on this task.</p>
+        <p>Single-framework scope-narrowing explicitly <b>rejected</b> (R19).</p>
+      </div>
+    </div>
+  `;
+  const ladder = board.querySelector('#ladder');
+  [['Who&When\\nICML 25','14.2%',0.22],['AgenTracer\\nICLR 26','—',0.34],['ErrorProbe\\nACL 26','59.5%',1.0]].forEach(b=>{
+    const bar = el(`<div class="bar"><span class="val">${b[1]}</span><div class="fill" data-h="${b[2]*100}"></div><span class="lbl">${b[0].replace('\\n','<br>')}</span></div>`);
+    ladder.appendChild(bar);
+  });
+}
+function s5(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 05','Complex Computing / CCP','8 of 9 Seoul Accord Characteristics — Clear','')}
+    <div class="card" style="--accent-c:var(--teal)"><div id="ccpList"></div></div>
+  `;
+  const list = board.querySelector('#ccpList');
+  const rows = [
+    ['Conflicting requirements','ok','Diagnostic depth vs. latency; trace completeness vs. privacy'],
+    ['No obvious solution','ok','Best published step accuracy still 59.5% after 7 papers'],
+    ['Depth of knowledge','ok','Execution-graph modeling, causal/counterfactual reasoning'],
+    ['Unfamiliar issues','ok','Delayed error manifestation, LLM non-determinism'],
+    ['Beyond standard practice','ok','No off-the-shelf equivalent solves this combination'],
+    ['Diverse stakeholders','weak','Operators, product teams, auditors named — contact pending'],
+    ['Significant consequences','ok','A missed silent failure ships a wrong answer, undetected'],
+    ['Interdependence','ok','The execution graph models exactly this'],
+    ['Ill-defined cause','ok','3 unknowns: did it fail, which agent/step, correct behavior'],
+  ];
+  rows.forEach((r,i)=> list.appendChild(el(`<div class="checkrow"><span class="dot ${r[1]==='ok'?'ok':'weak'}">${r[1]==='ok'?'&#10003;':'!'}</span><span class="ct"><b>${i+1}. ${r[0]}</b> — ${r[2]}</span></div>`)));
+}
+function s6(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 06','Proposed Solution','What Is Actually Being Built','')}
+    <div class="card" style="--accent-c:var(--gold)"><h4>Contribution</h4>
+      <p>Existing methods reach up to 59.5% step accuracy but remain weak under two conditions: none is evaluated on an architecture absent from its own benchmark construction, and the strongest method admits it cannot catch silent failures. We are building a cross-architecture fault-injection benchmark and a diagnosis pipeline with constraint-based silent-failure verification, packaged as a framework-agnostic testing SDK.</p>
+    </div>
+    <div class="card" style="--accent-c:var(--blue);margin-top:12px;"><h4>Pipeline</h4><div class="pipeline" id="pipe"></div></div>
+    <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:12px;">
+      <div class="card" style="--accent-c:var(--green)"><h4>In scope</h4><p>The 10 committed mechanisms (Tier 1 unconditional + Tier 2 gated). Deployment: single Docker container.</p></div>
+      <div class="card" style="--accent-c:var(--red)"><h4>Out of scope</h4><p>Message queues, Kubernetes/multi-region, full RBAC, disaster-recovery infra, multi-tenant billing.</p></div>
+    </div>
+  `;
+  const pipe = board.querySelector('#pipe');
+  ['trace','execution graph','Semantic Error Diagnostic','causal trace','Repair Agent','verified replay','confidence-gated rec.'].forEach((p,i,arr)=>{
+    pipe.appendChild(el(`<div class="pstep">${p}</div>`));
+    if(i<arr.length-1) pipe.appendChild(el(`<span class="parrow">&rarr;</span>`));
+  });
+}
+function s7(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 07','POC / Feasibility Evidence','8 Real Spikes — Including Two Honest Negatives','')}
+    <div class="card" style="--accent-c:var(--gold)"><h4>Live exhibit — one real diagnosis run</h4>
+      <div class="trace-rig">
+        <div class="tnode" data-n="0"><div class="tn-name">PriceExtractor</div><div class="tn-val" id="tv0">price = ?</div></div>
+        <div class="tedge" data-e="0"></div>
+        <div class="tnode" data-n="1"><div class="tn-name">TaxCalculator</div><div class="tn-val" id="tv1">total = ?</div></div>
+        <div class="tedge" data-e="1"></div>
+        <div class="tnode" data-n="2"><div class="tn-name">Verifier</div><div class="tn-val" id="tv2">pass = ?</div></div>
+      </div>
+      <div class="trace-caption" id="traceCap">click / arrive here to run&hellip;</div>
+    </div>
+    <div class="card" style="--accent-c:var(--green);margin-top:12px;">
+      <div class="twrap"><table class="t" id="spikeTable">
+        <tr><th>Spike</th><th>Status</th><th>Result</th></tr>
+        <tr><td>1 · ErrorProbe repro</td><td><span class="pill green">demonstrated</span></td><td>agent 71.4% mean · step 13.2% mean (5 runs)</td></tr>
+        <tr><td>2 · CrewAI instrumentation</td><td><span class="pill green">demonstrated</span></td><td>clean 3-node, 2-edge trace</td></tr>
+        <tr><td>3/3b · Fault injection</td><td><span class="pill green">demonstrated</span></td><td>ground truth unambiguous; one self-correction kept</td></tr>
+        <tr><td>4 · Semantic Error Diagnostic</td><td><span class="pill green">demonstrated</span></td><td>$20.00 vs $19.75 near-miss caught, zero false positives</td></tr>
+        <tr><td>5 · Counterfactual replay</td><td><span class="pill green">demonstrated</span></td><td>97.2 &rarr; 108.0 recovered, recovery_success = true</td></tr>
+        <tr><td>6 · Cyclic graph handling</td><td><span class="pill green">demonstrated</span></td><td>bound proven load-bearing vs. 10,000-step cap</td></tr>
+        <tr><td>7 · Preventive classifier</td><td><span class="pill amber">honest negative</span></td><td>P/R/F1 = 0.25, near-random — reported, not hidden</td></tr>
+        <tr><td>8 · Repair Agent</td><td><span class="pill green">demonstrated</span></td><td>repair_success_rate 4/6 (0.667)</td></tr>
+      </table></div>
+    </div>
+  `;
+}
+function s8(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 08','Evaluation Plan','Success, Defined Before The Data Exists','')}
+    <div class="grid" style="grid-template-columns:1.3fr 1fr">
+      <div class="card" style="--accent-c:var(--blue)"><h4>Baseline, data &amp; metrics</h4>
+        <p><b>Baseline:</b> ErrorProbe reproduced — pre-registered &plusmn;10pt band around 59.5%.</p>
+        <p><b>Data:</b> Who&amp;When (184) + new benchmark, floor 500 / stretch 1,000, 15&ndash;20% clean controls.</p>
+        <p><b>Metrics:</b> accuracy &middot; propagation F1 &middot; silent-fail P/R+coverage &middot; FP rate on clean controls &middot; recovery rate &middot; false repair rate &middot; latency overhead (&lt;50%)</p>
+      </div>
+      <div class="card" style="--accent-c:var(--amber)"><h4>Success bands</h4>
+        <div class="pipeline" id="bands" style="gap:6px"></div>
+        <p style="margin-top:10px">FP-rate-on-clean-controls appears in zero reviewed papers or platforms.</p>
+      </div>
+    </div>
+  `;
+  const bands = board.querySelector('#bands');
+  [['failure','fail'],['acceptable','ok2'],['strong','strong'],['exceptional','exc']].forEach(b=>bands.appendChild(el(`<div class="band ${b[1]}">${b[0]}</div>`)));
+}
+function s9(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 09','Scope, Risk & $0 Resourcing','Every Risk Has A Recorded Fallback','')}
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="card" style="--accent-c:var(--amber)"><h4>Core &amp; resourcing</h4>
+        <p><span class="pill green">Tier 1 · 8</span> each with a real spike. <span class="pill amber">Tier 2 · 2</span> gated — Recovery Controller (no PoC yet), Verified Repair Memory (failed its one test, stated honestly).</p>
+        <p><b>Resources:</b> <span class="stat">$0</span> — local Ollama, full project. Paid alt priced (&asymp;$353&ndash;$881) and rejected.</p>
+      </div>
+      <div class="card" style="--accent-c:var(--red)"><h4>Top risks + fallback</h4>
+        <div class="twrap"><table class="t" id="riskTable">
+          <tr><th>Risk</th><th>Fallback</th></tr>
+          <tr><td>Miss the &plusmn;10pt band</td><td>Transparent dual-reporting</td></tr>
+          <tr><td>Recovery Controller gate fails</td><td>Resume via replay — Tier 1 delivers it</td></tr>
+          <tr><td>Repair Memory fails again</td><td>Ships as memory on/off ablation</td></tr>
+          <tr><td>LLM API down at runtime</td><td>Documented degraded state, not a crash</td></tr>
+        </table></div>
+      </div>
+    </div>
+  `;
+}
+function s10(board){
+  board.innerHTML = `
+    ${head('EXHIBIT 10','Team, Timeline & DEI','People, Ownership & The Compliance Lines','')}
+    <div class="card" style="--accent-c:var(--green)"><div id="teamList"></div></div>
+    <div class="card" style="--accent-c:var(--gold);margin-top:12px;">
+      <h4>Effort budget — 1,130h capacity</h4>
+      <div class="effortbar"><div class="seg seg1" data-w="43.4"></div><div class="seg seg2" data-w="56.6"></div></div>
+      <p style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint)"><span>FYP-1 &middot; 490h</span><span>FYP-2 &middot; 640h</span></p>
+      <p style="margin-top:8px">DEI: MIT/CC BY 4.0 release; color paired with text (WCAG owed Final-1). Ethics: advisory-only, human-gated fixes, informed consent for real trace data.</p>
+    </div>
+  `;
+  const list = board.querySelector('#teamList');
+  [['Shahoud — Data/Benchmark','If removed: no cross-architecture benchmark exists.','var(--teal)','S'],
+   ['Noor — Diagnosis Engine','If removed: no attribution algorithm, no SED.','var(--orange)','N'],
+   ['Saif — Platform','If removed: nothing installs outside the dev machine.','var(--blue)','F']]
+  .forEach(t=> list.appendChild(el(`<div class="teamrow"><div class="avatar" style="background:${t[2]}">${t[3]}</div><div><div class="name">${t[0]}</div><div class="removed">${t[1]}</div></div></div>`)));
+}
+
+const BUILDERS = [s1,s2,s3,s4,s5,s6,s7,s8,s9,s10];
+
+/* ---------------- build slide shells ---------------- */
+BUILDERS.forEach((fn,i)=>{
+  const slide = el(`<section class="slide" data-i="${i}"><div class="board"></div></section>`);
+  track.appendChild(slide);
+  fn(slide.querySelector('.board'));
+});
+track.style.width = (N*100)+'vw';
+[...track.children].forEach(s=> s.style.width = '100vw');
+
+/* ---------------- nav dots ---------------- */
+const dotsWrap = document.getElementById('navdots');
+for(let i=0;i<N;i++){
+  const d = el(`<button class="dot${i===0?' on':''}" data-i="${i}"></button>`);
+  d.addEventListener('click', ()=> goTo(i));
+  dotsWrap.appendChild(d);
+}
+
+/* ---------------- per-slide animation triggers ---------------- */
+function animateSlide(i){
+  const slide = track.children[i];
+  slide.querySelectorAll('.kicker,.title,.sub,.card').forEach((el,idx)=>{
+    setTimeout(()=> el.classList.add('in'), idx*70);
+  });
+  const stagger = (sel, base, gap) => slide.querySelectorAll(sel).forEach((el,idx)=> setTimeout(()=> el.classList.add('in'), base+idx*gap));
+  stagger('.pill', 260, 90);
+  stagger('.pstep', 300, 130);
+  stagger('.parrow', 340, 130);
+  stagger('table.t tr', 320, 90);
+  stagger('.checkrow', 300, 110);
+  stagger('.band', 350, 110);
+  stagger('.teamrow', 300, 150);
+
+  if(i===1){ // stakeholders — count up baseline
+    const numEl = slide.querySelector('#baselineNum');
+    if(numEl){ let v=0; const iv=setInterval(()=>{ v=Math.min(14.2,v+0.7); numEl.textContent=v.toFixed(1)+'%'; if(v>=14.2) clearInterval(iv); },30); }
+  }
+  if(i===3){ // research lineage bars
+    slide.querySelectorAll('.ladder .fill').forEach((f,idx)=> setTimeout(()=>{ f.style.height = f.dataset.h+'%'; setTimeout(()=> f.parentElement.querySelector('.val').classList.add('in'), 900); }, 250+idx*160));
+  }
+  if(i===6){ // live trace replay
+    setTimeout(()=> playTrace(slide), 500);
+  }
+  if(i===9){ // effort bar
+    slide.querySelectorAll('.effortbar .seg').forEach(s=> setTimeout(()=> s.style.width = s.dataset.w+'%', 260));
+  }
+}
+function resetSlide(i){
+  const slide = track.children[i];
+  slide.querySelectorAll('.in').forEach(el=> el.classList.remove('in'));
+  slide.querySelectorAll('.ladder .fill').forEach(f=> f.style.height='0');
+  slide.querySelectorAll('.effortbar .seg').forEach(s=> s.style.width='0');
+  const numEl = slide.querySelector('#baselineNum'); if(numEl) numEl.textContent = '0.0%';
+  if(i===6) resetTrace(slide);
+}
+
+/* ---------------- live diagnosis trace (Slide 7) ---------------- */
+const traceSteps = [
+  {cap:'Fault injected — PriceExtractor silently corrupts $100.00 &rarr; $90.00', v:['price = 90.00','total = ?','pass = ?'], on:[1,0,0], cls:['bad','','']},
+  {cap:'Pipeline runs — wrong total produced, nothing crashes', v:['price = 90.00','total = 97.20','pass = false'], on:[1,1,1], cls:['bad','bad','bad']},
+  {cap:'Semantic Error Diagnostic flags the mismatch &rarr; causal trace localizes PriceExtractor', v:['CULPRIT','total = 97.20','pass = false'], on:[1,1,1], cls:['bad','bad','bad']},
+  {cap:'Repair Agent proposes price = 100.00 &rarr; <b>replayed: 97.20 &rarr; 108.00, recovery_success = true</b>', v:['price = 100.00','total = 108.00','pass = true'], on:[1,1,1], cls:['good','good','good']},
+];
+let tracePlaying = false;
+function resetTrace(slide){
+  tracePlaying = false;
+  [0,1,2].forEach(n=>{ const node = slide.querySelector(`.tnode[data-n="${n}"]`); if(node){ node.classList.remove('on','bad','good'); } });
+  [0,1].forEach(e=>{ const edge = slide.querySelector(`.tedge[data-e="${e}"]`); if(edge) edge.classList.remove('on'); });
+  const cap = slide.querySelector('#traceCap'); if(cap) cap.innerHTML = 'click / arrive here to run&hellip;';
+  ['tv0','tv1','tv2'].forEach((id,idx)=>{ const v = slide.querySelector('#'+id); if(v) v.textContent = ['price = ?','total = ?','pass = ?'][idx]; });
+}
+function playTrace(slide){
+  if(tracePlaying) return; tracePlaying = true;
+  const nodes = [0,1,2].map(n=> slide.querySelector(`.tnode[data-n="${n}"]`));
+  const edges = [0,1].map(e=> slide.querySelector(`.tedge[data-e="${e}"]`));
+  const vals = ['tv0','tv1','tv2'].map(id=> slide.querySelector('#'+id));
+  const cap = slide.querySelector('#traceCap');
+  let idx = 0;
+  function step(){
+    const s = traceSteps[idx];
+    cap.innerHTML = s.cap;
+    nodes.forEach((n,i)=>{ n.classList.toggle('on', !!s.on[i]); n.classList.remove('bad','good'); if(s.cls[i]) n.classList.add(s.cls[i]); });
+    vals[0].textContent = s.v[0]; vals[1].textContent = s.v[1]; vals[2].textContent = s.v[2];
+    edges.forEach((e,i)=> e.classList.toggle('on', !!(s.on[i] && s.on[i+1])));
+    idx++;
+    if(idx < traceSteps.length) setTimeout(step, 2000); else setTimeout(()=>{ tracePlaying=false; }, 400);
+  }
+  step();
+}
+
+/* ---------------- navigation (click, keys, drag) ---------------- */
+function goTo(i){
+  const prev = current;
+  current = Math.max(0, Math.min(N-1, i));
+  track.style.transform = `translateX(-${current*100}vw)`;
+  [...dotsWrap.children].forEach((d,idx)=> d.classList.toggle('on', idx===current));
+  document.getElementById('curNum').textContent = current+1;
+  document.getElementById('progress').style.width = (((current+1)/N)*100)+'%';
+  if(prev !== current) resetSlide(prev);
+  animateSlide(current);
+}
+document.getElementById('prevBtn').addEventListener('click', ()=> goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click', ()=> goTo(current+1));
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowRight') goTo(current+1);
+  else if(e.key==='ArrowLeft') goTo(current-1);
+});
+
+/* drag / swipe */
+function pointerX(e){ return e.touches ? e.touches[0].clientX : e.clientX; }
+function onDown(e){
+  dragging = true; dragStartX = pointerX(e); dragBaseOffset = -current*window.innerWidth; dragDelta = 0;
+  track.classList.add('dragging');
+}
+function onMove(e){
+  if(!dragging) return;
+  dragDelta = pointerX(e) - dragStartX;
+  track.style.transform = `translateX(${dragBaseOffset + dragDelta}px)`;
+}
+function onUp(){
+  if(!dragging) return;
+  dragging = false; track.classList.remove('dragging');
+  const threshold = window.innerWidth * 0.14;
+  if(dragDelta < -threshold) goTo(current+1);
+  else if(dragDelta > threshold) goTo(current-1);
+  else goTo(current);
+}
+track.addEventListener('mousedown', onDown);
+window.addEventListener('mousemove', onMove);
+window.addEventListener('mouseup', onUp);
+track.addEventListener('touchstart', onDown, {passive:true});
+track.addEventListener('touchmove', onMove, {passive:true});
+track.addEventListener('touchend', onUp);
+
+/* ---------------- ambient background graph ---------------- */
+(function buildAmbient(){
+  const ambient = document.getElementById('ambient');
+  const rand = (a,b)=> a+Math.random()*(b-a);
+  const pts = [];
+  for(let i=0;i<14;i++){
+    const x=rand(4,96), y=rand(6,94), r=rand(2,7);
+    pts.push({x,y});
+    const n = el(`<div class="anode"></div>`);
+    n.style.width = n.style.height = r+'px';
+    n.style.left = x+'%'; n.style.top = y+'%';
+    n.style.animationDuration = rand(26,46)+'s';
+    ambient.appendChild(n);
+  }
+  for(let j=0;j<pts.length-1;j++){
+    if(Math.random() > .5) continue;
+    const a=pts[j], b=pts[j+1];
+    const dx=b.x-a.x, dy=b.y-a.y, len=Math.sqrt(dx*dx+dy*dy), ang=Math.atan2(dy,dx)*180/Math.PI;
+    const e = el(`<div class="aedge"></div>`);
+    e.style.left=a.x+'%'; e.style.top=a.y+'%'; e.style.width=len+'%'; e.style.transform=`rotate(${ang}deg)`;
+    ambient.appendChild(e);
+  }
+})();
+
+/* initial */
+goTo(0);
+</script>
+</body>
+</html>

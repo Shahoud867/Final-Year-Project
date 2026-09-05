@@ -5,6 +5,8 @@ const NAV = [
   { to: "/runs", label: "Runs & diagnoses", icon: "☰" },
   { to: "/evidence", label: "POC evidence", icon: "◈" },
   { to: "/product", label: "Product & scope", icon: "◎" },
+  { to: "/demo", label: "Live demo", icon: "▶" },
+  { to: "/slides", label: "Animated slides", icon: "◆" },
 ];
 
 export function Sidebar() {

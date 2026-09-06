@@ -6,7 +6,6 @@ import { RunDetailPage } from "./pages/RunDetail";
 import { Evidence } from "./pages/Evidence";
 import { ProductVision } from "./pages/ProductVision";
 import { LiveDemo } from "./pages/LiveDemo";
-import { Slides } from "./pages/Slides";
 
 export function App() {
   return (
@@ -22,7 +21,6 @@ export function App() {
             <Route path="/evidence" element={<Evidence />} />
             <Route path="/product" element={<ProductVision />} />
             <Route path="/demo" element={<LiveDemo />} />
-            <Route path="/slides" element={<Slides />} />
           </Routes>
         </div>
       </div>

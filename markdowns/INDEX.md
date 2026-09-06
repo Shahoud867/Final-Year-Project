@@ -8,6 +8,7 @@ This folder holds all FYP documentation for **Granite** (recently renamed from "
 Core scope, architecture, and resourcing — the living plan the rest of the project traces back to.
 
 - [FYP_Scope_CCP_and_Implementation_Plan.md](01-planning-and-scope/FYP_Scope_CCP_and_Implementation_Plan.md) — the index document for the whole project: scope, CCP rating, implementation plan
+- [Granite_FYP_Idea_OnePage.md](01-planning-and-scope/Granite_FYP_Idea_OnePage.md) — the handbook's required one-page FYP idea format (title, difficulty, narrative, references, deliverables, prerequisites, supervisor), filled from the plan doc
 - [architecture-sketch.md](01-planning-and-scope/architecture-sketch.md) — one-page system architecture sketch
 - [datasets.md](01-planning-and-scope/datasets.md) — datasets used/considered, licensing, access notes
 - [resources.md](01-planning-and-scope/resources.md) — compute, models, tooling, and cost resourcing
@@ -20,6 +21,9 @@ Ongoing project bookkeeping — risk, AI-usage, and compliance records.
 - [risk-register.md](02-evidence-and-tracking/risk-register.md) — RAID register (risks, assumptions, issues, dependencies)
 - [AI_Usage_Log.md](02-evidence-and-tracking/AI_Usage_Log.md) — AI usage log across the project
 - [Guide_Compliance_Audit.md](02-evidence-and-tracking/Guide_Compliance_Audit.md) — audit against the FAST FYP guide's requirements
+- [Form13_GenAI_Disclosure_Sheet.md](02-evidence-and-tracking/Form13_GenAI_Disclosure_Sheet.md) — the handbook's Form 13 (External Tool/API/GenAI Disclosure Sheet), filled from `AI_Usage_Log.md`
+- [Pre_Defense_Checklist.md](02-evidence-and-tracking/Pre_Defense_Checklist.md) — every "team must verify/decide" item compiled across all `AI_Usage_Log.md` sessions, deduplicated
+- [Team_Action_Items.md](02-evidence-and-tracking/Team_Action_Items.md) — the human-only subset of the checklist above (things no document can close on the team's behalf)
 
 ## [03-market-and-literature-research/](03-market-and-literature-research/)
 Literature review, baseline selection, and commercial/market landscape.
@@ -38,18 +42,26 @@ Proof-of-concept spike results and the silent-failure-detection research behind 
 - [Silent_Failure_Detection_and_Testing_Strategies.md](04-poc-evidence/Silent_Failure_Detection_and_Testing_Strategies.md) — silent-failure detection strategies, evaluated and honesty-checked
 
 ## [05-deliverables/](05-deliverables/)
-Supervisor- and panel-facing deliverables, including the two Python generator scripts and their outputs.
+Supervisor- and panel-facing deliverables. Reorganized 2026-09-07: each generator script now sits next to its own output in its own subfolder (so "run from within this folder" instructions still work unchanged); markdown deliverables that other documents link to directly stay at this folder's root.
 
 - [FYP_Registration_Form_Answers.md](05-deliverables/FYP_Registration_Form_Answers.md) — official FYP registration form answers
 - [Proposal_Defense_Package.md](05-deliverables/Proposal_Defense_Package.md) — proposal defense slide-by-slide package (markdown content)
-- [Proposal_Defense_Slide_Content_Spec.md](05-deliverables/Proposal_Defense_Slide_Content_Spec.md) — full slide-by-slide spec (purpose, on-slide content, visual, evidence, presenter emphasis) behind the pptx deck, plus final slide order, narrative, [TO BE PROVIDED] list, and panel attack points
-- [generate_proposal_deck.js](05-deliverables/generate_proposal_deck.js) — pptxgenjs generator for `Granite_Proposal_Defense.pptx` (run with `node generate_proposal_deck.js` from within this folder)
-- `Granite_Proposal_Defense.pptx` — the actual 10-slide defense deck (output of `generate_proposal_deck.js`), supervisor Dr. Adil Majeed, project code F26-060-Granite
 - [Supervisor_Briefing.md](05-deliverables/Supervisor_Briefing.md) — plain-language condensed briefing for the supervisor meeting
-- [generate_supervisor_pdf.py](05-deliverables/generate_supervisor_pdf.py) — generator script for `Granite_Supervisor_Briefing.pdf` (run from within this folder)
-- [generate_ccp_docx.py](05-deliverables/generate_ccp_docx.py) — generator script for `Granite_CCP_Justification.docx` (run from within this folder)
+- `Granite_Architecture_Atlas.html` — standalone architecture-atlas artifact
+
+**[proposal-deck/](05-deliverables/proposal-deck/)**
+- [Proposal_Defense_Slide_Content_Spec.md](05-deliverables/proposal-deck/Proposal_Defense_Slide_Content_Spec.md) — full slide-by-slide spec (purpose, on-slide content, visual, evidence, presenter emphasis) behind the pptx deck, plus final slide order, narrative, [TO BE PROVIDED] list, and panel attack points
+- [generate_proposal_deck.js](05-deliverables/proposal-deck/generate_proposal_deck.js) — pptxgenjs generator for `Granite_Proposal_Defense.pptx` (run with `node generate_proposal_deck.js` from within this subfolder)
+- `Granite_Proposal_Defense.pptx` — the actual 10-slide defense deck (output of `generate_proposal_deck.js`), supervisor Dr. Adil Majeed, project code F26-060-Granite
+
+**[supervisor-briefing/](05-deliverables/supervisor-briefing/)**
+- [generate_supervisor_pdf.py](05-deliverables/supervisor-briefing/generate_supervisor_pdf.py) — generator script for `Granite_Supervisor_Briefing.pdf` (run from within this subfolder)
 - `Granite_Supervisor_Briefing.pdf` — generated 12-section supervisor briefing (output of `generate_supervisor_pdf.py`)
+
+**[ccp-justification/](05-deliverables/ccp-justification/)**
+- [generate_ccp_docx.py](05-deliverables/ccp-justification/generate_ccp_docx.py) — generator script for `Granite_CCP_Justification.docx` (run from within this subfolder)
 - `Granite_CCP_Justification.docx` — generated CCP justification document (output of `generate_ccp_docx.py`)
+- `Granite_CCP_Justification_Seoul_Accord.docx` — Seoul-Accord-framed variant of the same justification
 
 ## [06-archive-superseded/](06-archive-superseded/)
 Earlier, since-narrowed drafts kept for history — not live spec, not to be updated.

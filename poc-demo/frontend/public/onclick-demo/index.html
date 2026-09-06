@@ -449,6 +449,17 @@ function buildArchitectureView(container){
       Click any node to see its purpose, inputs/outputs, and honest evidence status. Nothing here is hidden:
       the backend is as much a first-class citizen of this demo as the UI.</p>
 
+    <div class="disclaimer" style="border-color:var(--blue);background:var(--blue-soft);">
+      <div class="ic">📖</div>
+      <div><div class="tt" style="color:var(--blue);">This page is a presentation aid — not the proposal-stage PoC itself</div>
+        <div class="bd">Per the <b>BS FYP Handbook (3rd ed.), §C.12</b>: <i>"A polished interface that does not test technical
+        or workflow risk is not sufficient by itself... a slide stating that a POC was completed is not a POC."</i> The
+        five questions it asks of every PoC — what risky assumption was tested, on what input, with what result, what was
+        learned or disproved, and how it changed the plan — are answered by the <b>8 real spikes on disk</b>
+        (<code>dev/spikes/poc/</code>), not by this interactive walkthrough. Use <b>POC Evidence</b> in the main navigation
+        for that actual evidence; treat everything below as illustration of the same, already-proven mechanisms.</div></div>
+    </div>
+
     <div class="modstrip">
       <div class="modcard"><h5>1 · Data &amp; Benchmark</h5><div class="own">Owner: Shahoud Shahid</div>
         <ul><li>Framework adapters (CrewAI, LangGraph)</li><li>Fault-injection harness</li><li>500+ trace benchmark, 15–20% clean controls</li></ul></div>
@@ -659,6 +670,11 @@ const STAGES2 = [
    logs:[["scenario.task","apply 8% tax to extracted price; expected final_total = $108.00"],
          ["pipeline.nodes",'["PriceExtractor","TaxCalculator","Verifier"]'],
          ["fault_injected",'{node:"n0", type:"corrupted_value", true_value:100.0, corrupted_value:90.0}']]},
+  {key:"generalize", label:"Generalize", archActive:"sdk",
+   logs:[["spike2.instrument(crewai_workflow)","hooks attached — clean 3-node, 2-edge trace captured"],
+         ["spike6.instrument(langgraph_workflow)","true Researcher↔Critic cycle detected"],
+         ["spike6.revisit_bound","enforced — control run w/ bound disabled hit the 10,000-step safety cap"],
+         ["generalization_check","same diagnosis engine, zero framework-specific tuning, both pass"]]},
   {key:"trace", label:"Trace", archActive:"graph",
    logs:[["sdk.instrument()","hooks attached — 3 nodes, 2 edges"],
          ["POST /api/runs","202 Accepted (trace_id=run_demo_01)"],
@@ -692,7 +708,8 @@ function buildPipelineView(){
   view.innerHTML = `
     <div class="view-eyebrow">Run Pipeline</div>
     <h1 class="view-title">Watch the Complete Diagnosis Run</h1>
-    <p class="view-sub">One real, recorded diagnosis (chained Spike 5 + Spike 8, case "tax_total") — every number below is
+    <p class="view-sub">A real, recorded diagnosis (chained Spike 5 + Spike 8, case "tax_total"), preceded by the real
+      cross-architecture evidence (Spikes 2 &amp; 6) that makes it trustworthy — every number in all 8 stages is
       transcribed from committed spike output, not invented. The architecture map and backend log on the right update live
       as each stage runs, so the backend is never hidden behind a loading spinner.</p>
 
@@ -764,7 +781,7 @@ function renderStageBody(view, i){
   const stage = $("#stageStage", view);
   const s = STAGES2[i].key;
   if (s === "scenario") {
-    stage.innerHTML = `${stageHead("The Scenario","Stage 1 / 7")}
+    stage.innerHTML = `${stageHead("The Scenario","Stage 1 / 8")}
       <div class="stagecap">A 3-agent pipeline: apply 8% tax to an extracted price, checked against an expected total of
         <b>$108.00</b>. One agent is about to make a mistake — and nothing will crash.</div>
       <div class="tracerig2" id="rig"></div>
@@ -780,8 +797,34 @@ function renderStageBody(view, i){
       $$(".tedge2",rig).forEach((e,idx)=>setTimeout(()=>e.classList.add("appear"),idx*170+90));
     },30));
   }
+  if (s === "generalize") {
+    stage.innerHTML = `${stageHead("Cross-Architecture Generalization","Stage 2 / 8")}
+      <div class="stagecap">Before running this scenario, a real question: does the <b>same</b> diagnosis engine work on
+        frameworks it was never tuned for? This is genuine evidence, not this scenario's own trace — Spikes 2 and 6,
+        run independently, shown here because they're what makes the run you're about to watch trustworthy.</div>
+      <div class="vscols" style="margin-top:14px;">
+        <div class="vscard gran" style="border-color:var(--teal);">
+          <div class="hd" style="background:var(--teal-soft);color:var(--teal);">CrewAI — Spike 2</div>
+          <div class="bd">
+            <div class="vsstep"><span class="n2">→</span>Real multi-agent CrewAI workflow instrumented with SDK hooks.</div>
+            <div class="vsstep"><span class="n2">→</span>Result: clean 3-node, 2-edge trace captured — no data lost, no framework-specific tuning.</div>
+            <div class="vsverdict catch">DEMONSTRATED — instrumentation works cleanly.</div>
+          </div>
+        </div>
+        <div class="vscard gran" style="border-color:var(--blue);">
+          <div class="hd" style="background:var(--blue-soft);color:var(--blue);">LangGraph — Spike 6</div>
+          <div class="bd">
+            <div class="vsstep"><span class="n2">→</span>A true Researcher↔Critic cycle — LangGraph's native support for cyclic workflows, unlike CrewAI.</div>
+            <div class="vsstep"><span class="n2">→</span>Result: terminates under a revisit bound; a control run with the bound disabled hit the 10,000-step safety cap — proving the bound is load-bearing, not decorative.</div>
+            <div class="vsverdict catch">DEMONSTRATED — cyclic graphs handled correctly.</div>
+          </div>
+        </div>
+      </div>
+      <p class="text-muted" style="font-size:10.5px;margin-top:10px;">Neither of the 9 papers this project's literature review covers tests on either framework. The scenario that follows
+        (PriceExtractor → TaxCalculator → Verifier) now runs on this same, cross-validated engine.</p>`;
+  }
   if (s === "trace") {
-    stage.innerHTML = `${stageHead("Execution Trace","Stage 2 / 7")}
+    stage.innerHTML = `${stageHead("Execution Trace","Stage 3 / 8")}
       <div class="stagecap">The pipeline ran. It produced an answer. <b>Nothing crashed</b> — but the answer is wrong.</div>
       <div class="tracerig2" id="rig"></div>
       <div style="display:flex;gap:16px;margin-top:12px;">
@@ -799,7 +842,7 @@ function renderStageBody(view, i){
     },30));
   }
   if (s === "diagnose") {
-    stage.innerHTML = `${stageHead("Semantic Error Diagnostic","Stage 3 / 7")}
+    stage.innerHTML = `${stageHead("Semantic Error Diagnostic","Stage 4 / 8")}
       <div class="stagecap">Before blaming any agent: did the <b>rules of the task itself</b> get broken? Rule-based —
         <b>0% of this is an LLM call.</b></div>
       <div class="card card-pad mono" style="background:#05070a;min-height:120px;font-size:12.5px;line-height:1.9;color:#8fe6ac;" id="term2"></div>
@@ -812,7 +855,7 @@ function renderStageBody(view, i){
     typeTerm(stage.querySelector("#term2"), lines, "VERDICT: SILENT_FAILURE_DETECTED");
   }
   if (s === "localize") {
-    stage.innerHTML = `${stageHead("Backward Causal Tracing","Stage 4 / 7")}
+    stage.innerHTML = `${stageHead("Backward Causal Tracing","Stage 5 / 8")}
       <div class="stagecap">Trace <b>backward</b> through the graph — using structure (out-degree, betweenness), not a guess.</div>
       <div class="tracerig2" id="rig"></div>
       <div class="stagecap"><b>Culprit found:</b> PriceExtractor — step 1
@@ -837,7 +880,7 @@ function renderStageBody(view, i){
     }, 500);
   }
   if (s === "repair") {
-    stage.innerHTML = `${stageHead("Repair Agent","Stage 5 / 7")}
+    stage.innerHTML = `${stageHead("Repair Agent","Stage 6 / 8")}
       <div class="stagecap">Now that we know exactly who broke it, ask a fix-generating model for the correct value —
         the one step here that genuinely needs an LLM.</div>
       <div class="card card-pad mono" style="background:#05070a;min-height:110px;font-size:12px;color:#cdd6e6;white-space:pre-wrap;" id="json2"></div>`;
@@ -851,7 +894,7 @@ function renderStageBody(view, i){
 }`; }, 1200);
   }
   if (s === "verify") {
-    stage.innerHTML = `${stageHead("Verified Automatic Repair","Stage 6 / 7")}
+    stage.innerHTML = `${stageHead("Verified Automatic Repair","Stage 7 / 8")}
       <div class="stagecap">Don't trust the fix — <b>replay</b> the pipeline with it applied, frozen upstream context,
         pinned decoding, and check the number comes out right.</div>
       <div style="display:flex;gap:16px;margin-top:12px;">
@@ -967,9 +1010,45 @@ function buildEvaluationView(container){
       </div>
     </div>
 
-    <div class="card card-pad">
+    <div class="card card-pad" style="margin-bottom:22px;">
       <div class="card-hd"><h4>8 real proof-of-concept spikes — including two honest negatives</h4></div>
       <div style="overflow-x:auto;"><table class="spiketbl" id="spikeTbl"></table></div>
+    </div>
+
+    <div class="card card-pad" style="margin-bottom:22px;">
+      <div class="card-hd"><h4>Why this is a substantial FYP, not a small prototype</h4></div>
+      <div class="apigrid">
+        <div class="apicard"><div class="sig">3 owned subsystems, 1 pipeline</div><div class="desc">Not three separate mini-projects — the benchmark feeds the diagnosis engine's evaluation, and the SDK packages that same engine. Remove any one owner and a named, distinct deliverable disappears.</div></div>
+        <div class="apicard"><div class="sig">~1,130 person-hours budgeted</div><div class="desc">3 people × ~15h/week × ~28 weeks, line-by-line against named work (490h FYP-1 / 640h FYP-2) — not a round number.</div></div>
+        <div class="apicard"><div class="sig">10 frozen core mechanisms</div><div class="desc">8 Tier-1 evidenced by a real spike each, 2 Tier-2 gated with pre-registered Mid-1 pass/fail criteria — nothing added just to look bigger.</div></div>
+        <div class="apicard"><div class="sig">8 of 9 Seoul Accord CCP characteristics</div><div class="desc">Checked honestly against the handbook's own complex-computing-problem criteria (§C.3) — the 9th (diverse stakeholder contact) is a named, open gap, not hidden.</div></div>
+      </div>
+    </div>
+
+    <div class="card card-pad">
+      <div class="card-hd"><h4>This PoC vs. the product at Final-2</h4></div>
+      <p class="text-muted" style="font-size:11px;margin-bottom:12px;">Per the handbook's own 5-gate model (§C.5.1) — this demo reflects where the project stands at
+        <b style="color:var(--text);">Gate 1, Proposal Defense</b>. Here is what changes by <b style="color:var(--text);">Gate 5, Final-2</b>.</p>
+      <div class="vscols">
+        <div class="vscard base" style="border-color:var(--border-strong);">
+          <div class="hd" style="background:var(--surface-hover);color:var(--text-secondary);">TODAY — PROPOSAL DEFENSE</div>
+          <div class="bd">
+            <div class="vsstep"><span class="n2">•</span>8 spikes + 1 reproduction run, hand-picked scenarios</div>
+            <div class="vsstep"><span class="n2">•</span>SDK: designed interface only, simulated terminal playback</div>
+            <div class="vsstep"><span class="n2">•</span>Recovery Controller / Repair Memory: gated, unresolved</div>
+            <div class="vsstep"><span class="n2">•</span>Backend: 31 recorded runs, no live ingestion endpoint</div>
+          </div>
+        </div>
+        <div class="vscard gran" style="border-color:var(--green);">
+          <div class="hd">FINAL-2 — DEPLOYED PRODUCT</div>
+          <div class="bd">
+            <div class="vsstep"><span class="n2">•</span>500+ trace benchmark, 15–20% clean controls, full CIs + ablations</div>
+            <div class="vsstep"><span class="n2">•</span>SDK: installable <code>pip install granite-sdk</code>, real hooks, real diagnose() calls</div>
+            <div class="vsstep"><span class="n2">•</span>Recovery Controller / Repair Memory: resolved one way or the other, with recorded fallback either way</div>
+            <div class="vsstep"><span class="n2">•</span>Backend: live ingestion, containerized, deployed off the dev machine</div>
+          </div>
+        </div>
+      </div>
     </div>
   `;
   const rows = [

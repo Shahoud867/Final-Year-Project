@@ -62,7 +62,7 @@ Own-vs-assist boundary respected throughout (architecture-sketch.md's API-usage 
 Every step has a corresponding artifact (literature review, gap verification, CCP formulation, contribution definition, technical-approach comparison, POC, evaluation definition, scope/ownership shaping, stress-testing via commercial comparison, SDG check). ✓
 
 ## §10 Product/Prior-FYP/Workflow Comparison
-Commercial half ✓✓ (Commercial_Product_Comparison.md, 7 platforms). **Prior-FYP half still genuinely open** — cannot be completed externally. Current-workflow comparison ✓ (Slide 2 of defense package). The guide's warning that platform/language/UI changes alone don't constitute differentiation — correctly not relied upon; the differentiation is substantive (silent-failure detection + counterfactual testing + proven generalization).
+Commercial half ✓✓ (Commercial_Product_Comparison.md §1–3, 7 platforms). **Prior-FYP half closed 2026-09-06** (R39, Commercial_Product_Comparison.md §4) — closest match `S24-011-D-HDLM` ("Hallucination Detection in Language Model Textual Responses," Spring 2024), found via a full scan of the department's own FYP archive. Current-workflow comparison ✓ (Slide 2 of defense package). The guide's warning that platform/language/UI changes alone don't constitute differentiation — correctly not relied upon; the differentiation is substantive (silent-failure detection + counterfactual testing + proven generalization), and the prior-FYP comparison itself makes the "single LLM vs. multi-agent system" distinction explicit, per that same warning.
 
 ## §11 Research-to-Decision Table — done, §0.08
 
@@ -98,7 +98,7 @@ No pattern present: not a routine CRUD portal, not a bare chatbot wrapper, has a
 
 1. **Security/privacy feasibility (§12) — genuinely missing, not previously flagged.** The most substantive finding in this audit. *(Since resolved — threat model written 2026-08-23, risk-register R16.)*
 2. **§6's one-sentence vagueness-test format** — cosmetic, content exists but not fused into the guide's exact compound-sentence form.
-3. Everything else confirms or restates already-known opens (stakeholder contact, role assignment, prior-FYP check, explain-out-loud) — no other new gaps at this finer granularity.
+3. Everything else confirms or restates already-known opens (stakeholder contact, role assignment, explain-out-loud) — no other new gaps at this finer granularity. Prior-FYP check closed 2026-09-06 (R39), no longer on this list.
 
 ---
 
@@ -118,6 +118,6 @@ No pattern present: not a routine CRUD portal, not a bare chatbot wrapper, has a
 **Still open after this pass, and not closeable by any document** — these are the honest residuals to state at the defense rather than paper over:
 
 1. **Real stakeholder contact** (I2) — CCP characteristic #6 stays at 8/9 until it happens. The single highest-value remaining action.
-2. **Prior-departmental-FYP comparison** (§10, second half) — requires the team's own department archive; cannot be completed externally.
+2. ~~**Prior-departmental-FYP comparison**~~ — **Closed 2026-09-06** (R39): closest match `S24-011-D-HDLM` (Spring 2024), found via the department's own archive. `Commercial_Product_Comparison.md` §4.
 3. **"Explain your subsystem out loud, no notes"** (§14.1) — rehearsal, not documentation. Each owner should be able to walk one spike end-to-end unaided.
 4. **Deployment evidence** (§1.2) — correctly not producible at proposal stage; owed by Final-2.

@@ -59,7 +59,7 @@
 | ErrorProbe (ACL 2026) | 3-stage LLM diagnosis + memory | ✅ 59.5% | ❌ admits it cannot | ❌ | ❌ tested on 2 architectures only |
 | LangSmith Engine / Arize Alyx (2026) | Automated RCA + fix drafting | Not published | Not confirmed | Not confirmed | ❌ stack-locked |
 | Langfuse / Braintrust / Phoenix / Maxim / Opik / DeepEval | Trace capture + eval | Human-driven | RAG-groundedness only | ❌ | ❌ |
-| Closest prior FYP | **[TO BE PROVIDED — department archive check, cannot be completed externally]** | | | | |
+| Closest prior FYP (S24-011-D-HDLM, Spring 2024) | Hallucination detection in single-LLM text | — no attribution at all | Partial — single-LLM text only, not agent traces | ❌ no repair/replay step | N/A — not a multi-agent system |
 | Current manual workflow | Human reads, guesses | 14.2% (Who&When baseline) | ❌ | ❌ | N/A |
 | **Granite (proposed)** | Constraint-based SED + verified repair loop | Building on ErrorProbe | ✅ scoped &amp; measured | ✅ recovery rate over N replays | ✅ CrewAI + LangGraph, both unseen by the corpus |
 
@@ -261,7 +261,7 @@ Slides 1–2 establish the problem is real and who has it. Slides 3–4 prove th
 
 ## Missing Information — [TO BE PROVIDED]
 
-1. **Closest prior departmental FYP** (slide 3's comparison row) — requires the team's own department archive access; cannot be completed externally.
+1. ~~**Closest prior departmental FYP**~~ — **Resolved 2026-09-06** (risk-register R39): `S24-011-D-HDLM`, "Hallucination Detection in Language Model Textual Responses" (Spring 2024), identified via a full scan of the department's own FYP repository spreadsheet (Fall 2019 – Fall 2025, all 16 semester sheets). Filled into slide 3's comparison row.
 2. **Real stakeholder contact — names, dates, what was learned** (slides 2 and 5) — the single highest-priority open item across the whole project; a proxy/human-baseline study is designed to double as this evidence if direct contact doesn't close in time.
 3. **Confidence-gate threshold value** (extension 12, referenced on slide 6/9) — the mechanism is designed; the specific number is not yet calibrated.
 4. **Data-retention window value** (R16, referenced on slide 9) — the mechanism is committed; no specific number of days/hours is chosen yet.

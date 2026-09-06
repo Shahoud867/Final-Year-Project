@@ -12,8 +12,14 @@ Core scope, architecture, and resourcing — the living plan the rest of the pro
 - [architecture-sketch.md](01-planning-and-scope/architecture-sketch.md) — one-page system architecture sketch
 - [datasets.md](01-planning-and-scope/datasets.md) — datasets used/considered, licensing, access notes
 - [resources.md](01-planning-and-scope/resources.md) — compute, models, tooling, and cost resourcing
-- [cost-estimate.md](01-planning-and-scope/cost-estimate.md) — API cost estimate and model plan, computed from measured token counts across all 184 Who&When cases (closes risk-register R5)
+- [cost-estimate.md](01-planning-and-scope/cost-estimate.md) — API cost estimate and model plan; §0 records the 2026-09-04 decision to run the full project at $0 committed spend, on local Ollama throughout (closes risk-register R5, R37)
 - [Software_Design_Specification.md](01-planning-and-scope/Software_Design_Specification.md) — component/data/API/schema-level design (Mid-1-track, not proposal-defense material): system context, component architecture, data flow, ER diagram, API contract, sequence/state diagrams, deployment — strictly within the frozen scope, nothing added
+- [Project_Vision.md](01-planning-and-scope/Project_Vision.md) — standalone project vision: problem, motivation, target users, product/research vision, objectives, boundaries, expected outcomes, novelty
+- [Use_Case_Model.md](01-planning-and-scope/Use_Case_Model.md) — full actor/use-case model (11 use cases, `«include»`/`«extend»` relationships with rationale), paired with [diagrams/Use_Case_Diagram.svg](01-planning-and-scope/diagrams/Use_Case_Diagram.svg)
+- [System_Sequence_Diagrams.md](01-planning-and-scope/System_Sequence_Diagrams.md) — 3 black-box SSDs (actor + `:Granite` system boundary, distinct from the SDS's internal design-level sequence diagram): [SSD1_Submit_Trace_and_Diagnose.svg](01-planning-and-scope/diagrams/SSD1_Submit_Trace_and_Diagnose.svg), [SSD2_Generate_and_Verify_Repair.svg](01-planning-and-scope/diagrams/SSD2_Generate_and_Verify_Repair.svg), [SSD3_Review_Diagnosis_Dashboard.svg](01-planning-and-scope/diagrams/SSD3_Review_Diagnosis_Dashboard.svg)
+- [Software_Requirements_Specification.md](01-planning-and-scope/Software_Requirements_Specification.md) — formal SRS (what the system must do): functional/non-functional requirements with IDs and priorities, stakeholders, actors, scope, assumptions, constraints, dependencies, external interfaces — distinct from the SDS (how it's built)
+- [Test_Plan.md](01-planning-and-scope/Test_Plan.md) — formal test plan: objectives, strategy, levels, functional/non-functional/security/performance testing, techniques, environments, entry/exit criteria, defect handling, requirement→test traceability
+- [Software_Development_Plan.md](01-planning-and-scope/Software_Development_Plan.md) — formal SDP: methodology, phases, work breakdown, milestones, roles, tech stack, environment, VCS/branching, standards, integration/deployment strategy — restructured from the plan doc, not a renamed copy
 
 ## [02-evidence-and-tracking/](02-evidence-and-tracking/)
 Ongoing project bookkeeping — risk, AI-usage, and compliance records.
@@ -24,6 +30,7 @@ Ongoing project bookkeeping — risk, AI-usage, and compliance records.
 - [Form13_GenAI_Disclosure_Sheet.md](02-evidence-and-tracking/Form13_GenAI_Disclosure_Sheet.md) — the handbook's Form 13 (External Tool/API/GenAI Disclosure Sheet), filled from `AI_Usage_Log.md`
 - [Pre_Defense_Checklist.md](02-evidence-and-tracking/Pre_Defense_Checklist.md) — every "team must verify/decide" item compiled across all `AI_Usage_Log.md` sessions, deduplicated
 - [Team_Action_Items.md](02-evidence-and-tracking/Team_Action_Items.md) — the human-only subset of the checklist above (things no document can close on the team's behalf)
+- [Traceability_Matrix.md](02-evidence-and-tracking/Traceability_Matrix.md) — requirement → use case → design → test matrix, plus the final cross-document consistency audit (use cases vs. requirements, SSDs vs. use cases, wireframes vs. real functionality, terminology, scope boundary)
 
 ## [03-market-and-literature-research/](03-market-and-literature-research/)
 Literature review, baseline selection, and commercial/market landscape.
@@ -47,7 +54,9 @@ Supervisor- and panel-facing deliverables. Reorganized 2026-09-07: each generato
 - [FYP_Registration_Form_Answers.md](05-deliverables/FYP_Registration_Form_Answers.md) — official FYP registration form answers
 - [Proposal_Defense_Package.md](05-deliverables/Proposal_Defense_Package.md) — proposal defense slide-by-slide package (markdown content)
 - [Supervisor_Briefing.md](05-deliverables/Supervisor_Briefing.md) — plain-language condensed briefing for the supervisor meeting
-- `Granite_Architecture_Atlas.html` — standalone architecture-atlas artifact
+- [Granite_Architecture_Atlas.html](05-deliverables/Granite_Architecture_Atlas.html) — 9 architecture diagrams plus a "Requirements & Design" tab (Use Case Diagram, 3 SSDs, wireframe-set link) and a coverage matrix / gaps-and-decisions reference — open directly in a browser, no build step
+- [Granite_Wireframes.html](05-deliverables/Granite_Wireframes.html) — 16 screens/states across 8 sections, low-fidelity/grayscale by convention, each annotated with the requirement or endpoint it satisfies; flags the genuine gaps (SDK onboarding, live trace submission, repair approval) distinctly from the real, shipped `poc-demo` screens
+- [Granite_Wireframes_2.html](05-deliverables/Granite_Wireframes_2.html) — same 16 screens at near-final visual fidelity: real palette, realistic sample data drawn from the actual spike evidence, and explicit **Novelty** flags on the 3 capabilities with strong, specific evidence of being a genuine differentiator (checked against LangSmith/Langfuse/Braintrust/Arize/Maxim/Opik/DeepEval)
 
 **[proposal-deck/](05-deliverables/proposal-deck/)**
 - [Proposal_Defense_Slide_Content_Spec.md](05-deliverables/proposal-deck/Proposal_Defense_Slide_Content_Spec.md) — full slide-by-slide spec (purpose, on-slide content, visual, evidence, presenter emphasis) behind the pptx deck, plus final slide order, narrative, [TO BE PROVIDED] list, and panel attack points

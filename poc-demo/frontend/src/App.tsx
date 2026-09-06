@@ -5,6 +5,7 @@ import { RunsList } from "./pages/RunsList";
 import { RunDetailPage } from "./pages/RunDetail";
 import { Evidence } from "./pages/Evidence";
 import { ProductVision } from "./pages/ProductVision";
+import { LiveDemo } from "./pages/LiveDemo";
 
 export function App() {
   return (
@@ -19,6 +20,7 @@ export function App() {
             <Route path="/runs/:id/:tab" element={<RunDetailPage />} />
             <Route path="/evidence" element={<Evidence />} />
             <Route path="/product" element={<ProductVision />} />
+            <Route path="/demo" element={<LiveDemo />} />
           </Routes>
         </div>
       </div>

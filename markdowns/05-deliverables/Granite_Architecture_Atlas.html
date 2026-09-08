@@ -105,6 +105,7 @@
 
   figure{margin:0 0 22px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px 18px 14px; box-shadow:var(--shadow)}
   figure svg{width:100%; height:auto; display:block; max-width:100%}
+  figure img{width:100%; height:auto; display:block; max-width:100%; border:1px solid var(--border); border-radius:8px}
   figcaption{font-size:12px; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border)}
 
   .infogrid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:8px}
@@ -154,6 +155,17 @@
     <div>
       <div class="navgroup-label">Diagrams 1&ndash;9</div>
       <div class="navlist" id="navlist"></div>
+    </div>
+
+    <div>
+      <div class="navgroup-label">Requirements &amp; Design</div>
+      <div class="navlist">
+        <button class="navitem" data-target="usecase"><span class="navnum">U</span><span class="navtext">Use Case Diagram</span></button>
+        <button class="navitem" data-target="ssd1"><span class="navnum">S1</span><span class="navtext">SSD-1 — Submit &amp; Diagnose</span></button>
+        <button class="navitem" data-target="ssd2"><span class="navnum">S2</span><span class="navtext">SSD-2 — Repair &amp; Verify</span></button>
+        <button class="navitem" data-target="ssd3"><span class="navnum">S3</span><span class="navtext">SSD-3 — Dashboard</span></button>
+        <button class="navitem" data-target="wireframes"><span class="navnum">W</span><span class="navtext">Wireframe set</span></button>
+      </div>
     </div>
 
     <div>
@@ -1005,6 +1017,62 @@ const MATRIX_ROWS = [
   ["8","External dependency audit","N/A — infrastructure, not features","Ongoing, all phases","LLM API, CrewAI, LangGraph, 3 datasets, Docker, Postgres, GitHub Actions","What happens if a given dependency goes down?"],
   ["9","Ownership and hours","All 10 mechanisms, mapped to an owner","FYP-1 + FYP-2","N/A — people, not components","Who is accountable for what, and does the effort math add up?"],
 ];
+const reqDesignHtml = `
+<section class="view" id="view-usecase">
+  <div class="view-eyebrow">Requirements &amp; Design — new for the proposal defense</div>
+  <h1 class="view-title">Use Case Diagram</h1>
+  <p class="view-purpose">Eleven use cases spanning SDK installation, benchmark generation, trace submission, parallel attribution / silent-failure detection, repair generation and verification, the two Tier 2 gated mechanisms, human approval, and the diagnosis dashboard — every one traced to a functional requirement, none invented for the diagram.</p>
+  <figure>
+    <img src="../01-planning-and-scope/diagrams/Use_Case_Diagram.svg" alt="Granite use case diagram">
+    <figcaption>Full actor/use-case/relationship model, including the rationale for every «include» vs «extend» choice: <a href="../01-planning-and-scope/Use_Case_Model.md">Use_Case_Model.md</a>.</figcaption>
+  </figure>
+  <div class="infogrid">
+    <div class="infocard"><h4>What it covers</h4><p>UC-1 through UC-11, mapped to FR-1 through FR-7 in the new SRS. The diagram itself doubles as a visual proof of the 15–20% API-dependence budget (plan §6): only 2 of 11 use cases touch the LLM API actor.</p></div>
+    <div class="infocard"><h4>Full requirements set</h4><p>Complete functional + non-functional requirements, stakeholders, actors, scope, assumptions, constraints, dependencies: <a href="../01-planning-and-scope/Software_Requirements_Specification.md">Software_Requirements_Specification.md</a>.</p></div>
+  </div>
+</section>
+
+<section class="view" id="view-ssd1">
+  <div class="view-eyebrow">Requirements &amp; Design — new for the proposal defense</div>
+  <h1 class="view-title">SSD-1 — Submit Trace and Receive Diagnosis</h1>
+  <p class="view-purpose">A genuine black-box System Sequence Diagram — actor + one <code>:Granite</code> system-boundary lifeline, distinct from the SDS's own internal design-level sequence diagram. Every message on this path is served with zero calls to the external LLM API.</p>
+  <figure>
+    <img src="../01-planning-and-scope/diagrams/SSD1_Submit_Trace_and_Diagnose.svg" alt="SSD-1 sequence diagram">
+    <figcaption>Malformed-trace and clean-control alternative flows shown explicitly. Full explanation: <a href="../01-planning-and-scope/System_Sequence_Diagrams.md">System_Sequence_Diagrams.md</a>.</figcaption>
+  </figure>
+</section>
+
+<section class="view" id="view-ssd2">
+  <div class="view-eyebrow">Requirements &amp; Design — new for the proposal defense</div>
+  <h1 class="view-title">SSD-2 — Generate and Verify a Repair</h1>
+  <p class="view-purpose">The one scenario carrying both genuinely API-dependent stages and both Tier 2 gated mechanisms — drawn as a single three-way branch so the recorded fallback for each gate is visible on the diagram itself, not left to a footnote.</p>
+  <figure>
+    <img src="../01-planning-and-scope/diagrams/SSD2_Generate_and_Verify_Repair.svg" alt="SSD-2 sequence diagram">
+    <figcaption>Branches: Recovery Controller gate passed → checkpoint resume; gate failed → Tier 1 replay fallback; recovery below threshold → human review (ext #12).</figcaption>
+  </figure>
+</section>
+
+<section class="view" id="view-ssd3">
+  <div class="view-eyebrow">Requirements &amp; Design — new for the proposal defense</div>
+  <h1 class="view-title">SSD-3 — Review Diagnosis Dashboard</h1>
+  <p class="view-purpose">Grounded entirely in already-built, already-verified code — the three system operations shown are marked "Real — built and verified" in the SDS's API contract, not aspirational.</p>
+  <figure>
+    <img src="../01-planning-and-scope/diagrams/SSD3_Review_Diagnosis_Dashboard.svg" alt="SSD-3 sequence diagram">
+    <figcaption>Read-only path: Overview → Runs &amp; Diagnoses → Run Detail, with an explicit not-found error state.</figcaption>
+  </figure>
+</section>
+
+<section class="view" id="view-wireframes">
+  <div class="view-eyebrow">Requirements &amp; Design — new for the proposal defense</div>
+  <h1 class="view-title">Wireframe Set</h1>
+  <p class="view-purpose">Low-fidelity, deliberately grayscale (the standard convention — communicates layout and hierarchy, not final visual style; the real, already-built visual design lives in <code>poc-demo/frontend</code> and the diagrams elsewhere in this atlas). Covers onboarding, live trace submission, and repair approval — the genuine gaps not yet built — alongside the real, shipped Overview / Runs / Run Detail / Evidence / Product screens, plus their empty, loading, and error states.</p>
+  <div class="infogrid">
+    <div class="infocard"><h4>Open the full set</h4><p><a href="Granite_Wireframes.html">Granite_Wireframes.html</a> — 16 screens/states across 8 sections, each annotated with the requirement or endpoint it satisfies.</p></div>
+    <div class="infocard"><h4>Genuine gaps flagged</h4><p>SDK Quick-Start, Submit Execution Trace, Diagnosis Running, and Approve/Reject Suggested Repair are marked <strong style="color:var(--red, #a6392f)">GAP</strong> — the one real product surface not yet built, matching the SDS §7 note that <code>POST /api/runs</code> "is the difference between a dashboard that replays what already happened and a system that diagnoses a trace it has never seen."</p></div>
+  </div>
+</section>
+`;
+
 const matrixHtml = `<section class="view" id="view-matrix">
   <div class="view-eyebrow">Reference</div>
   <h1 class="view-title">Diagram Coverage Matrix</h1>
@@ -1045,7 +1113,7 @@ const gapsHtml = `<section class="view" id="view-gaps">
   </div>
 </section>`;
 
-document.getElementById("main").innerHTML = mainHtml + matrixHtml + gapsHtml;
+document.getElementById("main").innerHTML = mainHtml + reqDesignHtml + matrixHtml + gapsHtml;
 
 /* ---------- Router ---------- */
 function activate(id){

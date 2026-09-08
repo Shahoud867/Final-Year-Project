@@ -1,0 +1,198 @@
+<svg viewBox="0 0 1750 1150" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" role="img" aria-label="Granite use case diagram: the Engineering-Team Operator, the Multi-Agent System Under Test, and the LLM API interact with eleven use cases inside the Granite system boundary, spanning SDK installation, benchmark generation, trace submission, failure attribution, silent-failure detection, repair generation and verification, Tier-2 gated resumption and memory reuse, human approval, and the diagnosis dashboard.">
+  <title>Granite — Use Case Diagram</title>
+  <defs>
+    <marker id="arrowSolid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5440"/>
+    </marker>
+    <marker id="arrowInclude" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#1f7d84"/>
+    </marker>
+    <marker id="arrowExtend" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.5,5 z" fill="#b5601f"/>
+    </marker>
+    <marker id="arrowFlow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8c8368"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1750" height="1150" fill="#faf6ef"/>
+
+  <!-- ============ Title & legend ============ -->
+  <text x="40" y="42" font-size="24" font-weight="800" fill="#211c12">Granite — Use Case Diagram</text>
+  <text x="40" y="66" font-size="13" fill="#5c5440">Primary actor: Engineering-Team Operator · Secondary actor: Multi-Agent System Under Test · External system: LLM API (Core-assist only, plan §6)</text>
+
+  <g font-size="12.5" fill="#5c5440">
+    <line x1="1180" y1="30" x2="1215" y2="30" stroke="#5c5440" stroke-width="1.6"/>
+    <text x="1222" y="34">actor association</text>
+
+    <line x1="1180" y1="52" x2="1215" y2="52" stroke="#1f7d84" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowInclude)"/>
+    <text x="1222" y="56">«include» (always runs)</text>
+
+    <line x1="1440" y1="52" x2="1475" y2="52" stroke="#b5601f" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowExtend)"/>
+    <text x="1482" y="56">«extend» (conditional)</text>
+
+    <line x1="1440" y1="30" x2="1475" y2="30" stroke="#8c8368" stroke-width="1.6" stroke-dasharray="2,3" marker-end="url(#arrowFlow)"/>
+    <text x="1482" y="34">sequential flow</text>
+
+    <rect x="1180" y="68" width="18" height="12" rx="3" fill="#f4efe5" stroke="#93701a" stroke-width="1.4"/>
+    <text x="1204" y="78">Tier 2 — gated at Mid-1 (plan §7.0)</text>
+  </g>
+
+  <!-- ============ System boundary ============ -->
+  <rect x="240" y="100" width="1200" height="960" rx="18" fill="#ffffff" stroke="#a96a1f" stroke-width="2.5"/>
+  <text x="266" y="132" font-size="17" font-weight="800" fill="#a96a1f">Granite</text>
+  <text x="266" y="151" font-size="11.5" fill="#8c8368">Self-Healing Multi-Agent System for Semantic Error Diagnosis, Verified Repair and Recovery</text>
+
+  <!-- ============ Actors ============ -->
+  <!-- Operator (primary) -->
+  <g stroke="#211c12" stroke-width="2.2" fill="none" stroke-linecap="round">
+    <circle cx="110" cy="470" r="16" fill="#ffffff"/>
+    <line x1="110" y1="486" x2="110" y2="540"/>
+    <line x1="82" y1="505" x2="138" y2="505"/>
+    <line x1="110" y1="540" x2="86" y2="580"/>
+    <line x1="110" y1="540" x2="134" y2="580"/>
+  </g>
+  <text x="110" y="602" font-size="13.5" font-weight="700" fill="#211c12" text-anchor="middle">Engineering-Team</text>
+  <text x="110" y="618" font-size="13.5" font-weight="700" fill="#211c12" text-anchor="middle">Operator</text>
+  <text x="110" y="634" font-size="11" fill="#8c8368" text-anchor="middle">(primary actor)</text>
+
+  <!-- Target Multi-Agent System (secondary) -->
+  <g stroke="#211c12" stroke-width="2.2" fill="none" stroke-linecap="round">
+    <circle cx="1610" cy="220" r="16" fill="#ffffff"/>
+    <line x1="1610" y1="236" x2="1610" y2="290"/>
+    <line x1="1582" y1="255" x2="1638" y2="255"/>
+    <line x1="1610" y1="290" x2="1586" y2="330"/>
+    <line x1="1610" y1="290" x2="1634" y2="330"/>
+  </g>
+  <text x="1610" y="352" font-size="13" font-weight="700" fill="#211c12" text-anchor="middle">Multi-Agent System</text>
+  <text x="1610" y="368" font-size="13" font-weight="700" fill="#211c12" text-anchor="middle">Under Test</text>
+  <text x="1610" y="384" font-size="11" fill="#8c8368" text-anchor="middle">(secondary — CrewAI / LangGraph)</text>
+
+  <!-- LLM API (external system) -->
+  <g stroke="#211c12" stroke-width="2.2" fill="none" stroke-linecap="round">
+    <circle cx="1610" cy="720" r="16" fill="#ffffff"/>
+    <line x1="1610" y1="736" x2="1610" y2="790"/>
+    <line x1="1582" y1="755" x2="1638" y2="755"/>
+    <line x1="1610" y1="790" x2="1586" y2="830"/>
+    <line x1="1610" y1="790" x2="1634" y2="830"/>
+  </g>
+  <text x="1610" y="852" font-size="13" font-weight="700" fill="#211c12" text-anchor="middle">LLM API</text>
+  <text x="1610" y="868" font-size="11" fill="#8c8368" text-anchor="middle">(external, Core-assist —</text>
+  <text x="1610" y="882" font-size="11" fill="#8c8368" text-anchor="middle">~15–20% of components, plan §6)</text>
+
+  <!-- ============ Use case ellipses ============ -->
+  <!-- UC1 -->
+  <ellipse cx="500" cy="190" rx="160" ry="52" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="500" y="184" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Install SDK Against</text>
+  <text x="500" y="202" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Target Workflow</text>
+  <text x="500" y="220" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-5.1</text>
+
+  <!-- UC2 -->
+  <ellipse cx="1080" cy="190" rx="165" ry="52" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="1080" y="184" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Generate Fault-Injection</text>
+  <text x="1080" y="202" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Benchmark</text>
+  <text x="1080" y="220" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-1.1–1.4 · 0% API</text>
+
+  <!-- UC3 -->
+  <ellipse cx="790" cy="340" rx="175" ry="52" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="790" y="334" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Submit Execution Trace</text>
+  <text x="790" y="352" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">for Diagnosis</text>
+  <text x="790" y="370" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-5.2</text>
+
+  <!-- UC4 -->
+  <ellipse cx="480" cy="510" rx="170" ry="66" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="480" y="492" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Attribute Failure</text>
+  <text x="480" y="510" font-size="12" fill="#211c12" text-anchor="middle">(Culprit Agent + Step +</text>
+  <text x="480" y="527" font-size="12" fill="#211c12" text-anchor="middle">Verification Agent)</text>
+  <text x="480" y="544" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-2 · 0% API</text>
+
+  <!-- UC5 -->
+  <ellipse cx="1100" cy="510" rx="170" ry="66" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="1100" y="492" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Detect Silent Failure</text>
+  <text x="1100" y="510" font-size="12" fill="#211c12" text-anchor="middle">(Semantic Error</text>
+  <text x="1100" y="527" font-size="12" fill="#211c12" text-anchor="middle">Diagnostic)</text>
+  <text x="1100" y="544" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-3 · 0% API · abstains if no checkable constraint</text>
+
+  <!-- UC6 -->
+  <ellipse cx="560" cy="680" rx="160" ry="52" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="560" y="674" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Generate Candidate</text>
+  <text x="560" y="692" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Repair</text>
+  <text x="560" y="710" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-4.1 · calls LLM API</text>
+
+  <!-- UC9 (Tier 2) -->
+  <ellipse cx="1160" cy="680" rx="170" ry="66" fill="#f4efe5" stroke="#93701a" stroke-width="2"/>
+  <text x="1160" y="662" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Reuse Stored Repair</text>
+  <text x="1160" y="680" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Pattern</text>
+  <text x="1160" y="698" font-size="11.5" font-weight="700" fill="#93701a" text-anchor="middle">TIER 2 — gated</text>
+  <text x="1160" y="714" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-4.6 · Verified Repair Memory</text>
+
+  <!-- UC7 -->
+  <ellipse cx="560" cy="850" rx="160" ry="52" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="560" y="844" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Verify Repair via</text>
+  <text x="560" y="862" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Controlled Replay</text>
+  <text x="560" y="880" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-4.2–4.3 · calls LLM API</text>
+
+  <!-- UC8 (Tier 2) -->
+  <ellipse cx="940" cy="850" rx="175" ry="66" fill="#f4efe5" stroke="#93701a" stroke-width="2"/>
+  <text x="940" y="832" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Resume From Verified</text>
+  <text x="940" y="850" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Repair Point</text>
+  <text x="940" y="868" font-size="11.5" font-weight="700" fill="#93701a" text-anchor="middle">TIER 2 — gated</text>
+  <text x="940" y="884" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-4.5 · Recovery Controller</text>
+
+  <!-- UC10 -->
+  <ellipse cx="1330" cy="850" rx="160" ry="52" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="1330" y="844" font-size="13.5" font-weight="700" fill="#211c12" text-anchor="middle">Approve / Reject</text>
+  <text x="1330" y="862" font-size="13.5" font-weight="700" fill="#211c12" text-anchor="middle">Suggested Repair</text>
+  <text x="1330" y="880" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-7.4 · ext #12</text>
+
+  <!-- UC11 -->
+  <ellipse cx="790" cy="1010" rx="175" ry="46" fill="#ffffff" stroke="#d4c6a8" stroke-width="1.8"/>
+  <text x="790" y="1006" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">Review Diagnosis Dashboard</text>
+  <text x="790" y="1024" font-size="10.5" fill="#8c8368" text-anchor="middle">FR-6.4 · Overview / Runs / Product &amp; scope</text>
+
+  <!-- ============ Actor associations (solid) ============ -->
+  <g stroke="#5c5440" stroke-width="1.4" fill="none">
+    <line x1="126" y1="460" x2="366" y2="220"/>
+    <line x1="130" y1="480" x2="640" y2="360"/>
+    <line x1="130" y1="500" x2="405" y2="670"/>
+    <path d="M130,520 L130,935 L1330,935 L1330,904"/>
+    <line x1="128" y1="540" x2="640" y2="1000"/>
+
+    <line x1="1594" y1="235" x2="1215" y2="205"/>
+    <line x1="1596" y1="250" x2="930" y2="345"/>
+
+    <path d="M1610,720 L1610,590 L700,590 L655,650"/>
+    <path d="M1610,720 L1610,942 L700,942 L695,880"/>
+  </g>
+
+  <!-- ============ Include relationships (teal dashed) ============ -->
+  <g stroke="#1f7d84" stroke-width="2" stroke-dasharray="7,5" fill="none">
+    <line x1="700" y1="368" x2="545" y2="460" marker-end="url(#arrowInclude)"/>
+    <line x1="880" y1="368" x2="1030" y2="460" marker-end="url(#arrowInclude)"/>
+  </g>
+  <text x="600" y="415" font-size="11.5" fill="#1f7d84" font-style="italic" transform="rotate(-31 600 415)">«include»</text>
+  <text x="980" y="415" font-size="11.5" fill="#1f7d84" font-style="italic" transform="rotate(31 980 415)">«include»</text>
+
+  <!-- ============ Extend relationships (orange dashed) ============ -->
+  <g stroke="#b5601f" stroke-width="2" stroke-dasharray="7,5" fill="none">
+    <line x1="565" y1="614" x2="515" y2="574" marker-end="url(#arrowExtend)"/>
+    <line x1="700" y1="655" x2="960" y2="565" marker-end="url(#arrowExtend)"/>
+    <line x1="990" y1="680" x2="720" y2="680" marker-end="url(#arrowExtend)"/>
+    <line x1="765" y1="850" x2="720" y2="850" marker-end="url(#arrowExtend)"/>
+    <line x1="1170" y1="850" x2="720" y2="850" marker-end="url(#arrowExtend)" stroke-dashoffset="3"/>
+  </g>
+  <text x="480" y="600" font-size="11" fill="#b5601f" font-style="italic" text-anchor="middle">«extend»</text>
+  <text x="830" y="600" font-size="11" fill="#b5601f" font-style="italic" text-anchor="middle">«extend»</text>
+  <text x="855" y="668" font-size="11" fill="#b5601f" font-style="italic" text-anchor="middle">«extend»</text>
+  <text x="745" y="835" font-size="11" fill="#b5601f" font-style="italic" text-anchor="middle">«extend»</text>
+  <text x="945" y="835" font-size="11" fill="#b5601f" font-style="italic" text-anchor="middle">«extend»</text>
+
+  <!-- ============ Sequential flow (thin dotted gray, not a UML stereotype) ============ -->
+  <g stroke="#8c8368" stroke-width="1.6" stroke-dasharray="2,3" fill="none">
+    <line x1="560" y1="732" x2="560" y2="798" marker-end="url(#arrowFlow)"/>
+    <line x1="640" y1="895" x2="730" y2="965" marker-end="url(#arrowFlow)"/>
+    <line x1="500" y1="242" x2="700" y2="330" marker-end="url(#arrowFlow)"/>
+  </g>
+
+  <text x="1780" y="20" font-size="1"> </text>
+</svg>

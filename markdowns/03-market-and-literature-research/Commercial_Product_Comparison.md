@@ -1,6 +1,6 @@
-# Commercial Product Comparison — Granite vs. the Existing Agent-Observability Market
+# Commercial Product & Prior-FYP Comparison — Granite vs. the Existing Market and Department Archive
 
-*Per the FAST guide's §10 requirement ("Product, Prior-FYP and Workflow Comparison") — comparison against real deployed products, not just academic papers. Compiled 2026-08-22 via direct research into each platform's current, documented feature set. Resolves risk-register.md's R9.*
+*Per the FAST guide's §10 requirement ("Product, Prior-FYP and Workflow Comparison") — comparison against real deployed products, not just academic papers, **and** against the closest prior departmental FYP. Sections 1–3 (commercial/framework comparison) compiled 2026-08-22, resolving risk-register.md's R9. Section 4 (prior-FYP comparison) added 2026-09-06, resolving R39 — the department-archive half of C.10 that sections 1–3 always said required the team's own archive access.*
 
 ---
 
@@ -92,3 +92,30 @@ Total frozen feature count is now 20 (10 foundational + 8 extensions + 2 deprior
 **3.7 BabyAGI** — Useful as conceptual inspiration because its function-centric architecture records execution details and explores experimental self-building capabilities. In principle, self-building allows a system to create or revise capabilities rather than only report an error. However, BabyAGI does not provide the same systematic, benchmarked culprit-agent and originating-step diagnosis studied by ERRORPROBE. For an FYP, its self-modification idea is more useful as inspiration for the Repair Agent than as a direct baseline for semantic attribution.
 
 **3.8 ERRORPROBE (ACL Findings 2026)** — A research framework for semantic failure attribution in multi-agent systems. It takes a failed trace, uses structural decomposition and symptom-driven backward tracing, and employs a Strategist-Investigator-Arbiter team to identify the responsible agent and decisive error step. It also stores verified diagnostic patterns. Its main contribution is therefore diagnosis rather than closed-loop operational recovery: the framework improves the debugger, but it does not demonstrate a complete system that automatically repairs the responsible component, replays the workflow from a corrected state and retains verified repairs as executable recovery knowledge.
+
+---
+
+## 4. Prior-FYP Comparison (department archive) — the other half of guide §10
+
+**Resolved 2026-09-06** (risk-register.md R39) — closes the department-archive half of C.10 that the sections above (2–3) were always explicit they could not close externally. Method: the team supplied `BS-FYP repository.xlsx`, the department's own project archive spanning **Fall 2019 through Fall 2025** (16 semester sheets, ~1,300 total prior projects across all degree programs). Every title, description, and highlight field across all 16 sheets was scanned for the terms that actually matter to Granite's problem space (multi-agent, agentic, LLM, hallucination, root-cause, diagnosis, debugging, tracing, observability, self-healing, LangGraph/CrewAI/AutoGen), not just "AI" or "chatbot," which would have matched most of the archive and told us nothing.
+
+### 4.1 Closest prior FYP
+
+| | Detail |
+|---|---|
+| **Project** | `S24-011-D-HDLM` — **"Hallucination Detection in Language Model Textual Responses"** |
+| **Semester** | Spring 2024 |
+| **Problem / target users** | Untrustworthy LLM output — a language model generating "inaccurate or fictional information" that looks fluent and confident. Target users are, by extension, anyone consuming LLM-generated text who needs to trust it's factually grounded |
+| **Core approach / strong feature** | Detects hallucinations directly in a language model's textual responses — the same underlying phenomenon Granite's Semantic Error Diagnostic targets: an output that *looks* fine but isn't |
+| **Evidence-based limitation** | From the project's own on-file description: scoped to **one language model's text output**, not a multi-agent execution trace. No agent-level or step-level attribution (there is only one model to blame, not several interacting agents). No propagation-path modeling (nothing to propagate *through*). No repair or counterfactual-replay mechanism — detection only, not detect-then-fix. Supervisor not recorded in the archive sheet for this entry |
+| **Implication for Granite** | **Confirms the underlying problem is real and already recognized within the department** — a full FYP was built around exactly the "AI output that's wrong but shows no error signal" phenomenon Granite's own contribution statement names. But it covers, at most, **one of Granite's four pipeline stages** (the silent-failure-detection stage) — and even that stage is scoped narrower (single-model text vs. Granite's constraint-based verification across an executing multi-agent workflow). The **multi-agent** half of Granite's claim (attribution across interacting agents, causal propagation, cross-architecture generalization) and the **recovery** half (repair generation, verified counterfactual replay, measured recovery rate) are untouched by this or any other prior project found in the archive scan. Changing "single LLM" to "multi-agent system" is exactly the kind of difference the guide's own C.10 warning requires us to defend as material, not cosmetic — and it is: a hallucination detector for one model's text has no notion of *which agent*, *which step*, or *whether a fix actually works*, because none of those concepts exist without multiple interacting agents in the first place |
+
+### 4.2 Runner-up candidates found, named for completeness (not the closest, but worth having on record if asked "did you look at X too")
+
+| Project | Semester | Why it's close | Why it's not the closest |
+|---|---|---|---|
+| `F25-098-R-Questor` | Fall 2025 | A dual-pipeline, **multi-agent AI system** built specifically to *detect* something (financial fraud) across structured and unstructured data | Closest match on **architecture** (multi-agent detection pipeline), but the detection target is fraud in financial records, not failures inside another AI system's own execution — no attribution, no repair loop |
+| `F25-112-D-GitCortex` | Fall 2025 | An **agentic AI system** that automates bug detection, issue triage, and code review via a multi-stage pipeline | Closest match on **automated-diagnosis-via-agentic-pipeline**, but diagnoses bugs in static source code, not failures in a running multi-agent workflow — no cross-architecture claim, no counterfactual replay |
+| `F25-208-D-HalluciLens` | Fall 2025 | A browser extension detecting hallucinations in AI-generated content via fact-checking and citation verification | Same theme as the closest match (hallucination/credibility detection) but even further from Granite's scope than S24-011 — verification-by-fact-checking, not constraint-based, and no multi-agent or repair dimension at all |
+
+**Why S24-011-D-HDLM, not one of these three, is named as "closest":** the guide's own comparison table asks for structural similarity in problem, users, inputs, outputs, technical approach, constraints, and evaluation — and S24-011 shares the actual **problem framing** with Granite (an AI output that passes every obvious check but is still wrong) more directly than the three runners-up, which are close on architecture or automation style but target a different underlying problem (fraud, code bugs, or a different verification mechanism). Named on the record rather than silently picking whichever comparison looked most favorable.

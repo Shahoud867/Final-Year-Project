@@ -200,7 +200,8 @@ erDiagram
     DIAGNOSIS {
         uuid id PK
         uuid run_id FK
-        string culprit_agent
+        string culprit_agent "normalized (bare agent name) - what's compared against ground truth"
+        string culprit_agent_raw "the model's literal output before normalization - R28, see below"
         int culprit_step
         float confidence
         text hypotheses_json
@@ -235,9 +236,10 @@ erDiagram
     }
 ```
 
-**Two fields worth flagging explicitly, because they encode committed decisions, not arbitrary design choices:**
+**Three fields worth flagging explicitly, because they encode committed decisions, not arbitrary design choices:**
 - `TRACE_NODE.content_redacted` — not a raw field. R16's threat model requires regex PII redaction *before* storage; this schema has no path that stores unredacted trace content.
 - `SED_VERDICT.abstained` — exists because FR3/06 doc §3.1 commit to reporting an abstention rate as a first-class metric, not silently dropping unclassifiable cases.
+- `DIAGNOSIS.culprit_agent` / `culprit_agent_raw` — a two-field pair, not one, specifically so the real system doesn't silently repeat Spike 1's Case 6 finding (R28): the Arbiter sometimes echoes a compound trajectory role label verbatim ("Orchestrator (thought)", "Orchestrator (-> WebSurfer)") instead of the bare agent name ground truth always uses. The POC's fix (`normalize_agent()` in `poc_spike1_errorprobe_repro.py`) strips known turn-type suffixes *before* comparing — verified conservative against all 5 real POC runs before being trusted (it flips exactly the 4 cases that were a labeling artifact, and correctly leaves alone the 2 cases where the model named a genuinely different agent). Storing both the normalized and raw values, rather than only the post-normalization string, means a future audit can always recover what the model actually said and re-check the normalization logic against it — the same discipline the POC's own verification step already applied. **This closes SDS §14's first open item for this file**: the normalization question is now reconciled into the real schema rather than left for the real build to silently rediscover. What's still owed, and belongs to FYP-1 core implementation rather than this design document: transcribing `normalize_agent()`'s actual suffix-stripping logic (or an improved version of it) into the real backend, and deciding whether new turn-type suffixes discovered in CrewAI/LangGraph traces (as opposed to the AutoGen/Magentic-One traces Spike 1 used) need their own normalization rules.
 
 ---
 
@@ -385,4 +387,4 @@ R16's threat model already names the mechanisms; this section places them on the
 
 - [ ] Confirm the schema in §6 against whatever the actual CrewAI/LangGraph adapter output looks like once real instrumentation hooks are built (plan §0.07's "most likely to change" note already flags this)
 - [ ] Decide the retention window for R16's time-bounded retention (no number chosen yet — this document names the mechanism, not the value)
-- [ ] Resolve the Case 6 agent-name normalization question (risk-register R28) into whatever attribution schema the real Verification Agent stage uses — the POC's `normalize_agent()` fix should inform, not be silently forgotten by, the real implementation
+- [x] **Resolved 2026-09-07** — the Case 6 agent-name normalization question (risk-register R28) is now reconciled into the schema: §6's `DIAGNOSIS` entity carries both `culprit_agent` (normalized) and `culprit_agent_raw` (the model's literal output), so the real system can't silently lose what `normalize_agent()` corrected. See §6's third flagged-fields note for the full reasoning. **Still owed, but now scoped as FYP-1 implementation work, not a design gap**: transcribing the actual suffix-stripping logic into the real backend, and checking whether CrewAI/LangGraph traces need their own turn-type suffix rules beyond the ones Spike 1's AutoGen/Magentic-One traces surfaced.

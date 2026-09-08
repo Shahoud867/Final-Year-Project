@@ -59,7 +59,7 @@ Reconstruction in one paragraph, in plain language (per the prompt's §4): **Gra
 | Specifiability: 5 FRs, ≥1 measurable NFR, actors, acceptance criterion, one-page architecture | §6 | ✅ all present (FR4 wording needs the V3 fix) |
 | AI-resilience test answered | §7 | ✅ plan §5; strengthen with the "what a week-built version gets wrong" list (deliverable 02, Q30) |
 | Level-2 AI-assisted development, usage log | §8 | ✅ log maintained and specific |
-| Solution landscape incl. commercial products and prior FYPs | §10 | ⚠️ commercial ✅; **departmental prior-FYP check still open** (team-only task) |
+| Solution landscape incl. commercial products and prior FYPs | §10 | ✅✅ commercial ✅; **departmental prior-FYP check closed 2026-09-06** (R39) — closest match `S24-011-D-HDLM`, `Commercial_Product_Comparison.md` §4 |
 | Research-to-decision table | §11 | ✅ |
 | Demonstrated PoC at defense | §12 | ✅✅ 8 spikes vs the 1 required — including two honest negatives |
 | Testing vs evaluation vs acceptance separated; UAT participants planned | §13/13.1 | ✅ separated; name proxy participants concretely at defense |
@@ -117,7 +117,7 @@ Answer to the killer question — *"why can three undergraduates do what seven p
 
 | Dimension | Score | Basis |
 |---|---|---|
-| FAST alignment | **9/10** | Near-total; docked for unassigned ownership and open prior-FYP check |
+| FAST alignment | **9/10** | Near-total; docked for unassigned ownership — prior-FYP check closed 2026-09-06 (R39), no longer a deduction |
 | Problem significance | **8/10** | Production multi-agent adoption is real; consequence argument concrete |
 | Research gap | **8/10** | One confessed gap, one full-text-confirmed gap; crowding risk logged (R7) |
 | Novelty | **7/10** | Measurement + benchmark + closed loop; no algorithmic novelty (correctly disclaimed) |
@@ -151,6 +151,6 @@ Answer to the killer question — *"why can three undergraduates do what seven p
 | 6 | SED scope | Rule-based claim unbounded | Scope sentence + coverage metric (§4.5) | Pre-empts the trivial-or-impossible attack | **Strongly recommended** |
 | 7 | Consistency | 7-vs-8 spikes; stale dev/README; VEM/VRM name collision | Fix per deliverable 05 | Panel-visible polish | **Strongly recommended** |
 | 8 | Repo hygiene | 48MB vendored deps; GAIA in git; `.pyc` committed | Datasets out of git; download scripts; licensing check | Legal + professionalism before repo is public | **Strongly recommended** (licensing part: essential before publishing) |
-| 9 | Prior FYPs | Unchecked | Department archive check | Guide §10 | **Essential** (team-only) |
+| 9 | Prior FYPs | **Closed 2026-09-06** (R39) — `S24-011-D-HDLM` identified as closest match | Department archive check | Guide §10 | Done — `Commercial_Product_Comparison.md` §4 |
 | 10 | Extensions | 8 extensions scheduled | No change — already gated correctly | — | Unnecessary to touch |
 | 11 | SDK/plugin expansion | SDK is the product boundary | Do **not** add a plugin architecture | Right-sized already; expansion is scope creep | Unnecessary scope — avoid |

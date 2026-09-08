@@ -634,7 +634,7 @@ story.append(P("12. What Remains Open", "H1"))
 story.append(ListFlowable([
     ListItem(P("Real stakeholder contact — the one item most directly tied to CCP characteristic #6")),
     ListItem(P("Assigning the 3 defined ownership roles (Data/Benchmark, Diagnosis, Platform) to actual team members")),
-    ListItem(P("Checking the department's own prior-FYP archive for structural overlap")),
+    ListItem(P("Closed 2026-09-06 (R39): department prior-FYP archive checked — closest match S24-011-D-HDLM (\"Hallucination Detection in Language Model Textual Responses,\" Spring 2024); full comparison in Commercial_Product_Comparison.md")),
     ListItem(P("Each team member independently re-running their owned spikes and explaining them without notes")),
     ListItem(P("POC-testing the 2 newly-proposed silent-failure strategies (Cross-Agent Consistency Verification, Constraint Provenance Tracing) before they can be added to the validated core")),
     ListItem(P("Repair Agent's 2 failing cases (risk-register.md R17) — both traced to one fixable interface-specification issue (the model returns a computed result instead of the specific corrected parameter); worth a targeted prompt fix and re-test before Mid-1, not a re-run from scratch")),

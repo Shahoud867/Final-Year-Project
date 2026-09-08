@@ -212,7 +212,7 @@ function bullets(slide, items, opts) {
     ["ErrorProbe\n(ACL 2026)", "3-stage LLM diagnosis\n+ memory", "59.5%", "✘ admits\nit cannot", "✘", "✘ 2 archs only"],
     ["LangSmith Engine /\nArize Alyx (2026)", "Automated RCA\n+ fix drafting", "not published", "not confirmed", "not confirmed", "✘ stack-locked"],
     ["Langfuse / Braintrust /\nPhoenix / Maxim / Opik", "Trace capture\n+ eval", "human-driven", "RAG-groundedness\nonly", "✘", "✘"],
-    ["Closest prior FYP", "[TO BE PROVIDED]", "—", "—", "—", "—"],
+    ["Closest prior FYP\n(S24-011-D-HDLM,\nSpring 2024)", "Hallucination detection\nin single-LLM text", "—\nno attribution at all", "partial — single-LLM\ntext only, not agent traces", "✘ no repair/\nreplay step", "N/A — not a\nmulti-agent system"],
     ["Current manual\nworkflow", "human reads,\nguesses", "14.2%\n(Who&When)", "✘", "✘", "N/A"],
     ["Granite\n(proposed)", "Constraint-based SED\n+ verified repair loop", "building on\nErrorProbe", "✓ scoped &\nmeasured", "✓ recovery rate\nover N replays", "✓ CrewAI +\nLangGraph, unseen"],
   ];
@@ -382,10 +382,13 @@ function bullets(slide, items, opts) {
   s.addText([{ text: "LLM API", options: { bold: true, breakLine: true, fontSize: 10, color: C.accentDark } }, { text: "core-assist only\n~15–20% of components", options: { fontSize: 7.8, color: C.textMuted } }], { x: bx + bw - 1.48, y: ay + 0.43, w: 1.26, h: 0.85, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle" });
 
   s.addText("In scope: 10 committed mechanisms (Tier 1 + gated Tier 2)   ·   Out of scope: message queues, Kubernetes/multi-region, full RBAC, DR infra, multi-tenant billing", {
-    x: bx, y: ay + ah + 0.1, w: bw, h: 0.3, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 9.5, italic: true, color: C.textMuted,
+    x: bx, y: ay + ah + 0.1, w: bw, h: 0.24, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 9.5, italic: true, color: C.textMuted,
+  });
+  s.addText("Full traceable spec behind this diagram: Use Case Model + diagram, 3 System Sequence Diagrams, SRS, Test Plan, Software Development Plan, wireframes — architecture atlas, tab “Requirements & Design”", {
+    x: bx, y: ay + ah + 0.34, w: bw, h: 0.24, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 8.3, italic: true, color: C.textMuted,
   });
 
-  s.addNotes("Say unprompted: 'controlled, not deterministic' — the replay protocol is deterministic, LLM-step variance is measured over N replays, never assumed away (R25). Say unprompted: the Semantic Error Diagnostic abstains where no checkable constraint exists, and the abstention rate is reported as a metric.");
+  s.addNotes("Say unprompted: 'controlled, not deterministic' — the replay protocol is deterministic, LLM-step variance is measured over N replays, never assumed away (R25). Say unprompted: the Semantic Error Diagnostic abstains where no checkable constraint exists, and the abstention rate is reported as a metric. If asked for the full SRS/use-case/SSD/test-plan detail behind this diagram, point to the architecture atlas's new 'Requirements & Design' tab and the underlying files in markdowns/01-planning-and-scope/.");
 }
 
 // ============================================================

@@ -71,19 +71,19 @@ const CW = PW - MX * 2;
 const RAIL = 0.055;               // left accent rail width
 
 // ================= helpers =================
+// `kicker` param kept in every call site (unused) rather than touched at all
+// 10 call sites — the yellow one-line restatement above the title added no
+// required content (not asked for by the image or the handbook) and read as
+// decorative, so it's been dropped; the title alone now anchors the header.
 function chrome(slide, num, title, kicker) {
   // left accent rail
   slide.addShape(pres.ShapeType.rect, {
     x: 0, y: 0, w: RAIL, h: PH, fill: { color: C.gold }, line: { type: "none" },
   });
   facetWatermark(slide);
-  slide.addText(kicker.toUpperCase(), {
-    x: MX, y: 0.32, w: CW, h: 0.28, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 13.5, bold: true, color: C.goldDark, charSpacing: 1.6,
-  });
   slide.addText(title, {
-    x: MX, y: 0.60, w: CW, h: 0.64, isTextBox: true, margin: 0,
-    fontFace: F_TITLE, fontSize: 29.5, bold: true, color: C.textDark,
+    x: MX, y: 0.46, w: CW, h: 0.70, isTextBox: true, margin: 0,
+    fontFace: F_TITLE, fontSize: 29.5, bold: true, color: C.textDark, valign: "middle",
   });
   slide.addShape(pres.ShapeType.rect, { x: MX, y: 1.30, w: 0.62, h: 0.04, fill: { color: C.gold }, line: { type: "none" } });
   footer(slide, num);
@@ -197,19 +197,23 @@ function bullets(slide, items, opts) {
 
   s.addShape(pres.ShapeType.rect, { x: MX, y: 3.78, w: 1.1, h: 0.035, fill: { color: C.gold }, line: { type: "none" } });
 
+  // Restored per the image structure's row 1: "Project title, members,
+  // supervisor, one-line problem statement" — this is required on-slide, not
+  // just spoken aloud.
   s.addText("When a multi-agent AI system fails — including when the wrong answer looks completely right — no published method can reliably say which agent caused it, and none can verify a fix before trusting it.", {
     x: MX, y: 4.00, w: 8.6, h: 1.10, isTextBox: true, margin: 0,
     fontFace: F_TITLE, fontSize: 21.5, color: C.textLight, italic: true,
   });
 
   s.addShape(pres.ShapeType.line, { x: MX, y: 5.50, w: 8.4, h: 0, line: { color: C.hair, width: 1 } });
-  const team = [["Shahoud Shahid", "23i-2515", "Data / Benchmark"], ["Muhammad Noor", "23i-2520", "Diagnosis Engine"], ["Saif Shahzad", "23i-2634", "Platform"]];
+  // Role tags dropped — lane ownership is established once, on slide 9, not
+  // repeated here.
+  const team = [["Shahoud Shahid", "23i-2515"], ["Muhammad Noor", "23i-2520"], ["Saif Shahzad", "23i-2634"]];
   let tx = MX;
-  team.forEach(([n, r, role]) => {
+  team.forEach(([n, r]) => {
     s.addText([
       { text: n, options: { bold: true, breakLine: true, fontSize: 15.5, color: C.textLight } },
-      { text: `${r}  ·  `, options: { fontSize: 13, color: C.textLightMuted } },
-      { text: role, options: { fontSize: 13, color: C.goldLight } },
+      { text: r, options: { fontSize: 13, color: C.textLightMuted } },
     ], { x: tx, y: 5.62, w: 2.8, h: 0.62, isTextBox: true, margin: 0, fontFace: F_BODY });
     tx += 2.85;
   });
@@ -402,7 +406,7 @@ function bullets(slide, items, opts) {
     x: rx + 0.22, y: 5.90, w: rw - 0.44, h: 0.52, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 15, color: C.textDark,
   });
 
-  s.addNotes("State the backbone-confound caveat before being asked. Name that credible unpublished preprints exist in adjacent territory and the team made a recorded decision not to chase every one — the strategy is beating a peer-reviewed baseline, not pre-empting unpublished work. Full R4/Annex A.2 wording: a win partly reflects backbone strength, dual-reported. Citations: Full_Literature_Landscape_Analysis.md · ErrorProbe_Baseline_Selection.md · plan §0.08.");
+  s.addNotes("State the backbone-confound caveat before being asked. Name that credible unpublished preprints exist in adjacent territory and the team made a recorded decision not to chase every one — the strategy is beating a peer-reviewed baseline, not pre-empting unpublished work. If a win partly reflects backbone strength, report both numbers, declared in advance. Citations: Full_Literature_Landscape_Analysis.md · ErrorProbe_Baseline_Selection.md · plan §0.08.");
 }
 
 // ============================================================
@@ -413,51 +417,57 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 5, "Complex Computing Challenge", "What is technically hard — and why this is not a course project");
 
-  // CCP grid — compact 3x3. Sub-lines cut to fragments (readability pass); the
-  // full sentence for each lives in speaker notes, not on the slide.
+  // Grid cut from all 9 characteristics to the six actually named in the
+  // speaker notes (1, 2, 3, 6, 7, 9) — the other 3 (4, 5, 8) are still real
+  // and still argued in Granite_CCP_Justification_Seoul_Accord.docx, just not
+  // spoken aloud here, so they're documented instead in a new file rather
+  // than silently dropped:
+  // markdowns/05-deliverables/ccp-justification/CCP_Characteristics_Not_On_Slide.md
+  // Display badges renumbered 1–6 sequentially for on-slide readability —
+  // the real Seoul Accord characteristic numbers (1, 2, 3, 6, 7, 9) are kept
+  // in the comment below and in speaker notes/CCP_Characteristics_Not_On_Slide.md,
+  // so nothing about which characteristic is which is actually lost.
   const items = [
-    ["1", "Conflicting requirements", "Depth vs. latency; privacy vs. completeness", true],
-    ["2", "No obvious solution", "Best published: 59.5% after 15 months, 7 papers", true],
-    ["3", "Depth of knowledge", "Graph modeling, causal reasoning, tracing", true],
-    ["4", "Unfamiliar issues", "Delayed errors, non-determinism, cross-arch", true],
-    ["5", "Beyond standard practice", "No framework does attribution + detection + recovery", true],
-    ["6", "Diverse stakeholders", "Named; live contact scheduled Mid-2", false],
-    ["7", "Significant consequences", "A missed failure ships a wrong answer, undetected", true],
-    ["8", "Interdependence", "Failures propagate; graph models it directly", true],
-    ["9", "Ill-defined cause", "3 unknowns: whether, which step, what's correct", true],
+    ["1", "Conflicting requirements", "Depth vs. latency; privacy vs. completeness", true],       // characteristic 1
+    ["2", "No obvious solution", "Best published: 59.5% after 15 months, 7 papers", true],        // characteristic 2
+    ["3", "Depth of knowledge", "Graph modeling, causal reasoning, tracing", true],                // characteristic 3
+    ["4", "Diverse stakeholders", "Named; live contact scheduled Mid-2", false],                   // characteristic 6
+    ["5", "Significant consequences", "A missed failure ships a wrong answer, undetected", true],  // characteristic 7
+    ["6", "Ill-defined cause", "3 unknowns: whether, which step, what's correct", true],           // characteristic 9
   ];
-  const cols3 = 3, rowH = 1.30, colW = CW / cols3;
+  // CCP grid on the left (rows shortened — was 1.80, now 1.40 — so the six
+  // boxes read as compact rectangles, not big squares — and centered
+  // vertically in the column so the leftover space splits top/bottom rather
+  // than pooling at the bottom), Diagram 4 as the big panel on the right.
+  const gridCols = 2, colW = 3.70, rowH = 1.40;
+  const gridRows = Math.ceil(items.length / gridCols);
+  const gridTop = 1.42 + ((PH - 0.46 - 0.14 - 1.42) - gridRows * rowH) / 2;
   items.forEach(([n, t, sub, clear], i) => {
-    const cx = MX + (i % cols3) * colW, cy = 1.42 + Math.floor(i / cols3) * rowH;
+    const col = i % gridCols, row = Math.floor(i / gridCols);
+    const cx = MX + col * colW, cy = gridTop + row * rowH;
     card(s, cx, cy, colW - 0.18, rowH - 0.12, clear ? C.greenSoft : C.amberSoft, clear ? C.green : C.amber);
-    dot(s, cx + 0.16, cy + 0.15, 0.34, clear ? C.green : C.amber, n, C.textLight);
-    s.addText(t, { x: cx + 0.60, y: cy + 0.13, w: colW - 0.90, h: 0.36, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 16, bold: true, color: C.textDark });
-    s.addText(sub, { x: cx + 0.16, y: cy + 0.54, w: colW - 0.48, h: 0.60, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, color: C.textMuted });
+    dot(s, cx + 0.16, cy + 0.13, 0.30, clear ? C.green : C.amber, n, C.textLight);
+    s.addText(t, { x: cx + 0.56, y: cy + 0.11, w: colW - 0.86, h: 0.36, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 14, bold: true, color: C.textDark });
+    s.addText(sub, { x: cx + 0.16, y: cy + 0.48, w: colW - 0.48, h: 0.74, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.5, color: C.textMuted });
   });
 
-  // NEW in v2 — the handbook's AI-resilience test (C.7)
-  card(s, MX, 5.36, CW, 1.36, C.ink2);
-  s.addText("THE HANDBOOK'S OWN TEST (C.7):  “Could a strong student with AI assistance build this in a week?”", {
-    x: MX + 0.28, y: 5.46, w: CW - 0.56, h: 0.32, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 13.5, bold: true, color: C.goldLight, charSpacing: 0.3,
+  // Diagram 4 from the Architecture Atlas (Core Technical/Computational
+  // Pipeline), recolored to the deck's palette — no card/border/frame around
+  // it, just the caption and the image itself.
+  const gridW = gridCols * colW;
+  const diag4X = MX + gridW + 0.34;
+  s.addText("CORE PIPELINE — HYPOTHESIS TO VERIFIED REPAIR", {
+    x: diag4X, y: 1.42, w: CW - gridW - 0.34, h: 0.20, isTextBox: true, margin: 0,
+    fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, charSpacing: 0.6,
   });
-  const hard = [
-    ["The wrapper", "yes — in a weekend", "Trace capture + LLM guess = a weekend.", C.textLightMuted],
-    ["What it would get wrong", "everything that carries the marks", "No unseen-arch benchmark, no silent-failure test, no FPR, no proof its fix works.", C.textLight],
-    ["Where our difficulty sits", "data, evaluation, constraints", "The benchmark, the constraints, the proof — not the wrapper.", C.textLight],
-  ];
-  let hx = MX + 0.28;
-  const hw = (CW - 0.9) / 3;
-  hard.forEach(([k, v, d, col]) => {
-    s.addText([
-      { text: k.toUpperCase(), options: { fontFace: F_MONO, fontSize: 12, bold: true, color: C.gold, breakLine: true, charSpacing: 0.5 } },
-      { text: v, options: { fontFace: F_BODY, fontSize: 15, bold: true, color: C.textLight, breakLine: true } },
-      { text: d, options: { fontFace: F_BODY, fontSize: 12.8, color: col } },
-    ], { x: hx, y: 5.82, w: hw, h: 0.86, isTextBox: true, margin: 0 });
-    hx += hw + 0.17;
-  });
+  // Sized against the full available column height (down to the footer) —
+  // margins tightened slightly (footer gap 0.14 -> 0.08) to make it as big
+  // as the slide can hold, per request.
+  const diag4Y = 1.66;
+  const diagH4 = (PH - 0.46 - 0.08) - diag4Y, diagW4 = diagH4 * (797 / 985);
+  s.addImage({ path: "diagram4_cropped.png", x: diag4X, y: diag4Y, w: diagW4, h: diagH4 });
 
-  s.addNotes("This is the slide the panel uses to decide whether the project deserves capstone status. Do not read the nine boxes — point at them and speak the bottom band instead: concede immediately that the wrapper is a weekend's work, then name precisely what such a version would get wrong (no benchmark on unseen architectures, no way to tell a silent failure from a correct answer, no measured false-positive rate on clean controls, no evidence its fix works). Characteristic 6 is amber on purpose; say so before they spot it — 8 of 9 clear, matching the guide's own worked 'Strong' examples (6 to 9). Read characteristic 9's resolution aloud if pressed on complexity. Citations: 02_Panel_Defense_Question_Bank.md Q8a · plan §1 (three-tier CCP) · §2 (9-characteristic rating).");
+  s.addNotes("This is the slide the panel uses to decide whether the project deserves capstone status. Concede up front that a trace-capture-plus-LLM-guess wrapper is a weekend's work, then name precisely what such a version would get wrong: no benchmark on unseen architectures, no way to tell a silent failure from a correct answer, no measured false-positive rate on clean controls, no evidence its fix works. NOTE — on-slide badges are renumbered 1-6 for readability; they are NOT the Seoul Accord characteristic numbers. Badge 4 on the slide = real characteristic 6 (Diverse stakeholders) — it's amber on purpose, say so before they spot it. Badge 6 on the slide = real characteristic 9 (Ill-defined cause) — read its resolution aloud if pressed on complexity; the diagram on the right is that resolution, drawn: hypothesis generation, evidence-grounding, and the controlled-replay loop that gates every fix. Real characteristics 4, 5 and 8 (Unfamiliar issues / Beyond standard practice / Interdependence) are off-slide entirely but still true and still fully argued in Granite_CCP_Justification_Seoul_Accord.docx and CCP_Characteristics_Not_On_Slide.md — cover them only if asked directly. Citations: 02_Panel_Defense_Question_Bank.md Q8a · plan §1 (three-tier CCP) · §2 (9-characteristic rating).");
 }
 
 // ============================================================
@@ -471,50 +481,102 @@ function bullets(slide, items, opts) {
   card(s, MX, 1.48, CW, 1.02, C.card, C.gold);
   s.addText([
     { text: "Contribution.  ", options: { bold: true, color: C.goldDark, fontSize: 16.5 } },
-    { text: "Best method: 59.5% — but untested on unseen architectures, and admits it misses silent failures. We build a cross-architecture benchmark and a diagnosis pipeline with constraint-based silent-failure verification, as a framework-agnostic SDK.", options: { color: C.textDark, fontSize: 15.5 } },
+    { text: "Best method: 59.5% — but it's untested on unseen architectures and misses silent failures. We build a cross-architecture benchmark and a diagnosis pipeline with constraint-based silent-failure verification, as a framework-agnostic SDK.", options: { color: C.textDark, fontSize: 15.5 } },
   ], { x: MX + 0.28, y: 1.48, w: CW - 0.56, h: 1.02, isTextBox: true, margin: 0, fontFace: F_BODY, valign: "middle" });
 
-  const ax = MX, ay = 2.62, aw = CW, ah = 3.55;
-  s.addShape(pres.ShapeType.roundRect, { x: ax, y: ay + 0.22, w: 1.62, h: 0.82, rectRadius: 0.05, fill: { color: C.paper }, line: { color: C.textMuted, width: 1, dashType: "dash" } });
-  s.addText([{ text: "Target System", options: { bold: true, breakLine: true, fontSize: 14 } }, { text: "CrewAI / LangGraph", options: { fontSize: 12.5, color: C.textMuted } }], { x: ax + 0.04, y: ay + 0.28, w: 1.54, h: 0.70, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle", color: C.textDark });
-  s.addShape(pres.ShapeType.roundRect, { x: ax, y: ay + 2.48, w: 1.62, h: 0.82, rectRadius: 0.05, fill: { color: C.paper }, line: { color: C.textMuted, width: 1, dashType: "dash" } });
-  s.addText([{ text: "Operator", options: { bold: true, breakLine: true, fontSize: 14 } }, { text: "engineering team", options: { fontSize: 12.5, color: C.textMuted } }], { x: ax + 0.04, y: ay + 2.54, w: 1.54, h: 0.70, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle", color: C.textDark });
+  // Architecture diagram rebuilt natively (real pptxgenjs shapes, not a
+  // pasted screenshot of the Architecture Atlas) — same content as Atlas
+  // Diagram 1 (target system, operator, three owner lanes, LLM API), drawn
+  // free-form at the deck's own scale so it stays fully editable and reads
+  // as authored for this slide rather than inserted from elsewhere.
+  const ay = 2.60, ah = 4.30;
+  const arrow = (x1, y1, x2, y2, color, dashed) => s.addShape(pres.ShapeType.line, {
+    x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.abs(x2 - x1) || 0.001, h: Math.abs(y2 - y1) || 0.001,
+    flipH: x2 < x1, flipV: y2 < y1,
+    line: { color, width: 1.1, endArrowType: "triangle", dashType: dashed ? "dash" : "solid" },
+  });
+  const box = (x, y, w, h, fg, bg, title, sub, subColor) => {
+    s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.05, fill: { color: bg || "FFFFFF" }, line: { color: fg, width: 1.1 } });
+    s.addText(title, { x: x + 0.06, y: y + 0.05, w: w - 0.12, h: 0.26, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 10.3, bold: true, color: C.textDark, align: "center" });
+    if (sub) s.addText(sub, { x: x + 0.06, y: y + h - 0.24, w: w - 0.12, h: 0.20, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 7.6, color: subColor || C.textMuted, align: "center" });
+  };
+  const store = (x, y, w, h, fg, label1) => {
+    s.addShape(pres.ShapeType.roundRect, { x, y: y + 0.08, w, h: h - 0.08, rectRadius: 0.04, fill: { color: "FFFFFF" }, line: { color: fg, width: 1.1 } });
+    s.addShape(pres.ShapeType.ellipse, { x, y, w, h: 0.16, fill: { color: "FFFFFF" }, line: { color: fg, width: 1.1 } });
+    s.addText(label1, { x: x + 0.04, y: y + h / 2 - 0.14, w: w - 0.08, h: 0.28, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 9.5, bold: true, color: C.textDark, align: "center", valign: "middle" });
+  };
 
-  const bx = ax + 1.92, bw = 8.15;
-  s.addShape(pres.ShapeType.roundRect, { x: bx, y: ay, w: bw, h: ah, rectRadius: 0.08, fill: { color: "FFFFFF" }, line: { color: C.gold, width: 1.25, dashType: "dash" } });
+  // Actors either side of the system boundary
+  const actorW = 1.55;
+  box(MX, ay + 0.10, actorW, 0.85, C.textMuted, C.paper, "Target Multi-Agent System", "CrewAI / LangGraph", C.textMuted);
+  box(MX, ay + ah - 0.95, actorW, 0.85, C.textMuted, C.paper, "Operator", "engineering team", C.textMuted);
+  arrow(MX + actorW / 2, ay + 0.95, MX + actorW / 2, ay + ah - 0.95, C.textMuted, false);
+
+  // System boundary
+  const bx = MX + actorW + 0.28, bw = CW - actorW - 0.28 - 1.65;
+  // Darker border (goldDark, not gold) — was too close to the white fill to
+  // read as a strong frame; this contrasts clearly against the card's white.
+  s.addShape(pres.ShapeType.roundRect, { x: bx, y: ay, w: bw, h: ah, rectRadius: 0.08, fill: { color: "FFFFFF" }, line: { color: C.goldDark, width: 1.75, dashType: "dash" } });
   s.addText("GRANITE — SYSTEM BOUNDARY", { x: bx + 0.16, y: ay + 0.06, w: 4, h: 0.22, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 9.5, bold: true, color: C.goldDark, charSpacing: 1 });
+  arrow(MX + actorW, ay + 0.52, bx, ay + 0.52, C.textMuted, false);
 
-  const lanes = [
-    ["LANE A — DATA / BENCHMARK · SHAHOUD", "Framework Adapters   ·   Fault Injection   ·   Benchmark Store", C.teal, C.tealSoft],
-    ["LANE B — DIAGNOSIS · NOOR", "Trace Normalizer → Graph Builder → Semantic Error Diagnostic + Backward Causal Tracer", C.orange, C.orangeSoft],
-    ["LANE C — PLATFORM · SAIF", "Repair Agent → Verified Automatic Repair → Recovery Controller / Memory (Tier 2) → API → Dashboard", C.indigo, C.indigoSoft],
-  ];
-  let ly = ay + 0.34;
-  const laneH = 1.05;
-  lanes.forEach(([lab, content, fg, bg], i) => {
-    s.addShape(pres.ShapeType.roundRect, { x: bx + 0.16, y: ly, w: bw - 1.88, h: laneH - 0.12, rectRadius: 0.05, fill: { color: bg }, line: { color: fg, width: 1 } });
-    s.addText(lab, { x: bx + 0.30, y: ly + 0.07, w: bw - 2.16, h: 0.26, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 12, bold: true, color: fg });
-    s.addText(content, { x: bx + 0.30, y: ly + 0.34, w: bw - 2.16, h: 0.58, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.8, color: C.textDark });
-    if (i < 2) s.addShape(pres.ShapeType.line, { x: bx + (bw - 1.88) / 2, y: ly + laneH - 0.12, w: 0, h: 0.12, line: { color: C.textMuted, width: 1.25, endArrowType: "triangle" } });
-    ly += laneH;
-  });
+  const laneX = bx + 0.15, laneW = bw - 0.30;
 
-  s.addShape(pres.ShapeType.roundRect, { x: bx + bw - 1.55, y: ay + 0.38, w: 1.38, h: 0.98, rectRadius: 0.05, fill: { color: "FBF3E3" }, line: { color: C.gold, width: 1, dashType: "dash" } });
-  s.addText([{ text: "LLM API", options: { bold: true, breakLine: true, fontSize: 14, color: C.goldDark } }, { text: "core-assist only\n~15–20% of components", options: { fontSize: 11.5, color: C.textMuted } }], { x: bx + bw - 1.49, y: ay + 0.42, w: 1.26, h: 0.90, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle" });
+  // Lane A — Data / Benchmark
+  const laneAY = ay + 0.32, laneAH = 1.02;
+  s.addShape(pres.ShapeType.roundRect, { x: laneX, y: laneAY, w: laneW, h: laneAH, rectRadius: 0.06, fill: { color: C.tealSoft }, line: { color: C.teal, width: 1.2 } });
+  s.addText("LANE A — DATA / BENCHMARK", { x: laneX + 0.14, y: laneAY + 0.06, w: 4, h: 0.20, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 9.5, bold: true, color: C.teal, charSpacing: 0.6 });
+  const faX = laneX + 0.15, faW = 2.85, fiX = faX + faW + 0.14, fiW = 3.05, bsX = fiX + fiW + 0.14, bsW = 1.9;
+  box(faX, laneAY + 0.32, faW, 0.60, C.teal, "FFFFFF", "Framework Adapters", "CrewAI + LangGraph hooks");
+  box(fiX, laneAY + 0.32, fiW, 0.60, C.teal, "FFFFFF", "Fault Injection Operators", "rule-based · 0% API");
+  store(bsX, laneAY + 0.32, bsW, 0.60, C.teal, "Benchmark Store");
+  arrow(faX + faW, laneAY + 0.62, fiX, laneAY + 0.62, C.teal, false);
+  arrow(fiX + fiW, laneAY + 0.62, bsX, laneAY + 0.62, C.teal, false);
 
-  // C.16 slide 6 asks for "boundaries AND the intended deployment target" — both stated here.
+  // Lane B — Diagnosis
+  const laneBY = laneAY + laneAH + 0.15, laneBH = 1.42;
+  s.addShape(pres.ShapeType.roundRect, { x: laneX, y: laneBY, w: laneW, h: laneBH, rectRadius: 0.06, fill: { color: C.orangeSoft }, line: { color: C.orange, width: 1.2 } });
+  s.addText("LANE B — DIAGNOSIS", { x: laneX + 0.14, y: laneBY + 0.06, w: 4, h: 0.20, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 9.5, bold: true, color: C.orange, charSpacing: 0.6 });
+  arrow(fiX + fiW / 2, laneAY + laneAH + 0.01, laneX + 0.15 + 2.85 / 2, laneBY - 0.01, C.textMuted, false);
+  const tnX = laneX + 0.15, tnW = 2.85, gbX = tnX + tnW + 0.18, gbW = 3.55;
+  box(tnX, laneBY + 0.32, tnW, 0.52, C.orange, "FFFFFF", "Trace Normalizer", "standard schema in");
+  box(gbX, laneBY + 0.32, gbW, 0.52, C.orange, "FFFFFF", "Execution Graph Builder", "0% API");
+  arrow(tnX + tnW, laneBY + 0.58, gbX, laneBY + 0.58, C.orange, false);
+  const sedX = laneX + 0.15, sedW = 4.10, bctX = sedX + sedW + 0.15, bctW = laneW - 0.30 - sedW - 0.15;
+  box(sedX, laneBY + 0.92, sedW, 0.42, C.orange, "FFFFFF", "Semantic Error Diagnostic — runs in parallel, unconditionally");
+  box(bctX, laneBY + 0.92, bctW, 0.42, C.orange, "FFFFFF", "Backward Causal Tracer");
+  arrow(gbX + gbW * 0.3, laneBY + 0.84, sedX + sedW * 0.6, laneBY + 0.92, C.textMuted, false);
+  arrow(gbX + gbW * 0.7, laneBY + 0.84, bctX + bctW * 0.4, laneBY + 0.92, C.textMuted, false);
+
+  // Lane C — Platform
+  const laneCY = laneBY + laneBH + 0.15, laneCH = ah - (laneCY - ay) - 0.12;
+  s.addShape(pres.ShapeType.roundRect, { x: laneX, y: laneCY, w: laneW, h: laneCH, rectRadius: 0.06, fill: { color: C.indigoSoft }, line: { color: C.indigo, width: 1.2 } });
+  s.addText("LANE C — PLATFORM", { x: laneX + 0.14, y: laneCY + 0.06, w: 4, h: 0.20, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 9.5, bold: true, color: C.indigo, charSpacing: 0.6 });
+  const raX = laneX + 0.15, raW = 2.25, varX = raX + raW + 0.14, varW = 2.95, apiX = varX + varW + 0.14, apiW = laneW - 0.30 - raW - varW - 0.28;
+  box(raX, laneCY + 0.30, raW, 0.50, C.indigo, "FFFFFF", "Repair Agent", "candidate fix");
+  box(varX, laneCY + 0.30, varW, 0.50, C.indigo, "FFFFFF", "Verified Automatic Repair", "controlled replay, N runs");
+  box(apiX, laneCY + 0.30, apiW, 0.50, C.indigo, "FFFFFF", "Backend API", "FastAPI");
+  arrow(raX + raW, laneCY + 0.55, varX, laneCY + 0.55, C.indigo, false);
+  arrow(varX + varW, laneCY + 0.55, apiX, laneCY + 0.55, C.indigo, false);
   s.addText([
-    { text: "In scope: ", options: { bold: true, color: C.textDark } },
-    { text: "10 committed mechanisms.     ", options: { color: C.textMuted } },
-    { text: "Out of scope: ", options: { bold: true, color: C.textDark } },
-    { text: "message queues, Kubernetes, full RBAC, DR infra, multi-tenant billing.     ", options: { color: C.textMuted } },
-    { text: "Deployment target: ", options: { bold: true, color: C.goldDark } },
-    { text: "Docker + pip-installable SDK — operable by someone who didn't build it.", options: { color: C.textMuted } },
-  ], {
-    x: bx, y: ay + ah + 0.10, w: bw, h: 0.46, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, italic: true,
-  });
+    { text: "Tier 2 (gated): ", options: { bold: true, color: C.amber } },
+    { text: "Recovery Controller + Verified Repair Memory   ·   ", options: { color: C.textDark } },
+    { text: "Postgres   ·   Dashboard — 3 screens", options: { color: C.textDark } },
+  ], { x: laneX + 0.15, y: laneCY + laneCH - 0.26, w: laneW - 0.30, h: 0.22, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 10, italic: true });
 
-  s.addNotes("Say unprompted: 'controlled, not deterministic' — the replay protocol is deterministic, LLM-step variance is measured over N replays, never assumed away (R25). Say unprompted: the Semantic Error Diagnostic abstains where no checkable constraint exists, and the abstention rate is reported as a metric, not hidden. Full traceable spec behind this diagram: Use Case Model + diagram, 3 System Sequence Diagrams, SRS, Test Plan, Software Development Plan, Traceability Matrix, 16-screen wireframes — architecture atlas, tab 'Requirements & Design'. Citations: Software_Design_Specification.md §2–§6 · plan §7.0 (frozen scope) · architecture-sketch.md.");
+  arrow(laneX + laneW * 0.5, laneBY + laneBH + 0.01, laneX + laneW * 0.5, laneCY - 0.01, C.textMuted, false);
+
+  // LLM API — outside the boundary, dashed dependency arrows in
+  const llmX = bx + bw + 0.20, llmW = 1.45;
+  s.addShape(pres.ShapeType.roundRect, { x: llmX, y: ay + ah / 2 - 0.58, w: llmW, h: 1.16, rectRadius: 0.06, fill: { color: "FBF3E3" }, line: { color: C.goldDark, width: 1.5, dashType: "dash" } });
+  s.addText([
+    { text: "LLM API", options: { bold: true, breakLine: true, fontSize: 12.5, color: C.goldDark } },
+    { text: "core-assist only\n~15–20% of components", options: { fontSize: 9, color: C.textMuted } },
+  ], { x: llmX + 0.06, y: ay + ah / 2 - 0.52, w: llmW - 0.12, h: 1.04, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle" });
+  arrow(bx + bw, laneBY + 0.55, llmX, ay + ah / 2 - 0.20, C.gold, true);
+  arrow(bx + bw, laneCY + 0.50, llmX, ay + ah / 2 + 0.20, C.gold, true);
+
+  s.addNotes("Say unprompted: 'controlled, not deterministic' — the replay protocol is deterministic, LLM-step variance is measured over N replays, never assumed away (R25). Say unprompted: the Semantic Error Diagnostic abstains where no checkable constraint exists, and the abstention rate is reported as a metric, not hidden. If asked about scope: in scope is 10 committed mechanisms; out of scope is message queues, Kubernetes, full RBAC, DR infra, multi-tenant billing; deployment target is Docker + a pip-installable SDK, operable by someone who didn't build it. Full traceable spec behind this diagram: Use Case Model + diagram, 3 System Sequence Diagrams, SRS, Test Plan, Software Development Plan, Traceability Matrix, 16-screen wireframes — architecture atlas, tab 'Requirements & Design'. Citations: Software_Design_Specification.md §2–§6 · plan §7.0 (frozen scope) · architecture-sketch.md.");
 }
 
 // ============================================================
@@ -525,15 +587,20 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 7, "POC / Feasibility Evidence", "“Show the evidence — do not merely describe that it exists”");
 
+  // Stat row slimmed to one line (was a big-number/label stack) — frees
+  // vertical space for Diagram 7 in the footer strip below, without touching
+  // the table's row count or font size.
   const stats = [["71.4%", "agent accuracy (5 runs)"], ["13.2%", "step accuracy (5 runs)"], ["4 / 6", "Repair Agent success"], ["8 / 8", "spikes with real evidence"]];
   let sx = MX;
   const statW = CW / 4;
   stats.forEach(([n, l]) => {
-    s.addText(n, { x: sx, y: 1.42, w: statW - 0.2, h: 0.56, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 33.5, bold: true, color: C.goldDark });
-    s.addText(l, { x: sx, y: 1.98, w: statW - 0.3, h: 0.44, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 14, color: C.textMuted });
+    s.addText([
+      { text: n + "  ", options: { fontFace: F_TITLE, fontSize: 19, bold: true, color: C.goldDark } },
+      { text: l, options: { fontFace: F_BODY, fontSize: 11.5, color: C.textMuted } },
+    ], { x: sx, y: 1.42, w: statW - 0.2, h: 0.46, isTextBox: true, margin: 0, valign: "middle" });
     sx += statW;
   });
-  s.addShape(pres.ShapeType.line, { x: MX, y: 2.46, w: CW, h: 0, line: { color: C.border, width: 0.75 } });
+  s.addShape(pres.ShapeType.line, { x: MX, y: 1.92, w: CW, h: 0, line: { color: C.border, width: 0.75 } });
 
   const spikeRows = [
     ["#", "Spike", "Status", "Result"],
@@ -561,32 +628,48 @@ function bullets(slide, items, opts) {
       },
     };
   }));
+  // Height trimmed slightly (3.00 -> 2.90) — the table's last row and the
+  // "LIVE, CLICKABLE PROTOTYPE"/"OPERATOR WORKFLOW" captions below it were
+  // sitting close enough to visually overlap; this opens a clean gap.
   s.addTable(tRows, {
-    x: MX, y: 2.60, w: CW, h: 3.42,
+    x: MX, y: 2.06, w: CW, h: 2.90,
     colW: [0.62, 2.35, 1.80, 7.35],
     border: { type: "solid", color: C.border, pt: 0.5 },
     autoPage: false, fontFace: F_BODY,
   });
 
-  // Footer row split in two: a real screenshot of the clickable prototype
+  // Footer strip, two columns now — the "In progress / Planned / Prototype"
+  // note card was dropped (same content already lives in the speaker notes
+  // below, and the spike table's own HONEST NEGATIVE/DEMONSTRATED labels
+  // already cover "full MVP not required"); both visuals grow to use the
+  // freed width instead. A real screenshot of the clickable prototype
   // (poc-demo/frontend/dist-static/index.html — interface real, backend mocked
   // against a frozen data snapshot, exactly the guide's "high-fidelity functional
-  // prototype" definition) on the left, the in-progress/planned note on the right.
-  const thumbW = 2.2, thumbH = thumbW * (190 / 700);
-  card(s, MX, 6.14, thumbW + 0.20, 0.86, C.card, C.gold);
+  // prototype" definition), and a real architecture-atlas diagram of the
+  // operator workflow (recolored to the deck's palette).
+  // No card/border boxes around either image — just the caption and the
+  // image itself. The gap between the two was too wide (dead white space);
+  // it's now small, and the workflow diagram grew into the reclaimed room
+  // (both wider and taller — its height was the real ceiling, so the table
+  // gap and footer margin were both trimmed slightly to allow it).
+  const bandY = 5.14;
+  const thumbW = 5.2, thumbH = thumbW * (190 / 700);
+  const diagW7 = 3.85, diagH7 = diagW7 * (490 / 1200);
+
   s.addText("LIVE, CLICKABLE PROTOTYPE", {
-    x: MX + 0.10, y: 6.19, w: thumbW, h: 0.18, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 7.3, bold: true, color: C.goldDark, charSpacing: 0.4,
+    x: MX, y: bandY, w: thumbW, h: 0.20, isTextBox: true, margin: 0,
+    fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, charSpacing: 0.4,
   });
-  s.addImage({ path: "assets_console_thumb.png", x: MX + 0.10, y: 6.38, w: thumbW, h: thumbH });
+  s.addImage({ path: "assets_console_thumb.png", x: MX, y: bandY + 0.24, w: thumbW, h: thumbH });
 
-  const ax2 = MX + thumbW + 0.30, aw2 = CW - thumbW - 0.30;
-  card(s, ax2, 6.14, aw2, 0.86, C.amberSoft, C.amber);
-  s.addText([{ text: "In progress: ", options: { bold: true, color: C.amber } }, { text: "full reproduction.     ", options: { color: C.textDark } }, { text: "Planned: ", options: { bold: true, color: C.amber } }, { text: "RC + VRM gates (Mid-1).     ", options: { color: C.textDark } }, { text: "Prototype: ", options: { bold: true, color: C.amber } }, { text: "5 screens, mocked backend, dist-static/index.html.", options: { color: C.textDark } }], {
-    x: ax2 + 0.20, y: 6.14, w: aw2 - 0.40, h: 0.86, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12, valign: "middle",
+  const diag7X = MX + thumbW + 0.45;
+  s.addText("OPERATOR WORKFLOW", {
+    x: diag7X, y: bandY, w: diagW7, h: 0.20, isTextBox: true, margin: 0,
+    fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, charSpacing: 0.4,
   });
+  s.addImage({ path: "diagram7_cropped.png", x: diag7X, y: bandY + 0.22, w: diagW7, h: diagH7 });
 
-  s.addNotes("Lead with Spike 7's negative result and Spike 8's failure analysis — quote the guide's own words on this directly: a POC that disproved an assumption is more valuable than one that confirmed it. Every number on this slide is real and recomputable from files in the repository; offer to open one. In progress: full 3-stage reproduction, top FYP-1 priority. Planned: Recovery Controller + Verified Repair Memory Tier-2 gates, pre-registered Mid-1 criteria, not yet run. Citations: dev/spikes/poc/ (8 scripts + output JSONs on disk) · markdowns/04-poc-evidence/POC_Spike_Outputs_Full.md.");
+  s.addNotes("Lead with Spike 7's negative result and Spike 8's failure analysis — quote the guide's own words on this directly: a POC that disproved an assumption is more valuable than one that confirmed it. Every number on this slide is real and recomputable from files in the repository; offer to open one. In progress: full 3-stage reproduction, top FYP-1 priority. Planned: Recovery Controller + Verified Repair Memory Tier-2 gates, pre-registered Mid-1 criteria, not yet run. Prototype: 5 screens, mocked backend, dist-static/index.html. Citations: dev/spikes/poc/ (8 scripts + output JSONs on disk) · markdowns/04-poc-evidence/POC_Spike_Outputs_Full.md.");
 }
 
 // ============================================================
@@ -614,21 +697,19 @@ function bullets(slide, items, opts) {
 
   // C.16 slide 8 asks for "baseline, DATA OR SCENARIOS, metrics, success criteria..." —
   // the data/scenarios half is named here rather than left implicit.
-  card(s, lx, 4.58, lw, 1.22, C.card);
+  // "Cannot support" caveat removed — not something the image's row 8 asks
+  // for. Data/dependencies card enlarged to use the freed space.
+  card(s, lx, 4.58, lw, 1.62, C.card);
   // Named "dependencies" explicitly — the circulated image's slide 8 row asks for
   // that word by name; it was present in substance (data + backbone) but unlabeled.
-  label(s, lx + 0.20, 4.68, lw - 0.4, "Data / dependencies  ·  protocol", C.textMuted);
+  label(s, lx + 0.20, 4.72, lw - 0.4, "Data / dependencies  ·  protocol", C.textMuted);
   s.addText([
     { text: "Data: ", options: { bold: true, color: C.textDark } },
     { text: "Who&When (184 cases); our own benchmark, GSM8K + tau-bench, clean controls.  ", options: { color: C.textDark } },
     { text: "Protocol: ", options: { bold: true, color: C.textDark } },
     { text: "bootstrap CIs, fixed seeds, N=5 variance, ablation matrix, human baseline.", options: { color: C.textDark } },
   ], {
-    x: lx + 0.20, y: 4.92, w: lw - 0.4, h: 0.86, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12,
-  });
-  card(s, lx, 5.92, lw, 0.72, C.redSoft, C.red);
-  s.addText([{ text: "Cannot support: ", options: { bold: true, color: C.red } }, { text: "production-scale claims beyond tested frameworks.", options: { color: C.textDark } }], {
-    x: lx + 0.20, y: 5.92, w: lw - 0.4, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13, valign: "middle",
+    x: lx + 0.20, y: 5.02, w: lw - 0.4, h: 1.06, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, valign: "top",
   });
 
   // middle: success bands
@@ -652,7 +733,7 @@ function bullets(slide, items, opts) {
   const rx = mx3 + mw3 + 0.26, rw = CW - (rx - MX);
   label(s, rx, 2.28, rw, "Top risks → stated fallback");
   const risks = [
-    ["Reproduction misses the ±10pt band", "Dual-reporting (Annex A.2) — expected, not a failure"],
+    ["Reproduction misses the ±10pt band", "Report both numbers, declared in advance — expected, not a failure"],
     ["Recovery Controller fails at Mid-1", "Resume via controlled replay — Tier 1 delivers it"],
     ["Verified Repair Memory fails again", "Ships as a memory-on/off ablation"],
     ["Benchmark scale stalls below 500", "Floor of 500; 300-with-stats beats 1,000-without"],
@@ -664,12 +745,14 @@ function bullets(slide, items, opts) {
     s.addText(f, { x: rx + 0.18, y: ry + 0.46, w: rw - 0.36, h: 0.36, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.green });
     ry += 0.92;
   });
-  card(s, mx3, 6.44, CW - (mx3 - MX), 0.56, C.indigoSoft, C.indigo);
+  // Spans the full width now (was middle+right only) so it closes out the row
+  // left empty under the data/dependencies card by the "Cannot support" removal.
+  card(s, lx, 6.44, CW, 0.56, C.indigoSoft, C.indigo);
   s.addText([{ text: "GenAI boundary:  ", options: { bold: true, color: C.indigo } }, { text: "nothing we claim sits in core-replacement — the LLM is core-assist.", options: { color: C.textDark } }], {
-    x: mx3 + 0.20, y: 6.44, w: CW - (mx3 - MX) - 0.4, h: 0.56, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.3, valign: "middle",
+    x: lx + 0.20, y: 6.44, w: CW - 0.4, h: 0.56, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.3, valign: "middle",
   });
 
-  s.addNotes("The false-positive-rate-on-clean-controls metric is absent from every paper in the reviewed corpus and every platform checked — say this is the field's gap, not just ours. Deliver the risk column as confidence, not confession: each decision rule was pre-registered before results exist. Outside the acceptance band, both numbers are reported transparently per Annex A.2, declared before the run, not after. Full GenAI boundary line: every external component classified Support / Core-assist / Core-replacement on Form 13; the contribution survives swapping the LLM. Citations: plan §11 (acceptance band, pre-registered) · Form13_GenAI_Disclosure_Sheet.md · risk-register.md (R4/R25/R37).");
+  s.addNotes("The false-positive-rate-on-clean-controls metric is absent from every paper in the reviewed corpus and every platform checked — say this is the field's gap, not just ours. Deliver the risk column as confidence, not confession: each decision rule was pre-registered before results exist. Outside the acceptance band, both numbers are reported transparently, declared before the run, not after. Full GenAI boundary line: every external component classified Support / Core-assist / Core-replacement; the contribution survives swapping the LLM. Citations: plan §11 (acceptance band, pre-registered) · risk-register.md (R4/R25/R37).");
 }
 
 // ============================================================
@@ -678,7 +761,7 @@ function bullets(slide, items, opts) {
 {
   const s = pres.addSlide();
   s.background = { color: C.paper };
-  chrome(s, 9, "Scope, Work Division & Iteration Plan", "Committed scope, member-wise ownership, dependencies and milestones");
+  chrome(s, 9, "Work Division & Iteration Plan", "Member-wise ownership and the milestones each lane is measured against");
 
   const members = [
     ["Shahoud Shahid", "23i-2515", "DATA / BENCHMARK", [
@@ -714,112 +797,50 @@ function bullets(slide, items, opts) {
     mx2 += mw + 0.22;
   });
 
-  // Handbook C.16 slide 9 requires these explicitly: committed scope, optional
-  // extensions, resources, modern tools / external dependencies, deployment target.
-  const scopeCols = [
-    ["COMMITTED CORE", "Tier 1 — 8 items, evidence-backed. Tier 2 — 2 items, gated on Mid-1 criteria. 8 extensions after core works.", C.green],
-    ["RESOURCES", "$0 committed — local Ollama for every call. Paid backbone (~$353/~$881) declined, confound dual-reported.", C.amber],
-    ["TOOLS · DEPENDENCIES · DEPLOYMENT", "Python · FastAPI · React/TS · Postgres · Docker · CrewAI · LangGraph · Ollama. Container + pip SDK.", C.indigo],
-  ];
-  const scw = (CW - 0.44) / 3;
-  let scx = MX;
-  scopeCols.forEach(([h, body, fg]) => {
-    card(s, scx, 4.02, scw, 1.06, C.card, fg);
-    s.addText(h, { x: scx + 0.20, y: 4.10, w: scw - 0.38, h: 0.24, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 11.3, bold: true, color: fg, charSpacing: 0.4 });
-    s.addText(body, { x: scx + 0.20, y: 4.33, w: scw - 0.38, h: 0.70, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.textDark });
-    scx += scw + 0.22;
-  });
-
-  label(s, MX, 5.18, CW, "FYP-1 → FYP-2 milestones (five approval gates)");
+  // Committed-core/resources/tools band removed — row 9 in the image structure
+  // asks only for "member-wise responsibilities and milestones," not scope
+  // tiers, budget, or tooling. Milestones enlarged to use the freed space.
+  // Effort-budget card removed — row 9 asks for responsibilities and
+  // milestones only, not hours accounting. Timeline enlarged to fill the slide.
+  label(s, MX, 4.60, CW, "FYP-1 → FYP-2 milestones");
   const gates = [
-    ["GATE 1", "Proposal Defense", "scope approved"],
-    ["GATE 2/3", "Mid-1", "reproduction + Tier-2 + baseline"],
-    ["GATE 3", "Final-1", "integrated core, end to end"],
-    ["GATE 4", "Mid-2", "benchmark ≥500 · release ready"],
-    ["GATE 5", "Final-2", "full evaluation, deployed"],
+    ["M1", "Scope locked", "scope approved"],
+    ["M2", "Baseline reproduced", "reproduction + Tier-2 + baseline"],
+    ["M3", "Core integrated", "integrated core, end to end"],
+    ["M4", "Benchmark released", "benchmark ≥500 · release ready"],
+    ["M5", "Full evaluation", "full evaluation, deployed"],
   ];
   const gw = CW / gates.length;
-  s.addShape(pres.ShapeType.line, { x: MX + gw / 2, y: 5.68, w: CW - gw, h: 0, line: { color: C.gold, width: 2 } });
+  s.addShape(pres.ShapeType.line, { x: MX + gw / 2, y: 5.30, w: CW - gw, h: 0, line: { color: C.gold, width: 2 } });
   gates.forEach(([g, n, d], i) => {
     const gx = MX + i * gw + gw / 2;
-    s.addShape(pres.ShapeType.ellipse, { x: gx - 0.11, y: 5.57, w: 0.22, h: 0.22, fill: { color: i === 0 ? C.gold : C.paper }, line: { color: C.gold, width: 2 } });
+    s.addShape(pres.ShapeType.ellipse, { x: gx - 0.13, y: 5.17, w: 0.26, h: 0.26, fill: { color: i === 0 ? C.gold : C.paper }, line: { color: C.gold, width: 2 } });
     s.addText([
-      { text: g, options: { fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, breakLine: true } },
-      { text: n, options: { fontFace: F_BODY, fontSize: 13, bold: true, color: C.textDark, breakLine: true } },
-      { text: d, options: { fontFace: F_BODY, fontSize: 10.5, color: C.textMuted } },
-    ], { x: gx - gw / 2 + 0.06, y: 5.84, w: gw - 0.12, h: 0.60, isTextBox: true, margin: 0, align: "center" });
+      { text: g, options: { fontFace: F_MONO, fontSize: 13, bold: true, color: C.goldDark, breakLine: true } },
+      { text: n, options: { fontFace: F_BODY, fontSize: 17, bold: true, color: C.textDark, breakLine: true } },
+      { text: d, options: { fontFace: F_BODY, fontSize: 13, color: C.textMuted } },
+    ], { x: gx - gw / 2 + 0.06, y: 5.56, w: gw - 0.12, h: 0.95, isTextBox: true, margin: 0, align: "center" });
   });
 
-  card(s, MX, 6.52, CW, 0.42, C.card, C.gold);
-  s.addText([
-    { text: "Effort budget:  ", options: { bold: true, color: C.goldDark, fontSize: 12.5 } },
-    { text: "490h (FYP-1) + 640h (FYP-2) = 1,130h, against 1,130h capacity (3 × ~15h/wk × ~28 wks).", options: { color: C.textDark, fontSize: 12 } },
-  ], { x: MX + 0.22, y: 6.52, w: CW - 0.44, h: 0.42, isTextBox: true, margin: 0, fontFace: F_BODY, valign: "middle" });
-
-  s.addNotes("Each member states their own subsystem in one sentence, aloud — the panel is applying the guide's four ownership questions (explain / justify against an alternative / predict what breaks / modify under questioning), and hearing three distinct voices here sets that tone early. The 'if removed' line under each card is the guide's own scope test, answered honestly rather than asserted. Full effort-budget line: balanced depth, not identical tasks — each lane carries decisions, implementation and validation. Citations: plan §3 (ownership) · §7.0 (frozen scope) · §12 (effort) · cost-estimate.md · 06_Expanded_Scope_and_Feasibility_Plan.md.");
+  s.addNotes("Each member states their own subsystem in one sentence, aloud — the panel is applying the guide's four ownership questions (explain / justify against an alternative / predict what breaks / modify under questioning), and hearing three distinct voices here sets that tone early. The 'if removed' line under each card is the guide's own scope test, answered honestly rather than asserted. If pressed on effort/capacity: 490h (FYP-1) + 640h (FYP-2) = 1,130h against 1,130h capacity (3 × ~15h/wk × ~28 wks), balanced depth not identical tasks. Citations: plan §3 (ownership) · §7.0 (frozen scope) · §12 (effort) · cost-estimate.md · 06_Expanded_Scope_and_Feasibility_Plan.md.");
 }
 
 // ============================================================
 // SLIDE 10 — Team responsibilities & iterations, DEI, Ethics/Legal
-// (handbook C.16 slide 10 in full: "Primary technical ownership, shared
-//  integration/quality work and FYP-1/FYP-2 milestones, DEI statement,
-//  ethical and legal statement". Individual ownership is detailed on slide 9,
-//  so this slide carries the SHARED half — the part C.5 says stays a team
-//  responsibility even when one member leads — plus the compliance statements.)
+// This slide covers the image structure's row 10 exactly: DEI statement,
+// ethical statement, legal statement — nothing else. Individual member
+// ownership already lives on slide 9 and is not repeated here.
 // ============================================================
 {
   const s = pres.addSlide();
   s.background = { color: C.paper };
-  chrome(s, 10, "Team Responsibilities, Iterations, DEI & Ethics/Legal", "What stays shared, how it iterates, and the compliance lines the guide names");
+  chrome(s, 10, "DEI, Ethics & Legal", "What the team commits to, and how it stays accountable");
 
-  // --- Row 1: primary ownership recap + shared engineering responsibilities ---
-  card(s, MX, 1.40, CW, 0.92, C.card, C.gold);
-  label(s, MX + 0.24, 1.48, 3.6, "Primary ownership — slide 9");
-  const owners = [
-    ["Shahoud", "Benchmark", C.teal],
-    ["Noor", "Diagnosis", C.orange],
-    ["Saif", "Platform", C.indigo],
-  ];
-  let ox = MX + 0.24;
-  owners.forEach(([n, lane, col]) => {
-    s.addText([
-      { text: `${n} — `, options: { bold: true, fontSize: 12.5, color: C.textDark } },
-      { text: lane, options: { fontSize: 12.5, color: col, bold: true } },
-    ], { x: ox, y: 1.78, w: 1.85, h: 0.26, isTextBox: true, margin: 0, fontFace: F_BODY });
-    ox += 1.86;
-  });
-  s.addText("Each lane's own decisions, implementation and validation.", {
-    x: MX + 0.24, y: 2.04, w: 5.05, h: 0.26, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.5, italic: true, color: C.textMuted,
-  });
-  s.addShape(pres.ShapeType.line, { x: MX + 5.55, y: 1.52, w: 0, h: 0.70, line: { color: C.border, width: 1 } });
-  label(s, MX + 5.80, 1.48, 6.0, "Shared — never delegated to one member", C.goldDark);
-  s.addText("System architecture · integration · QA · security, ethics, data handling · repo discipline · the defense itself.", {
-    x: MX + 5.80, y: 1.76, w: CW - 6.04, h: 0.54, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.5, color: C.textDark,
-  });
-
-  // --- Row 2: iteration cadence across the five gates ---
-  label(s, MX, 2.42, CW, "Iteration plan — what the team jointly owns at each gate");
-  const iters = [
-    ["FYP-1", "Gate 1 · Proposal", "scope + POC approved", C.gold],
-    ["FYP-1", "Gate 2/3 · Mid-1", "reproduction; Tier-2 gates; baseline", C.gold],
-    ["FYP-1", "Gate 3 · Final-1", "integrated core, end to end", C.gold],
-    ["FYP-2", "Gate 4 · Mid-2", "benchmark ≥500; targets measured", C.indigo],
-    ["FYP-2", "Gate 5 · Final-2", "full evaluation, deployed + released", C.indigo],
-  ];
-  const iw = (CW - 0.32) / 5;
-  let ix = MX;
-  iters.forEach(([phase, gate, what, col]) => {
-    card(s, ix, 2.72, iw, 0.90, C.paper, col);
-    s.addText(phase, { x: ix + 0.14, y: 2.79, w: iw - 0.26, h: 0.20, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 11, bold: true, color: col, charSpacing: 0.4 });
-    s.addText(gate, { x: ix + 0.14, y: 2.98, w: iw - 0.26, h: 0.24, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, bold: true, color: C.textDark });
-    s.addText(what, { x: ix + 0.14, y: 3.24, w: iw - 0.26, h: 0.36, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.8, color: C.textMuted });
-    ix += iw + 0.08;
-  });
-
-  // --- Row 3: DEI / Ethical / Legal statements ---
-  // Ethical trimmed to 3 items (was 4) so all three columns carry equal weight and
-  // can share one larger, consistent bullet size instead of the smallest column
-  // setting the ceiling for the rest.
+  // Shared-responsibilities and iteration-plan recap removed — row 10 in the
+  // image structure asks only for DEI/Ethical/Legal statements; ownership is
+  // slide 9's job and the milestone gates are already shown there in full.
+  // DEI / Ethical / Legal now the whole slide, enlarged accordingly.
+  label(s, MX, 1.50, CW, "Commitments the panel can hold us to");
   const bandW = (CW - 0.44) / 3;
   const bands = [
     ["DEI", C.teal, C.tealSoft, [
@@ -835,31 +856,18 @@ function bullets(slide, items, opts) {
     ["LEGAL / PROFESSIONAL", C.indigo, C.indigoSoft, [
       "Who&When · GSM8K · tau-bench — all MIT, confirmed against the LICENSE file",
       "Released artefacts carry MIT / CC BY 4.0",
-      "AI usage disclosed per session (19 logged) on Form 13",
+      "AI usage logged per session and disclosed to the team throughout",
     ]],
   ];
   let bx2 = MX;
   bands.forEach(([lab, fg, bg, pts]) => {
-    card(s, bx2, 3.72, bandW, 2.02, bg, fg);
-    s.addText(lab, { x: bx2 + 0.20, y: 3.80, w: bandW - 0.4, h: 0.26, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 13, bold: true, color: fg, charSpacing: 0.8 });
-    bullets(s, pts, { x: bx2 + 0.20, y: 4.10, w: bandW - 0.4, h: 1.58, fontSize: 13.3 });
+    card(s, bx2, 1.88, bandW, 4.10, bg, fg);
+    s.addText(lab, { x: bx2 + 0.22, y: 2.04, w: bandW - 0.44, h: 0.32, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 15, bold: true, color: fg, charSpacing: 0.8 });
+    bullets(s, pts, { x: bx2 + 0.22, y: 2.60, w: bandW - 0.44, h: 3.20, fontSize: 16.5, paraSpaceAfter: 26, valign: "middle" });
     bx2 += bandW + 0.22;
   });
 
-  // --- Row 4: AI-assisted development level (handbook C.8) + the ownership standard ---
-  card(s, MX, 5.86, CW, 1.14, C.ink2);
-  s.addText("AI-ASSISTED DEVELOPMENT LEVEL — NAMED AND JUSTIFIED PER HANDBOOK C.8", {
-    x: MX + 0.28, y: 5.94, w: CW - 0.56, h: 0.26, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 12.5, bold: true, color: C.goldLight, charSpacing: 0.5,
-  });
-  s.addText([
-    { text: "Level 2 — AI-Assisted.  ", options: { bold: true, color: C.goldLight, fontSize: 16.5, fontFace: F_TITLE } },
-    { text: "Humans lead judgment and execution; AI assists isolated tasks.  ", options: { color: C.textLightMuted, fontSize: 13 } },
-    { text: "Ownership standard: ", options: { bold: true, color: C.goldLight, fontSize: 13 } },
-    { text: "the responsible member can explain, justify against an alternative, predict what breaks, and modify under questioning.", options: { color: C.textLightMuted, fontSize: 13 } },
-  ], { x: MX + 0.28, y: 6.20, w: CW - 0.56, h: 0.76, isTextBox: true, margin: 0, fontFace: F_BODY });
-
-  s.addNotes("The DEI line is a real, checkable commitment, not a decorative label — say the access-equity sentence in your own words. Name Level 2 out loud and say why it is not Level 3: accreditation requires the graduate to have done the design and evaluation, and delegating that would forfeit the attribute — Level 3 would relocate exactly the design/eval work Seoul Accord GA-4 requires us to demonstrate. Authorship of keystrokes is not the test. If asked about AI use at all, the answer is that it is logged per session, disclosed on Form 13, and that every CCP-relevant component has a member who can defend it live — offer to demonstrate that on any component they pick. Per guide §C.5 the shared list remains a team responsibility even where one member leads the component. Citations: plan §3 (ownership) · guide §C.5 (shared responsibilities) · AI_Usage_Log.md · Form13_GenAI_Disclosure_Sheet.md · risk-register R30/R38.");
+  s.addNotes("The DEI line is a real, checkable commitment, not a decorative label — say the access-equity sentence in your own words. Ownership per lane and the FYP-1/FYP-2 milestone gates are both on slide 9; this slide is deliberately just the three compliance statements the guide names. Every CCP-relevant component has a member who can defend it live — offer to demonstrate that on any component they pick. Citations: plan §3 (ownership) · AI_Usage_Log.md · risk-register R30/R38.");
 }
 
 pres.writeFile({ fileName: "Granite_Proposal_Defense_v2.pptx" }).then(fn => console.log("Wrote", fn));

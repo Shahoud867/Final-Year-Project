@@ -839,32 +839,39 @@ function bullets(slide, items, opts) {
   // Shared-responsibilities and iteration-plan recap removed — row 10 in the
   // image structure asks only for DEI/Ethical/Legal statements; ownership is
   // slide 9's job and the milestone gates are already shown there in full.
-  // DEI / Ethical / Legal now the whole slide, enlarged accordingly.
-  label(s, MX, 1.50, CW, "Commitments the panel can hold us to");
-  const bandW = (CW - 0.44) / 3;
+  // Reworked from 3 tall, boldly color-filled vertical-bullet columns (read
+  // as heavy/"high-tech") into 3 elegant horizontal rows: plain background,
+  // a thin colored accent line instead of a bold fill, label on the left,
+  // points running as one flowing line on the right instead of a bullet list.
+  label(s, MX, 1.48, CW, "Commitments the panel can hold us to");
   const bands = [
-    ["DEI", C.teal, C.tealSoft, [
+    ["DEI", C.teal, [
       "Open-source release widens access — SDG 9 access-equity",
       "Colour + text + shape, never colour alone — WCAG owed by Final-1",
       "Accuracy claims stated as English-only",
     ]],
-    ["ETHICAL", C.red, C.redSoft, [
+    ["ETHICAL", C.red, [
       "Advisory only — every repair is human-gated",
       "Consent for real trace data; injection only on consenting systems",
       "Negative results published as found — Spike 7 not buried",
     ]],
-    ["LEGAL / PROFESSIONAL", C.indigo, C.indigoSoft, [
+    ["LEGAL", C.indigo, [
       "Who&When · GSM8K · tau-bench — all MIT, confirmed against the LICENSE file",
       "Released artefacts carry MIT / CC BY 4.0",
       "AI usage logged per session and disclosed to the team throughout",
     ]],
   ];
-  let bx2 = MX;
-  bands.forEach(([lab, fg, bg, pts]) => {
-    card(s, bx2, 1.88, bandW, 4.10, bg, fg);
-    s.addText(lab, { x: bx2 + 0.22, y: 2.04, w: bandW - 0.44, h: 0.32, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 15, bold: true, color: fg, charSpacing: 0.8 });
-    bullets(s, pts, { x: bx2 + 0.22, y: 2.60, w: bandW - 0.44, h: 3.20, fontSize: 16.5, paraSpaceAfter: 26, valign: "middle" });
-    bx2 += bandW + 0.22;
+  const rowY0 = 1.88, rowH = 1.58, rowGap = 0.18;
+  const labelW = 1.55, ptsX = MX + labelW + 0.22, ptsW = CW - labelW - 0.22;
+  bands.forEach(([lab, fg, pts], i) => {
+    const ry = rowY0 + i * (rowH + rowGap);
+    // Outer border colored to match each row's theme (was neutral gray) —
+    // ties this slide's palette back into the rest of the deck's color use.
+    s.addShape(pres.ShapeType.roundRect, { x: MX, y: ry, w: CW, h: rowH, rectRadius: 0.05, fill: { color: "FFFFFF" }, line: { color: fg, width: 1.5 } });
+    s.addShape(pres.ShapeType.rect, { x: MX, y: ry + 0.10, w: 0.05, h: rowH - 0.20, fill: { color: fg }, line: { type: "none" } });
+    s.addText(lab, { x: MX + 0.24, y: ry, w: labelW - 0.24, h: rowH, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 15, bold: true, color: fg, charSpacing: 0.8, valign: "middle" });
+    s.addShape(pres.ShapeType.line, { x: ptsX - 0.11, y: ry + 0.20, w: 0, h: rowH - 0.40, line: { color: C.border, width: 1 } });
+    s.addText(pts.join("     ·     "), { x: ptsX, y: ry, w: ptsW - 0.20, h: rowH, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 14, color: C.textDark, valign: "middle", lineSpacingMultiple: 1.35 });
   });
 
   s.addNotes("The DEI line is a real, checkable commitment, not a decorative label — say the access-equity sentence in your own words. Ownership per lane and the FYP-1/FYP-2 milestone gates are both on slide 9; this slide is deliberately just the three compliance statements the guide names. Every CCP-relevant component has a member who can defend it live — offer to demonstrate that on any component they pick. Citations: plan §3 (ownership) · AI_Usage_Log.md · risk-register R30/R38.");

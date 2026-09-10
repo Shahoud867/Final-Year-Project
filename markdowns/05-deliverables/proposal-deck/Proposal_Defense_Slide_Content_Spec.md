@@ -82,7 +82,7 @@
 **On-slide content:**
 - Lineage: **Who&When** (ICML 2025, 14.2%) → **AgenTracer** (ICLR 2026, fault-injection methodology) → **SDBL, TraceElephant, ErrorProbe** (ACL 2026 Findings, 59.5% SOTA) → **AgentAsk, PROTEA** (ACL 2026 Demo)
 - **ErrorProbe chosen as baseline** — on performance, not recency (beats its ancestors on their own benchmarks)
-- **CrewAI + LangGraph chosen as committed frameworks** — neither used by any of the 9 papers reviewed, which is the actual test of generalization
+- **CrewAI + LangGraph chosen as committed frameworks** — neither used by any of the 7 papers reviewed, which is the actual test of generalization
 - **Constraint-based (not LLM-judge) silent-failure detection chosen** because the literature shows LLM judges perform poorly here — "From Confident Closing to Silent Failure" (arXiv:2606.09863) reports LLM-judge AUROC ≤0.65 on tau2-bench/AppWorld
 - **Single-framework scope-narrowing rejected** — the market survey's own advice, explicitly declined because it would delete the cross-architecture research question (risk-register R19)
 
@@ -281,6 +281,6 @@ Slides 1–2 establish the problem is real and who has it. Slides 3–4 prove th
 | A5 | "LangSmith/Arize already shipped this, with more engineers." | Checked directly, positioning corrected on the record (R9); neither confirms published step-level accuracy, general silent-failure detection, or measured counterfactual recovery |
 | A6 | "Rules can't understand meaning — your SED claim is either trivial or impossible." | Scoped explicitly to machine-checkable constraints, abstains elsewhere, abstention rate reported as a metric |
 | A7 | "You claim deterministic re-execution of LLM calls — LLMs aren't deterministic." | Corrected wording: the protocol is deterministic, LLM-step variance is measured over N replays, never assumed away (R25) |
-| A8 | "This design came from a market-survey document — whose project is this?" | Survey was one input among nine papers and seven platforms; its central scope advice (single-framework) was explicitly rejected (R19), on the record |
+| A8 | "This design came from a market-survey document — whose project is this?" | Survey was one input among seven papers and seven platforms; its central scope advice (single-framework) was explicitly rejected (R19), on the record |
 | A9 | "You're grading yourself on a benchmark you built." | Ground-truth-by-construction is the field's own established method (AgenTracer/TracerTraj); realism comes from the unmodified task substrates (tau-bench, GSM8K) |
 | A10 | "Couldn't AI build this whole system in two weeks?" | Names precisely what a generated version gets wrong: cross-framework instrumentation, the benchmark's validation labor, faithful reproduction fidelity, and every measured trade-off in the evaluation |

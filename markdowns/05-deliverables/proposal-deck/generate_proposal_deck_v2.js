@@ -58,6 +58,25 @@ const F_TITLE = "Georgia";
 const F_BODY  = "Calibri";
 const F_MONO  = "Consolas";
 
+// ---------- Type scale — back-of-the-classroom readability pass ----------
+// Every on-slide size goes through this table rather than being written inline,
+// so the whole deck moves together and nothing is left behind at 11pt.
+// The scale is deliberately coarse: five roles, no in-between sizes.
+//
+// The cost of this scale is words. A 20pt line in a 5.3in column holds about
+// 38 characters, and the usable content band is only ~5.5in tall (~12 lines).
+// Slides 7-10 were trimmed to fit it; the detail that came off lives in the
+// speaker notes, which is where a panel actually wants it.
+const FS = {
+  title:  32,    // slide title
+  label:  18,    // section heading (mono, uppercase)
+  body:   20,    // normal text and bullets
+  sub:    17,    // secondary text inside cards
+  table:  15.5,  // table cells
+  micro:  13,    // footer, captions, provenance
+  statBig: 26,   // the big numerals in stat rows
+};
+
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE";
 pres.author = "Granite — F26-060";
@@ -65,38 +84,39 @@ pres.company = "FAST School of Computing, NUCES Islamabad";
 pres.title = "Granite — Proposal Defense (v2)";
 pres.subject = "Stage 1 Proposal Defense — F26-060-Granite";
 
+const TOTAL_SLIDES = 11;
 const PW = 13.333, PH = 7.5;
 const MX = 0.62;
 const CW = PW - MX * 2;
 const RAIL = 0.055;               // left accent rail width
 
 // ================= helpers =================
+// `kicker` param kept in every call site (unused) rather than touched at all
+// 10 call sites — the yellow one-line restatement above the title added no
+// required content (not asked for by the image or the handbook) and read as
+// decorative, so it's been dropped; the title alone now anchors the header.
 function chrome(slide, num, title, kicker) {
   // left accent rail
   slide.addShape(pres.ShapeType.rect, {
     x: 0, y: 0, w: RAIL, h: PH, fill: { color: C.gold }, line: { type: "none" },
   });
   facetWatermark(slide);
-  slide.addText(kicker.toUpperCase(), {
-    x: MX, y: 0.32, w: CW, h: 0.28, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 13.5, bold: true, color: C.goldDark, charSpacing: 1.6,
-  });
   slide.addText(title, {
-    x: MX, y: 0.60, w: CW, h: 0.64, isTextBox: true, margin: 0,
-    fontFace: F_TITLE, fontSize: 29.5, bold: true, color: C.textDark,
+    x: MX, y: 0.40, w: CW, h: 0.80, isTextBox: true, margin: 0,
+    fontFace: F_TITLE, fontSize: FS.title, bold: true, color: C.textDark, valign: "middle",
   });
-  slide.addShape(pres.ShapeType.rect, { x: MX, y: 1.30, w: 0.62, h: 0.04, fill: { color: C.gold }, line: { type: "none" } });
+  slide.addShape(pres.ShapeType.rect, { x: MX, y: 1.26, w: 0.62, h: 0.04, fill: { color: C.gold }, line: { type: "none" } });
   footer(slide, num);
 }
 function footer(slide, n) {
   slide.addShape(pres.ShapeType.line, { x: MX, y: PH - 0.46, w: CW, h: 0, line: { color: C.border, width: 0.75 } });
   slide.addText("F26-060-GRANITE  ·  PROPOSAL DEFENSE  ·  STREAM A", {
     x: MX, y: PH - 0.38, w: 6.5, h: 0.26, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 10.5, color: C.textFaint, charSpacing: 0.7,
+    fontFace: F_MONO, fontSize: FS.micro, color: C.textFaint, charSpacing: 0.5,
   });
-  slide.addText(`${n} / 10`, {
+  slide.addText(`${n} / ${TOTAL_SLIDES}`, {
     x: PW - MX - 1.2, y: PH - 0.38, w: 1.2, h: 0.26, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, align: "right",
+    fontFace: F_MONO, fontSize: FS.micro, bold: true, color: C.goldDark, align: "right",
   });
 }
 // Cards carry a soft elevation. NOTE: this is drawn as an offset plate rather than
@@ -130,22 +150,22 @@ function facetWatermark(slide) {
 }
 function label(slide, x, y, w, text, color) {
   slide.addText(text.toUpperCase(), {
-    x, y, w, h: 0.28, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 14, bold: true, color: color || C.goldDark, charSpacing: 1,
+    x, y, w, h: 0.34, isTextBox: true, margin: 0,
+    fontFace: F_MONO, fontSize: FS.label, bold: true, color: color || C.goldDark, charSpacing: 0.6,
   });
 }
 function chip(slide, x, y, w, text, fg, bg) {
-  slide.addShape(pres.ShapeType.roundRect, { x, y, w, h: 0.30, rectRadius: 0.15, fill: { color: bg }, line: { type: "none" } });
+  slide.addShape(pres.ShapeType.roundRect, { x, y, w, h: 0.36, rectRadius: 0.18, fill: { color: bg }, line: { type: "none" } });
   slide.addText(text, {
-    x, y, w, h: 0.30, isTextBox: true, margin: 0, align: "center", valign: "middle",
-    fontFace: F_MONO, fontSize: 12.5, bold: true, color: fg,
+    x, y, w, h: 0.36, isTextBox: true, margin: 0, align: "center", valign: "middle",
+    fontFace: F_MONO, fontSize: 15, bold: true, color: fg,
   });
 }
 function dot(slide, x, y, d, bg, text, fg) {
   slide.addShape(pres.ShapeType.ellipse, { x, y, w: d, h: d, fill: { color: bg }, line: { type: "none" } });
   slide.addText(text, {
     x, y, w: d, h: d, isTextBox: true, margin: 0, align: "center", valign: "middle",
-    fontFace: F_TITLE, fontSize: d > 0.5 ? 19.5 : 14.5, bold: true, color: fg,
+    fontFace: F_TITLE, fontSize: d > 0.5 ? 22 : 16.5, bold: true, color: fg,
   });
 }
 // evidence tag — kept for the few places a citation still earns its space on-slide;
@@ -154,7 +174,7 @@ function dot(slide, x, y, d, bg, text, fg) {
 function evidence(slide, x, y, w, text) {
   slide.addText(`▸ ${text}`, {
     x, y, w, h: 0.22, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 10, color: C.textFaint,
+    fontFace: F_MONO, fontSize: FS.micro, color: C.textFaint,
   });
 }
 function bullets(slide, items, opts) {
@@ -162,8 +182,8 @@ function bullets(slide, items, opts) {
     text: t, options: { bullet: { code: "25AA", indent: 15 }, breakLine: i < items.length - 1 },
   }));
   slide.addText(arr, Object.assign({
-    isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 14.5, color: C.textDark,
-    paraSpaceAfter: 9, valign: "top",
+    isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.body, color: C.textDark,
+    paraSpaceAfter: 7, valign: "top",
   }, opts));
 }
 
@@ -184,7 +204,7 @@ function bullets(slide, items, opts) {
 
   s.addText("F26-060  ·  PROPOSAL DEFENSE  ·  STREAM A — RESEARCH-DERIVED", {
     x: MX, y: 1.45, w: 9.2, h: 0.30, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 14.5, bold: true, color: C.goldLight, charSpacing: 1.6,
+    fontFace: F_MONO, fontSize: 16.5, bold: true, color: C.goldLight, charSpacing: 1.4,
   });
   s.addText("Granite", {
     x: MX, y: 1.80, w: 9.2, h: 1.15, isTextBox: true, margin: 0,
@@ -192,33 +212,37 @@ function bullets(slide, items, opts) {
   });
   s.addText("A Self-Healing Multi-Agent System for Semantic Error Diagnosis, Verified Repair and Recovery", {
     x: MX, y: 2.98, w: 8.4, h: 0.62, isTextBox: true, margin: 0,
-    fontFace: F_BODY, fontSize: 18.5, italic: true, color: C.textLightMuted,
+    fontFace: F_BODY, fontSize: 21, italic: true, color: C.textLightMuted,
   });
 
   s.addShape(pres.ShapeType.rect, { x: MX, y: 3.78, w: 1.1, h: 0.035, fill: { color: C.gold }, line: { type: "none" } });
 
+  // Restored per the image structure's row 1: "Project title, members,
+  // supervisor, one-line problem statement" — this is required on-slide, not
+  // just spoken aloud.
   s.addText("When a multi-agent AI system fails — including when the wrong answer looks completely right — no published method can reliably say which agent caused it, and none can verify a fix before trusting it.", {
-    x: MX, y: 4.00, w: 8.6, h: 1.10, isTextBox: true, margin: 0,
-    fontFace: F_TITLE, fontSize: 21.5, color: C.textLight, italic: true,
+    x: MX, y: 3.96, w: 9.2, h: 1.30, isTextBox: true, margin: 0,
+    fontFace: F_TITLE, fontSize: 23, color: C.textLight, italic: true,
   });
 
   s.addShape(pres.ShapeType.line, { x: MX, y: 5.50, w: 8.4, h: 0, line: { color: C.hair, width: 1 } });
-  const team = [["Shahoud Shahid", "23i-2515", "Data / Benchmark"], ["Muhammad Noor", "23i-2520", "Diagnosis Engine"], ["Saif Shahzad", "23i-2634", "Platform"]];
+  // Role tags dropped — lane ownership is established once, on slide 9, not
+  // repeated here.
+  const team = [["Shahoud Shahid", "23i-2515"], ["Muhammad Noor", "23i-2520"], ["Saif Shahzad", "23i-2634"]];
   let tx = MX;
-  team.forEach(([n, r, role]) => {
+  team.forEach(([n, r]) => {
     s.addText([
-      { text: n, options: { bold: true, breakLine: true, fontSize: 15.5, color: C.textLight } },
-      { text: `${r}  ·  `, options: { fontSize: 13, color: C.textLightMuted } },
-      { text: role, options: { fontSize: 13, color: C.goldLight } },
-    ], { x: tx, y: 5.62, w: 2.8, h: 0.62, isTextBox: true, margin: 0, fontFace: F_BODY });
+      { text: n, options: { bold: true, breakLine: true, fontSize: 18, color: C.textLight } },
+      { text: r, options: { fontSize: 15, color: C.textLightMuted } },
+    ], { x: tx, y: 5.64, w: 2.8, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY });
     tx += 2.85;
   });
 
   s.addText([
-    { text: "Supervisor   ", options: { color: C.textLightMuted, fontSize: 13.5 } },
-    { text: "Dr. Adil Majeed", options: { color: C.textLight, bold: true, fontSize: 15.5, breakLine: true } },
-    { text: "FAST School of Computing, NUCES Islamabad", options: { color: C.textLightMuted, fontSize: 13 } },
-  ], { x: MX, y: 6.52, w: 6, h: 0.6, isTextBox: true, margin: 0, fontFace: F_BODY });
+    { text: "Supervisor   ", options: { color: C.textLightMuted, fontSize: 15 } },
+    { text: "Dr. Adil Majeed", options: { color: C.textLight, bold: true, fontSize: 18, breakLine: true } },
+    { text: "FAST School of Computing, NUCES Islamabad", options: { color: C.textLightMuted, fontSize: 15 } },
+  ], { x: MX, y: 6.46, w: 7, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY });
 
   s.addNotes("Say the one-line problem exactly as written — WHO (teams running multi-agent systems), WHAT fails (attribution + silent failures), WHY it matters (nobody can verify a fix), in one breath. Do not explain the title word-by-word — slide 6 does that. Three names, three distinct subsystems, said aloud here sets the ownership tone before the panel has to ask.");
 }
@@ -231,23 +255,23 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 2, "Problem & Users", "Who has this, how it is handled today, why it matters");
 
-  card(s, MX, 1.52, 5.45, 2.45, C.card, C.teal);
-  label(s, MX + 0.28, 1.68, 5, "Stakeholders");
+  card(s, MX, 1.46, 5.45, 2.72, C.card, C.teal);
+  label(s, MX + 0.28, 1.62, 5, "Stakeholders");
   bullets(s, [
-    "Primary — an engineering team running a multi-agent AI system in or near production",
+    "Primary — an engineering team running multi-agent AI in production",
     "Secondary — downstream product teams",
     "Secondary — auditors needing traceable evidence",
-  ], { x: MX + 0.28, y: 2.02, w: 4.95, h: 1.9, fontSize: 16.5 });
+  ], { x: MX + 0.28, y: 2.00, w: 4.95, h: 2.10, fontSize: FS.body });
 
-  card(s, MX, 4.10, 5.45, 0.92, C.tealSoft);
-  s.addText([{ text: "SDG 9  ", options: { bold: true, color: C.teal, fontSize: 16.5 } }, { text: "Industry, Innovation & Infrastructure — reliability tooling, new industrial category", options: { color: C.textDark, fontSize: 15.5 } }], {
-    x: MX + 0.28, y: 4.24, w: 4.95, h: 0.66, isTextBox: true, margin: 0, fontFace: F_BODY, valign: "middle",
+  card(s, MX, 4.32, 5.45, 0.92, C.tealSoft);
+  s.addText([{ text: "SDG 9  ", options: { bold: true, color: C.teal, fontSize: FS.body } }, { text: "Industry, Innovation & Infrastructure — reliability tooling", options: { color: C.textDark, fontSize: FS.sub } }], {
+    x: MX + 0.28, y: 4.32, w: 4.95, h: 0.92, isTextBox: true, margin: 0, fontFace: F_BODY, valign: "middle",
   });
 
-  card(s, MX, 5.15, 5.45, 1.30, C.redSoft, C.red);
-  label(s, MX + 0.28, 5.30, 5, "Consequence of failure", C.red);
-  s.addText("Ships a confident, wrong answer — no crash, no error, no signal anything went wrong.", {
-    x: MX + 0.28, y: 5.62, w: 4.95, h: 0.8, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 16.5, color: C.textDark, italic: true,
+  card(s, MX, 5.40, 5.45, 1.40, C.redSoft, C.red);
+  label(s, MX + 0.28, 5.54, 5, "Consequence of failure", C.red);
+  s.addText("Ships a confident, wrong answer — no crash, no error, no signal.", {
+    x: MX + 0.28, y: 5.94, w: 4.95, h: 0.76, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.body, color: C.textDark, italic: true,
   });
 
   const rx = 6.42, rw = CW - (rx - MX);
@@ -260,16 +284,16 @@ function bullets(slide, items, opts) {
   ];
   let sy = 1.96;
   steps.forEach(([n, t, sub, fg, bg], i) => {
-    dot(s, rx, sy, 0.44, bg, n, fg);
-    s.addText([{ text: t, options: { bold: true, breakLine: true, fontSize: 17, color: C.textDark } }, { text: sub, options: { fontSize: 14.5, color: C.textMuted } }], {
-      x: rx + 0.60, y: sy - 0.06, w: rw - 0.62, h: 0.88, isTextBox: true, margin: 0, fontFace: F_BODY,
+    dot(s, rx, sy, 0.50, bg, n, fg);
+    s.addText([{ text: t, options: { bold: true, breakLine: true, fontSize: FS.body, color: C.textDark } }, { text: sub, options: { fontSize: FS.sub, color: C.textMuted } }], {
+      x: rx + 0.66, y: sy - 0.08, w: rw - 0.68, h: 0.96, isTextBox: true, margin: 0, fontFace: F_BODY,
     });
-    if (i < 3) s.addShape(pres.ShapeType.line, { x: rx + 0.22, y: sy + 0.44, w: 0, h: 0.42, line: { color: C.border, width: 1.5, dashType: "dash" } });
-    sy += 1.20;
+    if (i < 3) s.addShape(pres.ShapeType.line, { x: rx + 0.25, y: sy + 0.50, w: 0, h: 0.36, line: { color: C.border, width: 1.5, dashType: "dash" } });
+    sy += 1.14;
   });
-  card(s, rx, 6.30, rw, 0.52, C.amberSoft);
+  card(s, rx, 6.28, rw, 0.60, C.amberSoft);
   s.addText([{ text: "Stakeholder evidence today:  ", options: { bold: true, color: C.amber } }, { text: "literature + 7 commercial vendors", options: { color: C.textDark } }], {
-    x: rx + 0.20, y: 6.30, w: rw - 0.4, h: 0.52, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 14, valign: "middle",
+    x: rx + 0.20, y: 6.28, w: rw - 0.4, h: 0.60, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub, valign: "middle",
   });
 
   s.addNotes("14.2% is the field's own measured baseline for 'a human reads the trace' — the number the whole project is trying to beat. On stakeholders: state plainly that this is Stream A, that the problem's reality rests on published evidence and a commercial market, and that live practitioner contact is scheduled in the Mid-2 acceptance study (C.13.1) — declared open, not claimed as done. Do not overclaim contact that has not happened — risk-register R33. Citations: plan §0.1 · §0.05 (SDG) · Full_Literature_Landscape_Analysis.md.");
@@ -283,30 +307,33 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 3, "Existing Solutions & Prior FYP Comparison", "Proving the gap is structural, not a missing feature");
 
-  const cols = ["", "Core approach", "Step-level attribution\n(published accuracy)", "Silent-failure\ndetection", "Counterfactual fix-\ntesting, measured", "Framework-\nagnostic"];
+  // "Core approach" dropped in the readability pass: it described each system
+  // rather than comparing it, so it cost a column of width without carrying the
+  // argument. Five columns is what fits at a legible size.
+  const cols = ["", "Step-level attribution\n(published accuracy)", "Silent-failure\ndetection", "Counterfactual fix-\ntesting, measured", "Framework-\nagnostic"];
   const rows = [
-    ["ErrorProbe\n(ACL 2026)", "3-stage LLM diagnosis\n+ memory", "59.5%", "✘ admits\nit cannot", "✘", "✘ 2 archs only"],
-    ["LangSmith Engine /\nArize Alyx (2026)", "Automated RCA\n+ fix drafting", "not published", "?", "?", "✘ stack-locked"],
-    ["Langfuse / Braintrust /\nPhoenix / Maxim / Opik", "Trace capture\n+ eval", "human-driven", "RAG only", "✘", "✘"],
+    ["ErrorProbe\n(ACL 2026)", "59.5%", "✘ admits\nit cannot", "✘", "✘ 2 archs only"],
+    ["LangSmith Engine /\nArize Alyx (2026)", "not published", "?", "?", "✘ stack-locked"],
+    ["Langfuse / Braintrust /\nPhoenix / Maxim / Opik", "human-driven", "RAG only", "✘", "✘"],
     // Named prior FYP from Shahoud's 2026-09-06 archive check (R39), merged with the
     // 660-title structural sweep — a named closest match answers a panel better than
     // "we found nothing", and the two findings agree rather than compete.
-    ["Closest prior FYP\n(S24-011-D-HDLM,\nSpring 2024)", "hallucination detection\nin single-LLM text", "—\nno attribution at all", "partial — single-LLM\ntext only", "✘ no repair /\nreplay step", "N/A — not a\nmulti-agent system"],
-    ["Current manual\nworkflow", "human reads,\nguesses", "14.2%\n(Who&When)", "✘", "✘", "N/A"],
-    ["Granite\n(proposed)", "Constraint-based SED\n+ verified repair loop", "building on\nErrorProbe", "✓ scoped &\nmeasured", "✓ recovery rate\nover N replays", "✓ CrewAI +\nLangGraph, unseen"],
+    ["Closest prior FYP\nS24-011-D-HDLM", "— none", "partial — text only", "✘ no replay step", "N/A — single LLM"],
+    ["Current manual\nworkflow", "14.2%\n(Who&When)", "✘", "✘", "N/A"],
+    ["Granite\n(proposed)", "building on\nErrorProbe", "✓ scoped &\nmeasured", "✓ recovery rate\nmeasured", "✓ CrewAI +\nLangGraph"],
   ];
-  // NOTE: this table stays at 11pt while the rest of the deck runs 1.5pt bigger.
-  // At the deck's general size (12.5pt) this 6-column, real-evidence table overflows
-  // its slide — verified by rendering, not assumed — so 11pt is this table's actual
-  // ceiling given the column widths below, not an oversight.
-  const tRows = [cols.map(c => ({ text: c, options: { bold: true, fill: { color: C.panel }, color: C.textLight, fontSize: 11, align: "center", valign: "middle" } }))];
+  // 14pt is this five-column table's ceiling — verified by rendering, not assumed.
+  // It sits below the deck's 15.5pt table size because the header cells wrap to
+  // three lines; going higher pushes the last row off the slide.
+  const T3 = 14;
+  const tRows = [cols.map(c => ({ text: c, options: { bold: true, fill: { color: C.panel }, color: C.textLight, fontSize: T3, align: "center", valign: "middle" } }))];
   rows.forEach((r, ri) => {
     const isGranite = ri === rows.length - 1;
     const isPrior = ri === 3;
     tRows.push(r.map((c, ci) => ({
       text: c,
       options: {
-        fontSize: 11, align: ci === 0 ? "left" : "center", valign: "middle",
+        fontSize: T3, align: ci === 0 ? "left" : "center", valign: "middle",
         bold: ci === 0 || isGranite,
         fill: { color: isGranite ? C.tealSoft : (isPrior ? C.greenSoft : (ri % 2 === 0 ? C.paper : C.card)) },
         color: C.textDark,
@@ -314,26 +341,26 @@ function bullets(slide, items, opts) {
     })));
   });
   s.addTable(tRows, {
-    x: MX, y: 1.50, w: CW, h: 4.02,
-    colW: [1.72, 2.10, 2.00, 1.80, 2.10, 1.87],
+    x: MX, y: 1.46, w: CW, h: 3.98,
+    colW: [2.30, 2.45, 2.20, 2.55, 2.573],
     border: { type: "solid", color: C.border, pt: 0.5 },
     autoPage: false, fontFace: F_BODY,
   });
 
-  card(s, MX, 5.86, 6.05, 1.14, C.greenSoft, C.green);
-  label(s, MX + 0.22, 5.96, 5.6, "Prior-FYP check — closed", C.green);
+  card(s, MX, 5.52, 6.05, 1.42, C.greenSoft, C.green);
+  label(s, MX + 0.22, 5.62, 5.6, "Prior-FYP check — closed", C.green);
   s.addText([
-    { text: "660 titles, 12 cohorts since 2019, checked structurally. Closest: ", options: { color: C.textDark } },
+    { text: "660 titles, 12 cohorts since 2019. Closest: ", options: { color: C.textDark } },
     { text: "S24-011-D-HDLM", options: { bold: true, color: C.green } },
-    { text: " — hallucination detection in single-LLM text: same core problem, ~1 of our 4 stages.", options: { color: C.textDark } },
+    { text: " — hallucination detection in single-LLM text, ~1 of our 4 stages.", options: { color: C.textDark } },
   ], {
-    x: MX + 0.22, y: 6.24, w: 5.65, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.5,
+    x: MX + 0.22, y: 6.00, w: 5.65, h: 0.88, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub,
   });
 
-  card(s, MX + 6.25, 5.86, CW - 6.25, 1.14, C.amberSoft, C.amber);
-  label(s, MX + 6.47, 5.96, 5.4, "The real gap", C.amber);
+  card(s, MX + 6.25, 5.52, CW - 6.25, 1.42, C.amberSoft, C.amber);
+  label(s, MX + 6.47, 5.62, 5.4, "The real gap", C.amber);
   s.addText("No system combines attribution + silent-failure detection + verified repair + cross-arch generalization in one pipeline.", {
-    x: MX + 6.47, y: 6.24, w: CW - 6.7, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.5, color: C.textDark,
+    x: MX + 6.47, y: 6.00, w: CW - 6.7, h: 0.88, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub, color: C.textDark,
   });
 
   s.addNotes("Volunteer the correction story: an early draft said 'nobody automates this' — direct vendor checks proved that stale, corrected on the record (R9). On prior FYPs, give the number unprompted: 660 titles across every published cohort back to 2019, checked structurally, not by title. Other analogs use 'multi-agent' only as an application pattern (PropPal, LawSphere, CampusHive); nearest detect-then-repair is AutoVulRepair (fuzzing/C++) — name it before a panelist finds it. The gap is the combination, not any single missing feature. Citations: plan §0.095 (full 660-title comparison) · Commercial_Product_Comparison.md · risk-register R9/R33.");
@@ -345,23 +372,23 @@ function bullets(slide, items, opts) {
 {
   const s = pres.addSlide();
   s.background = { color: C.paper };
-  chrome(s, 4, "Research & Technical Basis", "9+ papers read in full — decisions, not decoration");
+  chrome(s, 4, "Research & Technical Basis", "7 papers read in full — decisions, not decoration");
 
   const lx = MX, lw = 6.5;
   label(s, lx, 1.52, lw, "Decisions the literature actually changed");
   const decisions = [
     ["ErrorProbe chosen as baseline", "On performance (59.5%), not recency"],
-    ["CrewAI + LangGraph committed", "Unused by all 9 papers reviewed"],
+    ["CrewAI + LangGraph committed", "Unused by all 7 papers reviewed"],
     ["Constraint-based SED, not LLM-judge", "LLM-judge AUROC ≤ 0.65 — barely above chance"],
     ["Single-framework narrowing rejected", "Market survey's own advice, declined (R19)"],
   ];
   let dy = 1.90;
   decisions.forEach(([t, sub]) => {
-    dot(s, lx, dy, 0.34, C.goldLight, "✓", C.ink);
-    s.addText([{ text: t, options: { bold: true, breakLine: true, fontSize: 16.5, color: C.textDark } }, { text: sub, options: { fontSize: 14.5, color: C.textMuted } }], {
-      x: lx + 0.48, y: dy - 0.07, w: lw - 0.52, h: 0.92, isTextBox: true, margin: 0, fontFace: F_BODY,
+    dot(s, lx, dy, 0.40, C.goldLight, "✓", C.ink);
+    s.addText([{ text: t, options: { bold: true, breakLine: true, fontSize: FS.body, color: C.textDark } }, { text: sub, options: { fontSize: FS.sub, color: C.textMuted } }], {
+      x: lx + 0.56, y: dy - 0.09, w: lw - 0.60, h: 1.02, isTextBox: true, margin: 0, fontFace: F_BODY,
     });
-    dy += 1.06;
+    dy += 1.16;
   });
 
   const rx = 7.42, rw = CW - (rx - MX);
@@ -375,34 +402,34 @@ function bullets(slide, items, opts) {
     labels: ["Who&When\n(single-LLM)", "AgenTracer\n(midpoint of range)", "ErrorProbe\n(baseline)"],
     values: [14.2, 40.0, 59.5],
   }], {
-    x: rx, y: 1.84, w: rw, h: 2.14,
+    x: rx, y: 1.86, w: rw, h: 2.14,
     barDir: "col", chartColors: [C.gold],
     showTitle: false, showLegend: false,
     showValue: true, dataLabelPosition: "outEnd", dataLabelColor: C.textDark,
-    dataLabelFontSize: 11, dataLabelFontBold: true, dataLabelFormatCode: "0.0",
-    catAxisLabelColor: C.textMuted, catAxisLabelFontSize: 9, catAxisLabelFontFace: F_BODY,
-    valAxisLabelColor: C.textMuted, valAxisLabelFontSize: 9, valAxisMaxVal: 70, valAxisMinVal: 0,
+    dataLabelFontSize: 14, dataLabelFontBold: true, dataLabelFormatCode: "0.0",
+    catAxisLabelColor: C.textMuted, catAxisLabelFontSize: 12, catAxisLabelFontFace: F_BODY,
+    valAxisLabelColor: C.textMuted, valAxisLabelFontSize: 12, valAxisMaxVal: 70, valAxisMinVal: 0,
     valAxisLabelFormatCode: "0",
     valGridLine: { color: C.border, size: 0.5 }, catGridLine: { style: "none" },
     plotArea: { fill: { color: C.paper } },
   });
-  s.addText("Step-level accuracy on Who&When, % · AgenTracer-8B is a published 37–43% range — midpoint plotted.", {
-    x: rx, y: 4.00, w: rw, h: 0.30, isTextBox: true, margin: 0,
-    fontFace: F_BODY, fontSize: 12.5, italic: true, color: C.textMuted,
+  s.addText("Step accuracy on Who&When, % · AgenTracer is a published 37–43% range — midpoint plotted.", {
+    x: rx, y: 4.06, w: rw, h: 0.46, isTextBox: true, margin: 0,
+    fontFace: F_BODY, fontSize: 15, italic: true, color: C.textMuted,
   });
 
-  card(s, rx, 4.36, rw, 1.02, C.redSoft, C.red);
-  s.addText([{ text: "40.5 points still wrong  ", options: { bold: true, color: C.red } }, { text: "— misattributes 4 of 10 steps; cannot see silent failures at all.", options: { color: C.textDark } }], {
-    x: rx + 0.22, y: 4.36, w: rw - 0.44, h: 1.02, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 15.5, valign: "middle",
+  card(s, rx, 4.56, rw, 1.10, C.redSoft, C.red);
+  s.addText([{ text: "40.5 points still wrong  ", options: { bold: true, color: C.red } }, { text: "— misattributes 4 of 10 steps; cannot see silent failures.", options: { color: C.textDark } }], {
+    x: rx + 0.22, y: 4.56, w: rw - 0.44, h: 1.10, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.body, valign: "middle",
   });
 
-  card(s, rx, 5.50, rw, 0.98, C.card);
-  label(s, rx + 0.22, 5.62, rw - 0.44, "Backbone-confound caveat", C.textMuted);
+  card(s, rx, 5.78, rw, 1.10, C.card);
+  label(s, rx + 0.22, 5.90, rw - 0.44, "Backbone-confound caveat", C.textMuted);
   s.addText("Cross-paper backbones differ — controlled within our own experiments.", {
-    x: rx + 0.22, y: 5.90, w: rw - 0.44, h: 0.52, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 15, color: C.textDark,
+    x: rx + 0.22, y: 6.24, w: rw - 0.44, h: 0.60, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub, color: C.textDark,
   });
 
-  s.addNotes("State the backbone-confound caveat before being asked. Name that credible unpublished preprints exist in adjacent territory and the team made a recorded decision not to chase every one — the strategy is beating a peer-reviewed baseline, not pre-empting unpublished work. Full R4/Annex A.2 wording: a win partly reflects backbone strength, dual-reported. Citations: Full_Literature_Landscape_Analysis.md · ErrorProbe_Baseline_Selection.md · plan §0.08.");
+  s.addNotes("State the backbone-confound caveat before being asked. Name that credible unpublished preprints exist in adjacent territory and the team made a recorded decision not to chase every one — the strategy is beating a peer-reviewed baseline, not pre-empting unpublished work. If a win partly reflects backbone strength, report both numbers, declared in advance. Citations: Full_Literature_Landscape_Analysis.md · ErrorProbe_Baseline_Selection.md · plan §0.08.");
 }
 
 // ============================================================
@@ -413,51 +440,35 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 5, "Complex Computing Challenge", "What is technically hard — and why this is not a course project");
 
-  // CCP grid — compact 3x3. Sub-lines cut to fragments (readability pass); the
-  // full sentence for each lives in speaker notes, not on the slide.
+  // Only the 5 strongest, most classic CCP arguments stay on-slide, renumbered
+  // 1-5 with no gaps. The other 4 (Unfamiliar issues, Significant
+  // consequences, Interdependence, plus the already-held-back Diverse
+  // stakeholders) are documented in full in
+  // markdowns/05-deliverables/defense-prep/CCP_and_Spikes_Full_Reasoning.md.
   const items = [
-    ["1", "Conflicting requirements", "Depth vs. latency; privacy vs. completeness", true],
-    ["2", "No obvious solution", "Best published: 59.5% after 15 months, 7 papers", true],
-    ["3", "Depth of knowledge", "Graph modeling, causal reasoning, tracing", true],
-    ["4", "Unfamiliar issues", "Delayed errors, non-determinism, cross-arch", true],
-    ["5", "Beyond standard practice", "No framework does attribution + detection + recovery", true],
-    ["6", "Diverse stakeholders", "Named; live contact scheduled Mid-2", false],
-    ["7", "Significant consequences", "A missed failure ships a wrong answer, undetected", true],
-    ["8", "Interdependence", "Failures propagate; graph models it directly", true],
-    ["9", "Ill-defined cause", "3 unknowns: whether, which step, what's correct", true],
+    ["1", "Conflicting requirements", "Depth vs. latency; privacy vs. completeness"],         // characteristic 1
+    ["2", "No obvious solution", "Best published: 59.5% after 15 months, 7 papers"],          // characteristic 2
+    ["3", "Depth of knowledge", "Graph modeling, causal reasoning, tracing"],                  // characteristic 3
+    ["4", "Beyond standard practice", "No framework does attribution + detection + recovery"], // characteristic 5
+    ["5", "Ill-defined cause", "3 unknowns: whether, which step, what's correct"],             // characteristic 9
   ];
-  const cols3 = 3, rowH = 1.30, colW = CW / cols3;
-  items.forEach(([n, t, sub, clear], i) => {
-    const cx = MX + (i % cols3) * colW, cy = 1.42 + Math.floor(i / cols3) * rowH;
-    card(s, cx, cy, colW - 0.18, rowH - 0.12, clear ? C.greenSoft : C.amberSoft, clear ? C.green : C.amber);
-    dot(s, cx + 0.16, cy + 0.15, 0.34, clear ? C.green : C.amber, n, C.textLight);
-    s.addText(t, { x: cx + 0.60, y: cy + 0.13, w: colW - 0.90, h: 0.36, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 16, bold: true, color: C.textDark });
-    s.addText(sub, { x: cx + 0.16, y: cy + 0.54, w: colW - 0.48, h: 0.60, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, color: C.textMuted });
+  // Full-width elegant rows (same style as slide 10's rework) rather than a
+  // grid of squarish boxes — label left, description running to the right,
+  // thin colored left edge instead of a bold filled box.
+  const rowH = 0.96, rowGap = 0.14;
+  const gridRows = items.length;
+  const gridTop = 1.42 + ((PH - 0.46 - 0.14 - 1.42) - (gridRows * rowH + (gridRows - 1) * rowGap)) / 2;
+  const labelW = 3.5;
+  items.forEach(([n, t, sub], i) => {
+    const ry = gridTop + i * (rowH + rowGap);
+    s.addShape(pres.ShapeType.roundRect, { x: MX, y: ry, w: CW, h: rowH, rectRadius: 0.05, fill: { color: C.greenSoft }, line: { color: C.green, width: 1 } });
+    dot(s, MX + 0.18, ry + (rowH - 0.42) / 2, 0.42, C.green, n, C.textLight);
+    s.addText(t, { x: MX + 0.76, y: ry, w: labelW - 0.76, h: rowH, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: FS.body, bold: true, color: C.textDark, valign: "middle" });
+    s.addShape(pres.ShapeType.line, { x: MX + labelW + 0.10, y: ry + 0.16, w: 0, h: rowH - 0.32, line: { color: C.border, width: 1 } });
+    s.addText(sub, { x: MX + labelW + 0.32, y: ry, w: CW - labelW - 0.52, h: rowH, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub, color: C.textMuted, valign: "middle" });
   });
 
-  // NEW in v2 — the handbook's AI-resilience test (C.7)
-  card(s, MX, 5.36, CW, 1.36, C.ink2);
-  s.addText("THE HANDBOOK'S OWN TEST (C.7):  “Could a strong student with AI assistance build this in a week?”", {
-    x: MX + 0.28, y: 5.46, w: CW - 0.56, h: 0.32, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 13.5, bold: true, color: C.goldLight, charSpacing: 0.3,
-  });
-  const hard = [
-    ["The wrapper", "yes — in a weekend", "Trace capture + LLM guess = a weekend.", C.textLightMuted],
-    ["What it would get wrong", "everything that carries the marks", "No unseen-arch benchmark, no silent-failure test, no FPR, no proof its fix works.", C.textLight],
-    ["Where our difficulty sits", "data, evaluation, constraints", "The benchmark, the constraints, the proof — not the wrapper.", C.textLight],
-  ];
-  let hx = MX + 0.28;
-  const hw = (CW - 0.9) / 3;
-  hard.forEach(([k, v, d, col]) => {
-    s.addText([
-      { text: k.toUpperCase(), options: { fontFace: F_MONO, fontSize: 12, bold: true, color: C.gold, breakLine: true, charSpacing: 0.5 } },
-      { text: v, options: { fontFace: F_BODY, fontSize: 15, bold: true, color: C.textLight, breakLine: true } },
-      { text: d, options: { fontFace: F_BODY, fontSize: 12.8, color: col } },
-    ], { x: hx, y: 5.82, w: hw, h: 0.86, isTextBox: true, margin: 0 });
-    hx += hw + 0.17;
-  });
-
-  s.addNotes("This is the slide the panel uses to decide whether the project deserves capstone status. Do not read the nine boxes — point at them and speak the bottom band instead: concede immediately that the wrapper is a weekend's work, then name precisely what such a version would get wrong (no benchmark on unseen architectures, no way to tell a silent failure from a correct answer, no measured false-positive rate on clean controls, no evidence its fix works). Characteristic 6 is amber on purpose; say so before they spot it — 8 of 9 clear, matching the guide's own worked 'Strong' examples (6 to 9). Read characteristic 9's resolution aloud if pressed on complexity. Citations: 02_Panel_Defense_Question_Bank.md Q8a · plan §1 (three-tier CCP) · §2 (9-characteristic rating).");
+  s.addNotes("This is the slide the panel uses to decide whether the project deserves capstone status. Concede up front that a trace-capture-plus-LLM-guess wrapper is a weekend's work, then name precisely what such a version would get wrong: no benchmark on unseen architectures, no way to tell a silent failure from a correct answer, no measured false-positive rate on clean controls, no evidence its fix works. Only the 5 strongest characteristics are on-slide, renumbered 1-5 with no gaps. Badge 5 (Ill-defined cause) has three unknowns stacked — read its resolution aloud if pressed: whether/which/what's-correct, each resolved by a distinct pipeline stage. The other 4 (Unfamiliar issues, Significant consequences, Interdependence, Diverse stakeholders) are held back — full reasoning and likely panel questions for all 9 are in markdowns/05-deliverables/defense-prep/CCP_and_Spikes_Full_Reasoning.md, cover them only if asked directly. Citations: 02_Panel_Defense_Question_Bank.md Q8a · plan §1 (three-tier CCP) · §2 (9-characteristic rating).");
 }
 
 // ============================================================
@@ -468,53 +479,106 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 6, "Proposed Solution & Contribution", "What is being built, and where the boundary sits");
 
-  card(s, MX, 1.48, CW, 1.02, C.card, C.gold);
+  card(s, MX, 1.42, CW, 1.00, C.card, C.gold);
   s.addText([
-    { text: "Contribution.  ", options: { bold: true, color: C.goldDark, fontSize: 16.5 } },
-    { text: "Best method: 59.5% — but untested on unseen architectures, and admits it misses silent failures. We build a cross-architecture benchmark and a diagnosis pipeline with constraint-based silent-failure verification, as a framework-agnostic SDK.", options: { color: C.textDark, fontSize: 15.5 } },
-  ], { x: MX + 0.28, y: 1.48, w: CW - 0.56, h: 1.02, isTextBox: true, margin: 0, fontFace: F_BODY, valign: "middle" });
+    { text: "Contribution.  ", options: { bold: true, color: C.goldDark, fontSize: FS.body } },
+    { text: "Best published method: 59.5% \u2014 untested on unseen architectures, blind to silent failures. We build a cross-architecture benchmark and a diagnosis pipeline with constraint-based verification, as a framework-agnostic SDK.", options: { color: C.textDark, fontSize: FS.sub } },
+  ], { x: MX + 0.28, y: 1.42, w: CW - 0.56, h: 1.00, isTextBox: true, margin: 0, fontFace: F_BODY, valign: "middle" });
 
-  const ax = MX, ay = 2.62, aw = CW, ah = 3.55;
-  s.addShape(pres.ShapeType.roundRect, { x: ax, y: ay + 0.22, w: 1.62, h: 0.82, rectRadius: 0.05, fill: { color: C.paper }, line: { color: C.textMuted, width: 1, dashType: "dash" } });
-  s.addText([{ text: "Target System", options: { bold: true, breakLine: true, fontSize: 14 } }, { text: "CrewAI / LangGraph", options: { fontSize: 12.5, color: C.textMuted } }], { x: ax + 0.04, y: ay + 0.28, w: 1.54, h: 0.70, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle", color: C.textDark });
-  s.addShape(pres.ShapeType.roundRect, { x: ax, y: ay + 2.48, w: 1.62, h: 0.82, rectRadius: 0.05, fill: { color: C.paper }, line: { color: C.textMuted, width: 1, dashType: "dash" } });
-  s.addText([{ text: "Operator", options: { bold: true, breakLine: true, fontSize: 14 } }, { text: "engineering team", options: { fontSize: 12.5, color: C.textMuted } }], { x: ax + 0.04, y: ay + 2.54, w: 1.54, h: 0.70, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle", color: C.textDark });
-
-  const bx = ax + 1.92, bw = 8.15;
-  s.addShape(pres.ShapeType.roundRect, { x: bx, y: ay, w: bw, h: ah, rectRadius: 0.08, fill: { color: "FFFFFF" }, line: { color: C.gold, width: 1.25, dashType: "dash" } });
-  s.addText("GRANITE — SYSTEM BOUNDARY", { x: bx + 0.16, y: ay + 0.06, w: 4, h: 0.22, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 9.5, bold: true, color: C.goldDark, charSpacing: 1 });
-
-  const lanes = [
-    ["LANE A — DATA / BENCHMARK · SHAHOUD", "Framework Adapters   ·   Fault Injection   ·   Benchmark Store", C.teal, C.tealSoft],
-    ["LANE B — DIAGNOSIS · NOOR", "Trace Normalizer → Graph Builder → Semantic Error Diagnostic + Backward Causal Tracer", C.orange, C.orangeSoft],
-    ["LANE C — PLATFORM · SAIF", "Repair Agent → Verified Automatic Repair → Recovery Controller / Memory (Tier 2) → API → Dashboard", C.indigo, C.indigoSoft],
-  ];
-  let ly = ay + 0.34;
-  const laneH = 1.05;
-  lanes.forEach(([lab, content, fg, bg], i) => {
-    s.addShape(pres.ShapeType.roundRect, { x: bx + 0.16, y: ly, w: bw - 1.88, h: laneH - 0.12, rectRadius: 0.05, fill: { color: bg }, line: { color: fg, width: 1 } });
-    s.addText(lab, { x: bx + 0.30, y: ly + 0.07, w: bw - 2.16, h: 0.26, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 12, bold: true, color: fg });
-    s.addText(content, { x: bx + 0.30, y: ly + 0.34, w: bw - 2.16, h: 0.58, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.8, color: C.textDark });
-    if (i < 2) s.addShape(pres.ShapeType.line, { x: bx + (bw - 1.88) / 2, y: ly + laneH - 0.12, w: 0, h: 0.12, line: { color: C.textMuted, width: 1.25, endArrowType: "triangle" } });
-    ly += laneH;
+  // Architecture diagram, drawn natively (real pptxgenjs shapes, not a pasted
+  // screenshot of the Architecture Atlas) \u2014 same content as Atlas Diagram 1.
+  //
+  // Every size here was raised in the readability pass: box titles 10.3 -> DG.box,
+  // sub-labels 7.6 -> DG.sub, lane headers 9.5 -> DG.lane. The lane and box
+  // geometry below was recomputed to match; the diagram is taller and the actor
+  // column wider because the type no longer fits the old boxes.
+  const DG = { box: 13, sub: 10.5, lane: 12, store: 12.5 };
+  const ay = 2.50, ah = 4.46;
+  const arrow = (x1, y1, x2, y2, color, dashed) => s.addShape(pres.ShapeType.line, {
+    x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.abs(x2 - x1) || 0.001, h: Math.abs(y2 - y1) || 0.001,
+    flipH: x2 < x1, flipV: y2 < y1,
+    line: { color, width: 1.25, endArrowType: "triangle", dashType: dashed ? "dash" : "solid" },
   });
+  const box = (x, y, w, h, fg, bg, title, sub, subColor) => {
+    s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.05, fill: { color: bg || "FFFFFF" }, line: { color: fg, width: 1.1 } });
+    s.addText(title, { x: x + 0.06, y: y + 0.04, w: w - 0.12, h: sub ? 0.30 : h - 0.08, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: DG.box, bold: true, color: C.textDark, align: "center", valign: sub ? "top" : "middle" });
+    if (sub) s.addText(sub, { x: x + 0.06, y: y + h - 0.26, w: w - 0.12, h: 0.22, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: DG.sub, color: subColor || C.textMuted, align: "center" });
+  };
+  const store = (x, y, w, h, fg, label1) => {
+    s.addShape(pres.ShapeType.roundRect, { x, y: y + 0.08, w, h: h - 0.08, rectRadius: 0.04, fill: { color: "FFFFFF" }, line: { color: fg, width: 1.1 } });
+    s.addShape(pres.ShapeType.ellipse, { x, y, w, h: 0.16, fill: { color: "FFFFFF" }, line: { color: fg, width: 1.1 } });
+    s.addText(label1, { x: x + 0.04, y: y + h / 2 - 0.13, w: w - 0.08, h: 0.30, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: DG.store, bold: true, color: C.textDark, align: "center", valign: "middle" });
+  };
 
-  s.addShape(pres.ShapeType.roundRect, { x: bx + bw - 1.55, y: ay + 0.38, w: 1.38, h: 0.98, rectRadius: 0.05, fill: { color: "FBF3E3" }, line: { color: C.gold, width: 1, dashType: "dash" } });
-  s.addText([{ text: "LLM API", options: { bold: true, breakLine: true, fontSize: 14, color: C.goldDark } }, { text: "core-assist only\n~15–20% of components", options: { fontSize: 11.5, color: C.textMuted } }], { x: bx + bw - 1.49, y: ay + 0.42, w: 1.26, h: 0.90, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle" });
+  // Actors either side of the system boundary. Wider than before: "Target
+  // Multi-Agent System" needs two lines at DG.box.
+  const actorW = 1.85;
+  box(MX, ay + 0.12, actorW, 0.98, C.textMuted, C.paper, "Target Multi-Agent System", "CrewAI / LangGraph", C.textMuted);
+  box(MX, ay + ah - 1.06, actorW, 0.98, C.textMuted, C.paper, "Operator", "engineering team", C.textMuted);
+  arrow(MX + actorW / 2, ay + 1.10, MX + actorW / 2, ay + ah - 1.06, C.textMuted, false);
 
-  // C.16 slide 6 asks for "boundaries AND the intended deployment target" — both stated here.
+  // System boundary
+  const bx = MX + actorW + 0.28, bw = CW - actorW - 0.28 - 1.65;
+  s.addShape(pres.ShapeType.roundRect, { x: bx, y: ay, w: bw, h: ah, rectRadius: 0.08, fill: { color: "FFFFFF" }, line: { color: C.goldDark, width: 1.75, dashType: "dash" } });
+  s.addText("GRANITE \u2014 SYSTEM BOUNDARY", { x: bx + 0.16, y: ay + 0.05, w: 4.4, h: 0.26, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: DG.lane, bold: true, color: C.goldDark, charSpacing: 0.8 });
+  arrow(MX + actorW, ay + 0.60, bx, ay + 0.60, C.textMuted, false);
+
+  const laneX = bx + 0.15, laneW = bw - 0.30;
+
+  // Lane A \u2014 Data / Benchmark
+  const laneAY = ay + 0.30, laneAH = 1.00;
+  s.addShape(pres.ShapeType.roundRect, { x: laneX, y: laneAY, w: laneW, h: laneAH, rectRadius: 0.06, fill: { color: C.tealSoft }, line: { color: C.teal, width: 1.2 } });
+  s.addText("LANE A \u2014 DATA / BENCHMARK", { x: laneX + 0.14, y: laneAY + 0.04, w: 4, h: 0.24, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: DG.lane, bold: true, color: C.teal, charSpacing: 0.5 });
+  const faX = laneX + 0.15, faW = 2.65, fiX = faX + faW + 0.14, fiW = 2.85, bsX = fiX + fiW + 0.14, bsW = 1.85;
+  box(faX, laneAY + 0.30, faW, 0.62, C.teal, "FFFFFF", "Framework Adapters", "CrewAI + LangGraph hooks");
+  box(fiX, laneAY + 0.30, fiW, 0.62, C.teal, "FFFFFF", "Fault Injection Operators", "rule-based \u00b7 0% API");
+  store(bsX, laneAY + 0.30, bsW, 0.62, C.teal, "Benchmark Store");
+  arrow(faX + faW, laneAY + 0.61, fiX, laneAY + 0.61, C.teal, false);
+  arrow(fiX + fiW, laneAY + 0.61, bsX, laneAY + 0.61, C.teal, false);
+
+  // Lane B \u2014 Diagnosis
+  const laneBY = laneAY + laneAH + 0.14, laneBH = 1.52;
+  s.addShape(pres.ShapeType.roundRect, { x: laneX, y: laneBY, w: laneW, h: laneBH, rectRadius: 0.06, fill: { color: C.orangeSoft }, line: { color: C.orange, width: 1.2 } });
+  s.addText("LANE B \u2014 DIAGNOSIS", { x: laneX + 0.14, y: laneBY + 0.04, w: 4, h: 0.24, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: DG.lane, bold: true, color: C.orange, charSpacing: 0.5 });
+  arrow(laneX + 0.15 + 2.65 / 2, laneAY + laneAH + 0.01, laneX + 0.15 + 2.65 / 2, laneBY - 0.01, C.textMuted, false);
+  const tnX = laneX + 0.15, tnW = 2.65, gbX = tnX + tnW + 0.18, gbW = 3.30;
+  box(tnX, laneBY + 0.30, tnW, 0.62, C.orange, "FFFFFF", "Trace Normalizer", "standard schema in");
+  box(gbX, laneBY + 0.30, gbW, 0.62, C.orange, "FFFFFF", "Execution Graph Builder", "0% API");
+  arrow(tnX + tnW, laneBY + 0.61, gbX, laneBY + 0.61, C.orange, false);
+  const sedX = laneX + 0.15, sedW = 4.10, bctX = sedX + sedW + 0.15, bctW = laneW - 0.30 - sedW - 0.15;
+  box(sedX, laneBY + 0.98, sedW, 0.46, C.orange, "FFFFFF", "Semantic Error Diagnostic \u2014 unconditional");
+  box(bctX, laneBY + 0.98, bctW, 0.46, C.orange, "FFFFFF", "Backward Causal Tracer");
+  arrow(gbX + gbW * 0.42, laneBY + 0.92, sedX + sedW * 0.94, laneBY + 0.98, C.textMuted, false);
+  arrow(gbX + gbW * 0.58, laneBY + 0.92, bctX + bctW * 0.09, laneBY + 0.98, C.textMuted, false);
+
+  // Lane C \u2014 Platform
+  const laneCY = laneBY + laneBH + 0.14, laneCH = ah - (laneCY - ay) - 0.10;
+  s.addShape(pres.ShapeType.roundRect, { x: laneX, y: laneCY, w: laneW, h: laneCH, rectRadius: 0.06, fill: { color: C.indigoSoft }, line: { color: C.indigo, width: 1.2 } });
+  s.addText("LANE C \u2014 PLATFORM", { x: laneX + 0.14, y: laneCY + 0.04, w: 4, h: 0.24, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: DG.lane, bold: true, color: C.indigo, charSpacing: 0.5 });
+  const raX = laneX + 0.15, raW = 2.25, varX = raX + raW + 0.14, varW = 2.95, apiX = varX + varW + 0.14, apiW = laneW - 0.30 - raW - varW - 0.28;
+  box(raX, laneCY + 0.30, raW, 0.62, C.indigo, "FFFFFF", "Repair Agent", "candidate fix");
+  box(varX, laneCY + 0.30, varW, 0.62, C.indigo, "FFFFFF", "Verified Automatic Repair", "controlled replay, N runs");
+  box(apiX, laneCY + 0.30, apiW, 0.62, C.indigo, "FFFFFF", "Backend API", "FastAPI");
+  arrow(raX + raW, laneCY + 0.61, varX, laneCY + 0.61, C.indigo, false);
+  arrow(varX + varW, laneCY + 0.61, apiX, laneCY + 0.61, C.indigo, false);
   s.addText([
-    { text: "In scope: ", options: { bold: true, color: C.textDark } },
-    { text: "10 committed mechanisms.     ", options: { color: C.textMuted } },
-    { text: "Out of scope: ", options: { bold: true, color: C.textDark } },
-    { text: "message queues, Kubernetes, full RBAC, DR infra, multi-tenant billing.     ", options: { color: C.textMuted } },
-    { text: "Deployment target: ", options: { bold: true, color: C.goldDark } },
-    { text: "Docker + pip-installable SDK — operable by someone who didn't build it.", options: { color: C.textMuted } },
-  ], {
-    x: bx, y: ay + ah + 0.10, w: bw, h: 0.46, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, italic: true,
-  });
+    { text: "Tier 2 (gated): ", options: { bold: true, color: C.amber } },
+    { text: "Recovery Controller + Verified Repair Memory   \u00b7   Postgres   \u00b7   Dashboard", options: { color: C.textDark } },
+  ], { x: laneX + 0.15, y: laneCY + laneCH - 0.30, w: laneW - 0.30, h: 0.26, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: DG.sub + 2, italic: true });
 
-  s.addNotes("Say unprompted: 'controlled, not deterministic' — the replay protocol is deterministic, LLM-step variance is measured over N replays, never assumed away (R25). Say unprompted: the Semantic Error Diagnostic abstains where no checkable constraint exists, and the abstention rate is reported as a metric, not hidden. Full traceable spec behind this diagram: Use Case Model + diagram, 3 System Sequence Diagrams, SRS, Test Plan, Software Development Plan, Traceability Matrix, 16-screen wireframes — architecture atlas, tab 'Requirements & Design'. Citations: Software_Design_Specification.md §2–§6 · plan §7.0 (frozen scope) · architecture-sketch.md.");
+  arrow(laneX + laneW * 0.5, laneBY + laneBH + 0.01, laneX + laneW * 0.5, laneCY - 0.01, C.textMuted, false);
+
+  // LLM API \u2014 outside the boundary, dashed dependency arrows in
+  const llmX = bx + bw + 0.20, llmW = 1.45;
+  s.addShape(pres.ShapeType.roundRect, { x: llmX, y: ay + ah / 2 - 0.62, w: llmW, h: 1.24, rectRadius: 0.06, fill: { color: "FBF3E3" }, line: { color: C.goldDark, width: 1.5, dashType: "dash" } });
+  s.addText([
+    { text: "LLM API", options: { bold: true, breakLine: true, fontSize: 15, color: C.goldDark } },
+    { text: "core-assist only\n~15\u201320% of components", options: { fontSize: 11, color: C.textMuted } },
+  ], { x: llmX + 0.05, y: ay + ah / 2 - 0.58, w: llmW - 0.10, h: 1.16, isTextBox: true, margin: 0, fontFace: F_BODY, align: "center", valign: "middle" });
+  arrow(bx + bw, laneBY + 0.60, llmX, ay + ah / 2 - 0.24, C.gold, true);
+  arrow(bx + bw, laneCY + 0.60, llmX, ay + ah / 2 + 0.24, C.gold, true);
+
+  s.addNotes("Say unprompted: 'controlled, not deterministic' — the replay protocol is deterministic, LLM-step variance is measured over N replays, never assumed away (R25). Say unprompted: the Semantic Error Diagnostic abstains where no checkable constraint exists, and the abstention rate is reported as a metric, not hidden. If asked about scope: in scope is 10 committed mechanisms; out of scope is message queues, Kubernetes, full RBAC, DR infra, multi-tenant billing; deployment target is Docker + a pip-installable SDK, operable by someone who didn't build it. Full traceable spec behind this diagram: Use Case Model + diagram, 3 System Sequence Diagrams, SRS, Test Plan, Software Development Plan, Traceability Matrix, 16-screen wireframes — architecture atlas, tab 'Requirements & Design'. Citations: Software_Design_Specification.md §2–§6 · plan §7.0 (frozen scope) · architecture-sketch.md.");
 }
 
 // ============================================================
@@ -525,36 +589,46 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 7, "POC / Feasibility Evidence", "“Show the evidence — do not merely describe that it exists”");
 
+  // Stat row — number stacked over label. At the new type scale the two no
+  // longer fit on one line inside a quarter-width column.
   const stats = [["71.4%", "agent accuracy (5 runs)"], ["13.2%", "step accuracy (5 runs)"], ["4 / 6", "Repair Agent success"], ["8 / 8", "spikes with real evidence"]];
   let sx = MX;
   const statW = CW / 4;
   stats.forEach(([n, l]) => {
-    s.addText(n, { x: sx, y: 1.42, w: statW - 0.2, h: 0.56, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 33.5, bold: true, color: C.goldDark });
-    s.addText(l, { x: sx, y: 1.98, w: statW - 0.3, h: 0.44, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 14, color: C.textMuted });
+    s.addText(n, {
+      x: sx, y: 1.40, w: statW - 0.2, h: 0.46, isTextBox: true, margin: 0,
+      fontFace: F_TITLE, fontSize: FS.statBig, bold: true, color: C.goldDark, valign: "middle",
+    });
+    s.addText(l, {
+      x: sx, y: 1.86, w: statW - 0.2, h: 0.30, isTextBox: true, margin: 0,
+      fontFace: F_BODY, fontSize: 15, color: C.textMuted, valign: "middle",
+    });
     sx += statW;
   });
-  s.addShape(pres.ShapeType.line, { x: MX, y: 2.46, w: CW, h: 0, line: { color: C.border, width: 0.75 } });
+  s.addShape(pres.ShapeType.line, { x: MX, y: 2.24, w: CW, h: 0, line: { color: C.border, width: 0.75 } });
 
   const spikeRows = [
     ["#", "Spike", "Status", "Result"],
-    ["1", "ErrorProbe reproduction (simplified)", "DEMONSTRATED", "agent 62.5–85.7%, step 0–25% — 5 real runs, a range"],
+    ["1", "ErrorProbe reproduction", "DEMONSTRATED", "agent 62.5–85.7%, step 0–25% — 5 real runs, a range"],
     ["2", "CrewAI instrumentation", "DEMONSTRATED", "3 nodes, 2 clean edges"],
     ["3/3b", "Fault injection", "DEMONSTRATED", "1 case self-corrected — kept as a finding"],
-    ["4", "Semantic Error Diagnostic", "DEMONSTRATED", "Catches a near-miss ($20.00 vs $19.75), zero false positives"],
-    ["5", "Controlled counterfactual replay", "DEMONSTRATED", "97.2 corrupted → 108.0 recovered, recovery_success = true"],
-    ["6", "Cyclic graph handling", "DEMONSTRATED", "Disabled → hits the 10,000-step safety cap"],
-    ["7", "Preventive classifier", "HONEST NEGATIVE", "precision / recall / F1 = 0.25, near-random — reported, not hidden"],
+    ["4", "Semantic Error Diagnostic", "DEMONSTRATED", "Near-miss ($20.00 vs $19.75) caught, zero false positives — seeded test"],
+    ["5", "Counterfactual replay", "DEMONSTRATED", "97.2 corrupted → 108.0 recovered, recovery_success = true"],
+    ["6", "Cyclic graph handling", "DEMONSTRATED", "Bound disabled → hits the 10,000-step safety cap"],
+    ["7", "Preventive classifier", "HONEST NEGATIVE", "P / R / F1 = 0.25, near-random — reported, not hidden"],
     ["8", "Repair Agent", "DEMONSTRATED", "4/6 success; both failures share one fixable cause"],
   ];
-  // NOTE: this table stays at 11.5pt, like slide 3's — 9 rows of real evidence text
-  // is this deck's other genuine density ceiling, verified by rendering.
+  // The table now owns the whole lower two-thirds of the slide. The prototype
+  // screenshot that used to sit under it was removed; rather than backfill that
+  // band with new content, the 9 rows of real evidence take the space and the
+  // type comes up to FS.table so the back row can read them.
   const tRows = spikeRows.map((r, ri) => r.map((c, ci) => {
-    if (ri === 0) return { text: c, options: { bold: true, fill: { color: C.panel }, color: C.textLight, fontSize: 11.5, align: ci === 0 ? "center" : "left", valign: "middle" } };
+    if (ri === 0) return { text: c, options: { bold: true, fill: { color: C.panel }, color: C.textLight, fontSize: FS.table, align: ci === 0 ? "center" : "left", valign: "middle" } };
     const isNeg = r[2] === "HONEST NEGATIVE";
     return {
       text: c,
       options: {
-        fontSize: 11.5, valign: "middle", align: ci === 0 ? "center" : "left",
+        fontSize: FS.table, valign: "middle", align: ci === 0 ? "center" : "left",
         bold: ci === 2,
         color: ci === 2 ? (isNeg ? C.amber : C.green) : C.textDark,
         fill: { color: isNeg ? C.amberSoft : (ri % 2 === 0 ? C.paper : C.card) },
@@ -562,304 +636,246 @@ function bullets(slide, items, opts) {
     };
   }));
   s.addTable(tRows, {
-    x: MX, y: 2.60, w: CW, h: 3.42,
-    colW: [0.62, 2.35, 1.80, 7.35],
+    x: MX, y: 2.38, w: CW, h: 4.50,
+    colW: [0.78, 2.70, 2.05, 6.563],
     border: { type: "solid", color: C.border, pt: 0.5 },
     autoPage: false, fontFace: F_BODY,
   });
 
-  // Footer row split in two: a real screenshot of the clickable prototype
-  // (poc-demo/frontend/dist-static/index.html — interface real, backend mocked
-  // against a frozen data snapshot, exactly the guide's "high-fidelity functional
-  // prototype" definition) on the left, the in-progress/planned note on the right.
-  const thumbW = 2.2, thumbH = thumbW * (190 / 700);
-  card(s, MX, 6.14, thumbW + 0.20, 0.86, C.card, C.gold);
-  s.addText("LIVE, CLICKABLE PROTOTYPE", {
-    x: MX + 0.10, y: 6.19, w: thumbW, h: 0.18, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 7.3, bold: true, color: C.goldDark, charSpacing: 0.4,
-  });
-  s.addImage({ path: "assets_console_thumb.png", x: MX + 0.10, y: 6.38, w: thumbW, h: thumbH });
-
-  const ax2 = MX + thumbW + 0.30, aw2 = CW - thumbW - 0.30;
-  card(s, ax2, 6.14, aw2, 0.86, C.amberSoft, C.amber);
-  s.addText([{ text: "In progress: ", options: { bold: true, color: C.amber } }, { text: "full reproduction.     ", options: { color: C.textDark } }, { text: "Planned: ", options: { bold: true, color: C.amber } }, { text: "RC + VRM gates (Mid-1).     ", options: { color: C.textDark } }, { text: "Prototype: ", options: { bold: true, color: C.amber } }, { text: "5 screens, mocked backend, dist-static/index.html.", options: { color: C.textDark } }], {
-    x: ax2 + 0.20, y: 6.14, w: aw2 - 0.40, h: 0.86, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12, valign: "middle",
-  });
-
-  s.addNotes("Lead with Spike 7's negative result and Spike 8's failure analysis — quote the guide's own words on this directly: a POC that disproved an assumption is more valuable than one that confirmed it. Every number on this slide is real and recomputable from files in the repository; offer to open one. In progress: full 3-stage reproduction, top FYP-1 priority. Planned: Recovery Controller + Verified Repair Memory Tier-2 gates, pre-registered Mid-1 criteria, not yet run. Citations: dev/spikes/poc/ (8 scripts + output JSONs on disk) · markdowns/04-poc-evidence/POC_Spike_Outputs_Full.md.");
+  s.addNotes("Lead with Spike 7's negative result and Spike 8's failure analysis — quote the guide's own words on this directly: a POC that disproved an assumption is more valuable than one that confirmed it. Every number on this slide is real and recomputable from files in the repository; offer to open one. In progress: full 3-stage reproduction, top FYP-1 priority. Planned: Recovery Controller + Verified Repair Memory Tier-2 gates, pre-registered Mid-1 criteria, not yet run. Prototype: 5 screens, mocked backend, dist-static/index.html. On spike 4, state both halves before being asked, because they are two different runs. The LIVE n=3 task run produced zero natural silent failures — the model got all three right — so detector recall in the wild is UNMEASURED, not high. The near-miss result ($20.00 against a true $19.75, zero false positives) comes from the SEEDED mechanism test, spike 4b, which feeds known-wrong values straight to the rule-based checker: 3 of 3 wrong values caught, 0 of 3 correct values flagged, including one differing only by legitimate rounding. The mechanism works; its hit rate on natural failures does not yet have a number, and getting one needs injected near-misses at scale. Citations: dev/spikes/poc/ (9 scripts + output JSONs on disk, incl. poc_spike4b_mechanism_output.json) · markdowns/04-poc-evidence/POC_Spike_Outputs_Full.md · risk-register.md R10.");
 }
 
 // ============================================================
-// SLIDE 8 — Evaluation plan AND risks  (official structure)
+// SLIDE 8 — Evaluation plan  (split from the old combined "plan AND risks")
+//
+// The original slide 8 carried the acceptance band, metrics, data, success
+// bands, risks AND the GenAI boundary. At the readability type scale that was
+// too much for one slide to hold without the audience reading instead of
+// listening, so it is now two: evaluation here, risks on slide 9. The split
+// also let the metric list go back to one metric per bullet, which is how it
+// reads aloud.
 // ============================================================
 {
   const s = pres.addSlide();
   s.background = { color: C.paper };
-  chrome(s, 8, "Evaluation Plan & Risks", "Thresholds and fallbacks decided before any result exists");
+  chrome(s, 8, "Evaluation Plan", "How success is measured, and what counts as success");
 
-  card(s, MX, 1.44, CW, 0.68, C.card, C.gold);
-  s.addText([{ text: "Pre-registered acceptance band.  ", options: { bold: true, color: C.goldDark } }, { text: "Reproduction accepted within ±10 points of ErrorProbe's published 59.5% on a comparable-class backbone.", options: { color: C.textDark } }], {
-    x: MX + 0.26, y: 1.44, w: CW - 0.52, h: 0.68, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 15, valign: "middle",
+  // Pre-registered acceptance band — the headline commitment.
+  card(s, MX, 1.40, CW, 0.80, C.card, C.gold);
+  s.addText([
+    { text: "Pre-registered acceptance band.  ", options: { bold: true, color: C.goldDark } },
+    { text: "The reproduction is accepted within \u00b110 points of ErrorProbe\u2019s published 59.5% on a comparable-class backbone \u2014 decided before any result exists.", options: { color: C.textDark } },
+  ], {
+    x: MX + 0.26, y: 1.40, w: CW - 0.52, h: 0.80, isTextBox: true, margin: 0,
+    fontFace: F_BODY, fontSize: FS.body, valign: "middle",
   });
 
-  const lx = MX, lw = 5.35;
-  label(s, lx, 2.28, lw, "Metrics");
-  bullets(s, [
-    "Agent / step accuracy · propagation-path F1",
-    "SF precision/recall + abstention rate",
-    "False-positive rate on clean controls",
-    "Completion, recovery, repair success rates",
-    "Latency overhead — the NFR, target < 50%",
-  ], { x: lx, y: 2.60, w: lw, h: 1.92, fontSize: 14.7 });
+  const colW2 = (CW - 0.30) / 2;
+  const lx = MX, mx2 = MX + colW2 + 0.30;
 
-  // C.16 slide 8 asks for "baseline, DATA OR SCENARIOS, metrics, success criteria..." —
-  // the data/scenarios half is named here rather than left implicit.
-  card(s, lx, 4.58, lw, 1.22, C.card);
-  // Named "dependencies" explicitly — the circulated image's slide 8 row asks for
-  // that word by name; it was present in substance (data + backbone) but unlabeled.
-  label(s, lx + 0.20, 4.68, lw - 0.4, "Data / dependencies  ·  protocol", C.textMuted);
+  // Metrics — one per line again now that the slide is not also carrying risks.
+  label(s, lx, 2.34, colW2, "Metrics");
+  bullets(s, [
+    "Agent-level and step-level accuracy",
+    "Propagation-path F1",
+    "Silent-failure precision / recall",
+    "Abstention rate on unverifiable claims",
+    "False-positive rate on clean controls",
+    "Recovery rate \u00b7 repair success rate",
+    "Latency overhead \u2014 the NFR, target < 50%",
+  ], { x: lx, y: 2.72, w: colW2, h: 3.18, fontSize: FS.body });
+
+  // Success bands — three tiers, with room for the full criterion each.
+  label(s, mx2, 2.34, colW2, "Success bands");
+  const bands = [
+    ["Acceptable", "Parity on Who&When, plus any cross-architecture result", C.amber, C.amberSoft],
+    ["Strong", "Beats the baseline on unseen architectures, >70% SF recall", C.teal, C.tealSoft],
+    ["Exceptional", "Strong, plus >50% verified-repair recovery rate", C.green, C.greenSoft],
+  ];
+  let by = 2.72;
+  bands.forEach(([n, d, fg, bg]) => {
+    card(s, mx2, by, colW2, 1.02, bg, fg);
+    s.addText(n, { x: mx2 + 0.18, y: by + 0.07, w: colW2 - 0.36, h: 0.32, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: FS.body, bold: true, color: fg });
+    s.addText(d, { x: mx2 + 0.18, y: by + 0.42, w: colW2 - 0.36, h: 0.56, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub, color: C.textDark });
+    by += 1.08;
+  });
+
+  // Data / dependencies / protocol — C.16 names all three for this slide.
+  card(s, MX, 5.94, CW, 0.86, C.card, C.teal);
   s.addText([
-    { text: "Data: ", options: { bold: true, color: C.textDark } },
-    { text: "Who&When (184 cases); our own benchmark, GSM8K + tau-bench, clean controls.  ", options: { color: C.textDark } },
-    { text: "Protocol: ", options: { bold: true, color: C.textDark } },
+    { text: "Data: ", options: { bold: true, color: C.teal } },
+    { text: "Who&When (184 cases) \u00b7 our own cross-architecture benchmark \u00b7 GSM8K \u00b7 tau-bench \u00b7 clean controls.    ", options: { color: C.textDark } },
+    { text: "Protocol: ", options: { bold: true, color: C.teal } },
     { text: "bootstrap CIs, fixed seeds, N=5 variance, ablation matrix, human baseline.", options: { color: C.textDark } },
   ], {
-    x: lx + 0.20, y: 4.92, w: lw - 0.4, h: 0.86, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12,
-  });
-  card(s, lx, 5.92, lw, 0.72, C.redSoft, C.red);
-  s.addText([{ text: "Cannot support: ", options: { bold: true, color: C.red } }, { text: "production-scale claims beyond tested frameworks.", options: { color: C.textDark } }], {
-    x: lx + 0.20, y: 5.92, w: lw - 0.4, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13, valign: "middle",
+    x: MX + 0.24, y: 5.94, w: CW - 0.48, h: 0.86, isTextBox: true, margin: 0,
+    fontFace: F_BODY, fontSize: FS.sub, valign: "middle",
   });
 
-  // middle: success bands
-  const mx3 = lx + lw + 0.26, mw3 = 2.85;
-  label(s, mx3, 2.28, mw3, "Success bands");
-  const bands = [
-    ["Failure", "No measurable improvement anywhere", C.red, C.redSoft],
-    ["Acceptable", "Parity on Who&When + any cross-arch", C.amber, C.amberSoft],
-    ["Strong", "Beats baseline, unseen archs, >70% SF", C.teal, C.tealSoft],
-    ["Exceptional", "Strong + >50% verified-repair recovery", C.green, C.greenSoft],
-  ];
-  let by = 2.60;
-  bands.forEach(([n, d, fg, bg]) => {
-    card(s, mx3, by, mw3, 0.86, bg, fg);
-    s.addText(n, { x: mx3 + 0.18, y: by + 0.06, w: mw3 - 0.36, h: 0.28, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 14.5, bold: true, color: fg });
-    s.addText(d, { x: mx3 + 0.18, y: by + 0.38, w: mw3 - 0.36, h: 0.44, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.textDark });
-    by += 0.92;
-  });
-
-  // right: risks → fallback. Titles trimmed so none wrap past one line at this size.
-  const rx = mx3 + mw3 + 0.26, rw = CW - (rx - MX);
-  label(s, rx, 2.28, rw, "Top risks → stated fallback");
-  const risks = [
-    ["Reproduction misses the ±10pt band", "Dual-reporting (Annex A.2) — expected, not a failure"],
-    ["Recovery Controller fails at Mid-1", "Resume via controlled replay — Tier 1 delivers it"],
-    ["Verified Repair Memory fails again", "Ships as a memory-on/off ablation"],
-    ["Benchmark scale stalls below 500", "Floor of 500; 300-with-stats beats 1,000-without"],
-  ];
-  let ry = 2.60;
-  risks.forEach(([r, f]) => {
-    card(s, rx, ry, rw, 0.86, C.card);
-    s.addText(r, { x: rx + 0.18, y: ry + 0.06, w: rw - 0.36, h: 0.36, isTextBox: true, margin: 0, fontFace: F_BODY, bold: true, fontSize: 12.3, color: C.textDark });
-    s.addText(f, { x: rx + 0.18, y: ry + 0.46, w: rw - 0.36, h: 0.36, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.green });
-    ry += 0.92;
-  });
-  card(s, mx3, 6.44, CW - (mx3 - MX), 0.56, C.indigoSoft, C.indigo);
-  s.addText([{ text: "GenAI boundary:  ", options: { bold: true, color: C.indigo } }, { text: "nothing we claim sits in core-replacement — the LLM is core-assist.", options: { color: C.textDark } }], {
-    x: mx3 + 0.20, y: 6.44, w: CW - (mx3 - MX) - 0.4, h: 0.56, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.3, valign: "middle",
-  });
-
-  s.addNotes("The false-positive-rate-on-clean-controls metric is absent from every paper in the reviewed corpus and every platform checked — say this is the field's gap, not just ours. Deliver the risk column as confidence, not confession: each decision rule was pre-registered before results exist. Outside the acceptance band, both numbers are reported transparently per Annex A.2, declared before the run, not after. Full GenAI boundary line: every external component classified Support / Core-assist / Core-replacement on Form 13; the contribution survives swapping the LLM. Citations: plan §11 (acceptance band, pre-registered) · Form13_GenAI_Disclosure_Sheet.md · risk-register.md (R4/R25/R37).");
+  s.addNotes("The false-positive-rate-on-clean-controls metric is absent from every paper in the reviewed corpus and every platform checked \u2014 say this is the field's gap, not just ours. The abstention rate is on this list deliberately: the Semantic Error Diagnostic abstains where no checkable constraint exists, and we report how often rather than hiding it. On the acceptance band, stress the words 'pre-registered' and 'before any result exists' \u2014 that is what separates this from choosing a threshold after seeing the numbers. Risks and fallbacks are the next slide; do not pre-empt them here. Citations: plan \u00a711 (acceptance band, pre-registered) \u00b7 \u00a713 (metric definitions).");
 }
 
 // ============================================================
-// SLIDE 9 — Work division & iteration plan  (official structure)
+// SLIDE 9 — Risks & fallbacks  (split from the old combined slide 8)
+// Four risks, each with the fallback stated in full, plus the GenAI boundary.
+// The fourth row (backbone confound) is restored here — it had been cut to a
+// caveat line on slide 4 when everything shared one slide.
 // ============================================================
 {
   const s = pres.addSlide();
   s.background = { color: C.paper };
-  chrome(s, 9, "Scope, Work Division & Iteration Plan", "Committed scope, member-wise ownership, dependencies and milestones");
+  chrome(s, 9, "Risks & Fallbacks", "Every decision rule written down before the result exists");
+
+  label(s, MX, 1.42, CW, "Top risks \u2192 stated fallback");
+
+  const risks = [
+    ["Reproduction misses the \u00b110-point band", "Report both numbers \u2014 declared in advance, an expected outcome rather than a failure", C.amber],
+    ["Tier-2 gates fail at Mid-1", "Tier 1 already delivers the core contribution; Tier 2 ships as a memory on/off ablation", C.orange],
+    ["Benchmark scale stalls below 500", "Hard floor of 500 cases; 300 cases with statistics beats 1,000 without", C.teal],
+    ["Backbone confound across papers", "Controlled inside our own experiments; if a win partly reflects backbone strength, both numbers are reported", C.indigo],
+  ];
+  const rrH = 0.98, rrGap = 0.13;
+  const riskW = 3.90, fbX = MX + riskW + 0.22, fbW = CW - riskW - 0.42;
+  risks.forEach(([r, f, fg], i) => {
+    const ry = 1.82 + i * (rrH + rrGap);
+    s.addShape(pres.ShapeType.roundRect, { x: MX, y: ry, w: CW, h: rrH, rectRadius: 0.05, fill: { color: "FFFFFF" }, line: { color: fg, width: 1.5 } });
+    s.addShape(pres.ShapeType.rect, { x: MX, y: ry + 0.10, w: 0.05, h: rrH - 0.20, fill: { color: fg }, line: { type: "none" } });
+    s.addText(r, { x: MX + 0.26, y: ry, w: riskW - 0.34, h: rrH, isTextBox: true, margin: 0, fontFace: F_BODY, bold: true, fontSize: FS.sub, color: C.textDark, valign: "middle" });
+    s.addShape(pres.ShapeType.line, { x: fbX - 0.11, y: ry + 0.18, w: 0, h: rrH - 0.36, line: { color: C.border, width: 1 } });
+    s.addText(f, { x: fbX, y: ry, w: fbW, h: rrH, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub, color: C.green, valign: "middle" });
+  });
+
+  card(s, MX, 6.26, CW, 0.66, C.indigoSoft, C.indigo);
+  s.addText([
+    { text: "GenAI boundary:  ", options: { bold: true, color: C.indigo } },
+    { text: "every external component is classified Support / Core-assist / Core-replacement \u2014 nothing we claim sits in core-replacement, and the contribution survives swapping the LLM.", options: { color: C.textDark } },
+  ], {
+    x: MX + 0.24, y: 6.26, w: CW - 0.48, h: 0.66, isTextBox: true, margin: 0,
+    fontFace: F_BODY, fontSize: FS.sub, valign: "middle",
+  });
+
+  s.addNotes("Deliver this column as confidence, not confession: each of these decision rules was written down before any result exists, which is the opposite of explaining away a bad number afterwards. Outside the acceptance band, both numbers are reported transparently \u2014 declared before the run, not after. The backbone-confound row is the one to volunteer unprompted; it is the objection a methodologically-minded panelist reaches for, and answering it first is worth more than answering it correctly later. On the GenAI boundary, the load-bearing claim is the last clause: the contribution survives swapping the LLM, because the diagnosis lane makes no model calls at all. Citations: risk-register.md (R4/R25/R37) \u00b7 plan \u00a711 \u00b7 \u00a70.08 (backbone confound).");
+}
+
+// SLIDE 10 — Work division & iteration plan  (official structure)
+// ============================================================
+{
+  const s = pres.addSlide();
+  s.background = { color: C.paper };
+  chrome(s, 10, "Work Division & Iteration Plan", "Member-wise ownership and the milestones each lane is measured against");
 
   const members = [
     ["Shahoud Shahid", "23i-2515", "DATA / BENCHMARK", [
-      "Framework instrumentation (CrewAI, LangGraph)",
+      "Framework instrumentation",
       "Fault injection + labelling",
       "Benchmark build & release",
-    ], "If removed: no cross-architecture benchmark — the core research claim is untestable", C.teal, C.tealSoft],
+    ], "If removed: no benchmark — the core claim is untestable", C.teal, C.tealSoft],
     ["Muhammad Noor", "23i-2520", "DIAGNOSIS ENGINE", [
-      "Graph construction + trace normalization",
-      "ErrorProbe reproduction and baseline",
-      "Semantic Error Diagnostic + causal tracing",
-    ], "If removed: no attribution algorithm, no silent-failure detection — the contribution disappears", C.orange, C.orangeSoft],
+      "Graph + trace normalization",
+      "ErrorProbe baseline reproduction",
+      "SED + backward causal tracing",
+    ], "If removed: no attribution, no silent-failure detection", C.orange, C.orangeSoft],
     ["Saif Shahzad", "23i-2634", "PLATFORM", [
-      "Counterfactual replay + Recovery Controller",
-      "Framework-agnostic SDK, FastAPI, Postgres",
-      "Dashboard, containerized deployment",
-    ], "If removed: nothing is installable or operable outside the dev machine", C.indigo, C.indigoSoft],
+      "Counterfactual replay + recovery",
+      "SDK, FastAPI, Postgres",
+      "Dashboard + deployment",
+    ], "If removed: nothing is installable outside the dev machine", C.indigo, C.indigoSoft],
   ];
   // Bullets shortened just enough that none needs more than one wrap at this size —
   // verified by rendering, not assumed (this slide's real overflow risk is here).
   const mw = (CW - 0.44) / 3;
   let mx2 = MX;
   members.forEach(([n, roll, role, own, rm, fg, bg]) => {
-    card(s, mx2, 1.36, mw, 2.58, bg, fg);
+    card(s, mx2, 1.36, mw, 3.28, bg, fg);
     s.addText([
-      { text: n, options: { bold: true, fontSize: 17.5, fontFace: F_TITLE, color: C.textDark } },
-      { text: `   ${roll}`, options: { fontSize: 12.5, fontFace: F_MONO, color: C.textMuted } },
-    ], { x: mx2 + 0.20, y: 1.48, w: mw - 0.4, h: 0.32, isTextBox: true, margin: 0 });
-    chip(s, mx2 + 0.20, 1.86, 2.20, role, C.textLight, fg);
-    bullets(s, own, { x: mx2 + 0.20, y: 2.24, w: mw - 0.4, h: 1.22, fontSize: 13 });
-    s.addShape(pres.ShapeType.line, { x: mx2 + 0.20, y: 3.52, w: mw - 0.4, h: 0, line: { color: fg, width: 0.75 } });
-    s.addText(rm, { x: mx2 + 0.20, y: 3.58, w: mw - 0.4, h: 0.34, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.5, italic: true, color: C.textMuted });
+      { text: n, options: { bold: true, fontSize: 19, fontFace: F_TITLE, color: C.textDark } },
+      { text: `  ${roll}`, options: { fontSize: 13, fontFace: F_MONO, color: C.textMuted } },
+    ], { x: mx2 + 0.20, y: 1.48, w: mw - 0.4, h: 0.38, isTextBox: true, margin: 0 });
+    chip(s, mx2 + 0.20, 1.94, 2.50, role, C.textLight, fg);
+    bullets(s, own, { x: mx2 + 0.20, y: 2.44, w: mw - 0.4, h: 1.46, fontSize: FS.sub });
+    s.addShape(pres.ShapeType.line, { x: mx2 + 0.20, y: 3.94, w: mw - 0.4, h: 0, line: { color: fg, width: 0.75 } });
+    s.addText(rm, { x: mx2 + 0.20, y: 4.02, w: mw - 0.4, h: 0.56, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 14, italic: true, color: C.textMuted });
     mx2 += mw + 0.22;
   });
 
-  // Handbook C.16 slide 9 requires these explicitly: committed scope, optional
-  // extensions, resources, modern tools / external dependencies, deployment target.
-  const scopeCols = [
-    ["COMMITTED CORE", "Tier 1 — 8 items, evidence-backed. Tier 2 — 2 items, gated on Mid-1 criteria. 8 extensions after core works.", C.green],
-    ["RESOURCES", "$0 committed — local Ollama for every call. Paid backbone (~$353/~$881) declined, confound dual-reported.", C.amber],
-    ["TOOLS · DEPENDENCIES · DEPLOYMENT", "Python · FastAPI · React/TS · Postgres · Docker · CrewAI · LangGraph · Ollama. Container + pip SDK.", C.indigo],
-  ];
-  const scw = (CW - 0.44) / 3;
-  let scx = MX;
-  scopeCols.forEach(([h, body, fg]) => {
-    card(s, scx, 4.02, scw, 1.06, C.card, fg);
-    s.addText(h, { x: scx + 0.20, y: 4.10, w: scw - 0.38, h: 0.24, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 11.3, bold: true, color: fg, charSpacing: 0.4 });
-    s.addText(body, { x: scx + 0.20, y: 4.33, w: scw - 0.38, h: 0.70, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.textDark });
-    scx += scw + 0.22;
-  });
-
-  label(s, MX, 5.18, CW, "FYP-1 → FYP-2 milestones (five approval gates)");
+  // Committed-core/resources/tools band removed — row 9 in the image structure
+  // asks only for "member-wise responsibilities and milestones," not scope
+  // tiers, budget, or tooling. Milestones enlarged to use the freed space.
+  // Effort-budget card removed — row 9 asks for responsibilities and
+  // milestones only, not hours accounting. Timeline enlarged to fill the slide.
+  label(s, MX, 4.86, CW, "FYP-1 → FYP-2 milestones");
   const gates = [
-    ["GATE 1", "Proposal Defense", "scope approved"],
-    ["GATE 2/3", "Mid-1", "reproduction + Tier-2 + baseline"],
-    ["GATE 3", "Final-1", "integrated core, end to end"],
-    ["GATE 4", "Mid-2", "benchmark ≥500 · release ready"],
-    ["GATE 5", "Final-2", "full evaluation, deployed"],
+    ["M1", "Scope locked", "approved"],
+    ["M2", "Baseline reproduced", "+ Tier-2 gates"],
+    ["M3", "Core integrated", "end to end"],
+    ["M4", "Benchmark released", "≥500 cases"],
+    ["M5", "Full evaluation", "deployed"],
   ];
   const gw = CW / gates.length;
-  s.addShape(pres.ShapeType.line, { x: MX + gw / 2, y: 5.68, w: CW - gw, h: 0, line: { color: C.gold, width: 2 } });
+  s.addShape(pres.ShapeType.line, { x: MX + gw / 2, y: 5.44, w: CW - gw, h: 0, line: { color: C.gold, width: 2 } });
   gates.forEach(([g, n, d], i) => {
     const gx = MX + i * gw + gw / 2;
-    s.addShape(pres.ShapeType.ellipse, { x: gx - 0.11, y: 5.57, w: 0.22, h: 0.22, fill: { color: i === 0 ? C.gold : C.paper }, line: { color: C.gold, width: 2 } });
+    s.addShape(pres.ShapeType.ellipse, { x: gx - 0.15, y: 5.29, w: 0.30, h: 0.30, fill: { color: i === 0 ? C.gold : C.paper }, line: { color: C.gold, width: 2 } });
     s.addText([
-      { text: g, options: { fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, breakLine: true } },
-      { text: n, options: { fontFace: F_BODY, fontSize: 13, bold: true, color: C.textDark, breakLine: true } },
-      { text: d, options: { fontFace: F_BODY, fontSize: 10.5, color: C.textMuted } },
-    ], { x: gx - gw / 2 + 0.06, y: 5.84, w: gw - 0.12, h: 0.60, isTextBox: true, margin: 0, align: "center" });
+      { text: g, options: { fontFace: F_MONO, fontSize: 15, bold: true, color: C.goldDark, breakLine: true } },
+      { text: n, options: { fontFace: F_BODY, fontSize: FS.body, bold: true, color: C.textDark, breakLine: true } },
+      { text: d, options: { fontFace: F_BODY, fontSize: 15, color: C.textMuted } },
+    ], { x: gx - gw / 2 + 0.06, y: 5.72, w: gw - 0.12, h: 1.14, isTextBox: true, margin: 0, align: "center" });
   });
 
-  card(s, MX, 6.52, CW, 0.42, C.card, C.gold);
-  s.addText([
-    { text: "Effort budget:  ", options: { bold: true, color: C.goldDark, fontSize: 12.5 } },
-    { text: "490h (FYP-1) + 640h (FYP-2) = 1,130h, against 1,130h capacity (3 × ~15h/wk × ~28 wks).", options: { color: C.textDark, fontSize: 12 } },
-  ], { x: MX + 0.22, y: 6.52, w: CW - 0.44, h: 0.42, isTextBox: true, margin: 0, fontFace: F_BODY, valign: "middle" });
-
-  s.addNotes("Each member states their own subsystem in one sentence, aloud — the panel is applying the guide's four ownership questions (explain / justify against an alternative / predict what breaks / modify under questioning), and hearing three distinct voices here sets that tone early. The 'if removed' line under each card is the guide's own scope test, answered honestly rather than asserted. Full effort-budget line: balanced depth, not identical tasks — each lane carries decisions, implementation and validation. Citations: plan §3 (ownership) · §7.0 (frozen scope) · §12 (effort) · cost-estimate.md · 06_Expanded_Scope_and_Feasibility_Plan.md.");
+  s.addNotes("Each member states their own subsystem in one sentence, aloud — the panel is applying the guide's four ownership questions (explain / justify against an alternative / predict what breaks / modify under questioning), and hearing three distinct voices here sets that tone early. The 'if removed' line under each card is the guide's own scope test, answered honestly rather than asserted. If pressed on effort/capacity: 490h (FYP-1) + 640h (FYP-2) = 1,130h against 1,130h capacity (3 × ~15h/wk × ~28 wks), balanced depth not identical tasks. Citations: plan §3 (ownership) · §7.0 (frozen scope) · §12 (effort) · cost-estimate.md · 06_Expanded_Scope_and_Feasibility_Plan.md.");
 }
 
 // ============================================================
-// SLIDE 10 — Team responsibilities & iterations, DEI, Ethics/Legal
-// (handbook C.16 slide 10 in full: "Primary technical ownership, shared
-//  integration/quality work and FYP-1/FYP-2 milestones, DEI statement,
-//  ethical and legal statement". Individual ownership is detailed on slide 9,
-//  so this slide carries the SHARED half — the part C.5 says stays a team
-//  responsibility even when one member leads — plus the compliance statements.)
+// SLIDE 11 — Team responsibilities & iterations, DEI, Ethics/Legal
+// This slide covers the image structure's row 10 exactly: DEI statement,
+// ethical statement, legal statement — nothing else. Individual member
+// ownership already lives on slide 10 and is not repeated here.
 // ============================================================
 {
   const s = pres.addSlide();
   s.background = { color: C.paper };
-  chrome(s, 10, "Team Responsibilities, Iterations, DEI & Ethics/Legal", "What stays shared, how it iterates, and the compliance lines the guide names");
+  chrome(s, 11, "DEI, Ethics & Legal", "What the team commits to, and how it stays accountable");
 
-  // --- Row 1: primary ownership recap + shared engineering responsibilities ---
-  card(s, MX, 1.40, CW, 0.92, C.card, C.gold);
-  label(s, MX + 0.24, 1.48, 3.6, "Primary ownership — slide 9");
-  const owners = [
-    ["Shahoud", "Benchmark", C.teal],
-    ["Noor", "Diagnosis", C.orange],
-    ["Saif", "Platform", C.indigo],
-  ];
-  let ox = MX + 0.24;
-  owners.forEach(([n, lane, col]) => {
-    s.addText([
-      { text: `${n} — `, options: { bold: true, fontSize: 12.5, color: C.textDark } },
-      { text: lane, options: { fontSize: 12.5, color: col, bold: true } },
-    ], { x: ox, y: 1.78, w: 1.85, h: 0.26, isTextBox: true, margin: 0, fontFace: F_BODY });
-    ox += 1.86;
-  });
-  s.addText("Each lane's own decisions, implementation and validation.", {
-    x: MX + 0.24, y: 2.04, w: 5.05, h: 0.26, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.5, italic: true, color: C.textMuted,
-  });
-  s.addShape(pres.ShapeType.line, { x: MX + 5.55, y: 1.52, w: 0, h: 0.70, line: { color: C.border, width: 1 } });
-  label(s, MX + 5.80, 1.48, 6.0, "Shared — never delegated to one member", C.goldDark);
-  s.addText("System architecture · integration · QA · security, ethics, data handling · repo discipline · the defense itself.", {
-    x: MX + 5.80, y: 1.76, w: CW - 6.04, h: 0.54, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 12.5, color: C.textDark,
-  });
-
-  // --- Row 2: iteration cadence across the five gates ---
-  label(s, MX, 2.42, CW, "Iteration plan — what the team jointly owns at each gate");
-  const iters = [
-    ["FYP-1", "Gate 1 · Proposal", "scope + POC approved", C.gold],
-    ["FYP-1", "Gate 2/3 · Mid-1", "reproduction; Tier-2 gates; baseline", C.gold],
-    ["FYP-1", "Gate 3 · Final-1", "integrated core, end to end", C.gold],
-    ["FYP-2", "Gate 4 · Mid-2", "benchmark ≥500; targets measured", C.indigo],
-    ["FYP-2", "Gate 5 · Final-2", "full evaluation, deployed + released", C.indigo],
-  ];
-  const iw = (CW - 0.32) / 5;
-  let ix = MX;
-  iters.forEach(([phase, gate, what, col]) => {
-    card(s, ix, 2.72, iw, 0.90, C.paper, col);
-    s.addText(phase, { x: ix + 0.14, y: 2.79, w: iw - 0.26, h: 0.20, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 11, bold: true, color: col, charSpacing: 0.4 });
-    s.addText(gate, { x: ix + 0.14, y: 2.98, w: iw - 0.26, h: 0.24, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, bold: true, color: C.textDark });
-    s.addText(what, { x: ix + 0.14, y: 3.24, w: iw - 0.26, h: 0.36, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.8, color: C.textMuted });
-    ix += iw + 0.08;
-  });
-
-  // --- Row 3: DEI / Ethical / Legal statements ---
-  // Ethical trimmed to 3 items (was 4) so all three columns carry equal weight and
-  // can share one larger, consistent bullet size instead of the smallest column
-  // setting the ceiling for the rest.
-  const bandW = (CW - 0.44) / 3;
+  // Shared-responsibilities and iteration-plan recap removed — row 10 in the
+  // image structure asks only for DEI/Ethical/Legal statements; ownership is
+  // slide 10's job and the milestone gates are already shown there in full.
+  // Reworked from 3 tall, boldly color-filled vertical-bullet columns (read
+  // as heavy/"high-tech") into 3 elegant horizontal rows: plain background,
+  // a thin colored accent line instead of a bold fill, label on the left,
+  // points running as one flowing line on the right instead of a bullet list.
+  label(s, MX, 1.46, CW, "Commitments the panel can hold us to");
   const bands = [
-    ["DEI", C.teal, C.tealSoft, [
+    ["DEI", C.teal, [
       "Open-source release widens access — SDG 9 access-equity",
       "Colour + text + shape, never colour alone — WCAG owed by Final-1",
       "Accuracy claims stated as English-only",
     ]],
-    ["ETHICAL", C.red, C.redSoft, [
+    ["ETHICAL", C.red, [
       "Advisory only — every repair is human-gated",
       "Consent for real trace data; injection only on consenting systems",
       "Negative results published as found — Spike 7 not buried",
     ]],
-    ["LEGAL / PROFESSIONAL", C.indigo, C.indigoSoft, [
+    ["LEGAL", C.indigo, [
       "Who&When · GSM8K · tau-bench — all MIT, confirmed against the LICENSE file",
       "Released artefacts carry MIT / CC BY 4.0",
-      "AI usage disclosed per session (19 logged) on Form 13",
+      "AI usage logged per session and disclosed to the team throughout",
     ]],
   ];
-  let bx2 = MX;
-  bands.forEach(([lab, fg, bg, pts]) => {
-    card(s, bx2, 3.72, bandW, 2.02, bg, fg);
-    s.addText(lab, { x: bx2 + 0.20, y: 3.80, w: bandW - 0.4, h: 0.26, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: 13, bold: true, color: fg, charSpacing: 0.8 });
-    bullets(s, pts, { x: bx2 + 0.20, y: 4.10, w: bandW - 0.4, h: 1.58, fontSize: 13.3 });
-    bx2 += bandW + 0.22;
+  const rowY0 = 1.96, rowH = 1.54, rowGap = 0.16;
+  const labelW = 1.85, ptsX = MX + labelW + 0.22, ptsW = CW - labelW - 0.22;
+  bands.forEach(([lab, fg, pts], i) => {
+    const ry = rowY0 + i * (rowH + rowGap);
+    // Outer border colored to match each row's theme (was neutral gray) —
+    // ties this slide's palette back into the rest of the deck's color use.
+    s.addShape(pres.ShapeType.roundRect, { x: MX, y: ry, w: CW, h: rowH, rectRadius: 0.05, fill: { color: "FFFFFF" }, line: { color: fg, width: 1.5 } });
+    s.addShape(pres.ShapeType.rect, { x: MX, y: ry + 0.10, w: 0.05, h: rowH - 0.20, fill: { color: fg }, line: { type: "none" } });
+    s.addText(lab, { x: MX + 0.24, y: ry, w: labelW - 0.24, h: rowH, isTextBox: true, margin: 0, fontFace: F_MONO, fontSize: FS.label, bold: true, color: fg, charSpacing: 0.5, valign: "middle" });
+    s.addShape(pres.ShapeType.line, { x: ptsX - 0.11, y: ry + 0.20, w: 0, h: rowH - 0.40, line: { color: C.border, width: 1 } });
+    s.addText(pts.join("     ·     "), { x: ptsX, y: ry, w: ptsW - 0.20, h: rowH, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: FS.sub, color: C.textDark, valign: "middle", lineSpacingMultiple: 1.25 });
   });
 
-  // --- Row 4: AI-assisted development level (handbook C.8) + the ownership standard ---
-  card(s, MX, 5.86, CW, 1.14, C.ink2);
-  s.addText("AI-ASSISTED DEVELOPMENT LEVEL — NAMED AND JUSTIFIED PER HANDBOOK C.8", {
-    x: MX + 0.28, y: 5.94, w: CW - 0.56, h: 0.26, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 12.5, bold: true, color: C.goldLight, charSpacing: 0.5,
-  });
-  s.addText([
-    { text: "Level 2 — AI-Assisted.  ", options: { bold: true, color: C.goldLight, fontSize: 16.5, fontFace: F_TITLE } },
-    { text: "Humans lead judgment and execution; AI assists isolated tasks.  ", options: { color: C.textLightMuted, fontSize: 13 } },
-    { text: "Ownership standard: ", options: { bold: true, color: C.goldLight, fontSize: 13 } },
-    { text: "the responsible member can explain, justify against an alternative, predict what breaks, and modify under questioning.", options: { color: C.textLightMuted, fontSize: 13 } },
-  ], { x: MX + 0.28, y: 6.20, w: CW - 0.56, h: 0.76, isTextBox: true, margin: 0, fontFace: F_BODY });
-
-  s.addNotes("The DEI line is a real, checkable commitment, not a decorative label — say the access-equity sentence in your own words. Name Level 2 out loud and say why it is not Level 3: accreditation requires the graduate to have done the design and evaluation, and delegating that would forfeit the attribute — Level 3 would relocate exactly the design/eval work Seoul Accord GA-4 requires us to demonstrate. Authorship of keystrokes is not the test. If asked about AI use at all, the answer is that it is logged per session, disclosed on Form 13, and that every CCP-relevant component has a member who can defend it live — offer to demonstrate that on any component they pick. Per guide §C.5 the shared list remains a team responsibility even where one member leads the component. Citations: plan §3 (ownership) · guide §C.5 (shared responsibilities) · AI_Usage_Log.md · Form13_GenAI_Disclosure_Sheet.md · risk-register R30/R38.");
+  s.addNotes("The DEI line is a real, checkable commitment, not a decorative label — say the access-equity sentence in your own words. Ownership per lane and the FYP-1/FYP-2 milestone gates are both on slide 10; this slide is deliberately just the three compliance statements the guide names. Every CCP-relevant component has a member who can defend it live — offer to demonstrate that on any component they pick. Citations: plan §3 (ownership) · AI_Usage_Log.md · risk-register R30/R38.");
 }
 
 pres.writeFile({ fileName: "Granite_Proposal_Defense_v2.pptx" }).then(fn => console.log("Wrote", fn));

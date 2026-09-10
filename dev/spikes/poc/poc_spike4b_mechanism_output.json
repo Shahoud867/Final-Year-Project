@@ -1,0 +1,91 @@
+{
+  "summary": {
+    "what_this_is": "Direct mechanism test of the spike 4 rule-based checker on seeded values. Not a live LLM run.",
+    "n_cases": 6,
+    "n_known_wrong_values": 3,
+    "n_known_correct_values": 3,
+    "n_wrong_values_caught": 3,
+    "n_false_positives": 0,
+    "recall_on_seeded_wrong_values": 1.0,
+    "precision_on_seeded_values": 1.0,
+    "near_miss_case_caught": true,
+    "all_cases_behaved_correctly": true,
+    "llm_calls": 0,
+    "scope_note": "These are SEEDED values, not naturally-occurring model errors. This measures the mechanism, not the phenomenon. Recall on natural silent failures remains unmeasured -- spike 4's live n=3 run produced zero natural failures to measure it on.",
+    "supersedes": "The prose-only record of this test in risk-register.md R10 and AI_Usage_Log.md, which had no committed code or output artifact."
+  },
+  "results": [
+    {
+      "case_id": "near_miss_gift_card",
+      "stated_answer": 20.0,
+      "correct_answer": 19.75,
+      "tolerance": 0.01,
+      "detector_verdict": "FLAGGED (silent failure caught)",
+      "diff": 0.25,
+      "should_flag": true,
+      "detector_flagged": true,
+      "correct_behaviour": true,
+      "why_this_case": "The case named in R10. 7 notebooks @ $4.25 less a $10 gift card is $19.75; $20.00 is plausible-magnitude wrong -- the exact shape a 'close enough' check would wave through."
+    },
+    {
+      "case_id": "clean_control_gift_card",
+      "stated_answer": 19.75,
+      "correct_answer": 19.75,
+      "tolerance": 0.01,
+      "detector_verdict": "PASS (no silent failure detected)",
+      "diff": 0.0,
+      "should_flag": false,
+      "detector_flagged": false,
+      "correct_behaviour": true,
+      "why_this_case": "Same task, correct answer. Must not flag."
+    },
+    {
+      "case_id": "gross_error_gift_card",
+      "stated_answer": 29.75,
+      "correct_answer": 19.75,
+      "tolerance": 0.01,
+      "detector_verdict": "FLAGGED (silent failure caught)",
+      "diff": 10.0,
+      "should_flag": true,
+      "detector_flagged": true,
+      "correct_behaviour": true,
+      "why_this_case": "Gift card never subtracted. Easy case -- included so the near-miss result cannot be explained away as the checker flagging everything."
+    },
+    {
+      "case_id": "legit_rounding_compound_trip",
+      "stated_answer": 1.68,
+      "correct_answer": 1.6833,
+      "tolerance": 0.01,
+      "detector_verdict": "PASS (no silent failure detected)",
+      "diff": 0.0033,
+      "should_flag": false,
+      "detector_flagged": false,
+      "correct_behaviour": true,
+      "why_this_case": "Differs by 0.0033, inside tolerance. A correct answer with rounding. Must not flag -- this is the false-positive boundary."
+    },
+    {
+      "case_id": "near_miss_discount_then_tax",
+      "stated_answer": 68.0,
+      "correct_answer": 73.44,
+      "tolerance": 0.01,
+      "detector_verdict": "FLAGGED (silent failure caught)",
+      "diff": 5.44,
+      "should_flag": true,
+      "detector_flagged": true,
+      "correct_behaviour": true,
+      "why_this_case": "$80 less 15% is $68.00, but 8% tax was never applied. Stopping one step early -- a well-formed, confident, wrong answer."
+    },
+    {
+      "case_id": "clean_control_discount_then_tax",
+      "stated_answer": 73.44,
+      "correct_answer": 73.44,
+      "tolerance": 0.01,
+      "detector_verdict": "PASS (no silent failure detected)",
+      "diff": 0.0,
+      "should_flag": false,
+      "detector_flagged": false,
+      "correct_behaviour": true,
+      "why_this_case": "Same task, correct answer. Must not flag."
+    }
+  ]
+}

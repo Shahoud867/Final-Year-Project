@@ -26,7 +26,7 @@ Done — §0.05, SDG 9, one paragraph, not expanded beyond context. ✓
 
 ## §2 R&D Embedded — sub-table
 
-Solution landscape ✓ (Full_Literature_Landscape_Analysis.md + Commercial_Product_Comparison.md). Technical foundation ✓ (9+ papers read in full). Reproduction/adaptation/experimentation ✓ (8 spikes). Evaluation and learning ✓ (§11 evaluation plan). All four R&D elements have proposal-stage evidence, not just assertions.
+Solution landscape ✓ (Full_Literature_Landscape_Analysis.md + Commercial_Product_Comparison.md). Technical foundation ✓ (7 papers read in full, 3 more triaged). Reproduction/adaptation/experimentation ✓ (8 spikes). Evaluation and learning ✓ (§11 evaluation plan). All four R&D elements have proposal-stage evidence, not just assertions.
 
 ## §3 CCP — all 9 characteristics
 8/9 clear, #6 (diverse stakeholders) open pending real contact. Unchanged from prior checks, still accurate.

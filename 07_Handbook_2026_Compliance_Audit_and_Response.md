@@ -20,7 +20,7 @@
 
 | Element | Status | Evidence |
 |---|---|---|
-| 1. Research-informed problem understanding | ✅ | 9+ papers read in full (`Full_Literature_Landscape_Analysis.md`), 7 commercial + 7 orchestration-framework platforms researched directly, not from marketing summaries |
+| 1. Research-informed problem understanding | ✅ | 7 papers read in full (`Full_Literature_Landscape_Analysis.md`), 3 more triaged, 7 commercial + 7 orchestration-framework platforms researched directly, not from marketing summaries |
 | 2. Justified CCP or complex computing activity | ✅ | 8/9 Seoul Accord characteristics rated "clear," #6 (diverse stakeholders) honestly held "weak" pending contact — plan doc §2 |
 | 3. Coherent, designed, implemented system deployable outside the dev machine | ⚠️ | Design is real and detailed (SDS §3–11); nothing is deployed yet. **Correctly not required at this stage** — C.5.1's own gate table places "evidence of deployment" at Final-2, not the proposal defense |
 | 4. Systematic testing and evaluation | ✅ | Evaluation plan with a pre-registered acceptance band, bootstrap CIs, clean-control FPR study, four-item ablation matrix, human baseline — plan §11, 06 doc §3 |

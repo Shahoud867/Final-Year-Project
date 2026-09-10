@@ -36,7 +36,7 @@ Full detail: [Full_Literature_Landscape_Analysis.md](../03-market-and-literature
 
 ## Slide 4 — Research and technical basis
 
-9+ papers read in full (Who&When, AgenTracer, SDBL, TraceElephant, ErrorProbe, AgentAsk, PROTEA, plus GraphTracer/FALAT/DoVer triaged), 7 commercial platforms researched directly (not from marketing summaries). Full decision trail: [FYP_Scope_CCP_and_Implementation_Plan.md §0.08](../01-planning-and-scope/FYP_Scope_CCP_and_Implementation_Plan.md) (research-to-decision table).
+7 papers read in full (Who&When, AgenTracer, SDBL, TraceElephant, ErrorProbe, AgentAsk, PROTEA); GraphTracer/FALAT/DoVer triaged at title/abstract level, not read in full, 7 commercial platforms researched directly (not from marketing summaries). Full decision trail: [FYP_Scope_CCP_and_Implementation_Plan.md §0.08](../01-planning-and-scope/FYP_Scope_CCP_and_Implementation_Plan.md) (research-to-decision table).
 
 ## Slide 5 — CCP / complex activity justification
 

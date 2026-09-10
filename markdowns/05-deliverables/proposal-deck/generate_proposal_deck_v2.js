@@ -84,7 +84,7 @@ pres.company = "FAST School of Computing, NUCES Islamabad";
 pres.title = "Granite — Proposal Defense (v2)";
 pres.subject = "Stage 1 Proposal Defense — F26-060-Granite";
 
-const TOTAL_SLIDES = 11;
+const TOTAL_SLIDES = 12;
 const PW = 13.333, PH = 7.5;
 const MX = 0.62;
 const CW = PW - MX * 2;
@@ -876,6 +876,72 @@ function bullets(slide, items, opts) {
   });
 
   s.addNotes("The DEI line is a real, checkable commitment, not a decorative label — say the access-equity sentence in your own words. Ownership per lane and the FYP-1/FYP-2 milestone gates are both on slide 10; this slide is deliberately just the three compliance statements the guide names. Every CCP-relevant component has a member who can defend it live — offer to demonstrate that on any component they pick. Citations: plan §3 (ownership) · AI_Usage_Log.md · risk-register R30/R38.");
+}
+
+// ============================================================
+// SLIDE 12 — Close
+// Deliberately mirrors slide 1: same dark ground, same gold rail, same facet
+// mark, same typeface at the same weight. The deck opens and closes on the
+// same image so the last thing on screen during Q&A is the project identity,
+// not a wall of text. No chrome()/footer() here for the same reason slide 1
+// has none — both are statement slides, not content slides.
+// ============================================================
+{
+  const s = pres.addSlide();
+  s.background = { color: C.ink };
+
+  // facet mark, mirrored to the left of slide 1's position so the two slides
+  // read as a matched pair rather than a repeat
+  const mx = PW - 3.0, my = 1.15;
+  s.addShape(pres.ShapeType.rect, { x: mx, y: my, w: 1.5, h: 1.5, rotate: 45, fill: { color: C.ink2 }, line: { color: C.goldDark, width: 1 } });
+  s.addShape(pres.ShapeType.rect, { x: mx + 0.26, y: my + 0.26, w: 0.98, h: 0.98, rotate: 45, fill: { color: C.gold }, line: { type: "none" } });
+  s.addShape(pres.ShapeType.rect, { x: mx + 0.50, y: my + 0.50, w: 0.50, h: 0.50, rotate: 45, fill: { color: C.ink }, line: { color: C.goldLight, width: 1 } });
+
+  s.addShape(pres.ShapeType.rect, { x: 0, y: 0, w: RAIL * 1.6, h: PH, fill: { color: C.gold }, line: { type: "none" } });
+
+  s.addText("F26-060  \u00b7  GRANITE  \u00b7  PROPOSAL DEFENSE", {
+    x: MX, y: 1.45, w: 9.2, h: 0.30, isTextBox: true, margin: 0,
+    fontFace: F_MONO, fontSize: 16.5, bold: true, color: C.goldLight, charSpacing: 1.4,
+  });
+
+  s.addText("Thank you", {
+    x: MX, y: 1.86, w: 9.2, h: 1.15, isTextBox: true, margin: 0,
+    fontFace: F_TITLE, fontSize: 69.5, bold: true, color: C.textLight,
+  });
+
+  s.addText("Questions welcome \u2014 every figure on these slides is recomputable from a file in the repository, and we are happy to open any one of them.", {
+    x: MX, y: 3.06, w: 8.6, h: 0.80, isTextBox: true, margin: 0,
+    fontFace: F_BODY, fontSize: 21, italic: true, color: C.textLightMuted,
+  });
+
+  s.addShape(pres.ShapeType.rect, { x: MX, y: 4.06, w: 1.1, h: 0.035, fill: { color: C.gold }, line: { type: "none" } });
+
+  // The one-line claim restated, so the closing image carries the argument
+  // rather than just a courtesy. Same wording discipline as slide 1.
+  s.addText("Attribution, silent-failure detection and verified repair \u2014 measured as one pipeline, on architectures no prior paper tested.", {
+    x: MX, y: 4.30, w: 9.2, h: 1.00, isTextBox: true, margin: 0,
+    fontFace: F_TITLE, fontSize: 23, color: C.textLight, italic: true,
+  });
+
+  s.addShape(pres.ShapeType.line, { x: MX, y: 5.62, w: 8.4, h: 0, line: { color: C.hair, width: 1 } });
+
+  const team12 = [["Shahoud Shahid", "23i-2515"], ["Muhammad Noor", "23i-2520"], ["Saif Shahzad", "23i-2634"]];
+  let tx12 = MX;
+  team12.forEach(([n, r]) => {
+    s.addText([
+      { text: n, options: { bold: true, breakLine: true, fontSize: 18, color: C.textLight } },
+      { text: r, options: { fontSize: 15, color: C.textLightMuted } },
+    ], { x: tx12, y: 5.76, w: 2.8, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY });
+    tx12 += 2.85;
+  });
+
+  s.addText([
+    { text: "Supervisor   ", options: { color: C.textLightMuted, fontSize: 15 } },
+    { text: "Dr. Adil Majeed", options: { color: C.textLight, bold: true, fontSize: 18, breakLine: true } },
+    { text: "FAST School of Computing, NUCES Islamabad", options: { color: C.textLightMuted, fontSize: 15 } },
+  ], { x: MX, y: 6.58, w: 7, h: 0.72, isTextBox: true, margin: 0, fontFace: F_BODY });
+
+  s.addNotes("Do not rush off this slide \u2014 it stays up for the whole Q&A, so the project identity is what the panel is looking at while they question you. The offer to open a file is genuine and should be made out loud, not left on the slide: the spike outputs are in dev/spikes/poc/ and any of them can be shown live. If the panel opens with a broad question, the restated claim above is the frame to answer within \u2014 attribution, silent-failure detection and verified repair, measured as one pipeline. Lead any weakness question with the honest answer already prepared: step accuracy is 13.2% against a published 59.5% on a simplified reproduction, Spike 7 is a reported negative, and two of the ten committed mechanisms carry pre-registered Mid-1 gates.");
 }
 
 pres.writeFile({ fileName: "Granite_Proposal_Defense_v2.pptx" }).then(fn => console.log("Wrote", fn));

@@ -390,7 +390,7 @@ stated      = <span class="b" id="stated">—</span>
     <div class="card pad">
       <span class="tag t-ok"><i class="dot"></i>Mechanism test — passed</span>
       <div class="note" style="margin-top:9px">Fed known-wrong values including a plausible near-miss (<b class="mono">$20.00</b> vs true <b class="mono">$19.75</b>): flagged every one. Correct values passed. <b>Zero false positives.</b></div>
-      <div class="note" style="margin-top:6px;color:var(--ink-3)">risk-register R10</div>
+      <div class="note" style="margin-top:6px;color:var(--ink-3)">poc_spike4b_mechanism_output.json</div>
     </div>
     <div class="card pad">
       <span class="tag t-warn"><i class="dot"></i>Natural-occurrence run — inconclusive, by design</span>
@@ -473,7 +473,7 @@ stated      = <span class="b" id="stated">—</span>
     <div class="card pad">
       <div class="lbl">Closest paper</div>
       <div style="font-weight:700;margin:6px 0 4px">ErrorProbe · ACL 2026</div>
-      <div class="note">59.5% — best published. Its own limitations section admits it cannot see silent failures, and it has never run on an architecture outside its benchmark's own two.</div>
+      <div class="note">59.5% — best published. Its own limitations section admits it cannot see silent failures, and it has never run on a multi-agent framework absent from its own benchmark ecosystem.</div>
     </div>
     <div class="card pad">
       <div class="lbl">Closest products</div>
@@ -495,8 +495,13 @@ stated      = <span class="b" id="stated">—</span>
   <p class="sub">Ten committed mechanisms, three separable lanes, five approval gates, 1,130 hours against 1,130 of capacity.</p>
 
   <div class="card pad" style="margin-bottom:16px">
-    <div class="lbl" style="margin-bottom:10px">Complex computing characteristics — 8 cleared</div>
+    <div class="lbl" style="margin-bottom:10px">Complex computing characteristics — 8 of 9 cleared</div>
     <div class="grid g3" id="ccp"></div>
+    <div class="rm" style="margin-top:12px;background:var(--amber-soft);color:var(--amber)">
+      9th — <b>Diverse stakeholders:</b> self-rated <b>weak</b>, not claimed. Operators, downstream product teams and auditors
+      are named, but no working engineer has used the system yet, because there is nothing running to show one.
+      Scheduled for the Mid-2 acceptance study. Declared open rather than overclaimed.
+    </div>
   </div>
 
   <div class="grid g3" style="margin-bottom:16px" id="lanes"></div>
@@ -605,9 +610,9 @@ const STEPS=[
  {msg:"Ships to the user. Nothing looks broken.",             on:["out"],           e:"e4", sta:{out:"err"}, bad:1},
  {msg:"Granite captures the trace, builds the graph.",        on:["trace","graph"], e:"e6", sta:{trace:"done",graph:"on"}},
  {msg:"Constraint check: 29.75 − 10.00 ≠ 20.00 → FLAG.",      on:["sed"],           e:"e8", sta:{sed:"err",graph:"done"}, bad:1},
- {msg:"Backward trace → culprit: Refund Calculator, step 3.", on:["tracer","refund"],e:"e9",sta:{tracer:"on"}},
+ {msg:"Backward trace → origin: Promo Table (stale v2), surfaced at Refund Calculator.", on:["tracer","promo","refund"],e:"e9",sta:{tracer:"on"}},
  {msg:"Repair Agent proposes: use promo table v3.",           on:["repair"],        e:"e10",sta:{repair:"on",tracer:"done",sed:"done"}},
- {msg:"Replayed N=5, upstream frozen → 4/5 recovered. $19.75.",on:["replay","out"], e:"e12",sta:{replay:"fixed",repair:"done",out:"fixed"}, good:1}
+ {msg:"Replayed N=5, upstream frozen → recovery rate measured. $19.75.",on:["replay","out"], e:"e12",sta:{replay:"fixed",repair:"done",out:"fixed"}, good:1}
 ];
 
 const gEdges=$("#edges"), gNodes=$("#nodes"), gPkts=$("#pkts");
@@ -768,7 +773,7 @@ const SPK=[
  [1,"ErrorProbe reproduction","ok","agent 62.5–85.7% · step 0–25% · 5 runs, n=8"],
  [2,"CrewAI instrumentation","ok","3 nodes, 2 clean edges — framework no paper used"],
  ["3/3b","Fault injection","ok","corrupted tool output · 1 case self-corrected, kept as a finding"],
- [4,"Constraint check (SED)","ok","flags known-wrong incl. near-miss ($20.00 vs $19.75) · 0 false positives · natural-occurrence rate still unmeasured (n=3)"],
+ [4,"Constraint check (SED)","warn","mechanism flags known-wrong incl. near-miss ($20.00 vs $19.75) · 0 false positives · natural-occurrence rate still unmeasured (n=3)"],
  [5,"Counterfactual replay","ok","97.2 corrupted → 108.0 recovered · recovery_success = true"],
  [6,"Cyclic graph handling","ok","traversal terminates under bound; control run proves bound load-bearing"],
  [7,"Preventive classifier","bad","precision = recall = F1 = 0.25 — near-random, reported not hidden"],

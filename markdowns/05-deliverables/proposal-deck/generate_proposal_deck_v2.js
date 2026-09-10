@@ -417,57 +417,35 @@ function bullets(slide, items, opts) {
   s.background = { color: C.paper };
   chrome(s, 5, "Complex Computing Challenge", "What is technically hard — and why this is not a course project");
 
-  // Grid cut from all 9 characteristics to the six actually named in the
-  // speaker notes (1, 2, 3, 6, 7, 9) — the other 3 (4, 5, 8) are still real
-  // and still argued in Granite_CCP_Justification_Seoul_Accord.docx, just not
-  // spoken aloud here, so they're documented instead in a new file rather
-  // than silently dropped:
-  // markdowns/05-deliverables/ccp-justification/CCP_Characteristics_Not_On_Slide.md
-  // Display badges renumbered 1–6 sequentially for on-slide readability —
-  // the real Seoul Accord characteristic numbers (1, 2, 3, 6, 7, 9) are kept
-  // in the comment below and in speaker notes/CCP_Characteristics_Not_On_Slide.md,
-  // so nothing about which characteristic is which is actually lost.
+  // Only the 5 strongest, most classic CCP arguments stay on-slide, renumbered
+  // 1-5 with no gaps. The other 4 (Unfamiliar issues, Significant
+  // consequences, Interdependence, plus the already-held-back Diverse
+  // stakeholders) are documented in full in
+  // markdowns/05-deliverables/defense-prep/CCP_and_Spikes_Full_Reasoning.md.
   const items = [
-    ["1", "Conflicting requirements", "Depth vs. latency; privacy vs. completeness", true],       // characteristic 1
-    ["2", "No obvious solution", "Best published: 59.5% after 15 months, 7 papers", true],        // characteristic 2
-    ["3", "Depth of knowledge", "Graph modeling, causal reasoning, tracing", true],                // characteristic 3
-    ["4", "Diverse stakeholders", "Named; live contact scheduled Mid-2", false],                   // characteristic 6
-    ["5", "Significant consequences", "A missed failure ships a wrong answer, undetected", true],  // characteristic 7
-    ["6", "Ill-defined cause", "3 unknowns: whether, which step, what's correct", true],           // characteristic 9
+    ["1", "Conflicting requirements", "Depth vs. latency; privacy vs. completeness"],         // characteristic 1
+    ["2", "No obvious solution", "Best published: 59.5% after 15 months, 7 papers"],          // characteristic 2
+    ["3", "Depth of knowledge", "Graph modeling, causal reasoning, tracing"],                  // characteristic 3
+    ["4", "Beyond standard practice", "No framework does attribution + detection + recovery"], // characteristic 5
+    ["5", "Ill-defined cause", "3 unknowns: whether, which step, what's correct"],             // characteristic 9
   ];
-  // CCP grid on the left (rows shortened — was 1.80, now 1.40 — so the six
-  // boxes read as compact rectangles, not big squares — and centered
-  // vertically in the column so the leftover space splits top/bottom rather
-  // than pooling at the bottom), Diagram 4 as the big panel on the right.
-  const gridCols = 2, colW = 3.70, rowH = 1.40;
-  const gridRows = Math.ceil(items.length / gridCols);
-  const gridTop = 1.42 + ((PH - 0.46 - 0.14 - 1.42) - gridRows * rowH) / 2;
-  items.forEach(([n, t, sub, clear], i) => {
-    const col = i % gridCols, row = Math.floor(i / gridCols);
-    const cx = MX + col * colW, cy = gridTop + row * rowH;
-    card(s, cx, cy, colW - 0.18, rowH - 0.12, clear ? C.greenSoft : C.amberSoft, clear ? C.green : C.amber);
-    dot(s, cx + 0.16, cy + 0.13, 0.30, clear ? C.green : C.amber, n, C.textLight);
-    s.addText(t, { x: cx + 0.56, y: cy + 0.11, w: colW - 0.86, h: 0.36, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 14, bold: true, color: C.textDark });
-    s.addText(sub, { x: cx + 0.16, y: cy + 0.48, w: colW - 0.48, h: 0.74, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.5, color: C.textMuted });
+  // Full-width elegant rows (same style as slide 10's rework) rather than a
+  // grid of squarish boxes — label left, description running to the right,
+  // thin colored left edge instead of a bold filled box.
+  const rowH = 0.98, rowGap = 0.16;
+  const gridRows = items.length;
+  const gridTop = 1.42 + ((PH - 0.46 - 0.14 - 1.42) - (gridRows * rowH + (gridRows - 1) * rowGap)) / 2;
+  const labelW = 3.1;
+  items.forEach(([n, t, sub], i) => {
+    const ry = gridTop + i * (rowH + rowGap);
+    s.addShape(pres.ShapeType.roundRect, { x: MX, y: ry, w: CW, h: rowH, rectRadius: 0.05, fill: { color: C.greenSoft }, line: { color: C.green, width: 1 } });
+    dot(s, MX + 0.18, ry + (rowH - 0.36) / 2, 0.36, C.green, n, C.textLight);
+    s.addText(t, { x: MX + 0.70, y: ry, w: labelW - 0.70, h: rowH, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 16, bold: true, color: C.textDark, valign: "middle" });
+    s.addShape(pres.ShapeType.line, { x: MX + labelW + 0.10, y: ry + 0.16, w: 0, h: rowH - 0.32, line: { color: C.border, width: 1 } });
+    s.addText(sub, { x: MX + labelW + 0.32, y: ry, w: CW - labelW - 0.52, h: rowH, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 14.5, color: C.textMuted, valign: "middle" });
   });
 
-  // Diagram 4 from the Architecture Atlas (Core Technical/Computational
-  // Pipeline), recolored to the deck's palette — no card/border/frame around
-  // it, just the caption and the image itself.
-  const gridW = gridCols * colW;
-  const diag4X = MX + gridW + 0.34;
-  s.addText("CORE PIPELINE — HYPOTHESIS TO VERIFIED REPAIR", {
-    x: diag4X, y: 1.42, w: CW - gridW - 0.34, h: 0.20, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, charSpacing: 0.6,
-  });
-  // Sized against the full available column height (down to the footer) —
-  // margins tightened slightly (footer gap 0.14 -> 0.08) to make it as big
-  // as the slide can hold, per request.
-  const diag4Y = 1.66;
-  const diagH4 = (PH - 0.46 - 0.08) - diag4Y, diagW4 = diagH4 * (797 / 985);
-  s.addImage({ path: "diagram4_cropped.png", x: diag4X, y: diag4Y, w: diagW4, h: diagH4 });
-
-  s.addNotes("This is the slide the panel uses to decide whether the project deserves capstone status. Concede up front that a trace-capture-plus-LLM-guess wrapper is a weekend's work, then name precisely what such a version would get wrong: no benchmark on unseen architectures, no way to tell a silent failure from a correct answer, no measured false-positive rate on clean controls, no evidence its fix works. NOTE — on-slide badges are renumbered 1-6 for readability; they are NOT the Seoul Accord characteristic numbers. Badge 4 on the slide = real characteristic 6 (Diverse stakeholders) — it's amber on purpose, say so before they spot it. Badge 6 on the slide = real characteristic 9 (Ill-defined cause) — read its resolution aloud if pressed on complexity; the diagram on the right is that resolution, drawn: hypothesis generation, evidence-grounding, and the controlled-replay loop that gates every fix. Real characteristics 4, 5 and 8 (Unfamiliar issues / Beyond standard practice / Interdependence) are off-slide entirely but still true and still fully argued in Granite_CCP_Justification_Seoul_Accord.docx and CCP_Characteristics_Not_On_Slide.md — cover them only if asked directly. Citations: 02_Panel_Defense_Question_Bank.md Q8a · plan §1 (three-tier CCP) · §2 (9-characteristic rating).");
+  s.addNotes("This is the slide the panel uses to decide whether the project deserves capstone status. Concede up front that a trace-capture-plus-LLM-guess wrapper is a weekend's work, then name precisely what such a version would get wrong: no benchmark on unseen architectures, no way to tell a silent failure from a correct answer, no measured false-positive rate on clean controls, no evidence its fix works. Only the 5 strongest characteristics are on-slide, renumbered 1-5 with no gaps. Badge 5 (Ill-defined cause) has three unknowns stacked — read its resolution aloud if pressed: whether/which/what's-correct, each resolved by a distinct pipeline stage. The other 4 (Unfamiliar issues, Significant consequences, Interdependence, Diverse stakeholders) are held back — full reasoning and likely panel questions for all 9 are in markdowns/05-deliverables/defense-prep/CCP_and_Spikes_Full_Reasoning.md, cover them only if asked directly. Citations: 02_Panel_Defense_Question_Bank.md Q8a · plan §1 (three-tier CCP) · §2 (9-characteristic rating).");
 }
 
 // ============================================================
@@ -645,29 +623,17 @@ function bullets(slide, items, opts) {
   // freed width instead. A real screenshot of the clickable prototype
   // (poc-demo/frontend/dist-static/index.html — interface real, backend mocked
   // against a frozen data snapshot, exactly the guide's "high-fidelity functional
-  // prototype" definition), and a real architecture-atlas diagram of the
-  // operator workflow (recolored to the deck's palette).
-  // No card/border boxes around either image — just the caption and the
-  // image itself. The gap between the two was too wide (dead white space);
-  // it's now small, and the workflow diagram grew into the reclaimed room
-  // (both wider and taller — its height was the real ceiling, so the table
-  // gap and footer margin were both trimmed slightly to allow it).
+  // prototype" definition). Operator Workflow diagram removed — the
+  // prototype screenshot now stretches to the full slide width instead
+  // (a deliberate horizontal stretch, not aspect-locked, per request).
   const bandY = 5.14;
-  const thumbW = 5.2, thumbH = thumbW * (190 / 700);
-  const diagW7 = 3.85, diagH7 = diagW7 * (490 / 1200);
+  const thumbW = CW, thumbH = 1.7;
 
   s.addText("LIVE, CLICKABLE PROTOTYPE", {
     x: MX, y: bandY, w: thumbW, h: 0.20, isTextBox: true, margin: 0,
     fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, charSpacing: 0.4,
   });
   s.addImage({ path: "assets_console_thumb.png", x: MX, y: bandY + 0.24, w: thumbW, h: thumbH });
-
-  const diag7X = MX + thumbW + 0.45;
-  s.addText("OPERATOR WORKFLOW", {
-    x: diag7X, y: bandY, w: diagW7, h: 0.20, isTextBox: true, margin: 0,
-    fontFace: F_MONO, fontSize: 10.5, bold: true, color: C.goldDark, charSpacing: 0.4,
-  });
-  s.addImage({ path: "diagram7_cropped.png", x: diag7X, y: bandY + 0.22, w: diagW7, h: diagH7 });
 
   s.addNotes("Lead with Spike 7's negative result and Spike 8's failure analysis — quote the guide's own words on this directly: a POC that disproved an assumption is more valuable than one that confirmed it. Every number on this slide is real and recomputable from files in the repository; offer to open one. In progress: full 3-stage reproduction, top FYP-1 priority. Planned: Recovery Controller + Verified Repair Memory Tier-2 gates, pre-registered Mid-1 criteria, not yet run. Prototype: 5 screens, mocked backend, dist-static/index.html. Citations: dev/spikes/poc/ (8 scripts + output JSONs on disk) · markdowns/04-poc-evidence/POC_Spike_Outputs_Full.md.");
 }
@@ -685,13 +651,14 @@ function bullets(slide, items, opts) {
     x: MX + 0.26, y: 1.44, w: CW - 0.52, h: 0.68, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 15, valign: "middle",
   });
 
+  // Trimmed from 5 bullets to 3 — the two dropped (completion/recovery/repair
+  // rates, and FPR folded into the SF line) are still reported, just not
+  // listed as separate bullets here; less wordy without losing the metric.
   const lx = MX, lw = 5.35;
   label(s, lx, 2.28, lw, "Metrics");
   bullets(s, [
     "Agent / step accuracy · propagation-path F1",
-    "SF precision/recall + abstention rate",
-    "False-positive rate on clean controls",
-    "Completion, recovery, repair success rates",
+    "SF precision/recall + FPR on clean controls",
     "Latency overhead — the NFR, target < 50%",
   ], { x: lx, y: 2.60, w: lw, h: 1.92, fontSize: 14.7 });
 
@@ -712,38 +679,41 @@ function bullets(slide, items, opts) {
     x: lx + 0.20, y: 5.02, w: lw - 0.4, h: 1.06, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 13.5, valign: "top",
   });
 
-  // middle: success bands
+  // middle: success bands — Failure dropped (anything below Acceptable), so
+  // this reads as 3 meaningful tiers instead of 4, less wordy.
   const mx3 = lx + lw + 0.26, mw3 = 2.85;
   label(s, mx3, 2.28, mw3, "Success bands");
   const bands = [
-    ["Failure", "No measurable improvement anywhere", C.red, C.redSoft],
     ["Acceptable", "Parity on Who&When + any cross-arch", C.amber, C.amberSoft],
     ["Strong", "Beats baseline, unseen archs, >70% SF", C.teal, C.tealSoft],
     ["Exceptional", "Strong + >50% verified-repair recovery", C.green, C.greenSoft],
   ];
+  // Cards enlarged (0.86 -> 1.15, step 0.92 -> 1.21) now that there are only
+  // 3 instead of 4 — fills the same vertical span down to the GenAI boundary
+  // bar instead of leaving a gap under a shorter column.
   let by = 2.60;
   bands.forEach(([n, d, fg, bg]) => {
-    card(s, mx3, by, mw3, 0.86, bg, fg);
-    s.addText(n, { x: mx3 + 0.18, y: by + 0.06, w: mw3 - 0.36, h: 0.28, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 14.5, bold: true, color: fg });
-    s.addText(d, { x: mx3 + 0.18, y: by + 0.38, w: mw3 - 0.36, h: 0.44, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.textDark });
-    by += 0.92;
+    card(s, mx3, by, mw3, 1.15, bg, fg);
+    s.addText(n, { x: mx3 + 0.18, y: by + 0.10, w: mw3 - 0.36, h: 0.30, isTextBox: true, margin: 0, fontFace: F_TITLE, fontSize: 14.5, bold: true, color: fg });
+    s.addText(d, { x: mx3 + 0.18, y: by + 0.46, w: mw3 - 0.36, h: 0.62, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.5, color: C.textDark });
+    by += 1.21;
   });
 
-  // right: risks → fallback. Titles trimmed so none wrap past one line at this size.
+  // right: risks → fallback. Trimmed from 4 rows to 3 — the two Tier-2-gate
+  // risks (Recovery Controller, Verified Repair Memory) merged into one row.
   const rx = mx3 + mw3 + 0.26, rw = CW - (rx - MX);
   label(s, rx, 2.28, rw, "Top risks → stated fallback");
   const risks = [
     ["Reproduction misses the ±10pt band", "Report both numbers, declared in advance — expected, not a failure"],
-    ["Recovery Controller fails at Mid-1", "Resume via controlled replay — Tier 1 delivers it"],
-    ["Verified Repair Memory fails again", "Ships as a memory-on/off ablation"],
+    ["Tier-2 gates fail at Mid-1", "Recovery Controller / Verified Repair Memory — Tier 1 already delivers the core; Tier 2 ships as a memory on/off ablation"],
     ["Benchmark scale stalls below 500", "Floor of 500; 300-with-stats beats 1,000-without"],
   ];
   let ry = 2.60;
   risks.forEach(([r, f]) => {
-    card(s, rx, ry, rw, 0.86, C.card);
-    s.addText(r, { x: rx + 0.18, y: ry + 0.06, w: rw - 0.36, h: 0.36, isTextBox: true, margin: 0, fontFace: F_BODY, bold: true, fontSize: 12.3, color: C.textDark });
-    s.addText(f, { x: rx + 0.18, y: ry + 0.46, w: rw - 0.36, h: 0.36, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.green });
-    ry += 0.92;
+    card(s, rx, ry, rw, 1.15, C.card);
+    s.addText(r, { x: rx + 0.18, y: ry + 0.10, w: rw - 0.36, h: 0.50, isTextBox: true, margin: 0, fontFace: F_BODY, bold: true, fontSize: 12.3, color: C.textDark });
+    s.addText(f, { x: rx + 0.18, y: ry + 0.62, w: rw - 0.36, h: 0.46, isTextBox: true, margin: 0, fontFace: F_BODY, fontSize: 11.3, color: C.green });
+    ry += 1.21;
   });
   // Spans the full width now (was middle+right only) so it closes out the row
   // left empty under the data/dependencies card by the "Cannot support" removal.

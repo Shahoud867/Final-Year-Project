@@ -372,13 +372,13 @@ function bullets(slide, items, opts) {
 {
   const s = pres.addSlide();
   s.background = { color: C.paper };
-  chrome(s, 4, "Research & Technical Basis", "9+ papers read in full — decisions, not decoration");
+  chrome(s, 4, "Research & Technical Basis", "7 papers read in full — decisions, not decoration");
 
   const lx = MX, lw = 6.5;
   label(s, lx, 1.52, lw, "Decisions the literature actually changed");
   const decisions = [
     ["ErrorProbe chosen as baseline", "On performance (59.5%), not recency"],
-    ["CrewAI + LangGraph committed", "Unused by all 9 papers reviewed"],
+    ["CrewAI + LangGraph committed", "Unused by all 7 papers reviewed"],
     ["Constraint-based SED, not LLM-judge", "LLM-judge AUROC ≤ 0.65 — barely above chance"],
     ["Single-framework narrowing rejected", "Market survey's own advice, declined (R19)"],
   ];

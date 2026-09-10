@@ -91,7 +91,7 @@ These are real, argued in `Granite_CCP_Justification_Seoul_Accord.docx`, and not
 
 **Why ErrorProbe as the baseline, not the newest paper:** chosen on performance (59.5%, beats both its ancestors on their own benchmarks), not recency — it isn't even the newest of the four ACL 2026 papers reviewed.
 
-**Why CrewAI + LangGraph specifically:** neither framework was used by any of the 9 papers reviewed. That's the actual generalization test — none of the literature tests transfer to an architecture unseen during benchmark construction; committing to two frameworks nobody else tested is the point, not a convenience choice.
+**Why CrewAI + LangGraph specifically:** neither framework was used by any of the 7 papers reviewed. That's the actual generalization test — none of the literature tests transfer to an architecture unseen during benchmark construction; committing to two frameworks nobody else tested is the point, not a convenience choice.
 
 **Why constraint-based Semantic Error Diagnostic, not an LLM-judge:** literature shows LLM-judge approaches cap out at AUROC ≤ 0.65 — barely above chance. A deterministic, rule/schema-based check is both cheaper (0% API) and more reliable for the specific failure mode (semantically wrong but structurally valid output) than another LLM judging an LLM.
 

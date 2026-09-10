@@ -259,13 +259,13 @@ story += slide_box(3, "Existing Solutions &amp; Prior FYP Comparison", "SHAHOUD"
 
 # ---- Slide 4 ----
 story += slide_box(4, "Research &amp; Technical Basis", "SHAHOUD", 55, [
-    "We read over nine papers in full, not just abstracts, and every major decision we made traces "
+    "We read seven papers in full, not just abstracts, and every major decision we made traces "
     "back to one of them. The field's own progress looks like a climb: a single AI model just "
     "guessing scores 14.2%, an early automated method called AgenTracer lands around 37 to 43%, and "
     "ErrorProbe — our chosen baseline — reaches 59.5%. We picked ErrorProbe because it's the strongest "
     "published number, not because it's the newest.",
     "Three decisions followed directly from that reading. We committed to CrewAI and LangGraph as our "
-    "two agent frameworks specifically because none of the nine papers we reviewed used either one — "
+    "two agent frameworks specifically because none of the seven papers we reviewed used either one — "
     "that's what actually tests generalization. We chose a rule-based, constraint-checking approach "
     "for catching silent failures instead of asking another AI model to judge the output, because the "
     "literature shows that approach barely beats a coin flip. And a market survey recommended we "
@@ -455,7 +455,7 @@ checklist_rows = [
     ["Key features", "Slides 6, 7", "Attribution, silent-failure detection, verified repair, cross-framework SDK — each with POC evidence"],
     ["How the system works", "Slide 6", "Trace → graph → parallel attribution/SED → repair → verified replay → dashboard/SDK"],
     ["Methodology / technical approach", "Slides 4, 6, 8", "Literature-driven decisions; architecture; statistical evaluation protocol"],
-    ["Literature review", "Slide 4", "9+ papers read in full; accuracy lineage 14.2% → ~40% → 59.5%"],
+    ["Literature review", "Slide 4", "7 papers read in full; accuracy lineage 14.2% → ~40% → 59.5%"],
     ["Research gap", "Slide 3", "Structural comparison table; \"the real gap\" stated as a combination, not one feature"],
     ["Dataset / data sources", "Slide 8", "Who&amp;When (184 cases), own benchmark, GSM8K + tau-bench, clean controls"],
     ["Model / algorithm / technology choices", "Slides 4, 9", "ErrorProbe as baseline; constraint-based SED over LLM-judge; stack listed on S9"],
@@ -550,7 +550,7 @@ story.append(qa(
 ))
 story.append(qa(
     "Why CrewAI and LangGraph specifically?",
-    "Because neither was used by any of the nine papers we reviewed. Testing on frameworks the method "
+    "Because neither was used by any of the seven papers we reviewed. Testing on frameworks the method "
     "was never tuned on is the actual test of whether it generalizes — that's the whole point of the "
     "claim.",
     "This is also why a market survey's advice to narrow to one framework was explicitly declined."

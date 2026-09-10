@@ -26,7 +26,7 @@ Written strictly from what's actually on each slide right now (checked against t
 
 ## Slide 4 — Research & Technical Basis (~45s)
 
-> Four decisions the literature actually changed. We chose ErrorProbe as our baseline on performance, not recency. We committed to CrewAI and LangGraph — frameworks none of the nine papers we reviewed used. We chose constraint-based diagnosis over an LLM-judge, because LLM-judge approaches only reach 0.65 AUROC — barely above chance. And we rejected narrowing to a single framework, per the market survey's own advice. Across the published lineage, step-level accuracy climbs from 14.2% to just 59.5% — still wrong 40.5 points of the time, and none of these methods can see silent failures at all.
+> Four decisions the literature actually changed. We chose ErrorProbe as our baseline on performance, not recency. We committed to CrewAI and LangGraph — frameworks none of the seven papers we reviewed used. We chose constraint-based diagnosis over an LLM-judge, because LLM-judge approaches only reach 0.65 AUROC — barely above chance. And we rejected narrowing to a single framework, per the market survey's own advice. Across the published lineage, step-level accuracy climbs from 14.2% to just 59.5% — still wrong 40.5 points of the time, and none of these methods can see silent failures at all.
 
 ---
 

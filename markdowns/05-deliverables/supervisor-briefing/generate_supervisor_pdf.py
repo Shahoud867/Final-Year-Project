@@ -324,7 +324,7 @@ story.append(P(
     "with Recovery Controller and Verified Repair Memory before those two moved into the "
     "foundational core above, settling back at 8 — see §6b), and "
     "2 stretch items deliberately parked, not planned. The full itemized breakdown of all "
-    "20 is in §6 Features, checked against 9+ papers, 7 observability platforms, and 7 "
+    "20 is in §6 Features, checked against 7 papers, 7 observability platforms, and 7 "
     "orchestration frameworks — not repeated here to avoid the same list appearing twice.", "Body"
 ))
 story.append(P(

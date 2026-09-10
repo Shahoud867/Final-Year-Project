@@ -50,12 +50,12 @@ Full reasoning and likely panel questions for all 9 (5 on-slide + 4 held back) a
 
 ### Added coverage
 - **The 4 headline numbers:** 71.4% agent accuracy and 13.2% step accuracy are our **simplified single-stage** reproduction over 5 runs — not directly comparable to ErrorProbe's full 3-stage 59.5%, say so unprompted before a panelist notices the gap themselves. 4/6 is the Repair Agent's real success rate, both failures traced to one fixable cause. 8/8 means every spike has real, recomputable evidence, including the honest negative.
-- **Spikes 1-6, one breath each, if asked:**
-  1. ErrorProbe reproduction confirms the mechanism direction even simplified.
-  2. CrewAI instrumentation proves a real 3-node execution graph was captured.
-  3. Fault injection landed a labeled fault, with one self-correction kept as a finding, not hidden.
-  4. Semantic Error Diagnostic caught a real near-miss ($20.00 vs $19.75) with zero false positives.
-  5. Counterfactual replay is the **core novelty claim** — a corrupted 97.2 recovered to 108.0 under controlled replay.
-  6. Cyclic graph handling hit its 10,000-step safety cap as designed, proving the failure mode is contained, not silent.
+**Spikes 1–6, one breath each, if asked:**
+- Spike 1 — ErrorProbe reproduction confirms the mechanism direction even simplified.
+- Spike 2 — CrewAI instrumentation proves a real 3-node execution graph was captured.
+- Spike 3 — Fault injection landed a labeled fault, with one self-correction kept as a finding, not hidden.
+- Spike 4 / 4b — Semantic Error Diagnostic. Say it in two halves: the **seeded** mechanism test caught the $20.00-vs-$19.75 near-miss and every other known-wrong value with zero false positives; the **live n=3 run** produced zero natural silent failures, so recall in the wild is unmeasured, not high.
+- Spike 5 — Counterfactual replay is the **core novelty claim** — a corrupted 97.2 recovered to 108.0 under controlled replay.
+- Spike 6 — Cyclic graph handling hit its 10,000-step safety cap as designed, proving the failure mode is contained, not silent.
 
 **Update:** the Operator Workflow diagram was removed from this slide (it repeated logic already on slide 5) — the prototype screenshot now spans the full slide width instead. If asked about the human-approval workflow, it's a verbal answer: install, review the diagnosis before anything is applied, approve or reject, then a verified replay confirms the fix actually worked. Nothing here is autonomous.

@@ -84,7 +84,7 @@ pres.company = "FAST School of Computing, NUCES Islamabad";
 pres.title = "Granite — Proposal Defense (v2)";
 pres.subject = "Stage 1 Proposal Defense — F26-060-Granite";
 
-const TOTAL_SLIDES = 11;
+const TOTAL_SLIDES = 12;
 const PW = 13.333, PH = 7.5;
 const MX = 0.62;
 const CW = PW - MX * 2;
@@ -876,6 +876,46 @@ function bullets(slide, items, opts) {
   });
 
   s.addNotes("The DEI line is a real, checkable commitment, not a decorative label — say the access-equity sentence in your own words. Ownership per lane and the FYP-1/FYP-2 milestone gates are both on slide 10; this slide is deliberately just the three compliance statements the guide names. Every CCP-relevant component has a member who can defend it live — offer to demonstrate that on any component they pick. Citations: plan §3 (ownership) · AI_Usage_Log.md · risk-register R30/R38.");
+}
+
+// ============================================================
+// SLIDE 12 — Close
+// Mirrors slide 1: same dark ground, same gold rail, same facet mark, same
+// typeface at the same weight, so the deck opens and closes on one image.
+// Deliberately bare — two lines and nothing else. This slide stays up for the
+// whole Q&A, and anything else on it competes with the person answering.
+// No chrome()/footer(), for the same reason slide 1 has none.
+// ============================================================
+{
+  const s = pres.addSlide();
+  s.background = { color: C.ink };
+
+  const mx = PW - 3.0, my = 1.15;
+  s.addShape(pres.ShapeType.rect, { x: mx, y: my, w: 1.5, h: 1.5, rotate: 45, fill: { color: C.ink2 }, line: { color: C.goldDark, width: 1 } });
+  s.addShape(pres.ShapeType.rect, { x: mx + 0.26, y: my + 0.26, w: 0.98, h: 0.98, rotate: 45, fill: { color: C.gold }, line: { type: "none" } });
+  s.addShape(pres.ShapeType.rect, { x: mx + 0.50, y: my + 0.50, w: 0.50, h: 0.50, rotate: 45, fill: { color: C.ink }, line: { color: C.goldLight, width: 1 } });
+
+  s.addShape(pres.ShapeType.rect, { x: 0, y: 0, w: RAIL * 1.6, h: PH, fill: { color: C.gold }, line: { type: "none" } });
+
+  // Block vertically centred on the slide now that it carries only two lines.
+  s.addText("F26-060  \u00b7  GRANITE  \u00b7  PROPOSAL DEFENSE", {
+    x: MX, y: 2.62, w: 9.2, h: 0.30, isTextBox: true, margin: 0,
+    fontFace: F_MONO, fontSize: 16.5, bold: true, color: C.goldLight, charSpacing: 1.4,
+  });
+
+  s.addText("Thank you", {
+    x: MX, y: 3.02, w: 9.2, h: 1.15, isTextBox: true, margin: 0,
+    fontFace: F_TITLE, fontSize: 69.5, bold: true, color: C.textLight,
+  });
+
+  s.addShape(pres.ShapeType.rect, { x: MX, y: 4.34, w: 1.1, h: 0.035, fill: { color: C.gold }, line: { type: "none" } });
+
+  s.addText("Any questions?", {
+    x: MX, y: 4.58, w: 9.2, h: 0.62, isTextBox: true, margin: 0,
+    fontFace: F_TITLE, fontSize: 30, italic: true, color: C.textLightMuted,
+  });
+
+  s.addNotes("This slide stays up for the whole Q&A \u2014 do not click away from it. It is deliberately bare so nothing on screen competes with the person answering. Two things to say out loud rather than put on the slide: every figure in this deck is recomputable from a file in dev/spikes/poc/ and we will open any of them on request; and if a weakness question comes, lead with the honest answer already prepared \u2014 step accuracy is 13.2% against a published 59.5% on a simplified two-stage reproduction, Spike 7 is a reported negative, and two of the ten committed mechanisms carry pre-registered Mid-1 decision gates. Team names and the supervisor are on slide 1 if the panel needs them.");
 }
 
 pres.writeFile({ fileName: "Granite_Proposal_Defense_v2.pptx" }).then(fn => console.log("Wrote", fn));

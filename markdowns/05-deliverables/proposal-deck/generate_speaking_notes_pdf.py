@@ -307,7 +307,8 @@ story += slide_box(5, "Complex Computing Challenge (CCP)", "NOOR", 65, [
 # ---- Slide 6 ----
 story += slide_box(6, "Proposed Solution &amp; Contribution", "NOOR", 65, [
     "So what are we actually building? The best published method tops out at 59.5% accuracy, has "
-    "never been tested outside two agent frameworks, and admits it misses silent failures. We're "
+    "never been tested on an agent framework outside its own benchmark, and admits it misses "
+    "silent failures. We're "
     "building two things on top of that: a new benchmark that tests generalization across different "
     "agent frameworks, and a diagnosis pipeline that adds a rule-based check specifically for silent "
     "failures — packaged as an installable toolkit, not just a research script.",
@@ -505,7 +506,7 @@ story.append(qa(
     "Why did you choose this topic?",
     "We read the recent literature on multi-agent failure diagnosis and found a specific, confirmed "
     "gap: the strongest published method admits it can't catch silent failures and has never been "
-    "tested outside two agent frameworks. That's a real, evidenced opening, not a topic we picked "
+    "tested on an agent framework outside its own benchmark. That's a real, evidenced opening, not a topic we picked "
     "because it sounded interesting.",
     "Point to the accuracy lineage (14.2% → ~40% → 59.5%) as proof this is an active, fast-moving area."
 ))

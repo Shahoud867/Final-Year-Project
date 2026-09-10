@@ -22,6 +22,25 @@ desktop.ini
 .vscode/
 .idea/
 
+# Office lock files — created while a doc is open, never content
+~$*
+
+# Node
+node_modules/
+dist/
+
+# Deck build artefacts and superseded decks — deliberately untracked.
+# These are ~5MB of throwaway or superseded material, kept locally so the
+# renders can be regenerated, but not worth carrying in the repository:
+#   _render_check/  crop scripts + raw diagram PNGs used to build slide images
+#   canvas/         the older canvas HTML deck, superseded by poc-canvas/
+#   Granite.pptx    a 10-slide deck separate from both tracked decks
+# The tracked decks are Granite_Proposal_Defense.pptx (v1) and
+# Granite_Proposal_Defense_v2.pptx (v2, current).
+markdowns/05-deliverables/proposal-deck/_render_check/
+markdowns/05-deliverables/proposal-deck/canvas/
+markdowns/05-deliverables/proposal-deck/Granite.pptx
+
 # Notes
 # --------------------------------------------------------------------
 # dev/datasets/ is currently TRACKED in this repository (~46MB of

@@ -1,0 +1,143 @@
+action	old	new	reason
+KEEP	.gitignore	.gitignore	Left untouched on purpose: origin/noor also edits it and a local edit would conflict at merge. Scoped .gitignore files were added in subfolders instead.
+KEEP	.claude/launch.json	.claude/launch.json	Tool config stays at its conventional location; the preview path inside it was updated.
+RENAME	00_Granite_Master_Execution_Plan.md	docs/plan/master-plan.md	Single source of truth for execution; one canonical home under docs/plan; numeric prefix dropped.
+ARCHIVE	01_Executive_Audit_and_Verdict.md	archive/proposal-phase/audits/01_Executive_Audit_and_Verdict.md	Proposal-stage audit; superseded by master plan sections 2 and 8.
+ARCHIVE	02_Panel_Defense_Question_Bank.md	archive/proposal-phase/audits/02_Panel_Defense_Question_Bank.md	Proposal-defense Q&A; replaced by master plan section 41.
+ARCHIVE	03_Proposal_Slides_with_Speaker_Notes.md	archive/proposal-phase/audits/03_Proposal_Slides_with_Speaker_Notes.md	Proposal deck content in Markdown; the deck itself is in deliverables/stage-0-proposal/proposal-deck.
+ARCHIVE	04_Granite_Knowledge_Base.md	archive/proposal-phase/audits/04_Granite_Knowledge_Base.md	Concept explainer written for the proposal defense; kept as study reference.
+ARCHIVE	05_Repository_Change_and_Commit_Plan.md	archive/proposal-phase/audits/05_Repository_Change_and_Commit_Plan.md	Plan executed on 2026-08-25; history only.
+ARCHIVE	06_Expanded_Scope_and_Feasibility_Plan.md	archive/proposal-phase/audits/06_Expanded_Scope_and_Feasibility_Plan.md	Scope bands and descope ladder; superseded by master plan sections 11, 12, 37 (change record C-01).
+ARCHIVE	07_Handbook_2026_Compliance_Audit_and_Response.md	archive/proposal-phase/audits/07_Handbook_2026_Compliance_Audit_and_Response.md	Proposal-stage handbook audit; superseded by master plan section 40.
+ARCHIVE	explanation.md	archive/proposal-phase/explanations/explanation.md	Long-form narrative, not a deliverable; was stranded at the repo root.
+MOVE	FYP-1-Mid-Assessment-Guidelines-and-Rubrics.pdf	references/university/fyp1-mid-assessment-guidelines-and-rubrics.pdf	Official Mid-1 rubric (Forms 2 and 3); third-party source material, read-only.
+RENAME	F26_FYP1_Mid_Report_LaTeX_Complete.zip	references/templates/fyp1-mid-report-template_latex.zip	Pristine copy of the prescribed LaTeX template as received. The working copy goes to docs/report/ (done by the report owner).
+RENAME	F26_FYP1_Mid_Report_LaTeX_Complete.pdf	references/templates/fyp1-mid-report-template_rendered.pdf	Rendered template as received; reference only.
+MOVE	dev/README.md	research/spikes/README.md	The notes in it describe the spikes and their interface lessons; rewritten for the new layout.
+MOVE	dev/datasets/DOWNLOAD.md	data/DOWNLOAD.md	Retrieval commands and licences for third-party datasets live with the data.
+MOVE	dev/datasets/	data/raw/	Third-party datasets exactly as downloaded (immutable). Tracking policy unchanged (see .gitignore note); not renamed because DOWNLOAD.md clones into these names.
+MOVE	dev/spikes/poc/	research/spikes/	Proposal-stage spikes: scripts, outputs and input cases stay together (scripts resolve paths relative to themselves). The redundant spikes/poc nesting is flattened.
+RENAME	docs/BS-FYP-Handbook-2026_DRAFT.pdf	references/university/bs-fyp-handbook-2026-draft.pdf	Official handbook; moved out of docs/ so that docs/ means 'documents we write'.
+RENAME	docs/FAST_FYP_Student_Idea_Selection_Guide_School_of_Computing (1).pdf	references/university/fast-fyp-idea-selection-guide.pdf	Official idea-selection guide; name had ' (1)' (browser duplicate marker) and spaces.
+RENAME	docs/Agentic_AI_Market_Survey_BS_FYP.docx	references/market/agentic-ai-market-survey-bs-fyp.docx	Third-party market survey used as a source; read-only.
+RENAME	papers/zhang25cq.pdf	references/papers/2025_icml_whowhen.pdf	Who&When (Zhang et al., ICML 2025). Cryptic proceedings ID replaced by year_venue_shortname.
+RENAME	papers/ICLR-2026-agentracer-who-is-inducing-failure-in-the-llm-agentic-systems-Paper-Conference.pdf	references/papers/2026_iclr_agentracer.pdf	AgenTracer (ICLR 2026); 100-character name shortened.
+RENAME	papers/29305-AAAI26.SunK-NLP.pdf	references/papers/2026_aaai_sdbl.pdf	SDBL, 'Scope Delineation Before Localization' (AAAI-26).
+RENAME	papers/9260_Seeing_the_Whole_Elephant.pdf	references/papers/2026_acl-long_traceelephant.pdf	TraceElephant benchmark paper 'Seeing the Whole Elephant' (anonymous-submission copy).
+RENAME	papers/2026.acl-long.1294.pdf	references/papers/2026_acl-long_agentask.pdf	AgentAsk (ACL 2026 Long).
+RENAME	papers/2026.findings-acl.98.pdf	references/papers/2026_acl-findings_errorprobe.pdf	ErrorProbe (ACL 2026 Findings); the project's baseline paper.
+RENAME	papers/2026.acl-demo.3.pdf	references/papers/2026_acl-demo_protea.pdf	PROTEA (ACL 2026 Demo).
+RENAME	markdowns/INDEX.md	archive/proposal-phase/tracking/markdowns-index_pre-reorg.md	Index of the old markdowns/ layout; kept for history, replaced by README.md and docs/workspace-guide.md.
+MOVE	markdowns/01-planning-and-scope/datasets.md	data/datasets.md	Living dataset register (licences, active vs benched); belongs with the data.
+MOVE	markdowns/01-planning-and-scope/	deliverables/stage-0-proposal/proposal-documents/	The approved Gate-1 proposal document set (vision, SRS, SDS, use cases, SSDs, test plan, SDP, scope/CCP plan, diagrams). Frozen baseline for change control (handbook C.5.3); superseded in parts by master plan change record C-01.
+MOVE	markdowns/02-evidence-and-tracking/risk-register.md	docs/registers/risk-register.md	Living register; master plan section 37 re-baselines it.
+RENAME	markdowns/02-evidence-and-tracking/AI_Usage_Log.md	docs/registers/ai-usage-log.md	Append-only AI usage log (handbook C.8.4); entries are never rewritten.
+RENAME	markdowns/02-evidence-and-tracking/Form13_GenAI_Disclosure_Sheet.md	docs/registers/form-13-genai-disclosure.md	Form 13 must be updated before every evaluation; Form 3 criterion 8 scores 0 without it.
+ARCHIVE	markdowns/02-evidence-and-tracking/Guide_Compliance_Audit.md	archive/proposal-phase/tracking/Guide_Compliance_Audit.md	Audit against the old idea-selection guide; superseded by master plan section 40.
+ARCHIVE	markdowns/02-evidence-and-tracking/Pre_Defense_Checklist.md	archive/proposal-phase/tracking/Pre_Defense_Checklist.md	Proposal-defense checklist; the defense is over.
+ARCHIVE	markdowns/02-evidence-and-tracking/Team_Action_Items.md	archive/proposal-phase/tracking/Team_Action_Items.md	Pre-defense human actions; superseded by master plan sections 0 and 45.
+ARCHIVE	markdowns/02-evidence-and-tracking/Traceability_Matrix.md	archive/proposal-phase/tracking/Traceability_Matrix.md	Hand-written proposal-stage matrix; master plan section 27.7 generates it from tests instead.
+RENAME	markdowns/03-market-and-literature-research/Full_Literature_Landscape_Analysis.md	research/literature/literature-landscape-analysis.md	Active research note (to be rewritten in own words for report chapter 2).
+RENAME	markdowns/03-market-and-literature-research/ErrorProbe_Baseline_Selection.md	research/literature/errorprobe-baseline-selection.md	Active research note.
+RENAME	markdowns/03-market-and-literature-research/Paper_Release_Timeline.md	research/literature/paper-release-timeline.md	Active research note.
+RENAME	markdowns/03-market-and-literature-research/Literature_Review_Sheet.xlsx	research/literature/literature-review-sheet.xlsx	Working workbook: 7 papers, datasets, benchmarks, gap.
+RENAME	markdowns/03-market-and-literature-research/Commercial_Product_Comparison.md	research/market/commercial-product-comparison.md	Active; master plan section 10 requires adding Percival, Galileo, Raindrop, Invariant, DoVer.
+RENAME	markdowns/03-market-and-literature-research/Agentic_AI_Market_Survey_Full_Content_and_Integration.md	research/market/agentic-ai-market-survey-integration.md	Integration notes for the market survey in references/market.
+ARCHIVE	markdowns/03-market-and-literature-research/AgenTracer_vs_WhoWhen_Analysis.md	archive/superseded/AgenTracer_vs_WhoWhen_Analysis.md	Its own header says superseded; kept for history.
+RENAME	markdowns/04-poc-evidence/POC_Spike_Outputs_Full.md	research/spikes/poc-spike-outputs-full.md	Write-up of all spike results; sits next to the spike scripts and JSON it describes.
+RENAME	markdowns/04-poc-evidence/Silent_Failure_Detection_and_Testing_Strategies.md	research/spikes/silent-failure-detection-strategies.md	Research notes behind spike 4 and the check design.
+MOVE	markdowns/05-deliverables/FYP_Registration_Form_Answers.md	deliverables/stage-0-proposal/registration/FYP_Registration_Form_Answers.md	Submitted registration answers (stage 0).
+MOVE	markdowns/05-deliverables/Stream_Decision_Memo.docx	deliverables/stage-0-proposal/registration/Stream_Decision_Memo.docx	Stream A vs B decision memo (stage 0).
+MOVE	markdowns/05-deliverables/Proposal_Defense_Package.md	deliverables/stage-0-proposal/proposal-deck/Proposal_Defense_Package.md	Slide-by-slide content for the deck; colocated with the deck sources.
+MOVE	markdowns/05-deliverables/Supervisor_Briefing.md	deliverables/stage-0-proposal/supervisor-briefing/Supervisor_Briefing.md	Markdown source colocated with the generated briefing PDF.
+MOVE	markdowns/05-deliverables/Granite_Architecture_Atlas.html	deliverables/stage-0-proposal/design-visuals/Granite_Architecture_Atlas.html	Design visuals shown at the proposal; the atlas links to the wireframes as siblings.
+MOVE	markdowns/05-deliverables/Granite_Wireframes.html	deliverables/stage-0-proposal/design-visuals/Granite_Wireframes.html	Design visuals shown at the proposal; the atlas links to the wireframes as siblings.
+MOVE	markdowns/05-deliverables/Granite_Wireframes_2.html	deliverables/stage-0-proposal/design-visuals/Granite_Wireframes_2.html	Design visuals shown at the proposal; the atlas links to the wireframes as siblings.
+MOVE	markdowns/05-deliverables/Granite_Pipeline_Diagram.png	deliverables/stage-0-proposal/design-visuals/Granite_Pipeline_Diagram.png	Design visuals shown at the proposal; the atlas links to the wireframes as siblings.
+RENAME	markdowns/05-deliverables/poc-canvas/granite-poc.html	deliverables/stage-0-proposal/poc-canvas/Granite_PoC_canvas_export.html	2.5 MB design-canvas export, unreferenced, and its relative script references (support.js, vendor/) do not exist. Renamed so it cannot be confused with Granite_Interactive_PoC.html; not deleted.
+MOVE	markdowns/05-deliverables/proposal-deck/	deliverables/stage-0-proposal/proposal-deck/	Stage-0 package; folder moved whole because generators write into their own folder and read nothing outside it. Also catches files that arrive from origin/noor later.
+MOVE	markdowns/05-deliverables/defense-prep/	deliverables/stage-0-proposal/defense-prep/	Stage-0 package; folder moved whole because generators write into their own folder and read nothing outside it. Also catches files that arrive from origin/noor later.
+MOVE	markdowns/05-deliverables/poc-canvas/	deliverables/stage-0-proposal/poc-canvas/	Stage-0 package; folder moved whole because generators write into their own folder and read nothing outside it. Also catches files that arrive from origin/noor later.
+MOVE	markdowns/05-deliverables/supervisor-briefing/	deliverables/stage-0-proposal/supervisor-briefing/	Stage-0 package; folder moved whole because generators write into their own folder and read nothing outside it. Also catches files that arrive from origin/noor later.
+MOVE	markdowns/05-deliverables/ccp-justification/	deliverables/stage-0-proposal/ccp-justification/	Stage-0 package; folder moved whole because generators write into their own folder and read nothing outside it. Also catches files that arrive from origin/noor later.
+ARCHIVE	markdowns/06-archive-superseded/	archive/pre-granite/	TraceCause-era drafts, before the rename to Granite.
+ARCHIVE	markdowns/07-full-project-explanation/	archive/proposal-phase/explanations/	Internal long-form narrative (not a deliverable, not spec).
+MOVE	poc-demo/	deliverables/stage-0-proposal/poc-console/	The React + FastAPI console shown at the proposal defense, frozen. A new UI starts in apps/web (master plan section 30.2).
+DELETE	poc-demo/frontend/node_modules/	-	Regenerable (`npm ci`, package-lock.json is tracked), git-ignored, 74 MB / 2,503 files syncing through OneDrive.
+DELETE	dev/spikes/poc/__pycache__/	-	Python bytecode cache; git-ignored.
+DELETE	poc-demo/backend/__pycache__/	-	Python bytecode cache; git-ignored.
+DELETE	poc-demo/backend/uvicorn.log	-	Dev-server log; git-ignored.
+DELETE	poc-demo/frontend/tsconfig.tsbuildinfo	-	TypeScript incremental build cache; git-ignored.
+NEW	-	README.md	Entry point: what Granite is, the tree, where to start.
+NEW	-	CLAUDE.md	Orientation for AI sessions (what to read first, what to ignore); points to the guide instead of repeating it.
+NEW	-	docs/workspace-guide.md	Single source of truth for layout, naming, placement rules and lifecycle.
+NEW	-	docs/workspace-index.md	Generated one-line-per-file index (scripts/build_index.py).
+NEW	-	docs/adr/adr-000-template.md	ADR template; ADR-001 to 010 are Mid-1 deliverables.
+NEW	-	scripts/check_links.py	Relative-link checker (usable in CI).
+NEW	-	scripts/check_workspace.py	Checks naming rules, top-level folders and README presence.
+NEW	-	scripts/build_index.py	Regenerates docs/workspace-index.md.
+NEW	-	scripts/apply_workspace_migration.py	Re-runnable mover for files that arrive from origin/noor at old paths.
+NEW	-	scripts/linkcheck-allowlist.txt	The 12 known, accepted broken links (pre-existing or by design), each with a reason.
+NEW	-	archive/superseded/master-plan_v1.0_2026-10-04.md	Preserved copy of master plan v1.0 (the plan was never committed, so git holds no history for it).
+NEW	-	docs/report/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	docs/diagrams/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	docs/adr/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	docs/manuals/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	docs/meetings/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	docs/registers/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	research/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	research/eval/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	data/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	references/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	references/papers/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	deliverables/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	deliverables/stage-0-proposal/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	deliverables/stage-1-fyp1-mid/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	deliverables/stage-2-fyp1-final/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	deliverables/stage-3-fyp2-mid/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	deliverables/stage-4-fyp2-final/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	evidence/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	archive/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	apps/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	packages/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	workflows/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	tests/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	scripts/README.md	Short folder index: purpose, naming, owner. Structural only, no file lists (those are generated).
+NEW	-	docs/report/.gitignore	LaTeX build artefacts; scoped here so the root .gitignore stays untouched.
+NEW	-	evidence/.gitignore	Large recordings stay on OneDrive, out of git.
+NEW	-	deliverables/stage-0-proposal/proposal-deck/.gitignore	Carries the deck-build ignores that origin/noor adds at the root under the old path.
+EDIT	-	deliverables/stage-0-proposal/poc-console/backend/data_loader.py	Spikes path constant (finds repo root by looking for research/spikes; was parents[2] + dev/spikes/poc) and two path mentions in comments.
+EDIT	-	deliverables/stage-0-proposal/poc-console/backend/main.py	One docstring path.
+EDIT	-	deliverables/stage-0-proposal/poc-console/README.md	Run-from paths updated; frozen-artifact note added (node_modules deleted: run npm ci).
+EDIT	-	.claude/launch.json	Preview path now deliverables/stage-0-proposal/poc-console/frontend.
+EDIT	-	research/spikes/README.md	Rewritten for the new layout (was dev/README.md); the interface-notes, out-of-scope and external-dependency sections kept verbatim.
+EDIT	-	docs/plan/master-plan.md	Paths updated to the new layout; section 28.1 tree replaced by a pointer to docs/workspace-guide.md; Day-0 git order revised; change-log row added.
+EDIT	-	data/DOWNLOAD.md	Commands now use data/raw; filter-repo lists both the old and the new path because history contains both.
+EDIT	-	data/datasets.md	Path note extended with the 2026-10-06 update.
+EDIT	-	docs/registers/risk-register.md	One update note appended to its path note; dated entries not rewritten.
+EDIT	-	research/market/agentic-ai-market-survey-integration.md	One evidence pointer updated (renamed write-up, moved script).
+EDIT	-	research/spikes/poc-spike-outputs-full.md	One path mention updated.
+LINKS	06_Expanded_Scope_and_Feasibility_Plan.md	archive/proposal-phase/audits/06_Expanded_Scope_and_Feasibility_Plan.md	Only relative link targets were rewritten (2 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/FYP_Scope_CCP_and_Implementation_Plan.md	deliverables/stage-0-proposal/proposal-documents/FYP_Scope_CCP_and_Implementation_Plan.md	Only relative link targets were rewritten (14 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/Project_Vision.md	deliverables/stage-0-proposal/proposal-documents/Project_Vision.md	Only relative link targets were rewritten (3 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/Software_Design_Specification.md	deliverables/stage-0-proposal/proposal-documents/Software_Design_Specification.md	Only relative link targets were rewritten (7 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/Software_Development_Plan.md	deliverables/stage-0-proposal/proposal-documents/Software_Development_Plan.md	Only relative link targets were rewritten (3 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/Software_Requirements_Specification.md	deliverables/stage-0-proposal/proposal-documents/Software_Requirements_Specification.md	Only relative link targets were rewritten (3 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/System_Sequence_Diagrams.md	deliverables/stage-0-proposal/proposal-documents/System_Sequence_Diagrams.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/Test_Plan.md	deliverables/stage-0-proposal/proposal-documents/Test_Plan.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/Use_Case_Model.md	deliverables/stage-0-proposal/proposal-documents/Use_Case_Model.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/cost-estimate.md	deliverables/stage-0-proposal/proposal-documents/cost-estimate.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/01-planning-and-scope/resources.md	deliverables/stage-0-proposal/proposal-documents/resources.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/02-evidence-and-tracking/Guide_Compliance_Audit.md	archive/proposal-phase/tracking/Guide_Compliance_Audit.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/03-market-and-literature-research/AgenTracer_vs_WhoWhen_Analysis.md	archive/superseded/AgenTracer_vs_WhoWhen_Analysis.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/03-market-and-literature-research/Commercial_Product_Comparison.md	research/market/commercial-product-comparison.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/03-market-and-literature-research/ErrorProbe_Baseline_Selection.md	research/literature/errorprobe-baseline-selection.md	Only relative link targets were rewritten (2 line(s)); nothing else changed.
+LINKS	markdowns/03-market-and-literature-research/Full_Literature_Landscape_Analysis.md	research/literature/literature-landscape-analysis.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/03-market-and-literature-research/Paper_Release_Timeline.md	research/literature/paper-release-timeline.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/04-poc-evidence/Silent_Failure_Detection_and_Testing_Strategies.md	research/spikes/silent-failure-detection-strategies.md	Only relative link targets were rewritten (3 line(s)); nothing else changed.
+LINKS	markdowns/05-deliverables/Granite_Architecture_Atlas.html	deliverables/stage-0-proposal/design-visuals/Granite_Architecture_Atlas.html	Only relative link targets were rewritten (7 line(s)); nothing else changed.
+LINKS	markdowns/05-deliverables/Proposal_Defense_Package.md	deliverables/stage-0-proposal/proposal-deck/Proposal_Defense_Package.md	Only relative link targets were rewritten (5 line(s)); nothing else changed.
+LINKS	markdowns/05-deliverables/Supervisor_Briefing.md	deliverables/stage-0-proposal/supervisor-briefing/Supervisor_Briefing.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/06-archive-superseded/TraceCause_AgentTestLab_Pitch.md	archive/pre-granite/TraceCause_AgentTestLab_Pitch.md	Only relative link targets were rewritten (1 line(s)); nothing else changed.
+LINKS	markdowns/06-archive-superseded/TraceCause_Product_Vision_UI.md	archive/pre-granite/TraceCause_Product_Vision_UI.md	Only relative link targets were rewritten (2 line(s)); nothing else changed.
+LINKS	markdowns/INDEX.md	archive/proposal-phase/tracking/markdowns-index_pre-reorg.md	Only relative link targets were rewritten (55 line(s)); nothing else changed.

@@ -1,0 +1,11 @@
+# research/eval
+
+Evaluation of Granite against its baselines (master plan section 27.5). Created now so the structure never changes later; empty until the evaluation design is frozen.
+
+Planned contents (names fixed):
+- `prereg-vN.md`: pre-registration (metrics, baselines, thresholds), committed with its date **before** any run
+- evaluation scripts sharing one statistics module
+- `results/`: one CSV or JSON per run, recording the commit hash
+- `ablations/`
+
+Exploratory experiments stay in [`../spikes/`](../spikes/).

@@ -1,0 +1,6 @@
+# Large recordings stay on OneDrive, out of git. List each one in evidence/README.md.
+*.avi
+*.mkv
+*.mov
+*.mp4
+*.webm

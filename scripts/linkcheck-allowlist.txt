@@ -1,0 +1,20 @@
+# Known, accepted broken links. One entry per line: <repo-relative path>::<link target exactly as written>
+# Anything not listed here fails scripts/check_links.py. Add an entry only with a reason in a comment.
+
+# Pre-existing before the 2026-10-06 reorganization.
+# 2.5 MB design-canvas export: its relative script references (support.js, vendor/) were never part of the export.
+deliverables/stage-0-proposal/poc-canvas/Granite_PoC_canvas_export.html::./support.js
+deliverables/stage-0-proposal/poc-canvas/Granite_PoC_canvas_export.html::./vendor/react.js
+deliverables/stage-0-proposal/poc-canvas/Granite_PoC_canvas_export.html::./vendor/react-dom.js
+deliverables/stage-0-proposal/poc-canvas/Granite_PoC_canvas_export.html::\.\/support\.js
+# Vite entry point; a root-relative path that is correct for the dev server, not a file link.
+deliverables/stage-0-proposal/poc-console/frontend/index.html::/src/main.tsx
+# Link to a file that was never committed.
+archive/pre-granite/TraceCause_Product_Vision_UI.md::GPT-Feature-Response.md
+
+# By design after the reorganization: the old markdowns/ folders were split across several new homes, so folder-level
+# links in this historical index cannot resolve to one place. Use archive/migration-map_2026-10-06.tsv instead.
+archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::02-evidence-and-tracking/
+archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::03-market-and-literature-research/
+archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::04-poc-evidence/
+archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::05-deliverables/

@@ -1,0 +1,10 @@
+# Deck build artefacts and superseded decks: deliberately untracked (~5 MB of throwaway material).
+# Same intent as the rules origin/noor adds to the root .gitignore under the old path
+# markdowns/05-deliverables/proposal-deck/, which no longer exists after the 2026-10-06 reorganization.
+#   _render_check/  crop scripts and raw diagram PNGs used to build slide images
+#   canvas/         the older canvas HTML deck, superseded by ../poc-canvas/
+#   Granite.pptx    a 10-slide deck separate from the two tracked decks
+# The tracked decks are Granite_Proposal_Defense.pptx (v1) and Granite_Proposal_Defense_v2.pptx (v2, current).
+_render_check/
+canvas/
+Granite.pptx

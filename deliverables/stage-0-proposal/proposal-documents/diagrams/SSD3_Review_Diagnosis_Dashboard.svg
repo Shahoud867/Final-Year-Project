@@ -1,0 +1,55 @@
+<svg viewBox="0 0 950 620" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" role="img" aria-label="System sequence diagram: the Operator opens the Granite dashboard, browses the overview, filters the runs list, and drills into one run's full diagnosis and repair-replay detail; a run-not-found alternative flow is shown.">
+  <title>SSD-3 — Review Diagnosis Dashboard</title>
+  <defs>
+    <marker id="p1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#211c12"/></marker>
+    <marker id="p1r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,2 L10,5 L0,8" fill="none" stroke="#211c12" stroke-width="1.6"/></marker>
+  </defs>
+  <rect x="0" y="0" width="950" height="620" fill="#faf6ef"/>
+  <text x="30" y="34" font-size="19" font-weight="800" fill="#211c12">SSD-3 — Review Diagnosis Dashboard</text>
+  <text x="30" y="54" font-size="12" fill="#5c5440">Covers UC-11 · FR-6.4 · real screens: Overview, Runs &amp; diagnoses, Product &amp; scope (poc-demo/frontend/src/components/Sidebar.tsx)</text>
+
+  <!-- Lifelines -->
+  <rect x="60" y="80" width="190" height="44" rx="8" fill="#ffffff" stroke="#5c5440" stroke-width="1.8"/>
+  <text x="155" y="107" font-size="14" font-weight="700" fill="#211c12" text-anchor="middle">:Operator</text>
+  <line x1="155" y1="124" x2="155" y2="560" stroke="#5c5440" stroke-width="1.6" stroke-dasharray="6,4"/>
+
+  <rect x="650" y="80" width="220" height="44" rx="8" fill="#fff7ea" stroke="#a96a1f" stroke-width="2"/>
+  <text x="760" y="107" font-size="14" font-weight="700" fill="#a96a1f" text-anchor="middle">:Granite (system boundary)</text>
+  <line x1="760" y1="124" x2="760" y2="560" stroke="#a96a1f" stroke-width="1.6" stroke-dasharray="6,4"/>
+
+  <rect x="753" y="155" width="14" height="360" fill="#f4efe5" stroke="#a96a1f" stroke-width="1.4"/>
+
+  <!-- 1 viewDashboard -->
+  <line x1="155" y1="160" x2="753" y2="160" stroke="#211c12" stroke-width="1.8" marker-end="url(#p1)"/>
+  <text x="450" y="152" font-size="12.5" font-weight="600" fill="#211c12" text-anchor="middle">1: GET /api/stats — open Overview</text>
+  <line x1="753" y1="185" x2="155" y2="185" stroke="#5c5440" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#p1r)"/>
+  <text x="450" y="177" font-size="12" fill="#5c5440" text-anchor="middle">2: stats(totalRuns, agentAccuracy, stepAccuracy, nSpikes, ...)</text>
+
+  <!-- 3 browse runs -->
+  <line x1="155" y1="225" x2="753" y2="225" stroke="#211c12" stroke-width="1.8" marker-end="url(#p1)"/>
+  <text x="450" y="217" font-size="12.5" font-weight="600" fill="#211c12" text-anchor="middle">3: GET /api/runs?spike=&amp;status=&amp;q= — Runs &amp; Diagnoses</text>
+  <line x1="753" y1="250" x2="155" y2="250" stroke="#5c5440" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#p1r)"/>
+  <text x="450" y="242" font-size="12" fill="#5c5440" text-anchor="middle">4: runsList[], aggregate(mean/min/max across N runs)</text>
+
+  <!-- 5 view run detail -->
+  <line x1="155" y1="290" x2="753" y2="290" stroke="#211c12" stroke-width="1.8" marker-end="url(#p1)"/>
+  <text x="450" y="282" font-size="12.5" font-weight="600" fill="#211c12" text-anchor="middle">5: GET /api/runs/{id} — drill into one run</text>
+
+  <!-- ALT frame -->
+  <rect x="100" y="315" width="760" height="150" fill="none" stroke="#b5601f" stroke-width="1.6"/>
+  <path d="M100,315 h70 v18 l-12,12 h-58 z" fill="#fff2e2" stroke="#b5601f" stroke-width="1.6"/>
+  <text x="110" y="329" font-size="11" font-weight="700" fill="#b5601f">alt</text>
+  <text x="180" y="329" font-size="11" fill="#b5601f">[run exists]</text>
+
+  <line x1="753" y1="355" x2="155" y2="355" stroke="#2f7a4f" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#p1r)"/>
+  <text x="450" y="347" font-size="11.5" fill="#2f7a4f" text-anchor="middle">6a: runDetail(executionGraph, diagnosis, sedVerdict, repairReplayReport)</text>
+  <text x="450" y="370" font-size="10.5" fill="#8c8368" text-anchor="middle">rendered as GraphView + EvidencePanel + RepairReplayReport (trace / repair tabs)</text>
+
+  <line x1="110" y1="400" x2="850" y2="400" stroke="#b5601f" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="180" y="416" font-size="11" fill="#b5601f">[runId not found]</text>
+  <line x1="753" y1="440" x2="155" y2="440" stroke="#a6392f" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#p1r)"/>
+  <text x="450" y="432" font-size="11.5" fill="#a6392f" text-anchor="middle">6b: error(code=NOT_FOUND) — rendered as ErrorState with retry</text>
+
+  <text x="30" y="510" font-size="11.5" fill="#5c5440">Legend:  →  synchronous call    ⇢  return / response    ▭ activation bar    [ ] alt condition</text>
+  <text x="30" y="530" font-size="11.5" fill="#8c8368">Note: this SSD is read-only over already-persisted diagnosis records — it never calls the LLM API and never mutates a run's state.</text>
+</svg>

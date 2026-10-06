@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Granite — Interactive PoC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf9f5; --surface:#fff; --surface-2:#f6f2ea; --surface-3:#efe9dd;
+  --border:#e8e1d4; --border-2:#d9cfbc;
+  --ink:#1d1a15; --ink-2:#5c5449; --ink-3:#8d8579;
+  --gold:#a96a1f; --gold-2:#8a5417; --gold-soft:#f5ead9;
+  --teal:#1f7d84; --teal-soft:#e3eff0;
+  --green:#2f7a4f; --green-soft:#e4efe8;
+  --amber:#93701a; --amber-soft:#f4eeda;
+  --red:#a6392f; --red-soft:#f7e6e3;
+  --blue:#2f5f9e; --blue-soft:#e6ecf5;
+  --shadow:0 1px 2px rgba(60,45,20,.04), 0 8px 28px -18px rgba(60,45,20,.28);
+  --shadow-lg:0 2px 6px rgba(60,45,20,.05), 0 24px 60px -30px rgba(60,45,20,.35);
+  --d:"Big Shoulders Display",Impact,sans-serif;
+  --s:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--s);font-size:14px;-webkit-font-smoothing:antialiased}
+.app{max-width:1240px;margin:0 auto;padding:0 26px 70px}
+
+/* ---------- header ---------- */
+header{display:flex;align-items:center;gap:16px;padding:20px 0 14px}
+.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--gold),#c98a3c);
+  display:grid;place-items:center;color:#231603;font-weight:800;font-size:17px;font-family:var(--d);flex:none}
+.brand{line-height:1.15}
+.brand b{font-size:17px;letter-spacing:-.01em}
+.brand span{display:block;font-size:11px;color:var(--ink-3)}
+.hchip{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.chip{font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:20px;border:1px solid var(--border-2);
+  background:var(--surface);color:var(--ink-2);white-space:nowrap}
+.chip.g{background:var(--gold-soft);border-color:var(--gold);color:var(--gold-2)}
+
+/* ---------- tabs ---------- */
+nav{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:22px;overflow-x:auto}
+nav button{appearance:none;border:0;background:none;font:inherit;font-size:13px;font-weight:600;
+  color:var(--ink-3);padding:11px 15px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s}
+nav button:hover{color:var(--ink-2)}
+nav button[aria-selected="true"]{color:var(--gold-2);border-bottom-color:var(--gold)}
+.panel{display:none;animation:fade .28s ease}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ---------- primitives ---------- */
+.eyebrow{font-family:var(--m);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-2)}
+h2{font-family:var(--d);font-size:31px;font-weight:700;letter-spacing:-.005em;margin:5px 0 4px;line-height:1.05}
+.sub{color:var(--ink-2);font-size:13.5px;max-width:640px;margin:0 0 20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow)}
+.pad{padding:16px 18px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:940px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.lbl{font-family:var(--m);font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.big{font-family:var(--d);font-size:40px;font-weight:700;line-height:.95;letter-spacing:-.01em}
+.mono{font-family:var(--m)}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;padding:2.5px 8px;border-radius:20px}
+.t-ok{background:var(--green-soft);color:var(--green)}
+.t-warn{background:var(--amber-soft);color:var(--amber)}
+.t-bad{background:var(--red-soft);color:var(--red)}
+.t-info{background:var(--teal-soft);color:var(--teal)}
+.t-neu{background:var(--surface-2);color:var(--ink-2)}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:center;
+  background:linear-gradient(150deg,#fff 0%,var(--surface-2) 100%);
+  border:1px solid var(--border);border-radius:18px;padding:30px 30px;box-shadow:var(--shadow-lg);margin-bottom:20px}
+@media(max-width:940px){.hero{grid-template-columns:1fr}}
+.hero h1{font-family:var(--d);font-size:52px;line-height:.94;letter-spacing:-.015em;margin:8px 0 12px;font-weight:800}
+.hero p{color:var(--ink-2);font-size:14.5px;margin:0 0 20px;max-width:430px}
+.cta{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:#fff;border:0;border-radius:10px;
+  font:inherit;font-weight:700;font-size:14px;padding:12px 20px;cursor:pointer;box-shadow:0 6px 18px -8px rgba(169,106,31,.7);transition:.18s}
+.cta:hover{background:var(--gold-2);transform:translateY(-1px)}
+.cta svg{width:15px;height:15px}
+.ghost{background:none;color:var(--ink-2);border:1px solid var(--border-2);box-shadow:none;margin-left:8px}
+.ghost:hover{background:var(--surface-2);color:var(--ink)}
+
+/* mini pipeline in hero */
+.mini{display:flex;flex-direction:column;gap:7px}
+.mrow{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:10px;background:var(--surface);
+  border:1px solid var(--border);opacity:.4;transition:.35s cubic-bezier(.4,0,.2,1);transform:translateX(-4px)}
+.mrow.on{opacity:1;transform:none;border-color:var(--border-2);box-shadow:var(--shadow)}
+.mrow.hit{border-color:var(--red);background:var(--red-soft)}
+.mrow.fix{border-color:var(--green);background:var(--green-soft)}
+.mn{width:20px;height:20px;border-radius:6px;background:var(--surface-3);display:grid;place-items:center;
+  font-family:var(--m);font-size:9.5px;font-weight:600;color:var(--ink-2);flex:none}
+.mrow.hit .mn{background:var(--red);color:#fff}
+.mrow.fix .mn{background:var(--green);color:#fff}
+.mt{font-size:12.5px;font-weight:600}
+.ms{font-size:10.5px;color:var(--ink-3);margin-left:auto;font-family:var(--m)}
+
+/* ---------- exec graph ---------- */
+.stage{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  box-shadow:var(--shadow);overflow:hidden}
+.stage svg{display:block;width:100%;height:auto;cursor:grab}
+.stage svg.drag{cursor:grabbing}
+.band{fill:var(--surface-2);stroke:var(--border);stroke-width:1}
+.bandlbl{font-family:var(--m);font-size:8.5px;font-weight:600;letter-spacing:.11em;fill:var(--ink-3)}
+.edge{fill:none;stroke:var(--border-2);stroke-width:1.6;transition:stroke .3s,stroke-width .3s,opacity .3s}
+.edge.live{stroke:var(--gold);stroke-width:2.6}
+.edge.trail{stroke:#d9c9ac;stroke-width:2}
+.edge.dim{opacity:.22}
+.edge.dep{stroke:var(--teal);stroke-width:2.4}
+.nd rect{transition:.32s cubic-bezier(.4,0,.2,1)}
+.nd{cursor:pointer}
+.nd .box{fill:var(--surface);stroke:var(--border-2);stroke-width:1.4}
+.nd.idle .box{fill:#fdfbf7}
+.nd.on .box{stroke:var(--gold);stroke-width:2.2;filter:url(#lift)}
+.nd.done .box{stroke:#c9b998}
+.nd.err .box{fill:var(--red-soft);stroke:var(--red);stroke-width:2.2}
+.nd.fixed .box{fill:var(--green-soft);stroke:var(--green);stroke-width:2.2}
+.nd.dim{opacity:.3}
+.nd.sel .box{stroke:var(--teal);stroke-width:2.6}
+.nt{font-size:11px;font-weight:600;fill:var(--ink);pointer-events:none}
+.nsub{font-family:var(--m);font-size:8px;fill:var(--ink-3);pointer-events:none}
+.pkt{fill:var(--gold);filter:url(#glow)}
+.pkt.ok{fill:var(--green)}
+.pkt.bad{fill:var(--red)}
+.ring{fill:none;stroke:var(--gold);stroke-width:2;opacity:0}
+
+.ctrls{display:flex;align-items:center;gap:9px;padding:12px 16px;border-top:1px solid var(--border);background:var(--surface-2);flex-wrap:wrap}
+.ib{appearance:none;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;width:34px;height:32px;
+  display:grid;place-items:center;cursor:pointer;color:var(--ink-2);transition:.15s;flex:none}
+.ib:hover{background:var(--gold-soft);border-color:var(--gold);color:var(--gold-2)}
+.ib svg{width:14px;height:14px}
+.ib.pri{background:var(--gold);border-color:var(--gold);color:#fff;width:auto;padding:0 15px;gap:7px;font-weight:700;font-size:12.5px;display:flex;align-items:center}
+.ib.pri:hover{background:var(--gold-2);color:#fff}
+input[type=range]{flex:1;min-width:150px;accent-color:var(--gold);height:4px}
+.tstamp{font-family:var(--m);font-size:11px;color:var(--ink-2);min-width:74px;text-align:right}
+.status{display:flex;align-items:center;gap:8px;padding:11px 16px;border-top:1px solid var(--border);
+  background:var(--surface);font-size:12.5px;min-height:42px}
+.status .sn{font-family:var(--m);font-size:10px;color:var(--ink-3);flex:none}
+
+.inspect{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:15px 16px;box-shadow:var(--shadow)}
+.inspect .ph{color:var(--ink-3);font-size:12.5px;text-align:center;padding:22px 8px}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.kv:last-child{border:0}
+.kv b{font-weight:600;color:var(--ink-2);font-size:11px}
+.kv span{font-family:var(--m);font-size:11px;text-align:right}
+
+/* ---------- SED ---------- */
+.check{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;background:var(--surface-2);
+  border:1px solid var(--border);font-size:12.5px;margin-bottom:7px;opacity:.35;transition:.4s}
+.check.on{opacity:1}
+.check.pass{background:var(--surface);border-color:var(--border-2)}
+.check.flag{background:var(--red-soft);border-color:var(--red)}
+.ci{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex:none;font-size:12px;
+  background:var(--surface-3);color:var(--ink-3)}
+.check.pass .ci{background:var(--green-soft);color:var(--green)}
+.check.flag .ci{background:var(--red);color:#fff}
+.formula{font-family:var(--m);font-size:11.5px;background:#231f19;color:#ede4d2;padding:13px 15px;border-radius:10px;line-height:1.85;white-space:pre-wrap;overflow-x:auto}
+.formula .k{color:#e0ac5c}.formula .v{color:#9fd0a0}.formula .b{color:#e07a6a}.formula .c{color:#7f8a7a}
+
+/* ---------- charts ---------- */
+.bar{height:9px;border-radius:5px;background:var(--surface-3);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px;background:var(--gold);transition:width .9s cubic-bezier(.2,.7,.3,1)}
+.matrix{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+.matrix th{font-family:var(--m);font-size:9.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);text-align:center;padding:0 8px 9px;cursor:pointer;transition:.15s}
+.matrix th:hover{color:var(--gold-2)}
+.matrix th.hot{color:var(--gold-2)}
+.matrix th:first-child{text-align:left;cursor:default}
+.matrix td{padding:9px 8px;border-top:1px solid var(--border);text-align:center}
+.matrix td:first-child{text-align:left;font-weight:600;font-size:12px}
+.matrix tr.us td{background:var(--gold-soft)}
+.matrix tr.us td:first-child{border-radius:8px 0 0 8px}
+.matrix tr.us td:last-child{border-radius:0 8px 8px 0}
+.matrix td.hot{background:var(--teal-soft)}
+.mk{font-size:14px;font-weight:700;line-height:1}
+.mk.y{color:var(--green)}.mk.n{color:var(--red);opacity:.65}.mk.q{color:var(--amber)}
+.note{font-size:11px;color:var(--ink-3);margin-top:9px;line-height:1.5}
+
+/* ---------- ccp / lanes / gates ---------- */
+.ccp{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;background:var(--surface);
+  border:1px solid var(--border);font-size:12px}
+.cn{width:19px;height:19px;border-radius:6px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;
+  font-family:var(--m);font-size:9.5px;font-weight:700;flex:none}
+.lane{border-radius:12px;border:1px solid var(--border);overflow:hidden;background:var(--surface)}
+.lh{padding:11px 14px;color:#fff;font-weight:700;font-size:12.5px;display:flex;justify-content:space-between;align-items:center}
+.lb{padding:12px 14px}
+.lb li{font-size:12px;color:var(--ink-2);margin-bottom:5px;line-height:1.45}
+.lb ul{margin:0;padding-left:16px}
+.rm{margin-top:9px;padding:8px 10px;border-radius:8px;background:var(--red-soft);color:var(--red);font-size:11px;font-weight:600;line-height:1.4}
+.gates{display:flex;gap:0;align-items:stretch;margin-top:6px}
+.gate{flex:1;padding:12px 10px;border-right:1px solid var(--border);position:relative}
+.gate:last-child{border:0}
+.gate.now{background:var(--gold-soft)}
+.gk{font-family:var(--m);font-size:9px;font-weight:600;letter-spacing:.08em;color:var(--ink-3)}
+.gate.now .gk{color:var(--gold-2)}
+.gt{font-size:12.5px;font-weight:700;margin:3px 0 2px}
+.gd{font-size:10.5px;color:var(--ink-3);line-height:1.4}
+
+.split{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start}
+@media(max-width:1040px){.split{grid-template-columns:1fr}}
+.simbadge{position:absolute;top:12px;right:12px;z-index:2}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">G</div>
+  <div class="brand"><b>Granite</b><span>Self-healing multi-agent diagnosis · F26-060</span></div>
+  <div class="hchip">
+    <span class="chip g">Stream A</span>
+    <span class="chip">8 spikes on disk</span>
+    <span class="chip">$0 committed</span>
+  </div>
+</header>
+
+<nav id="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-p="overview">Overview</button>
+  <button role="tab" aria-selected="false" data-p="exec">Execution</button>
+  <button role="tab" aria-selected="false" data-p="sed">Silent Failure</button>
+  <button role="tab" aria-selected="false" data-p="evidence">Evidence</button>
+  <button role="tab" aria-selected="false" data-p="compare">Comparison</button>
+  <button role="tab" aria-selected="false" data-p="scope">Scope</button>
+</nav>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="panel on" id="p-overview">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">The problem</div>
+      <h1>Agents fail.<br>Silently.</h1>
+      <p>A wrong answer that looks completely right. No crash. No error. Nothing to investigate.
+         Granite finds which agent, catches what has no signal, and proves a fix works before you trust it.</p>
+      <button class="cta" id="runDemo">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Run the pipeline
+      </button>
+      <button class="cta ghost" id="toExec">Open execution graph</button>
+    </div>
+    <div class="mini" id="miniPipe">
+      <div class="mrow" data-i="0"><div class="mn">1</div><div class="mt">Agents run</div><div class="ms">4 agents</div></div>
+      <div class="mrow" data-i="1"><div class="mn">2</div><div class="mt">Wrong answer ships</div><div class="ms">no signal</div></div>
+      <div class="mrow" data-i="2"><div class="mn">3</div><div class="mt">Constraint check</div><div class="ms">0% API</div></div>
+      <div class="mrow" data-i="3"><div class="mn">4</div><div class="mt">Culprit located</div><div class="ms">agent + step</div></div>
+      <div class="mrow" data-i="4"><div class="mn">5</div><div class="mt">Repair replayed</div><div class="ms">N=5</div></div>
+      <div class="mrow" data-i="5"><div class="mn">6</div><div class="mt">Recovered</div><div class="ms">verified</div></div>
+    </div>
+  </div>
+
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card pad"><div class="lbl">Agent accuracy</div><div class="big" style="color:var(--gold-2)">71.4%</div>
+      <div class="note">mean of 5 real runs · 62.5–85.7%</div></div>
+    <div class="card pad"><div class="lbl">Step accuracy</div><div class="big" style="color:var(--amber)">13.2%</div>
+      <div class="note">simplified spike · full repro pending</div></div>
+    <div class="card pad"><div class="lbl">Repair success</div><div class="big" style="color:var(--green)">4/6</div>
+      <div class="note">both failures, one shared cause</div></div>
+    <div class="card pad"><div class="lbl">Spikes with data</div><div class="big">8/8</div>
+      <div class="note">incl. 1 honest negative</div></div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card pad">
+      <span class="tag t-info"><i class="dot"></i>What</span>
+      <div style="font-weight:600;margin:9px 0 5px;font-size:13.5px">Diagnosis layer, not another tracer</div>
+      <div class="note">Sits on top of LangSmith / Langfuse / Arize. They capture. Granite explains, repairs, verifies.</div>
+    </div>
+    <div class="card pad">
+      <span class="tag t-warn"><i class="dot"></i>Why</span>
+      <div style="font-weight:600;margin:9px 0 5px;font-size:13.5px">14.2% is today's baseline</div>
+      <div class="note">A human reading the trace and guessing. The field's own measured number.</div>
+    </div>
+    <div class="card pad">
+      <span class="tag t-ok"><i class="dot"></i>Novel</span>
+      <div style="font-weight:600;margin:9px 0 5px;font-size:13.5px">The combination</div>
+      <div class="note">Attribution + silent-failure detection + verified repair + unseen frameworks. No paper, product or prior FYP has all four.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXECUTION ================= -->
+<section class="panel" id="p-exec">
+  <div class="eyebrow">End-to-end · simulated from Spike 3b + 4 + 5 + 8 shapes</div>
+  <h2>One failure, start to finish</h2>
+  <p class="sub">A stale tool value corrupts one step. Nothing errors. Watch it propagate, get caught, get repaired, get verified.</p>
+
+  <div class="split">
+    <div>
+      <div class="stage">
+        <span class="tag t-warn simbadge"><i class="dot"></i>Simulated run</span>
+        <svg id="graph" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#a96a1f" flood-opacity=".28"/>
+            </filter>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--border-2)" stroke-width="1.6"/>
+            </marker>
+          </defs>
+          <g id="gpan">
+            <rect class="band" x="24" y="40" width="952" height="150" rx="12"/>
+            <text class="bandlbl" x="40" y="60">TARGET SYSTEM — CREWAI WORKFLOW (OBSERVED)</text>
+            <rect class="band" x="24" y="330" width="952" height="200" rx="12"/>
+            <text class="bandlbl" x="40" y="350">GRANITE — DIAGNOSIS &amp; REPAIR</text>
+            <g id="edges"></g>
+            <g id="nodes"></g>
+            <g id="pkts"></g>
+          </g>
+        </svg>
+        <div class="ctrls">
+          <button class="ib pri" id="play">
+            <svg viewBox="0 0 24 24" fill="currentColor" id="pi"><path d="M8 5v14l11-7z"/></svg><span id="pl">Play</span>
+          </button>
+          <button class="ib" id="step" title="Step forward"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5v14l9-7zM16 5h2v14h-2z"/></svg></button>
+          <button class="ib" id="reset" title="Reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg></button>
+          <input type="range" id="scrub" min="0" max="11" value="0" step="1">
+          <div class="tstamp" id="ts">0 / 11</div>
+          <button class="ib" id="zin" title="Zoom in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M11 8v6M8 11h6M20 20l-4-4"/></svg></button>
+          <button class="ib" id="zout" title="Zoom out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M8 11h6M20 20l-4-4"/></svg></button>
+        </div>
+        <div class="status"><span class="sn" id="stepno">00</span><span id="stepmsg">Ready. Press play.</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="inspect" id="insp">
+        <div class="ph">Click any node<br>to inspect it</div>
+      </div>
+      <div class="card pad" style="margin-top:12px">
+        <div class="lbl" style="margin-bottom:8px">Legend</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11.5px;color:var(--ink-2)">
+          <div><span class="tag t-neu">agent</span> runs in the observed system</div>
+          <div><span class="tag t-info">tool / store</span> external dependency</div>
+          <div><span class="tag t-bad">fault</span> wrong, no error raised</div>
+          <div><span class="tag t-ok">verified</span> replay confirmed recovery</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SILENT FAILURE ================= -->
+<section class="panel" id="p-sed">
+  <div class="eyebrow">The headline claim</div>
+  <h2>Catching what has no signal</h2>
+  <p class="sub">Every normal check passes. The answer is still wrong. A deterministic constraint check — zero model calls — is what separates the two.</p>
+
+  <div class="grid g2" style="margin-bottom:16px">
+    <div class="card pad">
+      <div class="lbl" style="margin-bottom:10px">What every existing check sees</div>
+      <div id="checks">
+        <div class="check" data-c="0"><div class="ci">✓</div><div>No exception thrown</div></div>
+        <div class="check" data-c="1"><div class="ci">✓</div><div>Schema valid</div></div>
+        <div class="check" data-c="2"><div class="ci">✓</div><div>All fields present</div></div>
+        <div class="check" data-c="3"><div class="ci">✓</div><div>Fluent, confident tone</div></div>
+        <div class="check" data-c="4"><div class="ci">✓</div><div>Tool call succeeded</div></div>
+      </div>
+      <div class="note" style="margin-top:11px">→ Ships to the user. Nothing to investigate.</div>
+    </div>
+    <div class="card pad">
+      <div class="lbl" style="margin-bottom:10px">What the constraint check sees</div>
+      <div class="formula" id="formula">
+<span class="c">// task spec yields a checkable rule</span>
+<span class="k">assert</span> refund_total == order_total − discount
+<span class="c">// evaluate</span>
+order_total = <span class="v">29.75</span>
+discount    = <span class="v">10.00</span>
+expected    = <span class="v">19.75</span>
+stated      = <span class="b" id="stated">—</span>
+      </div>
+      <div id="verdict" style="margin-top:11px"></div>
+    </div>
+  </div>
+
+  <div class="card pad" style="margin-bottom:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <button class="cta" id="sedRun" style="font-size:13px;padding:10px 16px">Feed a wrong value</button>
+    <button class="cta ghost" id="sedOk" style="font-size:13px;padding:10px 16px;margin:0">Feed a correct value</button>
+    <div class="note" style="margin:0;flex:1;min-width:220px">Both paths are real detector behaviour — flag on wrong, pass on correct.</div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card pad">
+      <span class="tag t-ok"><i class="dot"></i>Mechanism test — passed</span>
+      <div class="note" style="margin-top:9px">Fed known-wrong values including a plausible near-miss (<b class="mono">$20.00</b> vs true <b class="mono">$19.75</b>): flagged every one. Correct values passed. <b>Zero false positives.</b></div>
+      <div class="note" style="margin-top:6px;color:var(--ink-3)">risk-register R10</div>
+    </div>
+    <div class="card pad">
+      <span class="tag t-warn"><i class="dot"></i>Natural-occurrence run — inconclusive, by design</span>
+      <div class="note" style="margin-top:9px">n=3 live tasks: the model got all 3 <b>right</b>, so there was no natural silent failure to catch. <b class="mono">n_true_silent_failure_cases: 0</b>. Reported as-is, not hidden.</div>
+      <div class="note" style="margin-top:6px;color:var(--ink-3)">poc_spike4_silent_failure_output.json</div>
+    </div>
+  </div>
+
+  <div class="card pad" style="margin-top:14px;border-color:var(--border-2);background:var(--surface-2)">
+    <div class="lbl" style="margin-bottom:7px">Scope of the claim</div>
+    <div class="note" style="font-size:12px">Works where the task spec yields a machine-checkable rule — numeric totals, required fields, policy sequences.
+    Where none exists the checker <b>abstains</b> rather than guessing, and the abstention rate is reported as its own metric.
+    Not a general "understands meaning" claim.</div>
+  </div>
+</section>
+
+<!-- ================= EVIDENCE ================= -->
+<section class="panel" id="p-evidence">
+  <div class="eyebrow">Every number recomputable from dev/spikes/poc/</div>
+  <h2>What already ran</h2>
+  <p class="sub">Eight spikes, real output files. One is a negative result, kept and led with.</p>
+
+  <div class="grid g2" style="margin-bottom:16px">
+    <div class="card pad">
+      <div class="lbl" style="margin-bottom:12px">Reproduction — 5 independent runs, n=8 cases</div>
+      <div id="runbars"></div>
+      <div class="note" style="margin-top:10px">Range reported, not one lucky run. A step-index type bug was found and fixed, then all 5 re-run.</div>
+    </div>
+    <div class="card pad">
+      <div class="lbl" style="margin-bottom:12px">Published step accuracy — where the field is</div>
+      <svg viewBox="0 0 320 150" style="width:100%;height:auto">
+        <line x1="34" y1="12" x2="34" y2="112" stroke="var(--border-2)"/>
+        <line x1="34" y1="112" x2="310" y2="112" stroke="var(--border-2)"/>
+        <text x="28" y="16" font-size="8" fill="var(--ink-3)" text-anchor="end">100%</text>
+        <text x="28" y="115" font-size="8" fill="var(--ink-3)" text-anchor="end">0%</text>
+        <rect x="56" y="98" width="58" height="14" rx="3" fill="#c9bda6"/>
+        <rect x="140" y="72" width="58" height="40" rx="3" fill="#bda36f"/>
+        <rect x="224" y="52" width="58" height="60" rx="3" fill="var(--gold)"/>
+        <text x="85" y="93" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle">14.2%</text>
+        <text x="169" y="67" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle">~40%</text>
+        <text x="253" y="47" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle">59.5%</text>
+        <text x="85" y="126" font-size="8" fill="var(--ink-3)" text-anchor="middle">Who&amp;When</text>
+        <text x="169" y="126" font-size="8" fill="var(--ink-3)" text-anchor="middle">AgenTracer</text>
+        <text x="253" y="126" font-size="8" fill="var(--ink-3)" text-anchor="middle">ErrorProbe</text>
+        <text x="169" y="140" font-size="7.5" fill="var(--ink-3)" text-anchor="middle">37–43% published range, midpoint shown</text>
+      </svg>
+      <div class="note">40.5 points still wrong at the top of the field — and none of it sees silent failures.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="matrix" style="font-size:12px">
+      <thead><tr><th style="padding-left:16px">Spike</th><th>Status</th><th style="text-align:left">Result</th></tr></thead>
+      <tbody id="spikes"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= COMPARISON ================= -->
+<section class="panel" id="p-compare">
+  <div class="eyebrow">Click a capability to see who has it</div>
+  <h2>The gap is the combination</h2>
+  <p class="sub">Not one missing feature. Four capabilities that exist separately and never together.</p>
+
+  <div class="card pad" style="margin-bottom:16px">
+    <table class="matrix">
+      <thead><tr>
+        <th style="min-width:190px">System</th>
+        <th data-c="1">Step attribution<br><span style="font-weight:400;text-transform:none;letter-spacing:0">published accuracy</span></th>
+        <th data-c="2">Silent-failure<br><span style="font-weight:400;text-transform:none;letter-spacing:0">general, not RAG-only</span></th>
+        <th data-c="3">Verified repair<br><span style="font-weight:400;text-transform:none;letter-spacing:0">measured recovery</span></th>
+        <th data-c="4">Cross-framework<br><span style="font-weight:400;text-transform:none;letter-spacing:0">unseen archs</span></th>
+      </tr></thead>
+      <tbody id="cmp"></tbody>
+    </table>
+    <div class="note" id="cmpnote">Row highlighted in gold is ours. Click a column header to isolate that capability.</div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card pad">
+      <div class="lbl">Closest paper</div>
+      <div style="font-weight:700;margin:6px 0 4px">ErrorProbe · ACL 2026</div>
+      <div class="note">59.5% — best published. Its own limitations section admits it cannot see silent failures, and it has never run on an architecture outside its benchmark's own two.</div>
+    </div>
+    <div class="card pad">
+      <div class="lbl">Closest products</div>
+      <div style="font-weight:700;margin:6px 0 4px">LangSmith Engine · Arize Alyx</div>
+      <div class="note">Both ship automated diagnosis (2026). Neither publishes an accuracy number on any benchmark. Both locked to their own tracing stack.</div>
+    </div>
+    <div class="card pad">
+      <div class="lbl">Closest prior FYP</div>
+      <div style="font-weight:700;margin:6px 0 4px">S24-011-D-HDLM · Spring 2024</div>
+      <div class="note">Hallucination detection in single-LLM text. Same core problem, ~1 of our 4 stages. Checked structurally against 660 titles, 12 cohorts since 2019.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCOPE ================= -->
+<section class="panel" id="p-scope">
+  <div class="eyebrow">Feasibility, ownership, and the complexity case</div>
+  <h2>Sized for one year</h2>
+  <p class="sub">Ten committed mechanisms, three separable lanes, five approval gates, 1,130 hours against 1,130 of capacity.</p>
+
+  <div class="card pad" style="margin-bottom:16px">
+    <div class="lbl" style="margin-bottom:10px">Complex computing characteristics — 8 cleared</div>
+    <div class="grid g3" id="ccp"></div>
+  </div>
+
+  <div class="grid g3" style="margin-bottom:16px" id="lanes"></div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="pad" style="padding-bottom:0"><div class="lbl">Five approval gates</div></div>
+    <div class="gates">
+      <div class="gate now"><div class="gk">GATE 1 · NOW</div><div class="gt">Proposal</div><div class="gd">Scope + PoC approved</div></div>
+      <div class="gate"><div class="gk">GATE 2/3</div><div class="gt">Mid-1</div><div class="gd">Full reproduction · Tier-2 gates</div></div>
+      <div class="gate"><div class="gk">GATE 3</div><div class="gt">Final-1</div><div class="gd">Integrated core, end to end</div></div>
+      <div class="gate"><div class="gk">GATE 4</div><div class="gt">Mid-2</div><div class="gd">Benchmark ≥500 · release ready</div></div>
+      <div class="gate"><div class="gk">GATE 5</div><div class="gt">Final-2</div><div class="gd">Full evaluation, deployed</div></div>
+    </div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card pad"><div class="lbl">Tier 1 — evidence-backed</div><div class="big" style="color:var(--green)">8</div>
+      <div class="note">Every one has a spike behind it. Committed unconditionally.</div></div>
+    <div class="card pad"><div class="lbl">Tier 2 — gated at Mid-1</div><div class="big" style="color:var(--amber)">2</div>
+      <div class="note">Recovery Controller (no PoC yet) · Repair Memory (one test, failed). Pre-registered fallbacks either way.</div></div>
+    <div class="card pad"><div class="lbl">Extensions — after core works</div><div class="big" style="color:var(--ink-3)">8</div>
+      <div class="note">Gated behind the committed core. Not promised.</div></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=(s,r)=>(r||document).querySelector(s), $$=(s,r)=>[...(r||document).querySelectorAll(s)];
+
+/* ---------------- tabs ---------------- */
+$$("#tabs button").forEach(b=>b.onclick=()=>{
+  $$("#tabs button").forEach(x=>x.setAttribute("aria-selected", x===b));
+  $$(".panel").forEach(p=>p.classList.toggle("on", p.id==="p-"+b.dataset.p));
+  if(b.dataset.p==="evidence") drawBars();
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+const goTab=n=>$$("#tabs button").find(b=>b.dataset.p===n).click();
+$("#toExec").onclick=()=>goTab("exec");
+
+/* ---------------- hero mini pipeline ---------------- */
+let mt=null;
+$("#runDemo").onclick=()=>{
+  clearTimeout(mt);
+  const rows=$$("#miniPipe .mrow");
+  rows.forEach(r=>r.className="mrow");
+  rows.forEach((r,i)=>{
+    mt=setTimeout(()=>{
+      r.classList.add("on");
+      if(i===1) r.classList.add("hit");
+      if(i===5) r.classList.add("fix");
+    }, i*430);
+  });
+};
+
+/* ---------------- execution graph ---------------- */
+const N=[
+ {id:"intake", x:70,  y:88,  w:132,h:46, t:"Intake Agent",     s:"parses request", k:"agent",
+  det:{Type:"Agent",Lane:"Target system",Framework:"CrewAI",Reads:"user request",Writes:"order ctx"}},
+ {id:"policy", x:262, y:88,  w:132,h:46, t:"Policy Checker",   s:"validates rules", k:"agent",
+  det:{Type:"Agent",Lane:"Target system",Framework:"CrewAI",Calls:"promo table",Writes:"discount"}},
+ {id:"refund", x:454, y:88,  w:132,h:46, t:"Refund Calculator",s:"computes total", k:"agent",
+  det:{Type:"Agent",Lane:"Target system",Framework:"CrewAI",Reads:"discount",Writes:"refund_total"}},
+ {id:"writer", x:646, y:88,  w:132,h:46, t:"Response Writer",  s:"final answer", k:"agent",
+  det:{Type:"Agent",Lane:"Target system",Framework:"CrewAI",Reads:"refund_total",Writes:"user reply"}},
+ {id:"out",    x:838, y:88,  w:118,h:46, t:"Output",           s:"to user", k:"out",
+  det:{Type:"Sink",Lane:"Target system",Status:"ships either way"}},
+
+ {id:"promo",  x:262, y:238, w:132,h:44, t:"Promo Table",      s:"v2 · stale", k:"tool",
+  det:{Type:"Tool",Version:"v2 (cached)",Issue:"superseded by v3",Effect:"wrong discount, no error"}},
+
+ {id:"trace",  x:70,  y:392, w:132,h:46, t:"Trace Store",      s:"captured run", k:"store",
+  det:{Type:"Data store",Lane:"Granite",Holds:"normalized trace",Schema:"RUN / TRACE_NODE / EDGE"}},
+ {id:"graph",  x:262, y:392, w:132,h:46, t:"Graph Builder",    s:"structural parse", k:"gran",
+  det:{Type:"Component",Lane:"Granite (Noor)","LLM calls":"0",Output:"execution graph"}},
+ {id:"sed",    x:454, y:368, w:132,h:44, t:"Constraint Check", s:"SED · 0% API", k:"gran",
+  det:{Type:"Component",Lane:"Granite (Noor)","LLM calls":"0",Rule:"refund == total − discount",Verdict:"FLAG"}},
+ {id:"tracer", x:454, y:428, w:132,h:44, t:"Causal Tracer",    s:"backward BFS", k:"gran",
+  det:{Type:"Component",Lane:"Granite (Noor)","LLM calls":"0",Output:"culprit + confidence"}},
+ {id:"repair", x:646, y:392, w:132,h:46, t:"Repair Agent",     s:"candidate fix", k:"gran",
+  det:{Type:"Component",Lane:"Granite (Saif)","LLM calls":"1 per candidate",Spike:"8 → 4/6 success"}},
+ {id:"replay", x:838, y:392, w:118,h:46, t:"Verified Replay",  s:"N=5, pinned", k:"gran",
+  det:{Type:"Component",Lane:"Granite (Saif)",Protocol:"frozen upstream",Reports:"recovery rate"}}
+];
+const E=[
+ {id:"e1",a:"intake",b:"policy"},{id:"e2",a:"policy",b:"refund"},{id:"e3",a:"refund",b:"writer"},
+ {id:"e4",a:"writer",b:"out"},
+ {id:"e5",a:"promo",b:"policy",curve:1},
+ {id:"e6",a:"out",b:"trace",curve:2},
+ {id:"e7",a:"trace",b:"graph"},{id:"e8",a:"graph",b:"sed"},{id:"e9",a:"graph",b:"tracer"},
+ {id:"e10",a:"sed",b:"repair"},{id:"e11",a:"tracer",b:"repair"},
+ {id:"e12",a:"repair",b:"replay"},
+ {id:"e13",a:"replay",b:"out",curve:3}
+];
+const nodeById=Object.fromEntries(N.map(n=>[n.id,n]));
+
+const STEPS=[
+ {msg:"Ready. Press play.",                                  on:[],                sta:{}},
+ {msg:"Request arrives. Intake parses it.",                   on:["intake"],        e:"e1", sta:{intake:"done"}},
+ {msg:"Policy Checker calls the promo table.",                on:["policy","promo"],e:"e5", sta:{policy:"on"}},
+ {msg:"Tool returns v2 — stale. No error raised.",            on:["promo","policy"],e:"e5", sta:{promo:"err",policy:"done"}, bad:1},
+ {msg:"Refund computed from the stale discount → $20.00.",    on:["refund"],        e:"e2", sta:{refund:"err"}, bad:1},
+ {msg:"Writer formats it. Fluent, confident, wrong.",         on:["writer"],        e:"e3", sta:{writer:"done"}},
+ {msg:"Ships to the user. Nothing looks broken.",             on:["out"],           e:"e4", sta:{out:"err"}, bad:1},
+ {msg:"Granite captures the trace, builds the graph.",        on:["trace","graph"], e:"e6", sta:{trace:"done",graph:"on"}},
+ {msg:"Constraint check: 29.75 − 10.00 ≠ 20.00 → FLAG.",      on:["sed"],           e:"e8", sta:{sed:"err",graph:"done"}, bad:1},
+ {msg:"Backward trace → culprit: Refund Calculator, step 3.", on:["tracer","refund"],e:"e9",sta:{tracer:"on"}},
+ {msg:"Repair Agent proposes: use promo table v3.",           on:["repair"],        e:"e10",sta:{repair:"on",tracer:"done",sed:"done"}},
+ {msg:"Replayed N=5, upstream frozen → 4/5 recovered. $19.75.",on:["replay","out"], e:"e12",sta:{replay:"fixed",repair:"done",out:"fixed"}, good:1}
+];
+
+const gEdges=$("#edges"), gNodes=$("#nodes"), gPkts=$("#pkts");
+const cx=n=>n.x+n.w/2, cy=n=>n.y+n.h/2;
+
+function edgePath(e){
+  const a=nodeById[e.a], b=nodeById[e.b];
+  if(e.curve===1) return `M${cx(a)},${a.y} C${cx(a)},${a.y-30} ${cx(b)},${b.y+b.h+30} ${cx(b)},${b.y+b.h}`;
+  if(e.curve===2) return `M${cx(a)},${a.y+a.h} C${cx(a)},${a.y+a.h+95} ${cx(b)},${b.y-95} ${cx(b)},${b.y}`;
+  if(e.curve===3) return `M${cx(a)},${a.y} C${cx(a)},${a.y-120} ${cx(b)},${b.y+b.h+120} ${cx(b)},${b.y+b.h}`;
+  const dir = b.x>a.x?1:-1;
+  return `M${dir>0?a.x+a.w:a.x},${cy(a)} L${dir>0?b.x:b.x+b.w},${cy(b)}`;
+}
+E.forEach(e=>{
+  const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+  p.setAttribute("d",edgePath(e)); p.setAttribute("class","edge"); p.setAttribute("id",e.id);
+  p.setAttribute("marker-end","url(#ah)");
+  gEdges.appendChild(p); e.el=p;
+});
+N.forEach(n=>{
+  const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+  g.setAttribute("class","nd idle"); g.setAttribute("id","n-"+n.id);
+  g.innerHTML=`<rect class="box" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="10"/>
+    <text class="nt" x="${cx(n)}" y="${n.y+n.h/2-2}" text-anchor="middle">${n.t}</text>
+    <text class="nsub" x="${cx(n)}" y="${n.y+n.h/2+12}" text-anchor="middle">${n.s}</text>`;
+  g.onclick=()=>select(n.id);
+  gNodes.appendChild(g); n.el=g;
+});
+
+let sel=null;
+function select(id){
+  sel = sel===id ? null : id;
+  render();
+  const box=$("#insp");
+  if(!sel){ box.innerHTML='<div class="ph">Click any node<br>to inspect it</div>'; return; }
+  const n=nodeById[sel];
+  const deps=E.filter(e=>e.a===sel||e.b===sel)
+    .map(e=> e.a===sel ? "→ "+nodeById[e.b].t : "← "+nodeById[e.a].t);
+  box.innerHTML=`<div style="font-weight:700;font-size:14px;margin-bottom:2px">${n.t}</div>
+    <div class="note" style="margin:0 0 10px">${n.s}</div>
+    ${Object.entries(n.det).map(([k,v])=>`<div class="kv"><b>${k}</b><span>${v}</span></div>`).join("")}
+    <div class="lbl" style="margin:11px 0 5px">Connections</div>
+    ${deps.map(d=>`<div class="note" style="margin:0 0 3px">${d}</div>`).join("")}`;
+}
+
+let cur=0, playing=false, timer=null;
+function render(){
+  const S=STEPS[cur], acc={};
+  for(let i=1;i<=cur;i++) Object.assign(acc, STEPS[i].sta||{});
+  const relevant = sel ? new Set(E.filter(e=>e.a===sel||e.b===sel).flatMap(e=>[e.a,e.b])) : null;
+
+  N.forEach(n=>{
+    const st=acc[n.id];
+    let c="nd "+(st||"idle");
+    if((S.on||[]).includes(n.id)) c+=" on";
+    if(sel){ c += n.id===sel ? " sel" : (relevant.has(n.id)?"":" dim"); }
+    n.el.setAttribute("class",c);
+  });
+  E.forEach(e=>{
+    let c="edge";
+    const seen = STEPS.slice(1,cur+1).some(s=>s.e===e.id);
+    if(seen) c+=" trail";
+    if(S.e===e.id) c="edge live";
+    if(sel) c += (e.a===sel||e.b===sel) ? " dep" : " dim";
+    e.el.setAttribute("class",c);
+  });
+  $("#stepno").textContent=String(cur).padStart(2,"0");
+  $("#stepmsg").textContent=S.msg;
+  $("#stepmsg").style.color = S.bad ? "var(--red)" : S.good ? "var(--green)" : "var(--ink)";
+  $("#scrub").value=cur; $("#ts").textContent=cur+" / 11";
+}
+function packet(eid,kind){
+  const e=E.find(x=>x.id===eid); if(!e) return;
+  const path=e.el, len=path.getTotalLength();
+  const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  c.setAttribute("r","4.5"); c.setAttribute("class","pkt"+(kind?" "+kind:"")); gPkts.appendChild(c);
+  const t0=performance.now(), dur=760;
+  (function tick(t){
+    const k=Math.min(1,(t-t0)/dur), ease=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    const p=path.getPointAtLength(ease*len);
+    c.setAttribute("cx",p.x); c.setAttribute("cy",p.y);
+    c.setAttribute("opacity", k<.12? k/.12 : k>.88 ? (1-k)/.12 : 1);
+    if(k<1) requestAnimationFrame(tick); else c.remove();
+  })(t0);
+}
+function go(i){
+  cur=Math.max(0,Math.min(11,i));
+  render();
+  const S=STEPS[cur];
+  if(S.e) packet(S.e, S.bad?"bad":S.good?"ok":"");
+}
+function play(){
+  playing=!playing;
+  $("#pi").innerHTML = playing ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>';
+  $("#pl").textContent = playing?"Pause":"Play";
+  clearInterval(timer);
+  if(playing){
+    if(cur>=11) go(0);
+    timer=setInterval(()=>{ if(cur>=11){ play(); return; } go(cur+1); }, 1450);
+  }
+}
+$("#play").onclick=play;
+$("#step").onclick=()=>{ if(playing) play(); go(cur+1); };
+$("#reset").onclick=()=>{ if(playing) play(); sel=null; select(null); go(0); };
+$("#scrub").oninput=e=>{ if(playing) play(); go(+e.target.value); };
+
+/* zoom + pan */
+let zk=1, px=0, py=0, dragging=false, lx=0, ly=0;
+const pan=$("#gpan"), svg=$("#graph");
+const applyT=()=>pan.setAttribute("transform",`translate(${px},${py}) scale(${zk})`);
+$("#zin").onclick=()=>{ zk=Math.min(2.2,zk*1.22); applyT(); };
+$("#zout").onclick=()=>{ zk=Math.max(.6,zk/1.22); if(zk<=1){px=0;py=0;} applyT(); };
+svg.addEventListener("mousedown",e=>{ dragging=true; lx=e.clientX; ly=e.clientY; svg.classList.add("drag"); });
+addEventListener("mouseup",()=>{ dragging=false; svg.classList.remove("drag"); });
+addEventListener("mousemove",e=>{
+  if(!dragging) return;
+  const r=svg.getBoundingClientRect(), sc=1000/r.width;
+  px+=(e.clientX-lx)*sc; py+=(e.clientY-ly)*sc; lx=e.clientX; ly=e.clientY; applyT();
+});
+render();
+
+/* ---------------- SED tab ---------------- */
+function sed(wrong){
+  const checks=$$("#checks .check");
+  checks.forEach(c=>c.className="check");
+  $("#stated").textContent="—";
+  $("#verdict").innerHTML="";
+  checks.forEach((c,i)=>setTimeout(()=>c.classList.add("on","pass"), 130+i*150));
+  setTimeout(()=>{
+    $("#stated").textContent = wrong ? "20.00" : "19.75";
+    $("#verdict").innerHTML = wrong
+      ? '<span class="tag t-bad"><i class="dot"></i>FLAG — constraint violated</span><div class="note" style="margin-top:7px">Off by $0.25. Plausible enough to pass a human skim. Caught deterministically, zero model calls.</div>'
+      : '<span class="tag t-ok"><i class="dot"></i>PASS — constraint satisfied</span><div class="note" style="margin-top:7px">Correct value passes. This is the false-positive check — the detector stays quiet when nothing is wrong.</div>';
+  }, 130+checks.length*150+180);
+}
+$("#sedRun").onclick=()=>sed(true);
+$("#sedOk").onclick=()=>sed(false);
+
+/* ---------------- evidence ---------------- */
+const RUNS=[
+  {n:"Run 1", a:62.5, s:0.0},{n:"Run 2", a:75.0, s:25.0},{n:"Run 3", a:71.4, s:14.3},
+  {n:"Run 4", a:62.5, s:12.5},{n:"Run 5", a:85.7, s:14.3}
+];
+$("#runbars").innerHTML = RUNS.map(r=>`
+  <div style="margin-bottom:11px">
+    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+      <span class="mono" style="color:var(--ink-3)">${r.n}</span>
+      <span><b class="mono">${r.a}%</b> <span style="color:var(--ink-3)">agent</span> ·
+            <b class="mono" style="color:var(--amber)">${r.s}%</b> <span style="color:var(--ink-3)">step</span></span>
+    </div>
+    <div class="bar"><i data-w="${r.a}" style="width:0"></i></div>
+  </div>`).join("");
+let barsDrawn=false;
+function drawBars(){ if(barsDrawn) return; barsDrawn=true;
+  setTimeout(()=>$$("#runbars .bar i").forEach(b=>b.style.width=b.dataset.w+"%"),90); }
+
+const SPK=[
+ [1,"ErrorProbe reproduction","ok","agent 62.5–85.7% · step 0–25% · 5 runs, n=8"],
+ [2,"CrewAI instrumentation","ok","3 nodes, 2 clean edges — framework no paper used"],
+ ["3/3b","Fault injection","ok","corrupted tool output · 1 case self-corrected, kept as a finding"],
+ [4,"Constraint check (SED)","ok","flags known-wrong incl. near-miss ($20.00 vs $19.75) · 0 false positives · natural-occurrence rate still unmeasured (n=3)"],
+ [5,"Counterfactual replay","ok","97.2 corrupted → 108.0 recovered · recovery_success = true"],
+ [6,"Cyclic graph handling","ok","traversal terminates under bound; control run proves bound load-bearing"],
+ [7,"Preventive classifier","bad","precision = recall = F1 = 0.25 — near-random, reported not hidden"],
+ [8,"Repair Agent","ok","4/6 success · 0 parse failures · both failures share one cause"]
+];
+$("#spikes").innerHTML = SPK.map(([n,t,st,r])=>`
+  <tr><td style="padding-left:16px"><span class="mono" style="color:var(--ink-3)">${n}</span> &nbsp;${t}</td>
+  <td><span class="tag ${st==="ok"?"t-ok":st==="warn"?"t-warn":"t-bad"}"><i class="dot"></i>${
+    st==="ok"?"demonstrated":st==="warn"?"partial":"honest negative"}</span></td>
+  <td style="text-align:left;color:var(--ink-2);font-size:11.5px">${r}</td></tr>`).join("");
+
+/* ---------------- comparison ---------------- */
+const CMP=[
+ ["ErrorProbe (ACL 2026)",       ["y","59.5%"],["n","admits it cannot"],["n","—"],["n","2 archs only"], 0],
+ ["LangSmith Engine / Arize Alyx",["q","not published"],["q","not confirmed"],["q","not confirmed"],["n","stack-locked"],0],
+ ["Langfuse / Braintrust / Opik", ["n","human-driven"],["n","RAG-only"],["n","—"],["n","—"],0],
+ ["Closest prior FYP (S24-011)",  ["n","no attribution"],["q","single-LLM text"],["n","no replay"],["n","not multi-agent"],0],
+ ["Manual workflow today",        ["n","14.2%"],["n","—"],["n","—"],["n","—"],0],
+ ["Granite (proposed)",           ["y","building on 59.5%"],["y","scoped + measured"],["y","recovery over N"],["y","CrewAI + LangGraph"],1]
+];
+$("#cmp").innerHTML = CMP.map(r=>`<tr class="${r[5]?"us":""}"><td>${r[0]}</td>${
+  [1,2,3,4].map(i=>`<td data-c="${i}"><div class="mk ${r[i][0]}">${r[i][0]==="y"?"✓":r[i][0]==="n"?"✘":"?"}</div>
+   <div style="font-size:10px;color:var(--ink-3);margin-top:2px">${r[i][1]}</div></td>`).join("")
+}</tr>`).join("");
+let hot=0;
+$$(".matrix th[data-c]").forEach(th=>th.onclick=()=>{
+  const c=+th.dataset.c; hot = hot===c?0:c;
+  $$(".matrix th[data-c]").forEach(t=>t.classList.toggle("hot", +t.dataset.c===hot));
+  $$("#cmp td[data-c]").forEach(td=>td.classList.toggle("hot", hot && +td.dataset.c===hot));
+  $("#cmpnote").textContent = hot
+    ? ["","Only Granite publishes a benchmarked step-accuracy number on unseen architectures.",
+       "Silent-failure detection: admitted blind spot in the strongest paper; RAG-only or unconfirmed elsewhere.",
+       "Nobody else measures whether a proposed fix actually recovers the task.",
+       "Every automated competitor is locked to its own tracing stack."][hot]
+    : "Row highlighted in gold is ours. Click a column header to isolate that capability.";
+});
+
+/* ---------------- scope ---------------- */
+const CCP=["Conflicting requirements","No obvious solution","Depth of knowledge",
+ "Unfamiliar issues","Beyond standard practice","Significant consequences",
+ "Interdependence","Ill-defined cause"];
+$("#ccp").innerHTML=CCP.map(t=>`<div class="ccp"><div class="cn">&#10003;</div>${t}</div>`).join("");
+
+const LANES=[
+ ["Shahoud","Data / Benchmark","var(--teal)",["Framework instrumentation (CrewAI, LangGraph)","Fault injection + labelling","Benchmark build &amp; release"],"No cross-architecture benchmark — the core claim is untestable"],
+ ["Noor","Diagnosis Engine","var(--gold)",["Graph construction + trace normalization","ErrorProbe reproduction","Constraint check + causal tracing"],"No attribution, no silent-failure detection — the contribution disappears"],
+ ["Saif","Platform","var(--blue)",["Counterfactual replay + recovery","Framework-agnostic SDK, FastAPI, Postgres","Dashboard, containerized deployment"],"Nothing installable outside the dev machine"]
+];
+$("#lanes").innerHTML=LANES.map(([who,role,col,items,rm])=>`
+  <div class="lane"><div class="lh" style="background:${col}"><span>${who}</span><span style="opacity:.8;font-weight:600;font-size:11px">${role}</span></div>
+  <div class="lb"><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul>
+  <div class="rm">If removed: ${rm}</div></div></div>`).join("");
+
+})();
+</script>
+</body>
+</html>

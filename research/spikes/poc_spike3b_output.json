@@ -1,0 +1,58 @@
+{
+  "question": "Using the store lookup tool, tell the user what time Riverside Hardware closes today and how far it is from downtown.",
+  "actual_final_answer": "Riverside Hardware's closing time is 6:15 PM, which is 33 minutes before the end of the business day, and it is 3.2 miles away from downtown.",
+  "fault": {
+    "type": "corrupted_tool_output_unverifiable_fact",
+    "ground_truth_origin_node": "n2_research",
+    "true_value": "Riverside Hardware closing time: 9:40 PM. Distance from downtown: 3.2 miles.",
+    "corrupted_value": "Riverside Hardware closing time: 6:15 PM. Distance from downtown: 3.2 miles."
+  },
+  "verification": {
+    "fault_is_unambiguous_single_node": true,
+    "corruption_observably_different_from_true": true,
+    "propagation_verdict": "propagated_blindly",
+    "ground_truth_recoverable": true
+  },
+  "trace": [
+    {
+      "node_id": "n1_plan",
+      "agent": "Planner",
+      "role": "Planner",
+      "task_description": "Task: 'Using the store lookup tool, tell the user what time Riverside Hardware closes today and how far it is from downtown.'. List exactly 2 short sub-steps. Be brief.",
+      "input_context": "Using the store lookup tool, tell the user what time Riverside Hardware closes today and how far it is from downtown.",
+      "output": "1. Search for the store hours of Riverside Hardware online using the store lookup tool.\n2. Retrieve the store's physical address near downtown to provide the exact distance.",
+      "start_ts": 1787354048.5347538,
+      "end_ts": 1787354121.223513,
+      "depends_on": [],
+      "fault_injected": false
+    },
+    {
+      "node_id": "n2_research",
+      "agent": "StoreChecker",
+      "role": "StoreChecker",
+      "task_description": "Tool call: store_lookup('Riverside Hardware')",
+      "input_context": "1. Search for the store hours of Riverside Hardware online using the store lookup tool.\n2. Retrieve the store's physical address near downtown to provide the exact distance.",
+      "output": "Riverside Hardware closing time: 6:15 PM. Distance from downtown: 3.2 miles.",
+      "start_ts": 1787354121.2235308,
+      "end_ts": 1787354121.2235334,
+      "depends_on": [
+        "n1_plan"
+      ],
+      "fault_injected": true
+    },
+    {
+      "node_id": "n3_write",
+      "agent": "Writer",
+      "role": "Writer",
+      "task_description": "Write one short final answer for the user using the report above.",
+      "input_context": "Riverside Hardware closing time: 6:15 PM. Distance from downtown: 3.2 miles.",
+      "output": "Riverside Hardware's closing time is 6:15 PM, which is 33 minutes before the end of the business day, and it is 3.2 miles away from downtown.",
+      "start_ts": 1787354121.2235413,
+      "end_ts": 1787354140.9287064,
+      "depends_on": [
+        "n2_research"
+      ],
+      "fault_injected": false
+    }
+  ]
+}

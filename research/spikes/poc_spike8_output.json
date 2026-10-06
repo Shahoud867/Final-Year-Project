@@ -1,0 +1,113 @@
+{
+  "summary": {
+    "n_cases": 6,
+    "n_parse_failures": 0,
+    "exact_match_rate": 0.667,
+    "repair_success_rate": 0.667,
+    "note": "repair_success_rate follows the market survey's own Table 4 definition: does the generated fix, once replayed downstream, produce a passing final result -- it does not require an exact match to ground truth. exact_match_rate is reported separately, stricter, not conflated."
+  },
+  "cases": [
+    {
+      "case_id": "tax_total",
+      "true_value": 100.0,
+      "raw_model_output": "{\"corrected_value\": 100.00, \"reasoning\": \"List price is $100.00, plus 8% tax equals $100.00 + $8.00 = $108.00\"}",
+      "parsed": {
+        "corrected_value": 100.0,
+        "reasoning": "List price is $100.00, plus 8% tax equals $100.00 + $8.00 = $108.00"
+      },
+      "parse_failure": false,
+      "generated_value": 100.0,
+      "exact_match": true,
+      "replayed_downstream": {
+        "final_total": 108.0,
+        "expected": 108.0
+      },
+      "repair_success": true
+    },
+    {
+      "case_id": "loyalty_discount",
+      "true_value": 15.0,
+      "raw_model_output": "{\"corrected_value\": 6.75, \"reasoning\": \"15% of $45.00 is $6.75\"}",
+      "parsed": {
+        "corrected_value": 6.75,
+        "reasoning": "15% of $45.00 is $6.75"
+      },
+      "parse_failure": false,
+      "generated_value": 6.75,
+      "exact_match": false,
+      "replayed_downstream": {
+        "final_total": 41.96,
+        "expected": 38.25
+      },
+      "repair_success": false
+    },
+    {
+      "case_id": "stock_count",
+      "true_value": 21.0,
+      "raw_model_output": "{\"corrected_value\": 21, \"reasoning\": \"Warehouse inventory document states on-hand quantity is 21 units.\"}",
+      "parsed": {
+        "corrected_value": 21,
+        "reasoning": "Warehouse inventory document states on-hand quantity is 21 units."
+      },
+      "parse_failure": false,
+      "generated_value": 21.0,
+      "exact_match": true,
+      "replayed_downstream": {
+        "final_total": 21.0,
+        "expected": 21.0
+      },
+      "repair_success": true
+    },
+    {
+      "case_id": "notebook_order",
+      "true_value": 7.0,
+      "raw_model_output": "{\"corrected_value\": 28.00, \"reasoning\": \"Total cost is quantity times price per notebook ($4 x 7 = $28)\"}",
+      "parsed": {
+        "corrected_value": 28.0,
+        "reasoning": "Total cost is quantity times price per notebook ($4 x 7 = $28)"
+      },
+      "parse_failure": false,
+      "generated_value": 28.0,
+      "exact_match": false,
+      "replayed_downstream": {
+        "final_total": 112.0,
+        "expected": 28.0
+      },
+      "repair_success": false
+    },
+    {
+      "case_id": "connecting_flight",
+      "true_value": 14.0,
+      "raw_model_output": "{\"corrected_value\": 14, \"reasoning\": \"Arrival time is fixed at 14:00 in the airline's official schedule.\"}",
+      "parsed": {
+        "corrected_value": 14,
+        "reasoning": "Arrival time is fixed at 14:00 in the airline's official schedule."
+      },
+      "parse_failure": false,
+      "generated_value": 14.0,
+      "exact_match": true,
+      "replayed_downstream": {
+        "final_total": 16.0,
+        "expected": 16.0
+      },
+      "repair_success": true
+    },
+    {
+      "case_id": "budget_check",
+      "true_value": 420.0,
+      "raw_model_output": "{\"corrected_value\": 420.0, \"reasoning\": \"Vendor invoice indicates total due is $420.00.\"}",
+      "parsed": {
+        "corrected_value": 420.0,
+        "reasoning": "Vendor invoice indicates total due is $420.00."
+      },
+      "parse_failure": false,
+      "generated_value": 420.0,
+      "exact_match": true,
+      "replayed_downstream": {
+        "final_total": 420.0,
+        "expected": 420.0
+      },
+      "repair_success": true
+    }
+  ]
+}

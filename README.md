@@ -5,6 +5,28 @@ Team: Shahoud Shahid, Muhammad Noor, Saif Shahzad. Supervisor: Dr. Adil Majeed.
 
 Granite is an evidence-first investigation workbench for multi-agent LLM workflows: **find the failure, prove the cause, verify the fix.**
 
+## Run it
+
+A working slice exists (state and gaps: [`docs/plan/execution-status.md`](docs/plan/execution-status.md)). Quick start in recorded mode, which needs no model, key or account:
+
+```bash
+python -m venv .venv && source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
+pip install -e "packages/granite_core[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
+(cd apps/web && npm ci && npm run build)
+cd apps/api && GRANITE_LLM_MODE=recorded GRANITE_STATIC_DIR=../web/dist uvicorn granite_api.main:app_from_env --factory --port 8000
+```
+
+Open <http://127.0.0.1:8000>, choose **New run**, load an example and press Run. Full instructions: [`docs/manuals/setup-manual.md`](docs/manuals/setup-manual.md); how to use it: [`docs/manuals/tool-manual.md`](docs/manuals/tool-manual.md).
+
+| Part | Where |
+|---|---|
+| Core library (trace, checks, attribution, verification, lifecycle, evidence) | [`packages/granite_core`](packages/granite_core/) |
+| Refund Desk workflow (first system under test) | [`workflows/refund_desk`](workflows/refund_desk/) |
+| API, persistence, jobs | [`apps/api`](apps/api/) |
+| Web UI | [`apps/web`](apps/web/) |
+| Decisions, diagrams, registers | [`docs/adr/`](docs/adr/), [`docs/diagrams/`](docs/diagrams/), [`docs/registers/`](docs/registers/) |
+| Evaluation protocol and results | [`research/eval/`](research/eval/) |
+
 ## Start here
 
 - **What to do now and what to build:** [`docs/plan/master-plan.md`](docs/plan/master-plan.md) (section 0 is the action card)
@@ -38,4 +60,6 @@ Granite is an evidence-first investigation workbench for multi-agent LLM workflo
 python scripts/check_links.py     # broken relative links
 python scripts/check_workspace.py # naming rules and required READMEs
 python scripts/build_index.py     # regenerate docs/workspace-index.md
+python scripts/export_trace_schema.py --check && python scripts/export_diagrams.py --check   # generated files match the code
+python scripts/check_traceability.py --check   # requirement -> code -> test references are real
 ```

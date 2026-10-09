@@ -2,13 +2,14 @@
 
 **Project:** F26-060-Granite · *A Self-Healing Multi-Agent System for Semantic Error Diagnosis, Verified Repair and Recovery*
 **Team:** Shahoud Shahid (23i-2515) · Muhammad Noor (23i-2520) · Saif Shahzad (23i-2634) · **Supervisor:** Dr. Adil Majeed
-**Stream:** A (research-derived) · **AI-assisted development level:** L2 (assisted, not AI-led — handbook C.8)
+**Stream:** A (research-derived) · **AI-assisted development level:** declared L2 (assisted, not AI-led — handbook C.8) in v1.1. **Needs re-declaring:** in the implementation phase (2026-10-06/07) an AI agent wrote the code, so L2 no longer describes it. The team and supervisor must decide the level and the contribution boundary; see [`ai-usage-log.md`](../registers/ai-usage-log.md) session 20 and [`form-13-genai-disclosure.md`](../registers/form-13-genai-disclosure.md)
 
 | Document control | |
 |---|---|
 | Version | **1.1**: a revision of v1.0 (2026-10-04) against the official Mid-1 rubric and the prescribed report template |
 | Date | 2026-10-06 (paths updated the same day to the reorganized workspace) |
 | Status | DRAFT. It becomes the baseline once the supervisor approves change record **C-01** (§11.4) |
+| Execution status | **Read [`execution-status.md`](execution-status.md) for what exists today** (2026-10-07). Implementation decisions that differ from this plan are recorded in [`change-log.md`](../registers/change-log.md) (C-02). Where this plan and the code disagree, the code and the status file describe reality |
 | New inputs in v1.1 | `references/university/fyp1-mid-assessment-guidelines-and-rubrics.pdf` (official Form 2/Form 3 rubric with bands, gates and red flags; dated 5 Oct 2026). `references/templates/fyp1-mid-report-template_latex.zip` and its rendered `.pdf`: the prescribed chapter-wise LaTeX template, currently **unfilled**. |
 | Supersedes | Scope, timeline and ownership sections of `deliverables/stage-0-proposal/proposal-documents/FYP_Scope_CCP_and_Implementation_Plan.md` (§7, §9, §12), `Software_Development_Plan.md` (§2, §8, same folder) and the UI in `deliverables/stage-0-proposal/poc-console/`. Research content (literature, CCP, DEI/ethics, datasets) is **retained** and referenced. |
 | Change rule | Changes to scope, architecture, evaluation baseline/metrics, deployment target, NFR targets or ownership go through a recorded change entry (handbook C.5.3). No silent changes. |
@@ -556,12 +557,13 @@ stateDiagram-v2
   [*] --> Open: outcome check fails
   Open --> Hypothesized: trace-back produced hypotheses
   Hypothesized --> Verifying: verification started
-  Hypothesized --> EvidenceSupported: trace-only run and evidence re-check passes
+  Hypothesized --> EvidenceSupported: strong provenance evidence but no replay is defined for that step (set automatically)
   Verifying --> Confirmed: verdict confirmed
   Verifying --> Refuted: verdict refuted
   Verifying --> Inconclusive: verdict inconclusive
   Verifying --> Hypothesized: experiment error
   Refuted --> Verifying: verify next hypothesis
+  Inconclusive --> Verifying: run more replays (added 2026-10-07, change C-02a)
   Confirmed --> Accepted: reviewer accepts
   Confirmed --> Rejected: reviewer rejects
   Inconclusive --> Accepted: reviewer accepts with note
@@ -578,6 +580,8 @@ stateDiagram-v2
 **Run lifecycle:** `queued → running → completed | errored → analyzed`. Replay runs carry `source=replay` and `experiment_id`.
 
 **Invariant:** illegal transitions raise errors. Unit tests cover every edge, plus at least 3 illegal ones.
+
+*Implementation note (2026-10-07):* the diagram generated from the code is [`docs/diagrams/finding-state-machine.md`](../diagrams/finding-state-machine.md); a CI step fails if it drifts from `granite_core.lifecycle`. The two lines above marked as added or changed are the only differences from the original plan.
 
 ---
 
@@ -1477,7 +1481,7 @@ The handbook says "select the design appropriate for your project". Every diagra
 
 | Item | Python | TypeScript/React |
 |---|---|---|
-| Style/format | Ruff (PEP 8, line 100), `ruff format` | ESLint (typescript-eslint, react-hooks), Prettier |
+| Style/format | Ruff (PEP 8, line 120), `ruff format` | ESLint (typescript-eslint, react-hooks), Prettier |
 | Naming | `snake_case` functions/vars, `PascalCase` classes, `UPPER_CASE` constants, modules `snake_case` | `camelCase` vars/functions, `PascalCase` components/types, `useX` hooks, files `PascalCase.tsx` for components |
 | Domain names | Use the §14.1 vocabulary exactly (`Finding`, `Hypothesis`, `Experiment`, `Evidence`). No synonyms ("issue", "bug", "case") in code. | Same |
 | Types | Type hints everywhere; `mypy --strict` on `granite_core` | `strict: true` |

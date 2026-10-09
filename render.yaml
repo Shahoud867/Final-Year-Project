@@ -1,0 +1,19 @@
+# Render Blueprint for the public Mid-1 demo (free plan, recorded mode: no model server and no API key needed).
+# In the Render dashboard: New > Blueprint > pick this repository > Apply. Then record the URL in
+# docs/registers/deployment-record.md. Free instances sleep when idle (first request can take about a minute) and
+# their disk is temporary, so the demo database resets on every deploy or restart.
+services:
+  - type: web
+    name: granite-demo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: false
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: GRANITE_LLM_MODE
+        value: recorded
+      - key: GRANITE_API_TOKEN   # optional: set a value in the dashboard to require a token in the UI
+        sync: false

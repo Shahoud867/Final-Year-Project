@@ -1,0 +1,17 @@
+# docker compose up --build   then open http://localhost:8000
+# Set GRANITE_LLM_MODE=live and GRANITE_OLLAMA_URL=http://host.docker.internal:11434 to use a local Ollama model.
+services:
+  granite:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      GRANITE_LLM_MODE: ${GRANITE_LLM_MODE:-recorded}
+      GRANITE_OLLAMA_URL: ${GRANITE_OLLAMA_URL:-http://host.docker.internal:11434}
+      GRANITE_MODEL: ${GRANITE_MODEL:-llama3.2:3b}
+      GRANITE_API_TOKEN: ${GRANITE_API_TOKEN:-}
+    volumes:
+      - granite-data:/data
+    restart: unless-stopped
+volumes:
+  granite-data:

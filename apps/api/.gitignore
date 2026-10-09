@@ -1,0 +1,9 @@
+# runtime data (SQLite database, uploads) and local config
+.granite/
+*.db
+.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/

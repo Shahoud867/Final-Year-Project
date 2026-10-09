@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "granite-api"
+version = "0.1.0"
+description = "Granite application layer: HTTP API, persistence and the background job runner."
+requires-python = ">=3.11"
+dependencies = [
+  "granite-core",
+  "granite-refund-desk",
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "sqlalchemy>=2.0",
+  "pydantic>=2.8",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov", "httpx", "ruff", "mypy", "bandit", "pip-audit"]
+
+[tool.setuptools.packages.find]
+include = ["granite_api*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C90", "UP"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = "../../packages/granite_core:../../workflows/refund_desk"
+plugins = ["pydantic.mypy"]

@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "granite-core"
+version = "0.1.0"
+description = "Granite core: trace schema, executable checks, provenance attribution, controlled-replay verification."
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.8"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov", "hypothesis", "ruff", "mypy"]
+
+[tool.setuptools.packages.find]
+include = ["granite_core*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C90", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.setuptools.package-data]
+granite_core = ["py.typed"]

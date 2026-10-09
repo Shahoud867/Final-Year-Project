@@ -24,7 +24,7 @@ TOP_DIRS = {".claude", ".git", ".github", "apps", "archive", "data", "deliverabl
             "packages", "references", "research", "scripts", "tests", "workflows"}
 TOP_FILES = {"README.md", "CLAUDE.md", "LICENSE", "CHANGELOG.md", "CODEOWNERS", "Dockerfile", "docker-compose.yml",
              "pyproject.toml", ".gitignore", ".gitattributes", ".mailmap", ".editorconfig", ".env.example",
-             ".dockerignore"}
+             ".dockerignore", "render.yaml"}
 REQUIRED_READMES = ["apps", "archive", "data", "deliverables", "evidence", "packages", "references", "research",
                     "scripts", "tests", "workflows", "docs/report", "docs/diagrams", "docs/adr", "docs/manuals",
                     "docs/meetings", "docs/registers", "research/eval", "references/papers"]

@@ -13,10 +13,10 @@
 | 2026-10-06 | Core library (trace, checks language, attribution, verification, lifecycle, evidence) | Iteration 1 | Done | Tests and strict type checks pass |
 | 2026-10-06 | Refund Desk workflow on real retail data, run against a real local model | Iteration 1 | Done | First real run recorded |
 | 2026-10-07 | HTTP API, persistence, jobs; web UI | Iteration 1 | Done (works locally) | Driven end to end in a browser |
-| 2026-10-07 | CI workflow and container definition written | Iteration 1 | **Written, not yet run** | See defects D-09 |
+| 2026-10-07 | CI workflow and container definition written | Iteration 1 | Done; first GitHub run passed 2026-10-09 (all four jobs) | [CI run](../../evidence/repo/2026-10-09_ci-run-37924480165.md) |
 | 2026-10-07 | Feasibility validation (10 tasks, pre-registered) | Iteration 1 | Done; all thresholds met, one explained miss | [Notes](../../research/eval/results/2026-10-07_refund-desk-feasibility-notes.md) |
 | - | Deployed URL | Iteration 1 | **Not done** | Needs a decision on hosting (ADR-007) and someone to create the service |
-| - | Release tag `v0.1.0-mid1` | Iteration 1 | **Not done** | After CI is green on GitHub |
+| - | Release tag `v0.1.0-mid1` | Iteration 1 | **Not done** | CI is green; the team creates the tag when the Mid-1 state is final |
 | - | Mid-1 report (LaTeX template) | Before the demo (assumed) | **Not started** | Must be written by the members in their own words |
 
 ## Delays and recovery

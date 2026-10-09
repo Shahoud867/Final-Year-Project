@@ -26,7 +26,7 @@ Proposal: build one Docker image (done, see ADR-001) and deploy that image to a 
 
 ## Consequences
 
-The Dockerfile has **not been built** on this machine (the Docker daemon was not running) and the CI container job has not run, so the image is unverified. A clean non-editable install with the same environment variables was verified locally and served the UI and a recorded run. Free instances sleep when idle, so the first request can take about a minute; say so in the demo script. Decide the hosted-model question (D1) separately; recorded mode avoids it for the demo.
+Update 2026-10-09: GitHub Actions built the image and passed a smoke test inside it (`evidence/repo/2026-10-09_ci-run-37924480165.md`); a blueprint `render.yaml` is ready. Still nothing is hosted. A clean non-editable install with the same environment variables was verified locally and served the UI and a recorded run. Free instances sleep when idle, so the first request can take about a minute; say so in the demo script. Decide the hosted-model question (D1) separately; recorded mode avoids it for the demo.
 
 ## Evidence of understanding (handbook C.14.1)
 

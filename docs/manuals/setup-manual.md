@@ -105,6 +105,17 @@ docker compose up --build        # then open http://localhost:8000
 
 **Status on 2026-10-07:** the Dockerfile has not been built yet (the Docker daemon was off on the authoring machine) and the CI container job has not run. Treat this section as untested until it has.
 
+## Deploy a public demo (Render, free)
+
+Prepared, **not yet done** (an account is needed and only a team member can create it):
+
+1. Sign in at render.com with GitHub and give Render access to this repository.
+2. New, then Blueprint, select the repository; Render reads [`render.yaml`](../../render.yaml). Apply.
+3. Wait for the build (several minutes), open the URL, run the smoke test against it: `bash scripts/smoke-test.sh https://<your-service>.onrender.com`.
+4. Record URL, date, who deployed it and the smoke-test line in `docs/registers/deployment-record.md`.
+
+Recorded mode is the default, so no model key is needed. The free instance sleeps when idle and its database resets on restart; warm it up before a demo.
+
 ## Troubleshooting
 
 | Symptom | Cause and fix |

@@ -11,7 +11,9 @@
 
 A working vertical slice exists and runs on the author's machine: run a five-step multi-agent workflow on real retail data with a real local model, detect a silent failure with executable checks, rank where it began, prove it by replays with controls, record a human decision, and export a report. It is covered by automated tests and was driven end to end in a browser.
 
-**Not yet true, and the panel will ask about each:** nothing is deployed; CI has never run on GitHub; the container image has not been built; no member has demonstrated understanding of the code (the handbook's walkthrough); no report text exists; per-member pull-request evidence does not exist; the Mid-1 date is unknown.
+**Since 2026-10-09:** the code is on GitHub and CI passed there, including the container build and an end-to-end smoke test inside the container ([CI run 37924480165](../../evidence/repo/2026-10-09_ci-run-37924480165.md)).
+
+**Not yet true, and the panel will ask about each:** nothing is deployed (a Render blueprint is ready, see the setup manual); `main` is not protected and there is no release tag; no member has demonstrated understanding of the code (the handbook's walkthrough); no report text exists; per-member pull-request evidence does not exist; the Mid-1 date is unknown.
 
 ## 2. Measured today (2026-10-07)
 
@@ -60,9 +62,9 @@ Read the caveats before quoting: ten tasks, one fault, one small model; four tas
 | 14 | Schema and ER | Partly | [ER diagram](../diagrams/database-schema.md) generated from the real tables. No migration history |
 | 15 | Data structure and algorithm design | Partly | [ADR-004](../adr/adr-004-ast-check-dsl.md), [005](../adr/adr-005-provenance-first-attribution.md), [006](../adr/adr-006-vr1-verdict-rule.md). Not yet written up in report form |
 | 16 | Comments and naming | Partly | Lint rules enforced (ruff E, F, I, B, C90, UP; mypy strict). The conventions are not extracted into one page |
-| 17 | Static analysis | Partly | Run locally (ruff, mypy, bandit, ESLint). **No CI log** |
+| 17 | Static analysis | **Done** | ruff, mypy strict, bandit, pip-audit, ESLint, tsc, npm audit run on every push; [CI run 37924480165](../../evidence/repo/2026-10-09_ci-run-37924480165.md) |
 | 18 | Unit tests (at least 30 including failures) | **Done** | 352 tests |
-| 19 | CI/CD on GitHub | **Not done** | [`ci.yml`](../../.github/workflows/ci.yml) written, never run. No deployment pipeline |
+| 19 | CI/CD on GitHub | Partly | CI: **done**, four jobs green on GitHub including Docker build and smoke test ([CI run 37924480165](../../evidence/repo/2026-10-09_ci-run-37924480165.md)). CD: not yet; no hosted service, `main` not protected |
 | 20 | Deployment diagram | Partly | In [architecture](../diagrams/architecture.md); two of three targets do not exist yet |
 | 21 | System-level tests | Partly | Journey and error tests through the HTTP API ([`test_journeys.py`](../../apps/api/tests/test_journeys.py), [`test_platform.py`](../../apps/api/tests/test_platform.py)). No Playwright browser tests |
 | 22 | Setup and tool manuals | Partly | [Setup](../manuals/setup-manual.md), [tool](../manuals/tool-manual.md) written. Not yet followed by a second person |

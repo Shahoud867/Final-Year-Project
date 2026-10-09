@@ -12,8 +12,8 @@
 |---|---|
 | Public URL | None |
 | Local run | `uvicorn granite_api.main:app_from_env --factory` serves the API and, with `GRANITE_STATIC_DIR` set to the built web app, the UI. Verified on this machine on 2026-10-07 |
-| Container | `Dockerfile` and `docker-compose.yml` exist; the image has **not** been built (Docker daemon was not running) |
-| CI | `.github/workflows/ci.yml` exists; it has **not** run on GitHub |
+| Container | Built and smoke-tested by GitHub Actions on 2026-10-09 ([run 37924480165](../../evidence/repo/2026-10-09_ci-run-37924480165.md)); not yet built on a team laptop |
+| CI | Runs on every push; first run on GitHub passed on 2026-10-09 |
 | Cost | $0 so far |
 
 ## Install check from a clean environment (not a deployment)

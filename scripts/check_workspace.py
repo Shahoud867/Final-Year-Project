@@ -23,16 +23,18 @@ REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 TOP_DIRS = {".claude", ".git", ".github", "apps", "archive", "data", "deliverables", "docs", "evidence",
             "packages", "references", "research", "scripts", "tests", "workflows"}
 TOP_FILES = {"README.md", "CLAUDE.md", "LICENSE", "CHANGELOG.md", "CODEOWNERS", "Dockerfile", "docker-compose.yml",
-             "pyproject.toml", ".gitignore", ".gitattributes", ".mailmap", ".editorconfig", ".env.example"}
+             "pyproject.toml", ".gitignore", ".gitattributes", ".mailmap", ".editorconfig", ".env.example",
+             ".dockerignore"}
 REQUIRED_READMES = ["apps", "archive", "data", "deliverables", "evidence", "packages", "references", "research",
                     "scripts", "tests", "workflows", "docs/report", "docs/diagrams", "docs/adr", "docs/manuals",
                     "docs/meetings", "docs/registers", "research/eval", "references/papers"]
 REQUIRED_FILES = ["docs/workspace-guide.md", "docs/plan/master-plan.md"]
 
-SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv", "dist"}
+SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv", "dist", ".ruff_cache", ".mypy_cache", ".pytest_cache"}
 EXEMPT = ("archive/", "data/raw/", "deliverables/stage-0-proposal/", "docs/report/")
 CODE = ("apps/", "packages/", "workflows/", "tests/", "scripts/", ".github/")
-META_OK = {"README.md", "CLAUDE.md", "CHANGELOG.md", "LICENSE", "DOWNLOAD.md", ".gitignore", ".gitkeep", "CODEOWNERS"}
+META_OK = {"README.md", "CLAUDE.md", "CHANGELOG.md", "LICENSE", "LICENSE.txt", "DOWNLOAD.md", ".gitignore", ".gitkeep",
+           "CODEOWNERS", "Dockerfile"}
 
 KEBAB = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 ADR = re.compile(r"^adr-\d{3}-[a-z0-9-]+\.md$")
@@ -47,7 +49,7 @@ def violations():
     out = []
     for name in sorted(os.listdir(REPO)):
         full = os.path.join(REPO, name)
-        if os.path.isdir(full) and name not in TOP_DIRS:
+        if os.path.isdir(full) and name not in TOP_DIRS and name not in SKIP_DIRS:
             out.append((name + "/", "top-level folder not in the guide (section 2); change the guide first (section 9)"))
         if os.path.isfile(full) and name not in TOP_FILES:
             out.append((name, "unexpected file at the repository root"))

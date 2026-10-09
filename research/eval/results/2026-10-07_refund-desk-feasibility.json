@@ -1,0 +1,567 @@
+{
+ "rows": [
+  {
+   "order_id": "#W1023987",
+   "label": "#W1023987 (delivered): Luggage Set, Pet Bed",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, your refund of $662.23 will be returned to the original gift card used for payment. We apologize for any inconvenience and appreciate your patience as we process this refund."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP",
+     "CT-CALC"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s4",
+     "s1",
+     "s3",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1052399",
+   "label": "#W1052399 (delivered): Tea Kettle, Makeup Kit",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, \n\nWe are processing a refund of $355.41 to the original gift card used for your purchase. This amount will be returned to your gift card balance.\n\nSincerely, \n[Customer Service]"
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1067251",
+   "label": "#W1067251 (delivered): Wireless Earbuds, Grill",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, we are processing a refund of $1201.55 to your original credit card payment method. This refund will be returned to the same card used for the original transaction."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1166549",
+   "label": "#W1166549 (delivered): E-Reader, Electric Kettle",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, we are pleased to inform you that a refund of $423.06 will be processed and returned to your original credit card. We appreciate your business and hope to serve you better in the future."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 0.0,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1326557",
+   "label": "#W1326557 (delivered): Water Bottle, Tablet",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 50.6,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, we are pleased to inform you that a refund of $1066.44 will be processed and returned to the original gift card used for your purchase. We apologize again for any inconvenience caused and appreciate your patience as we complete this transaction."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 30.1,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1335809",
+   "label": "#W1335809 (delivered): Espresso Machine, Hiking Boots",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 47.1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-CALC"
+    ],
+    "findings": [
+     "Stated refund equals the catalogue total of the refunded items: observed 4047.67, expected 3047.67"
+    ],
+    "message": "Dear valued customer, we are processing a refund of $4047.67 to your original PayPal payment method and will return the funds shortly."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 32.6,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP",
+     "CT-CALC"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s4",
+     "s1",
+     "s3",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1341845",
+   "label": "#W1341845 (delivered): LED Light Bulb, Mechanical Keyboard",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 56.9,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, your refund of $281.73 will be returned to the original credit card used for payment. We apologize again for any inconvenience and appreciate your business."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 38.1,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1504875",
+   "label": "#W1504875 (delivered): Notebook, Smart Watch",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 38.5,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, \n\nWe are processing a refund of $414.24 to your original payment method on PayPal. This amount will be returned to you shortly.\n\nSincerely, \n[Company] Customer Service"
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 28.6,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1519594",
+   "label": "#W1519594 (delivered): Electric Kettle, Wireless Earbuds",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 65.8,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, we are pleased to inform you that a refund of $376.21 will be returned to your original gift card. We will process the refund as soon as possible and it should be visible on your account within the next 24-48 hours."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 38.4,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  },
+  {
+   "order_id": "#W1523776",
+   "label": "#W1523776 (delivered): Makeup Kit, Smart Thermostat",
+   "clean": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 49.9,
+    "failed_checks": [],
+    "findings": [],
+    "message": "Dear valued customer, we are pleased to inform you that a refund of $535.31 will be processed and returned to the original gift card used for your purchase."
+   },
+   "faulty": {
+    "status": "completed",
+    "attempts": 1,
+    "seconds": 41.8,
+    "findings": 1,
+    "failed_checks": [
+     "CHK-OUT-1",
+     "CT-LOOKUP"
+    ],
+    "injected_step": "s2",
+    "ranking": [
+     "s2",
+     "s1",
+     "s3",
+     "s4",
+     "s5"
+    ],
+    "origin": {
+     "step": "s2",
+     "verdict": "confirmed",
+     "k": 5,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    },
+    "innocent": {
+     "step": "s4",
+     "verdict": "refuted",
+     "k": 0,
+     "n": 5,
+     "c": 0,
+     "m": 2
+    }
+   }
+  }
+ ],
+ "meta": {
+  "date": "2026-10-07",
+  "model": "llama3.2:3b",
+  "prereg_sha256": "63fd0a25a5c1e1ddd9208e5706581dadd7eccee10132ada5f45de29c1b120a8d",
+  "git_head": "46a591165e2d30dc07ea307913e0de2e5294c790",
+  "git_dirty": true,
+  "source_sha256": {
+   "packages/granite_core/granite_core/__init__.py": "f4c61f84d49c6eff527f8b63231927ee111b856cee6d69fd0d30e0279042c28a",
+   "packages/granite_core/granite_core/attribution.py": "5450b3c4e395934d7a71d02306edec124acea1ba930443424aacbf83a4f84e66",
+   "packages/granite_core/granite_core/checks.py": "80a1b71d79e8abc3160635036a19b2affd98fae333dbf1d848141ae45b176880",
+   "packages/granite_core/granite_core/dsl.py": "f35e2b37b0e46fc3cc3f23fe9bb318d59bbba463f59b4337df47b23e2f431636",
+   "packages/granite_core/granite_core/evidence.py": "7827141d41d6ce9c0d0e68837a16267530b20986f0c4df2aae06b96d510ddba4",
+   "packages/granite_core/granite_core/experiment.py": "a0c5ffd9001852b403748e667e766c0a5766dc2af1dda32bd7b96c7ddf53959d",
+   "packages/granite_core/granite_core/lifecycle.py": "35ea1e49d035f3d9af5b9d21294c5e2d19fc250d9768903d5aaecd9803ca2735",
+   "packages/granite_core/granite_core/lineage.py": "64e2945b4cb6264099c58e5aa8842871f8d1aed45a496ae17fc299c91297e475",
+   "packages/granite_core/granite_core/llm.py": "83357c5067b0ed9ebee30cb09fd1f875e1a6341c779bb3802706584917fbf1e9",
+   "packages/granite_core/granite_core/redaction.py": "3cb2b4e23b4ddf0ed2cf31dd4edf508e421f74225739465bf28567998c08e39f",
+   "packages/granite_core/granite_core/runner.py": "84b5f123e84d98cdb980b96214fe61439a0baf553e482f574472dfa8e4c31203",
+   "packages/granite_core/granite_core/trace.py": "8b34074c0224fb9ac85360903ba6294001d73891361d7a266620e673172e451d",
+   "packages/granite_core/granite_core/verification.py": "4855303f421cbe5344211fe4fec06226a6c81be79ae1a289816ce716c55d3a4f",
+   "workflows/refund_desk/refund_desk/__init__.py": "b9ebef366763a2f429de7507739107e5d44ec9dd67a24de0deb2cc13d4f2cc04",
+   "workflows/refund_desk/refund_desk/definition.py": "49a9deb581cd2734a0406dd6bc1088616b35869810080658dc82797b7df9770e",
+   "workflows/refund_desk/refund_desk/faults.py": "d3074ee0d34d5e1468cc78dee4b39db9de5c401515d0a347b46a9fa76348d228",
+   "workflows/refund_desk/refund_desk/prompts/calculator_v1.md": "c156c91faaccdd0cf937ec27c121b0b8c047e9599a1583fa27b7acf828c0bd36",
+   "workflows/refund_desk/refund_desk/prompts/intake_v1.md": "0f8839e4dbd4ed6bdded4627d23dffde0e78315a56c5b0185e43e5ee37cb78ab",
+   "workflows/refund_desk/refund_desk/prompts/writer_v1.md": "a78019a47f7aafda6d839d1503307bed08192c0c080d42848015cf8af2211108",
+   "workflows/refund_desk/refund_desk/steps.py": "a3ec80b948511ce7a376773369cb0ce26de5d009f4295734a8ca387fe099fe41",
+   "workflows/refund_desk/refund_desk/store.py": "23293c974154c440e2441ec649a6a8f87a15033a3f7461cbe59b248eb417d212"
+  },
+  "n_tasks": 10
+ },
+ "metrics": {
+  "M1_detection": {
+   "k": 10,
+   "n": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ]
+  },
+  "M2_clean_runs_with_findings": {
+   "k": 1,
+   "n": 10,
+   "rate": 0.1,
+   "ci95": [
+    0.018,
+    0.404
+   ]
+  },
+  "M3_top1": {
+   "k": 10,
+   "n": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ]
+  },
+  "M3_top3": {
+   "k": 10,
+   "n": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ]
+  },
+  "M4_origin_confirmed": {
+   "k": 9,
+   "n": 10,
+   "rate": 0.9,
+   "ci95": [
+    0.596,
+    0.982
+   ]
+  },
+  "M5_innocent_refuted": {
+   "k": 10,
+   "n": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ]
+  },
+  "M6_completion": {
+   "k": 20,
+   "n": 20,
+   "rate": 1.0,
+   "ci95": [
+    0.839,
+    1.0
+   ]
+  }
+ }
+}

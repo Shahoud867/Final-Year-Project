@@ -1,0 +1,4985 @@
+{
+ "entries": {
+  "038a456f6fa055448ef8b2756e7abb68b8b6a6e596a5976b06e941deff468e20": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17250,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $3047.67 to the original payment method, PayPal. You should receive the full refund within 3-5 business days.",
+    "tokens_in": 130,
+    "tokens_out": 34
+   },
+   "last_user_message": "Refund amount: $3047.67\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "04025536119e1e68c3277235132e7e6bc12c8ea76e0ccbeb14f8928693938fc1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13719,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.77, 241.9], \"refund_amount\": 3047.67}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.77\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "052e5aa97e23f79d18bbf4270960cd38e1c41bdb367769ebab75cebbb5d1d3d6": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 3702,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.48 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "0624759c9e14d4dac24434f6b81fa4b26102e32af532aa2c79fd184950303d77": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4532,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1201.30, which will be returned to the original credit card used for payment.",
+    "tokens_in": 131,
+    "tokens_out": 26
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "06787196554078bbab4d244dfef4097c4c80c15c4f3baab316c0080d9b3be206": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4671,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.16 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "06d789c8f5c4ba20f84ae1194cff9e024e914ac2f0bbdde408ae6644140f7861": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12312,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [267.07, 155.99], \"refund_amount\": 423.06}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 267.07\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "09be87d63081c6cf18e62fb381905c681ee8c0e225128bf0fa97a9adfaf93610": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4125,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $661.98 to the original gift card associated with your account, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $661.98\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "09f12f5716f617c3d2e1656ae0068e480dc09c1379886c4efe9cc3cdf595e839": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 11577,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.58, 233.9], \"refund_amount\": 281.48}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.58\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "0abb84e56d2357fc7fe1549e8d77a770f4e792c116012c43d7f1a940b884c366": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12985,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [93.76, 261.4], \"refund_amount\": 355.16}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 93.76\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "0b2b029aadfabaf96fd40a32f833421cd84a019cf1b9b52b5e35601d8a0af886": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12812,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.58, 233.9], \"refund_amount\": 281.48}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.58\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "0b6b8ab59378c6dc6cd7d592afd52b959b5f0c8a8cf4dfaf65b090ac7dde2fde": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12858,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [93.76, 261.4], \"refund_amount\": 355.16}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 93.76\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "0f14465c9fb02190c1cae9dcf487d7fc655c5d44899fc8edf262ad59f2f6ead9": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 21764,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.72, 232.49], \"refund_amount\": 376.21}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.72\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "1054bc792e21694ae01a08f5091e4745f33dabf6ad7054ba202ecd1ae3b4b75a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19812,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.72, 232.49], \"refund_amount\": 376.21}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.72\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "1113afe138b1f07cac495c8d84019841b942cc4b58c7f63b66414677df9e229a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12781,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.03, 209.95], \"refund_amount\": 661.98}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.03\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "11c67ceab1b1a0cff17667d68be1e190384756a7a83a8598344ee42904e4a8b0": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15921,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.47, 232.49], \"refund_amount\": 375.96}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.47\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "124e74b520287ae5ecd4c7591472502bd9326953681ac875ab3ed0ba7ff25132": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13452,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.41 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.41\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "12be23507728cf934cae62fb904c6e61c9308ce0bf3a5dfa8c59cfa3be50c31d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13719,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.30 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "15800616d819f14b28c80bc1ce808b737f274008bd201bceb932a760cf93c26a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13766,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1052399\", \"item_names\": [\"Tea Kettle\", \"Makeup Kit\"]}",
+    "tokens_in": 122,
+    "tokens_out": 26
+   },
+   "last_user_message": "Please return the Tea Kettle and the Makeup Kit from order #W1052399.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "165c1761cee6746858354041cbfd97e41f3d44c413945042935c4c1480c6d4cd": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 11530,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $414.24 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $414.24\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "170ea8119611f240193c2a4f407e8b8ffb5d23937ab9bedcf5aa17fe1fc542b1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 3875,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.30 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "170f14a3ac982d816978d627e257fe655ccdb9c7ce0fa21f9867d7bc8bb441b7": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18140,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.83, 233.9], \"refund_amount\": 281.73}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.83\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "17809851b9fbd314057d0e186073800d326726e4dc73d5980766a1244711801a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13516,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1201.55, which will be returned to the original credit card used for payment.",
+    "tokens_in": 131,
+    "tokens_out": 26
+   },
+   "last_user_message": "Refund amount: $1201.55\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "1a3415950798573e0a9a8417d988eb4e2d9207fe96c12164b84e7b210e273623": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19421,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "1b769ffb721f7d29254e8f04d85753f698b4e3a0c2c571bc20749f5bbda12ba3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13219,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.67 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.67\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "1ef74156513e0dac4a754c07a67bdeaac70983f18c6185f1cd0bbbee4a47daa2": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15953,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [271.95, 263.11], \"refund_amount\": 535.06}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 271.95\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "1f3abb076236a676b9dd5b08b934af164400a59eeddab86e48157c5ab40d80cd": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13844,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.76, 1018.68], \"refund_amount\": 1166.44}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.76\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "1f8329943f9a92156bf9ce132ebdd985342570b91a67ed49f823843499ca438f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14952,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.28, 209.95], \"refund_amount\": 662.23}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.28\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "1fa7270c831ab590e519ccbdcbdc1bdb6a790b5a21614028013ae1e1a66ce901": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12108,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.37, 381.87], \"refund_amount\": 414.24}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.37\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "20dc58674a5bdde986641a94bea32dbba7c3cbba5151af378a7be41030b60c10": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12750,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.84, 942.71], \"refund_amount\": 1201.55}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.84\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "21e7b6ebd2f3c54e964fc7f44d0e1db615f7060c6f86c904d507d264ea479f4e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13467,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.84, 942.71], \"refund_amount\": 1201.55}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.84\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "23051066dd5e5eefcb2cf6ca6896672da92566d76089ce93e53ad46e2191fe47": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13250,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [266.82, 155.99], \"refund_amount\": 422.81}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 266.82\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "24ef7f4bc11662e8808f4481a33429d1a4926525b192421e768b401ce0b1fe76": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16578,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are pleased to inform you that a refund of $535.31 will be processed and returned to the original gift card used for your purchase.",
+    "tokens_in": 130,
+    "tokens_out": 34
+   },
+   "last_user_message": "Refund amount: $535.31\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "265e9fc1ecfb05681a27b87e338e4df9fe36a38630be55a5e3c423b4c77f8205": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12843,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.51, 1018.68], \"refund_amount\": 1066.19}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.51\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "26760a8211fa5f7c5fe9995feb69190330c537e90219bc807606471491d97756": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17858,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [272.2, 263.11], \"refund_amount\": 535.31}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 272.2\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "27f4481e8205ee315b92376f73277c06e1df2f7b5c2fff537af2ab9887c8186b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5171,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $375.96 to the original gift card associated with your account, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "2a6abd1105d91f9fcf9cd33eb0b08333670d243fd457e65bdfa3f5c75173132e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 3640,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.48 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "2c046f982b731d7f5821ec7f96f4e838269e31bb2f4a718be2aba782a08ecc28": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13782,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.55 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.55\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "2c2fac3ed2cc6f0635d75a5800d997745bd6ecfe9c41a38d37533680f98e5fc1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 3952,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $355.16 to the original gift card used for payment, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "2ca27712a25da7fb8b7f7bf00427913300fe2a882b6d68cc4bcef39d62c17b15": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17657,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.42 to the original PayPal payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $3047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "2ce378e1763ebe3f46558572d52b69eaff5066d772793b21a18f2fccf4965b55": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15125,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $413.99 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "2d7db94f59da3c53fd315f924715faf69cc5ecc6bbee6f7ad21a8af0ae5d660c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4266,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $413.99 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "2d8b6d0d14c1f5004c2fd76a3e497b1b8dc80a14116b7d43ba0b8ce545e9e211": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14672,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.37, 381.87], \"refund_amount\": 414.24}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.37\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "2dd6356b2f73d8a275f4fd30e7139fe66d5adcf6cc0ca1ada69eb62d13f8306f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18641,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.47, 232.49], \"refund_amount\": 375.96}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.47\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "30c96142b01d155e808cae7fc3cdf2989a0b71c47b3ddee906b6e93306588662": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 6078,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $375.96 to the original gift card associated with your account, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "317f21099ab48a8a4c5cae74c1bc06607e66d75fb7f3da20aef3ca264f723412": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16546,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.31 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.31\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "31928cd53446b5178ea20d8225dea6ca09c20e0983b7f2bbca162168650f4e57": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15953,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.28, 209.95], \"refund_amount\": 662.23}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.28\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "32bcda1df04076f4710c1329dfd92d925aa6e3519e7c4f2a1198d22be6e124e1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17843,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.73 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.73\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "3375bda224260825f232ae314a823de1d9332d0ed6dc1db4aaf452ea13b233d7": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12764,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [267.07, 155.99], \"refund_amount\": 423.06}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 267.07\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "33a6e223ac5ee876342c2c5af28b929fd54c3bf2f9929ae1d47952c6305b1140": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13031,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1166549\", \"item_names\": [\"E-reader\", \"Electric Kettle\"]}",
+    "tokens_in": 123,
+    "tokens_out": 24
+   },
+   "last_user_message": "Please return the E-Reader and the Electric Kettle from order #W1166549.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "34194bbb7c3e0fcd4a16b74d57ccf319c132d34deeb12c706aa75647e24473b6": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13546,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.67 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.67\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "34527605e008a06ee8616a719a1032222218401b33e0989de7772044a2b03e54": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13531,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.41 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.41\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "37424b82915cf5f350f6edc5a3ba563199ff216bc07b7b0cdf084de77e0d7c7e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12265,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.84, 942.71], \"refund_amount\": 1201.55}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.84\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "37780b6a713b02a5a3db0cf79c3ebbae0edf754640de435349f54a9f2d1eeaa2": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16828,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.72, 232.49], \"refund_amount\": 376.21}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.72\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "37f103cef79779094353313a46c2499cd23211f62d7bc796750f74a8cdb383d1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15733,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, \n\nWe are processing a refund of $355.41 to the original gift card used for your purchase. This amount will be returned to your gift card balance.\n\nSincerely, \n[Customer Service]",
+    "tokens_in": 130,
+    "tokens_out": 45
+   },
+   "last_user_message": "Refund amount: $355.41\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "3b69ff86b87214d41bbb27aa6e2d6fed3663d6faef6e28c78b20ab4e9cfeccb3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 21000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.31 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.31\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "3c00c27f2ae8ca74429a22f77ba728c1655ce5cb1dff43961c89d769e628cf73": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18718,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $281.73 to the original credit card used for payment, which will be credited back to your account within the next 3-5 business days.",
+    "tokens_in": 130,
+    "tokens_out": 38
+   },
+   "last_user_message": "Refund amount: $281.73\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "3d4d2877078c884b16164935187a78b11b1999c48bedbd18bcbfaf9e26ffb342": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13969,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $423.06 to the original credit card used for payment, which should be credited back to your account within a few days.",
+    "tokens_in": 130,
+    "tokens_out": 33
+   },
+   "last_user_message": "Refund amount: $423.06\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "3d61fb81c8501d6a4317254a866efdf6346c53412221239219a0a90a4e5db520": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13641,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $662.23 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $662.23\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "3d626b06cb82c60ba5b8b683fc8089da5a3f112151d5d7af941505825b60f36a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4921,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "3de468384cf8c391129fd40ef498ae42e6410cbb5da97f8fb1435a00da5761b4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14125,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.76, 1018.68], \"refund_amount\": 1066.44}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.76\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "3e2e59975b1187d994b74741674d13703e232fccd7f18328d7e9012d7a484c43": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5594,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $422.81 to your original credit card for the full amount due. This will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "3fa10d4812591f846bd591541de171758a999c9757f2764045b4de223aaf99d4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19812,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are processing a refund of $281.48 to your original credit card for your recent purchase. This amount will be returned to the same credit card used for the initial transaction.",
+    "tokens_in": 130,
+    "tokens_out": 41
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "429337324b04eba00937c9ed8c3abca43089dafb813d1b7d308f71043baba69b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19141,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.52, 241.9], \"refund_amount\": 3047.42}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.52\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "4350c9d08c04a4d7fdaea6c6f6422206ca2e0f31c4fb25c52b64e03edca83a1f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13828,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $661.98 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $661.98\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "4504d95721eee22dba4b9b0fdb254864543a43b149d7c5c1897b0bbd5d8148e0": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13141,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.37, 381.87], \"refund_amount\": 414.24}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.37\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "466925a9729497e7069fba3c0843f0293acc37364e669dc71908e0e227ea8d84": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14968,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1326557\", \"item_names\": [\"Water Bottle\", \"Tablet\"]}",
+    "tokens_in": 120,
+    "tokens_out": 23
+   },
+   "last_user_message": "Please return the Water Bottle and the Tablet from order #W1326557.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "46acf6f95129f1f41cf4965f7769b1cfcc4d55ef6465283d62c05b2db7c31c07": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17750,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $375.96 to the original gift card associated with your purchase. This amount will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "480f0c32e1a3577a81cd7326f87d55acfd203591238affaf611e274d28fa051e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.76, 1018.68], \"refund_amount\": 1166.44}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.76\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "4b5c65edb98b8700e7dbcc8859285ed06220e84429f9406fbfa00e7db00e01ad": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 8000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1066.19 to the original gift card associated with your purchase, and you should see the credit applied within a few days.",
+    "tokens_in": 131,
+    "tokens_out": 34
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "4bf2edf093daec0c124d45a6a8dbe8e149d9f812daf1f03c1948197c35721a8d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4062,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $413.99 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "4e1775a39053ce56474a0a50ea85a46954c931ccd6dfab7ba251e6d014b6c88c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13906,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $661.98 to the original gift card associated with your purchase. The refund will be returned to the same gift card balance.",
+    "tokens_in": 130,
+    "tokens_out": 33
+   },
+   "last_user_message": "Refund amount: $661.98\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "4e45a1b47393a50fe461cfc27451b3d551ce298aba9ff6c1adf72e73be4720c9": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15531,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are pleased to inform you that a refund of $423.06 will be processed and returned to your original credit card. We appreciate your business and hope to serve you better in the future.",
+    "tokens_in": 130,
+    "tokens_out": 44
+   },
+   "last_user_message": "Refund amount: $423.06\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "5014b1933329b5e426b0d5e60f84892abe2c32da506d9339d29268ee404e2e47": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16906,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.28, 209.95], \"refund_amount\": 662.23}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.28\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "50a9922d41cdaed4033bf6184e81836a0121405257a315e956929383e95036fb": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13406,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.41 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.41\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "51e51ed567c0573cbedf582ec7cec5e63663b0d517a576892af387656dc7fc7c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4375,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.16 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "534cb934fc6cd568ffe85903b40b8636120c9b14eda3a894639af81ca6e077d2": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 8155,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1066.19 to the original gift card used for payment, which will be credited back to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "5400d0adb9b8c8cb19f4a13604b4a1150efe06d2cbea3d7f42edc48d20c1e7da": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19734,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, your refund of $281.73 will be returned to the original credit card used for payment. We apologize again for any inconvenience and appreciate your business.",
+    "tokens_in": 130,
+    "tokens_out": 35
+   },
+   "last_user_message": "Refund amount: $281.73\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "55746db773811773bdfe0a82af68670e734193b187ba0e724c5d81e236b48726": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13936,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.03, 209.95], \"refund_amount\": 662.00}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.03\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "55902a25635d02719cac2e09231d6d2d735f58e7f4de690d0dec9d1c244aa992": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5891,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $375.96 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "5608e4eea859c0a74feb2e4c681c805dd9aee7202e6a86736a7533ba4cea7218": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13405,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.59, 942.71], \"refund_amount\": 1201.30}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.59\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "5625032df12370a60ae59863d1908bf419652cfb47a2fbdbc4b59676b54c54ba": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12718,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [94.01, 261.4], \"refund_amount\": 355.41}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 94.01\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "5834f8c1a4b97aa8664a60947ffff62c998781e3e173b91bf50b9fee3d99664b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15578,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1166.44 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1166.44\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "5886cb790ef566a1b0e4d8b0a418d15b032c308e82c225c0a80717a4ba3c705f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15233,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $662.23 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $662.23\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "58ccfb61a640185d06c48af512f6241488d405df266a38f1331720745981e6f4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12937,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.12, 381.87], \"refund_amount\": 413.99}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.12\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "58f0ebe836c92b224421004daccb8d963b2aaa7f9891d8a912678d3d65d69633": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5671,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.06 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "5919be228e7b7db0622e58aaaa30914a6f05e07a0177622b98d307d5b2ef2e92": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5171,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "5aa116d398f941e0ba0c33fc88d1c1d3c0db5d636e0f82ad05e0af26461f438c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17828,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $3047.67, which will be returned to the original PayPal payment method. You should receive an email notification once the refund has been successfully processed.",
+    "tokens_in": 130,
+    "tokens_out": 38
+   },
+   "last_user_message": "Refund amount: $3047.67\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "5c0340b496a952685154999a97e9efac929f6df75123dbd9418175a13247b48f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 6766,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $4047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $4047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "5d189a584c6ce5481117a4d188e60be5d38884b41b29e652a70e1f1bbfc36d2e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13405,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [267.07, 155.99], \"refund_amount\": 423.06}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 267.07\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "5d726de1bfad711d10ae82a3c4b0171db36a66a185ea50ccb675996a74a85f6f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [94.01, 261.4], \"refund_amount\": 355.41}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 94.01\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "5da0382891df80231236bf549bf68b1981b40fb4dc199a5c933654a18219f658": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4905,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $4047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $4047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "5e646c45e893a5e134f0f855d1339f6afb74fdc8569f36930b56905c47cbde14": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16109,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.83, 233.9], \"refund_amount\": 281.73}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.83\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "5eb69989c012b957427fff6b510ad5af109d6abca78862876b3f72560317afdd": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 35562,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [266.82, 155.99], \"refund_amount\": 422.81}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 266.82\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "5f565110a527b7959776a3e8ca15e78d38e06cc9e6a94677432f590a514b7c0a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 6202,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1066.19 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "6241a536e85ee74a0077f38ebd29742638abf3350f4f2f2b19a0faedb176069b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 11750,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1504875\", \"item_names\": [\"Notebook\", \"Smart Watch\"]}",
+    "tokens_in": 120,
+    "tokens_out": 23
+   },
+   "last_user_message": "Please return the Notebook and the Smart Watch from order #W1504875.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "6419da0dc1a043df3a4d98a53d29ef384e52259e26ac86635433c2c4183f6b1a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18530,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.72, 232.49], \"refund_amount\": 376.21}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.72\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "64ff0ceffc72c0b8145ab2f8bf516c2ca406c2fdccfc017bd032803b79179330": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13250,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.30 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "65110a4a9411987f961d1e4d8bf75659099d7197385e709d45fbb5f2d0da80ff": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5155,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $375.96 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "65c05e5deacf358be2ede88a836686c3d0a86f1884788f0a89c712080ea99fe3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5967,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $422.81 to your original credit card for the full amount due. This refund will be returned to your account shortly.",
+    "tokens_in": 130,
+    "tokens_out": 32
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "6836342fa09bfc1e00553656637309494ee43a03842a314c418afa05007d5fa2": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 20890,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1341845\", \"item_names\": [\"LED Light Bulb\", \"Mechanical Keyboard\"]}",
+    "tokens_in": 123,
+    "tokens_out": 26
+   },
+   "last_user_message": "Please return the LED Light Bulb and the Mechanical Keyboard from order #W1341845.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "69381527d537790e56286171b2c9bc6ec28a6a2b1075c0404f5387b4db278ea2": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19733,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.52, 241.9], \"refund_amount\": 3047.42}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.52\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "6bce65920dc1275f3dc66de16d9e10bbc7aaa220c57543f996a0017c373eb1f0": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17407,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1335809\", \"item_names\": [\"Espresso Machine\", \"Hiking Boots\"]}",
+    "tokens_in": 122,
+    "tokens_out": 25
+   },
+   "last_user_message": "Please return the Espresso Machine and the Hiking Boots from order #W1335809.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "6c4a66cdd9f356da4aae3e1c3bf0ce2e261e67e3b04a115648fc38dcbf443701": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 6421,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $422.81 to your original credit card for your recent purchase. This amount will be returned to the same credit card used for the original transaction.",
+    "tokens_in": 130,
+    "tokens_out": 37
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "6d3f293e3a583cdb160b6412c065ec155bef401148edf337da6db493ddcd5fdb": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4171,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $661.98 to the original gift card used for payment, which will be credited back to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $661.98\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "6e7e9cc9c7c6e9e2bdf2a2836b2ceb593c4b3ca004d54935eb51061e5e987c7d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13766,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.77, 241.9], \"refund_amount\": 3047.67}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.77\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "6f1d75153f896e7b9754483cc44bdbde9b63e579628002d78c7bce320cc3727d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4812,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $422.81 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "6fa3c16b36e3cb16e177687e01cc7725b9f2fb8a03aeb6261f6c9a1d681eee9b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14500,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $422.81 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "70bb49f208103f740462ddd3704ebb3faebac9db5cc09bbdc19b0875658f4cb8": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16250,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.83, 233.9], \"refund_amount\": 281.73}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.83\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "71609a2c33b628d6843380090f4ab1be9fdb4dfa919cf2cc8bb0ae64045e151f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16766,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [271.95, 263.11], \"refund_amount\": 535.06}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 271.95\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "71b67b9baf6075ab3a35602abfc1c13561b28aeff1219fb46c2e71d5bae76607": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5906,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $662.00 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $662.00\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "728e45806b08872a0e7c43821dfb12f80ab5825ff3ead57d97ceec9ff6a49f3b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14656,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1023987\", \"item_names\": [\"Luggage Set\", \"Pet Bed\"]}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Please return the Luggage Set and the Pet Bed from order #W1023987.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "73bc7066d75dfd0aae0517621c6917719524299c265c49ea9495b1243f342cc1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14062,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.28, 209.95], \"refund_amount\": 662.23}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.28\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "753c3a12bd79af08f81896a44892aaf3253ffc1d52987732f875984a105b1641": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16203,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, your refund of $662.00 will be returned to the original gift card used for payment. We apologize for any inconvenience and appreciate your business.",
+    "tokens_in": 130,
+    "tokens_out": 34
+   },
+   "last_user_message": "Refund amount: $662.00\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "76127fab5711430d4f8b5d4e1e630b8ca0be6d4c53f74f6c3e50edb73958cc8f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 11797,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.48 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "7636cb843b60df2c74dcfaae5fd9b4a1fb47ba43a3b2c12bf80a7c87f68aded3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14406,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are processing a refund of $1201.30 to your original credit card for the full amount due. This will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 35
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "76f633c466a55005b3212c871165e4b8b78a47ff69a20e4a66cd6aa393926240": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13062,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.28, 209.95], \"refund_amount\": 662.23}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.28\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "776b6c0a8d8aec57b5c647f830915cdc11a2ee7ded681037b22b3e7c861a9493": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15125,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.83, 233.9], \"refund_amount\": 281.73}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.83\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "792d5ccbd92d6fcaf89079d6ae2660802488bf1d2545f35ce698dbb49094d65e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14483,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, your refund of $422.81 will be returned to the original credit card used for payment. We apologize again for any inconvenience and appreciate your business.",
+    "tokens_in": 130,
+    "tokens_out": 35
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "79b862ef5b3ae9fe78e49fe0a59778f9cecb886417151e354e8c1d2c28728912": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4984,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1066.19 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "7ae19a540f97430d1664e677e282a4684f154920813b4f7a663b10f60e9c6d52": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 3859,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.48 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "7bb4fb9f2461ae2c3b4e25be9a2612cd8a066ebe90aa0500ca35731d9889a58d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17390,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1523776\", \"item_names\": [\"Makeup Kit\", \"Smart Thermostat\"]}",
+    "tokens_in": 122,
+    "tokens_out": 25
+   },
+   "last_user_message": "Please return the Makeup Kit and the Smart Thermostat from order #W1523776.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "7c760c4e83889d63d1595c3564c61c4aa565a1ebaf7cc360ebf07d299acf9719": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15343,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.77, 241.9], \"refund_amount\": 3047.67}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.77\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "7cb01ff808cbe22ef0837ef56cecf0ea50ecfe67fba7f5ca22e46092a28bd2a3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13734,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $414.24 to your PayPal account, which should be credited back to you within the next 3-5 business days.",
+    "tokens_in": 129,
+    "tokens_out": 33
+   },
+   "last_user_message": "Refund amount: $414.24\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "7fa8db13e2b3ccc7c21c3929504503ea35ccbb0484d962f9e7b056bc493b3fc3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15547,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $376.21 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $376.21\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "803691c1b46d7eb0fe815c0f73f0f1978b1116f83fd3c4dd83c561ece2a91f12": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17640,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [272.2, 263.11], \"refund_amount\": 535.31}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 272.2\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "809f268ff17858cd4e7074a5a56cc987500965f52e9143bbf5a27cf02b8e0696": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 11796,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.48 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "81a77d99891f7c306c34647f9f64e1844a3b7700fe10b8c4d7600efad699fa13": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 21328,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are pleased to inform you that a refund of $1066.44 will be processed and returned to the original gift card used for your purchase. We apologize again for any inconvenience caused and appreciate your patience as we complete this transaction.",
+    "tokens_in": 131,
+    "tokens_out": 52
+   },
+   "last_user_message": "Refund amount: $1066.44\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "837a4836798bc10d47a0ad0edab6769bc194a89fa4d7ecc6c20379aef2f1c60f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14875,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $662.23 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $662.23\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "8383a8920ed199cd0485c7f99f928a7b18376c2871fe0608978604052c9fac63": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5875,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $375.96 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "8426d4ea7ae2c114affb0e29e1c43db45e8b6ef098cb3887f34800bf02fcb721": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19078,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.84, 942.71], \"refund_amount\": 1201.55}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.84\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "85b75799ff81e0665c0a6e3fa32eadc45da53a66669537329ccb1839bbb6a6d5": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13233,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.84, 942.71], \"refund_amount\": 1201.55}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.84\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "872c0e8f804f8b7d243c0f6322bd6a7bcd2969350f4fffd27ed049c7969359de": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14593,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We regret that due to the status of your order being pending, we are unable to process a refund at this time. Please note that refunds are typically available for delivered orders only.",
+    "tokens_in": 130,
+    "tokens_out": 37
+   },
+   "last_user_message": "Refund possible: no\nReason: the order is pending, and only delivered orders can be returned",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "8822573d1ebd389db122f5309a6625ae1b34b28e4360b66a73c6387f59f324aa": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13483,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.12, 381.87], \"refund_amount\": 413.99}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.12\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "88ecba6f04acf113ec40114cf598a1bdeee2ec0542567fb77d6de49ccbeb4550": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4264,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.16 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "8a0608ef42be2693204dcbf57e5be8a8676f1209fc14dac5b39afe596f408f28": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5625,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.06 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "8ddf83eee6b18b9f13444cca3774b9fad5e95f08a64ce8c10c7b1b2336c15d6b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12656,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [94.01, 261.4], \"refund_amount\": 355.41}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 94.01\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "8dee6fe3e558d88c89aa0273c0671bff99d6b344ddee2b1221c0ebfb6831d2c5": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16734,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $422.81 to your original credit card payment method, which should be credited back to you within the next 3-5 business days.",
+    "tokens_in": 130,
+    "tokens_out": 36
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "8e2a95074821fa5368e8a29e22fd680a3c9cf16c815e5e9dc5e25c88be74ad06": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13437,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.55 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.55\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "8f1d8fee7aa81c46367ad5606b76eafc79d09f0027e31895e751e3bbc262ad59": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15453,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.84, 942.71], \"refund_amount\": 1201.55}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.84\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "8f6b5c0110aaf474db189b09aca6c0579427873a253c1cfa704dba6604b0f2d9": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14203,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.37, 381.87], \"refund_amount\": 414.24}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.37\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "8fa361a8a78c1282fd6e8cbc9634425f80b7320967dbc739a5ac5cda7e05667e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13656,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.76, 1018.68], \"refund_amount\": 1166.44}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.76\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "93e3997440ec5ad9f029f1d85606e4b1f10d6e7ab01b47f3821b87c1da7981b8": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4844,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.30 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "9405a36c79df31a8820070f47cb288c2f39f2e922fd37f7d5a5d7c227b1eaa30": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13656,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.41 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.41\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "9464845e67304d679430e3e300d741213cf2b19786ce0c9fa163e983f09529ee": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4327,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $355.16 to the original gift card used for payment, which will be credited back to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "960f180c858e60c5bb936a42761c4438beaf0c4fffa7b8d4777037144f3d58ca": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16500,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.73 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.73\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "96e7e48708af776686fd4998c00e2f9cb3b50f26ec49ac1b1dd288782a37660f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1006327\", \"item_names\": [\"Action Camera\"]}",
+    "tokens_in": 119,
+    "tokens_out": 19
+   },
+   "last_user_message": "I want to return the Action Camera from order #W1006327.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "9793a081883d302987faa98bdb61c0dc67e70502d8013d56236e7de65758cce6": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13500,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.76, 1018.68], \"refund_amount\": 1166.44}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.76\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "97b16c44989883badd1ea1a66c24303a880e217df2781a249fb2df64f75848cd": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14344,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1066.19 to the original gift card associated with your purchase. This amount will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 31
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "99dce2971dd6472b9f1ae3c997381784b5ab45a31f2ce80cb032af0cdf7cafdd": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14062,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $423.06 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $423.06\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "9b5a22aae9596e576514546f072e866da935ded0c7d0d577ad902d590086cd79": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14405,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $376.21 to the original gift card used for payment, which will be credited back to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $376.21\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "9b88518f923a1fde64f234155ca571623e7879733775cff7fce7deb07e9d3254": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14608,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, \n\nWe are processing a refund of $414.24 to your original payment method on PayPal. This amount will be returned to you shortly.\n\nSincerely, \n[Company] Customer Service",
+    "tokens_in": 129,
+    "tokens_out": 42
+   },
+   "last_user_message": "Refund amount: $414.24\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "9c1a36beee84f74f58cc8ff410fb8e53d644ab6cd0e9be633b1d83c3c8042881": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 7077,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.06 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "9e19ea28e7d51d16fa8782254c1bb24d27b78ce7ddaaa551b3ca3273c2c8ba3d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4687,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $413.99 to your original PayPal payment method, which will be returned to you shortly.",
+    "tokens_in": 129,
+    "tokens_out": 26
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "9e338616425eb55c2aaacc3e2a364106a7389e3f142727a953413adbfc7b960d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19171,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.06 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "9ed51c1ba9919e9d1f67504ac7efa9b019107a8d17806580eae838ce720313f7": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17967,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $3047.67, which will be returned to the original PayPal payment method. You should receive the full refund within 3-5 business days.",
+    "tokens_in": 130,
+    "tokens_out": 38
+   },
+   "last_user_message": "Refund amount: $3047.67\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "a0246ee86047a2c19bea82eb46cd8aa34ca3a9d147ce44cee7120fc2aa2c1688": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14125,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1166.19 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1166.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "a39452c33d84f75dc5d723372f2ff60456bdf938c6d83f61dfdb95b58b660555": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.48 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "a799ca3c376eccc30685a3a41ea4585e6c6f2579b96e2706477a6264f903125d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4125,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $661.98 to the original gift card associated with your account, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $661.98\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "a7d31eb3895ab12465aadb6b56baa8812eb5b56b4ef41c9db2d6351168db266f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12764,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $414.24 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $414.24\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "a83cb7e94f654151e420b55934744ae96718da9de47721bfb5aa4ddd67ffafc2": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 24983,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, your refund of $535.06 will be returned to the original gift card used for payment. We apologize for any inconvenience and appreciate your patience as we process this refund.",
+    "tokens_in": 130,
+    "tokens_out": 39
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "a93b8ff2f67d6cce717a458f04f1247efad027beba570b8d706941cdcc9bdea4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15108,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are processing a refund of $4047.67 to your original PayPal payment method and will return the funds shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $4047.67\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "aacd556aedf2a020045f34313aec4f57f0dd0b830d0c0192347b4b797ecc9bd4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5062,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.16 to the original gift card associated with your purchase. The refund will be returned to your gift card balance shortly.",
+    "tokens_in": 130,
+    "tokens_out": 33
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "ab2cd2956d2cb519dea991d87086ca42fe5628654b6620f79273bf05ffc9be02": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 11889,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1106948\", \"item_names\": [\"Laptop\"]}",
+    "tokens_in": 118,
+    "tokens_out": 19
+   },
+   "last_user_message": "I want to return the Laptop from order #W1106948.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "ac4167b9a5a7bfb94dd32f85523bb2d4b25764fe5467cdf3f669c8828556d918": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [267.07, 155.99], \"refund_amount\": 423.06}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 267.07\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "ac5470fea4f6980803d9190e83a828b89454953ab68704688032fa194d9b52e3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14203,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.51, 1018.68], \"refund_amount\": 1066.19}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.51\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "ad1fa65e2b7d6fbb42471ab87cf75528090bce2d273a4a926384a1a9daeed56b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13889,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $414.24 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $414.24\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "ae65c30a48430f0634c53ad12974b940ff67900605e77d5511b078f6f1622bce": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 23625,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.31 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.31\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "af7b2c335ef22be8727eaae38bdccdf3d0171788dfdc124b8de3b4e347d86bc8": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 21203,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $376.21 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $376.21\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "b532bbf51076b6712b430bd195f2b317b41505d62a8dfac281b3be07dc1bd5fb": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13375,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $423.06 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $423.06\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "b5c35c1847f599ad8349380e67c11470fe98ca7232dfe43d161b95ad580e5187": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5469,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1066.19, which will be returned to the original gift card used for payment.",
+    "tokens_in": 131,
+    "tokens_out": 26
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "b5f0692b6470acf19515b39d2326e88f338690aff4308b7d1adfb1ff59cf5328": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16187,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1519594\", \"item_names\": [\"Electric Kettle\", \"Wireless Earbuds\"]}",
+    "tokens_in": 124,
+    "tokens_out": 27
+   },
+   "last_user_message": "Please return the Electric Kettle and the Wireless Earbuds from order #W1519594.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "b6a1889e50535aaac0b06fb0c6206c3c54434e62cb6db4109ab10cfd2edfc33c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13437,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.51, 1018.68], \"refund_amount\": 1166.19}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.51\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "b6cf0248a3228e96dd8a4c962f2beb8e5b06d43c0e6381a115b124ea802ebb79": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13657,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1166.44 to the original gift card used for payment, which will be credited back to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1166.44\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "b7149201f0d20375482b845adda00747213f0cb6a84bf779437b8d4e36ff8a5f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18234,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $375.96 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "b76a0519d15059ccb3b5099768199720de992ec40988c09cc88622398698335b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13844,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.72, 232.49], \"refund_amount\": 376.21}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.72\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "b787b98cb1111e8fa582f4bb48320c9492264f683c1bd15dee80da86362a171e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15875,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [272.2, 263.11], \"refund_amount\": 535.31}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 272.2\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "b86f45b1b616dd2560701c554c17e91093268030fd0543c945b32d14151e0f40": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12797,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [94.01, 261.4], \"refund_amount\": 355.41}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 94.01\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "b8efabf3a94502f2c67fa65b9c67e1dbf0366291f4cb9005b0cf631843603a7e": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19750,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are processing a refund of $375.96 to your original gift card for your recent purchase. The refund will be returned to the same gift card used for the original transaction.",
+    "tokens_in": 130,
+    "tokens_out": 41
+   },
+   "last_user_message": "Refund amount: $375.96\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "b9ce1e32bcd89af4469fc6bf3ebe4cba4ae01aada7e662cbe179a117019b2c04": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 21187,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [272.2, 263.11], \"refund_amount\": 535.31}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 272.2\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "bb6aaae3303ad03876dee273a26c71dfdc163e545a2633da6804474ca3a3bc46": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16422,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1166.44 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1166.44\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "bbbadab20eb5e18c8c873027ddcaab31bff10596c96b835a328e1c1999a8d89f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17000,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.83, 233.9], \"refund_amount\": 281.73}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.83\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "bbbdab4f8d043b58240003a56907c9f91b6f47e320395fc3160704fcce3fba7f": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12453,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.37, 381.87], \"refund_amount\": 414.24}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.37\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "bd1f024976b53b9a63b2df709032e37ffb91250f0d89f489ed1bb119287d13be": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14093,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $662.23 to the original gift card associated with your purchase. This amount will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $662.23\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "bf0291f9bc4ae305e8d97b770c3eb77c656e9f8bd6150191823216a3d4e67e0c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 17530,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $376.21 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $376.21\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "c13e20e6ae84bb6971bb1f8f5007d9f0c14fdfb3f9854716d584dc8ff1e2d855": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4188,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.16 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "c3ce3c97298d209fd9db7a3197b110ac63db048a0937c342b591e124c5207c78": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14593,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1166.44 to the original gift card associated with your account, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1166.44\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "c3d794998731466b4f71b23afa2a450d4f311eac167c2d39947082339835a3a4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13375,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1166.44 to the original gift card associated with your purchase.",
+    "tokens_in": 131,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $1166.44\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "c3e03e8646f58021f72f7f5bf5de18cd762332b6d159ec718729271204c82cdb": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12860,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [94.01, 261.4], \"refund_amount\": 355.41}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 94.01\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "c487f898f5079a2ce7bd1490ac5e56701307dde850260d30d0fec8b419a67169": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18531,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $281.73 to the original credit card used for payment, which should be credited back to your account within a few days.",
+    "tokens_in": 130,
+    "tokens_out": 33
+   },
+   "last_user_message": "Refund amount: $281.73\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "c4c6f19cd6e420c63c4b2ad6045f1bb706cc296d2f0e936fed86e8dbbbba38fc": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18093,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [271.95, 263.11], \"refund_amount\": 535.06}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 271.95\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "c57150d5db38a2d5017f1c41a96df1e04fe7182fef7505becdbeb9cb14d3dd74": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5781,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.06 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "c69789cb085378e7a1f71f00a543d798a177db0018258ceb652d9303355faa91": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 27796,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are pleased to inform you that a refund of $376.21 will be returned to your original gift card. We will process the refund as soon as possible and it should be visible on your account within the next 24-48 hours.",
+    "tokens_in": 130,
+    "tokens_out": 54
+   },
+   "last_user_message": "Refund amount: $376.21\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "c6f4297e5dd6ac83c87f21225c658aa50c8db5bec027e34c255a96f07a71d1ae": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13297,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.59, 942.71], \"refund_amount\": 1201.3}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.59\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "c74647c1a2c8233a672441ba6656eab8ccd94f045f2e5a46d845989053a2b2ae": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13406,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.03, 209.95], \"refund_amount\": 661.98}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.03\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "c77724f470b86964c8372aad7b0e1e5153c23d1403a5347074a21137bb525556": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18265,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.58, 233.9], \"refund_amount\": 281.48}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.58\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "c7a1f0162bae66691ab7152b0f7e580320c01a4ed0de9a4dc24a21dec4fe24b9": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4047,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $661.98 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $661.98\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "cb6736bd624a836421c3cb5d5281e92864cb29a4a65733b5df63b1c8a12e5806": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15062,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are processing a refund of $1201.55 to your original credit card payment method. This refund will be returned to the same card used for the original transaction.",
+    "tokens_in": 131,
+    "tokens_out": 39
+   },
+   "last_user_message": "Refund amount: $1201.55\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "cb7210560273d1e5d181fd4a19281113e821a33bfe2660dad13773a9b1f570ea": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13577,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"order_id\": \"#W1067251\", \"item_names\": [\"Wireless Earbuds\", \"Grill\"]}",
+    "tokens_in": 122,
+    "tokens_out": 26
+   },
+   "last_user_message": "Please return the Wireless Earbuds and the Grill from order #W1067251.",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.0
+   }
+  },
+  "cbafb71e514114055395d9a7ee757292c9cd568dd2369c6a04cb12e179a3cb5c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15453,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $376.21 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $376.21\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "cc7de8f31b83a22cb2128becfc7016bdda3a8917abd1daeb4540315b8da8c05b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13547,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $355.41 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $355.41\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "cf1b9d28068274bb3e5d6f66e735007544bc867bb30fbb526671607ed5c738ac": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12141,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $423.06 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $423.06\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "d02055cae41cc83c616758db5d51e4104cbb1bf865ee9f69181f355ecb66d2ce": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15640,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are pleased to inform you that a refund of $413.99 will be processed and returned to your original PayPal payment method. We appreciate your business and hope to serve you better in the future.",
+    "tokens_in": 129,
+    "tokens_out": 45
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "d05e185601f7fbcc0d76818a6e464d45b3d20f485163f290b1e9abce9bbd30b4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4812,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $422.81 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $422.81\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "d11a7a7444e5c463a5f20f2d0edf53d7c58d3530ad66cd753023e7a1d4bc7fb6": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5047,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $413.99 to your original PayPal payment method, which will be returned to you shortly.",
+    "tokens_in": 129,
+    "tokens_out": 26
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "d1fb65fdeb781a499f7f6acdcc9253ca0fdb8871826116812083dbf4622cf902": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13250,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [94.01, 261.4], \"refund_amount\": 355.41}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 94.01\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "d2f577f26fecb593ca03a238811eebf75635a958962e80b1580a0b3301a99008": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12437,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [267.07, 155.99], \"refund_amount\": 423.06}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 267.07\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "d4d6c8bfa5ef00b6b1efe589d5b42105718bb378595590eae89b18e2ac010406": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18437,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [272.2, 263.11], \"refund_amount\": 535.31}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 272.2\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "d5874a689191f2ff90f05d7958ba5f4ea8e0aed88184189e7e8a78fa61f0d6e4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12905,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.55 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.55\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "d7482f03e02009822535d0b736f2c873c79b15b1658529f8f807b441b5c997b7": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4094,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $661.98 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $661.98\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "d8a2b9912cba3bda731443b47f053d9e94df1fc90f35c2eb75fbf74134ee5996": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15687,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $662.23 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $662.23\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "d9062b77972d02b542ce0645a1797796960ff9fd9f2fb61d58f10e60434d9131": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5281,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.06 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "da5835141a060debfd5f017d5c97a8a091466d2fb7c952fb6ab3519441a0daff": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 64483,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [258.59, 942.71], \"refund_amount\": 1201.30}",
+    "tokens_in": 120,
+    "tokens_out": 25
+   },
+   "last_user_message": "Items to refund:\n- Wireless Earbuds: 258.59\n- Grill: 942.71",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "dd922339d81452c5f5de5637b13e189463b1eecb13080daa06ce39bff0a003bb": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4108,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1201.30, which will be returned to the original credit card used for payment.",
+    "tokens_in": 131,
+    "tokens_out": 26
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "de59c1a110fad279970a4c63dc8a2a27b2bee677102ebf8ca5568b17b77ef048": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19827,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.31 to the original gift card associated with your purchase. This amount will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $535.31\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "df8594ee2316e0b09aba5e51a143689d34f7d34585150a844b9a6ba9cf098b25": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 12843,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [93.76, 261.4], \"refund_amount\": 355.16}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Tea Kettle: 93.76\n- Makeup Kit: 261.4",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "df8a84352b810aba0f2eb17922603f03817d4dc5edf040468456fa0d9dd5032b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16233,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.77, 241.9], \"refund_amount\": 3047.67}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.77\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "dfe37f3ca793b16d894da42c3706c451be8d8f8c8d26bde6dad57331da68c5b1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13578,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.77, 241.9], \"refund_amount\": 3047.67}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.77\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "e0e4a0690f2cb4a2d51bdd0373b2842bedc6541ad2ebe10c209ad26e3e9c3d8b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14327,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [267.07, 155.99], \"refund_amount\": 423.06}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 267.07\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "e18f8d9a94fdad45525a57a5297c499d00225f0ea2991e2d4bfd0c6219325e42": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15828,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, \n\nWe are processing a refund of $1066.19 to the original gift card associated with your purchase. This refund will be returned to your gift card balance.\n\nSincerely, \n[Customer Service]",
+    "tokens_in": 131,
+    "tokens_out": 46
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "e2491a07abeb723311b8f6fa933a3fbaaf287b1b111e559093066ce837065e47": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14421,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer,\n\nUnfortunately, your order has been cancelled and we are unable to process a refund. Please note that refunds are only available for delivered orders and not for cancelled ones.",
+    "tokens_in": 130,
+    "tokens_out": 37
+   },
+   "last_user_message": "Refund possible: no\nReason: the order is cancelled, and only delivered orders can be returned",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "e25206e2e02058080e50738aff49d31e825682321c370800936b3dfaf00faced": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14422,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.77, 241.9], \"refund_amount\": 4047.67}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.77\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "e299ac772bd2f6a24d1d1f1bff2546d3a18a3b638b8a76446a1685c7e50cc62d": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14203,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [2805.52, 241.9], \"refund_amount\": 4047.42}",
+    "tokens_in": 121,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Espresso Machine: 2805.52\n- Hiking Boots: 241.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "e3eee6b864b68ce697ec1339674e471d085ed21f41b56b2f906ddfcb2cb70074": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14296,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are processing a refund of $355.16 to the original gift card associated with your purchase. This amount will be returned to your gift card balance.",
+    "tokens_in": 130,
+    "tokens_out": 36
+   },
+   "last_user_message": "Refund amount: $355.16\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "e4b4ab408c3a65b3b7bc87edd1bb89e170df3fa7027a0b8b091b3e43d0268fa4": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15672,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.06 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.06\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "e707fc5d2dd7cab51541335dad5cf998e5a3bf8b4ccfbb5f0cf53e51f75d6b9b": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 6577,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1000,
+    "temperature": 0.2
+   }
+  },
+  "e72db1630ac4ba29af2117af685f89720f12280c67c78ce97c0553c362fecda8": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4125,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1201.30 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $1201.30\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "e99fceabaf954ef73c37b843670912d512b13b7f08e8955b18f06e194106943c": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13766,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [452.28, 209.95], \"refund_amount\": 662.23}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Luggage Set: 452.28\n- Pet Bed: 209.95",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "eb5bfc3ab857702989d17eb92c10be59936cfab347bb2251519067d084650daf": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14812,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $414.24 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $414.24\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "eb959cc4cce29e9227840ef799948f16f689b74cb236fb4f481ac914728109da": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 21016,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.72, 232.49], \"refund_amount\": 376.21}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.72\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "ebbcf1ab88ee0046da3c66a2658f9aa4fb5fba08c1e703cb32115a0ed1543636": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 7587827,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.73 to your original payment method, which will be returned to your credit card account shortly.",
+    "tokens_in": 130,
+    "tokens_out": 28
+   },
+   "last_user_message": "Refund amount: $281.73\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1002,
+    "temperature": 0.2
+   }
+  },
+  "ebef5ea2fae2d5ee9325f4185c6178966d48eb24b3124f2c8b6cf6019d928154": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15265,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [266.82, 155.99], \"refund_amount\": 422.81}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- E-Reader: 266.82\n- Electric Kettle: 155.99",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "eca79751eb3987585b49b3640036de0404bda001c8805f5fcfa8c3f446ffd99a": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4358,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $413.99 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "ed16daf6af0e24a2e246b525f8e5e67d2008bfb6b8479e78463a3c16af5e43fd": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 13782,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $1201.55, which will be returned to the original credit card used for payment.",
+    "tokens_in": 131,
+    "tokens_out": 26
+   },
+   "last_user_message": "Refund amount: $1201.55\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "ef0ccc1d81cdafca268030c727c01abc7be968eb278893c387bef3e303dc3ce3": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 3953,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $281.48 to your original credit card payment method, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 27
+   },
+   "last_user_message": "Refund amount: $281.48\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "efe6dca5443a35436783c2d96f3f7833dac8cf11f6229d6ea1452e76956f3c35": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18094,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, we are processing a refund of $4047.42 to your original PayPal payment method and will notify you once it has been successfully credited back to your account.",
+    "tokens_in": 130,
+    "tokens_out": 37
+   },
+   "last_user_message": "Refund amount: $4047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "f2c543663319ad77b9755321e1de75bef98670ab4a913ac3d26c1c4a9660eb28": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 18750,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [272.2, 263.11], \"refund_amount\": 535.31}",
+    "tokens_in": 120,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Makeup Kit: 272.2\n- Smart Thermostat: 263.11",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "f3579c5ef005fd3a62284003ebe67c8ab76aabfc4d081501a0b74db1d6bdb623": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 19078,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.83, 233.9], \"refund_amount\": 281.73}",
+    "tokens_in": 121,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- LED Light Bulb: 47.83\n- Mechanical Keyboard: 233.9",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "f35d74d42d5d4340513123b9f0f74cee8bbce77a3a9d647af6a99df39671c2b9": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16656,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "Dear valued customer, your refund of $662.23 will be returned to the original gift card used for payment. We apologize for any inconvenience and appreciate your patience as we process this refund.",
+    "tokens_in": 130,
+    "tokens_out": 39
+   },
+   "last_user_message": "Refund amount: $662.23\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1,
+    "temperature": 0.2
+   }
+  },
+  "f531b9d0cb7fec6e1e812a48ecfda7dc432799786ba4c0ed2691e267f689e676": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5703,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1003,
+    "temperature": 0.2
+   }
+  },
+  "f562157cf8367c614eacdfea98d860501ba65c22d295af6e55d3e340fb11b0d1": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 4437,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $662.00 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $662.00\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "f5ce2b57de34b7eb77ef4ac479c6cc1d2da71ae2928e00dab16e2162dee9fd54": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14781,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.37, 381.87], \"refund_amount\": 414.24}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.37\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "f632fc075a81e56f647029a60c25ee658ad0d594a333592d29009007c1c0b012": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16610,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [32.12, 381.87], \"refund_amount\": 413.99}",
+    "tokens_in": 118,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Notebook: 32.12\n- Smart Watch: 381.87",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1501,
+    "temperature": 0.2
+   }
+  },
+  "f85b0d32f9c74446a16e21a9420b1e886f6d364e3f55fdf5a87d4afe4cb06732": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 22484,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [143.47, 232.49], \"refund_amount\": 375.96}",
+    "tokens_in": 122,
+    "tokens_out": 24
+   },
+   "last_user_message": "Items to refund:\n- Electric Kettle: 143.47\n- Wireless Earbuds: 232.49",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "f87831649def22942bc90f26c483c281a7221c2e60aa51126fd28bcfe0afb6ee": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15094,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $413.99 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 129,
+    "tokens_out": 22
+   },
+   "last_user_message": "Refund amount: $413.99\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "f8e7aa9a4e7475d1495ceafc9877e427fd68bf5b988bc9c6f96082635e3e2eff": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 5015,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $3047.42 to your PayPal account, which will be returned shortly.",
+    "tokens_in": 130,
+    "tokens_out": 23
+   },
+   "last_user_message": "Refund amount: $3047.42\nPayment method: PayPal\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "fbbf0b508a2fde8fd438cc82efa4d16143a23f7ca906d41964825808a84707ff": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 7843,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $1066.19 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 131,
+    "tokens_out": 30
+   },
+   "last_user_message": "Refund amount: $1066.19\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1500,
+    "temperature": 0.2
+   }
+  },
+  "fd44b7e5e361e6f93235c920ed4f0b65e495b708e4d975bfb0d4f552430f2daa": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 15921,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing a refund of $535.31 to the original gift card associated with your purchase, which will be returned to you shortly.",
+    "tokens_in": 130,
+    "tokens_out": 29
+   },
+   "last_user_message": "Refund amount: $535.31\nPayment method: gift card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1001,
+    "temperature": 0.2
+   }
+  },
+  "fd7d8643965961e722b053d5db9dc349d4e55e82dc9357d45e2074e253e7f266": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 16250,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "We are processing your refund of $423.06 to the original credit card used for payment, which will be returned to you within 3-5 business days.",
+    "tokens_in": 130,
+    "tokens_out": 34
+   },
+   "last_user_message": "Refund amount: $423.06\nPayment method: credit card\nRefund possible: yes",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": false,
+    "max_tokens": 160,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  },
+  "ff4b8dc9d7eddbad161872b1e814edc67e472a83047c3dd66ff48311fab57025": {
+   "completion": {
+    "extra": {},
+    "latency_ms": 14327,
+    "model": "llama3.2:3b",
+    "provider": "ollama",
+    "recorded": false,
+    "text": "{\"prices_used\": [47.76, 1018.68], \"refund_amount\": 1166.44}",
+    "tokens_in": 119,
+    "tokens_out": 26
+   },
+   "last_user_message": "Items to refund:\n- Water Bottle: 47.76\n- Tablet: 1018.68",
+   "model": "llama3.2:3b",
+   "params": {
+    "json_mode": true,
+    "max_tokens": 120,
+    "seed": 1004,
+    "temperature": 0.2
+   }
+  }
+ },
+ "format": "granite.cassette/v1"
+}

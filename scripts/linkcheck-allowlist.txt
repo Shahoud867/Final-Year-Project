@@ -18,3 +18,10 @@ archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::02-evidence-and-tr
 archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::03-market-and-literature-research/
 archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::04-poc-evidence/
 archive/proposal-phase/tracking/markdowns-index_pre-reorg.md::05-deliverables/
+
+# Added 2026-10-07.
+# Vite entry point of the Granite web app; a root-relative path that is correct for the dev server, not a file link.
+apps/web/index.html::/src/main.tsx
+# Frozen stage-0 deliverable (must not be edited). The target moved during the reorganization; it now lives at
+# deliverables/stage-0-proposal/proposal-documents/FYP_Scope_CCP_and_Implementation_Plan.md
+deliverables/stage-0-proposal/proposal-deck/Proposal_Defense_Package.md::../01-planning-and-scope/FYP_Scope_CCP_and_Implementation_Plan.md

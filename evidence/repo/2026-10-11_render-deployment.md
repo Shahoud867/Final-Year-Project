@@ -7,13 +7,14 @@ URL: https://granite-demo.onrender.com (public, no login; recorded mode, so no m
 | Service | `granite-demo` (Render web service, Docker runtime, free plan), created from the Blueprint [`render.yaml`](../../render.yaml) |
 | Deployed commit | `89bcd8a` on `main` ("docs(deliverables): finalize FYP-1 mid evaluation deliverables, evidence, and registers"); build and deploy took 1 min 4 s |
 | Installed by | Muhammad Noor, who is not the owner of the deployment code (handbook C.1.2) |
-| Screenshots | [Render dashboard, service live](2026-10-11_render-service-live.png); [the application at the public URL](2026-10-11_render-app-home.png) (header shows "server ok · recorded") |
+| Screenshots | [Render dashboard, service live](2026-10-11_render-service-live.png); [the application at the public URL](2026-10-11_render-app-home.png) (header shows "server ok · recorded"); [green smoke test](2026-10-11_render-smoke-test.png) |
 
 ## Checks run against the public URL (from Noor's laptop, Windows 11, Python 3.11.9)
 
 | Check | Command | Result |
 |---|---|---|
 | Smoke test, 13:59 UTC | `bash scripts/smoke-test.sh https://granite-demo.onrender.com` | `OK: run run_31642431598b completed with finding fnd_365dc3abe0bc hypothesized` |
+| Smoke test, repeated by Noor in his own terminal (Git Bash) | same command | `OK: run run_0b9a7fbdfffa completed with finding fnd_0da0e977fd73 hypothesized` ([screenshot](2026-10-11_render-smoke-test.png)) |
 | System test suite | `GRANITE_SYSTEM_BASE_URL=https://granite-demo.onrender.com pytest tests/system` | 18 passed, 4 skipped (the skipped cases start and configure their own server, so they cannot run against a hosted one), 144 s |
 
 ## Known limits of this deployment

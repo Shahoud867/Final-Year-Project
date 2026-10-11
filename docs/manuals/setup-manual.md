@@ -84,9 +84,23 @@ It checks health, the UI, and a recorded run that must open one finding. Expecte
 (cd apps/api && pytest --cov=granite_api && ruff check . && mypy granite_api)
 (cd apps/web && npm test && npm run lint && npm run typecheck)
 bandit -q -r packages/granite_core/granite_core workflows/refund_desk/refund_desk apps/api/granite_api -ll
+pytest tests/system                                   # black box: starts the real server, 22 cases
+python scripts/check_architecture.py                  # the core imports no web, database or network code
 python scripts/check_workspace.py && python scripts/check_links.py
-python scripts/export_trace_schema.py --check && python scripts/export_diagrams.py --check
-python scripts/check_traceability.py --check
+python scripts/export_trace_schema.py --check && python scripts/build_design_pack.py --check
+python scripts/build_test_docs.py --check && python scripts/check_traceability.py --check
+```
+
+To run every suite and write a dated results record into `evidence/reports/`:
+
+```bash
+python scripts/build_test_docs.py --run
+```
+
+The system suite can also test a server that is already running, for example a container or a deployed instance (cases that need their own server configuration are skipped):
+
+```bash
+GRANITE_SYSTEM_BASE_URL=http://127.0.0.1:8000 pytest tests/system
 ```
 
 ## 7. Re-record the model answers
@@ -103,7 +117,7 @@ python scripts/record_cassettes.py            # about 15 minutes, needs Ollama
 docker compose up --build        # then open http://localhost:8000
 ```
 
-**Status on 2026-10-07:** the Dockerfile has not been built yet (the Docker daemon was off on the authoring machine) and the CI container job has not run. Treat this section as untested until it has.
+**Status on 2026-10-11:** the image is built and smoke-tested by the CI workflow on GitHub (first green run 2026-10-09, see `evidence/repo/`). It has **not** been built on a team laptop yet (the Docker daemon was off on the authoring machine), so `docker compose up` itself is untested locally.
 
 ## Deploy a public demo (Render, free)
 
@@ -115,6 +129,20 @@ Prepared, **not yet done** (an account is needed and only a team member can crea
 4. Record URL, date, who deployed it and the smoke-test line in `docs/registers/deployment-record.md`.
 
 Recorded mode is the default, so no model key is needed. The free instance sleeps when idle and its database resets on restart; warm it up before a demo.
+
+## Continuous delivery
+
+Written on 2026-10-11 in [`.github/workflows/cd.yml`](../../.github/workflows/cd.yml); **it has not run on GitHub yet**, so treat it as untested until the first run is recorded in `evidence/repo/`.
+
+What it does once CI has passed on `main`: builds the image, smoke-tests that exact image, publishes it to the GitHub Container Registry (`ghcr.io/shahoud867/final-year-project`), then asks Render to deploy and smoke-tests the public URL. Pushing a tag such as `v0.1.0-mid1` publishes the image under that tag and creates a GitHub Release.
+
+One-time setup by a repository admin, after the Render service exists:
+
+1. Render dashboard, the service, Settings, Deploy Hook: copy the URL. In GitHub: Settings, Secrets and variables, Actions, new **secret** `RENDER_DEPLOY_HOOK_URL`.
+2. Same page, Variables tab: new **variable** `GRANITE_DEMO_URL` with the public address (no trailing slash).
+3. Keep `autoDeploy: false` in `render.yaml`, so only a commit that passed CI is deployed.
+
+Without the secret and the variable the deploy job prints "not configured" and passes; the image is still published. The team's working method (branches, pull requests, reviews, tags) is in [CONTRIBUTING](../../.github/CONTRIBUTING.md).
 
 ## Troubleshooting
 

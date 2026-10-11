@@ -27,6 +27,12 @@ As written in the plan: protected `main` (releases, tagged) and `develop` (integ
 
 At the time of writing the repository has branches `main` and `noor` and no `develop`; checked on 2026-10-09: `main` is **not protected**, there are no tags, and CI passed on its first GitHub run. Per-member pull-request evidence cannot be produced by an assistant; it must come from the members' own work. Record screenshots in `evidence/repo/` once the settings exist.
 
+## Revision, 2026-10-11 (proposed)
+
+Drop the `develop` branch. With three members and one deployment target, a second long-lived branch adds a merge step without adding a check: every gate (lint, types, tests, security, container smoke test) already runs on each pull request, and delivery runs only after those pass on `main`. The working method is therefore short-lived branches into a protected `main`, releases as tags. It is written out in [`.github/CONTRIBUTING.md`](../../.github/CONTRIBUTING.md), with a [pull request template](../../.github/pull_request_template.md) and a delivery workflow ([`cd.yml`](../../.github/workflows/cd.yml)).
+
+Still true on this date: `main` is not protected, there are no pull requests and no tags, and the nine commits since 6 October come from one account. Branch protection on a private repository needs GitHub Pro (free for students through the GitHub Student Developer Pack) or a public repository; the team has to choose one. Until the method is used, this ADR stays "proposed".
+
 ## Evidence of understanding (handbook C.14.1)
 
 *To be written by the owner in their own words: explain the decision, justify it against the main alternative, predict what breaks if it changes, and say how you would modify it. This draft was prepared with AI assistance (see `docs/registers/ai-usage-log.md`) and is not evidence of understanding until the owner has written this section.*

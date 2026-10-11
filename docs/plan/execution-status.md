@@ -2,10 +2,28 @@
 
 | | |
 |---|---|
-| Date | 2026-10-07 |
+| Date | 2026-10-11 (sections 1 to 4 were written on 2026-10-07 and 2026-10-09; section 0 is the current state) |
 | Companion to | [`master-plan.md`](master-plan.md) (the roadmap) and the Mid-1 rubric (`references/university/`) |
 | Rule | A row says **Done** only if it can be shown today by a command or a file. Everything else says what is missing |
 | Written by | The AI assistant that did the implementation (see [`ai-usage-log.md`](../registers/ai-usage-log.md)); not yet reviewed by the team |
+
+## 0. Update, 2026-10-11
+
+The requirement-by-requirement status for the mid evaluation is now the [compliance audit](../../deliverables/stage-1-fyp1-mid/granite_compliance-audit_fyp1-mid_v1.0.md); where it and section 4 below disagree, the audit is current. Changes since 2026-10-09, all **uncommitted** on this date:
+
+| Area | Now | Evidence |
+|---|---|---|
+| Tests | **381 passing**: core 207 (97.5% lines), Refund Desk 49 (95.4%), API 71 (96.8%), system 22, web 32 | [Test results](../../evidence/reports/2026-10-11_test-results.md) |
+| Design artefacts (rows 12 to 15, 20) | **Done:** 21 diagrams and a data dictionary generated from the code, one interactive file | [Design pack](../diagrams/design-pack.md) |
+| Comments and naming (row 16) | **Done:** docstring and naming rules enforced by ruff; conventions on one page | [Coding standards](../manuals/coding-standards.md) |
+| System-level tests (row 21) | **Done:** 22 black-box cases over real HTTP with a generated catalogue | [Catalogue](../manuals/system-test-cases.md) |
+| CI/CD (row 19) | CI steps added (system tests, architecture check, test catalogue); CD workflow written. **Neither has run on GitHub** | [`ci.yml`](../../.github/workflows/ci.yml), [`cd.yml`](../../.github/workflows/cd.yml) |
+| Panel actions, milestone log (rows 26, 27) | Rebuilt: Form 10 layout, re-checked statuses; work breakdown with recovery plan | [Form 10](../registers/form-10-panel-actions.md), [milestone log](../registers/milestone-log.md) |
+| Walkthrough (row 28), repository evidence (row 30) | Study guide and an honest repository record written. **Still not done by the members** | [Walkthrough](../manuals/code-walkthrough.md), [repository evidence](../../evidence/repo/2026-10-11_repository-evidence.md) |
+| Features and inputs | Feature catalogue and an in-app guide page | [Feature catalogue](../manuals/feature-catalogue.md) |
+| Defects | D-21 to D-24 found and fixed, D-25 opened; FR-SEC-01 still not met (decision recorded in D-07) | [Defect list](../registers/defect-list.md) |
+
+Unchanged and still true: nothing is deployed, `main` is not protected, there is no tag and no pull request, and no member has demonstrated understanding of the code.
 
 ## 1. Bottom line
 
@@ -27,7 +45,7 @@ A working vertical slice exists and runs on the author's machine: run a five-ste
 | Lint | ruff clean on all Python; ESLint clean on the web app | `ruff check .`, `npm run lint` |
 | Types | mypy strict clean (three packages); `tsc --noEmit` clean | `mypy granite_core` etc. |
 | Security scan | bandit: no medium or high findings; `pip-audit` and `npm audit`: no known vulnerabilities | see the setup manual, section 6 |
-| Generated files in step with code | trace JSON Schema, state machine, data flow and ER diagrams | `python scripts/export_trace_schema.py --check`, `python scripts/export_diagrams.py --check` |
+| Generated files in step with code | trace JSON Schema, state machine, data flow and ER diagrams | `python scripts/export_trace_schema.py --check`, `python scripts/build_design_pack.py --check` |
 | Workspace hygiene | 0 structure problems; 0 broken links | `python scripts/check_workspace.py`, `python scripts/check_links.py` |
 | Smoke test on a live server | passed (run completes with one finding) | `bash scripts/smoke-test.sh <url>` |
 | Clean install check | three packages installed non-editable in a fresh environment with container-style settings: UI served, run completed | repeated by hand; not automated |

@@ -142,7 +142,7 @@ granite_<artifact>_<stage>_v<X.Y>.<ext>        submitted and frozen
 granite_<artifact>_<stage>_draft.<ext>         in progress (one draft per artefact)
 ```
 
-`<artifact>` is one of `report`, `slides`, `poster`, `manual`, `forms`, `code` (release archive), `demo` (recording), `handover`. `<stage>` is `fyp1-mid`, `fyp1-final`, `fyp2-mid`, `fyp2-final`.
+`<artifact>` is one of `report`, `slides`, `poster`, `manual`, `forms`, `code` (release archive), `demo` (recording), `handover`, `design-pack` (the interactive design artefacts), `compliance-audit` (requirement-by-requirement audit), `evidence-sheet` (one-page index of evidence for the assessor). `<stage>` is `fyp1-mid`, `fyp1-final`, `fyp2-mid`, `fyp2-final`.
 Examples: `granite_report_fyp1-mid_v1.0.pdf`, `granite_slides_fyp1-final_v1.0.pptx`, `granite_poster_fyp1-final_v1.0.jpg`. The handbook also requires the poster's original Photoshop/Corel file next to the JPEG.
 
 ### 4.4 Exceptions

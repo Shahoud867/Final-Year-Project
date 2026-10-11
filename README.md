@@ -42,7 +42,7 @@ Open <http://127.0.0.1:8000>, choose **New run**, load an example and press Run.
 | [`data/`](data/) | active; `raw/` read-only | datasets, register and retrieval commands |
 | [`apps/`](apps/), [`packages/`](packages/), [`workflows/`](workflows/), [`tests/`](tests/), [`scripts/`](scripts/) | active (code) | product code, libraries, demo workflows, tests, repository tooling |
 | [`references/`](references/) | read-only | handbook, rubrics, templates, papers, market sources |
-| [`deliverables/`](deliverables/) | frozen per stage | what was submitted or presented: `stage-0-proposal` ... `stage-4-fyp2-final` |
+| [`deliverables/`](deliverables/) | frozen per stage | what was submitted or presented: `stage-0-proposal` ... `stage-4-fyp2-final`. For the FYP-1 mid evaluation start at [`stage-1-fyp1-mid/README.md`](deliverables/stage-1-fyp1-mid/README.md) |
 | [`evidence/`](evidence/) | append-only | screenshots, recordings, UAT and interview records, exported test reports |
 | [`archive/`](archive/) | history | superseded and obsolete material, migration map |
 
@@ -60,6 +60,6 @@ Open <http://127.0.0.1:8000>, choose **New run**, load an example and press Run.
 python scripts/check_links.py     # broken relative links
 python scripts/check_workspace.py # naming rules and required READMEs
 python scripts/build_index.py     # regenerate docs/workspace-index.md
-python scripts/export_trace_schema.py --check && python scripts/export_diagrams.py --check   # generated files match the code
+python scripts/export_trace_schema.py --check && python scripts/build_design_pack.py --check   # schema, diagrams and data dictionary match the code
 python scripts/check_traceability.py --check   # requirement -> code -> test references are real
 ```

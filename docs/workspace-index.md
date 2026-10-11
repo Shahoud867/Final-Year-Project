@@ -1,8 +1,8 @@
 # Workspace index (generated)
 
-Generated 2026-10-07 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
+Generated 2026-10-11 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 611
+Entries: 591
 
 ## (repository root)
 
@@ -15,6 +15,7 @@ Entries: 611
 | `docker-compose.yml` |  |
 | `Dockerfile` |  |
 | `README.md` | Granite (F26-060) |
+| `render.yaml` |  |
 
 ## docs  (active)
 
@@ -32,14 +33,44 @@ Entries: 611
 | `docs/adr/adr-009-trace-schema-v1.md` | ADR-009: One versioned trace format for every run, replay and import |
 | `docs/adr/adr-010-git-branching.md` | ADR-010: Work on short-lived branches, review every change, release from main |
 | `docs/adr/README.md` | docs/adr: architecture decision records |
-| `docs/diagrams/architecture.md` | Architecture |
+| `docs/diagrams/activity-investigation.svg` |  |
+| `docs/diagrams/algorithm-design.md` | Data structure and algorithm design |
+| `docs/diagrams/architecture.md` | Architecture and structure design |
+| `docs/diagrams/attribution-algorithm.svg` |  |
+| `docs/diagrams/behaviour.md` | Behaviour design |
+| `docs/diagrams/call-graph.svg` |  |
+| `docs/diagrams/check-pipeline.svg` |  |
+| `docs/diagrams/component-diagram.svg` |  |
+| `docs/diagrams/data-dictionary.md` | Data dictionary |
 | `docs/diagrams/database-schema.md` | Database schema |
+| `docs/diagrams/database-schema.svg` |  |
+| `docs/diagrams/deployment-diagram.svg` |  |
+| `docs/diagrams/design-pack.md` | Design pack (Iteration 1) |
+| `docs/diagrams/dfd-context.svg` |  |
+| `docs/diagrams/dfd-level-1.svg` |  |
+| `docs/diagrams/domain-model.svg` |  |
 | `docs/diagrams/finding-state-machine.md` | Finding state machine |
+| `docs/diagrams/finding-state-machine.svg` |  |
+| `docs/diagrams/interaction-overview.svg` |  |
+| `docs/diagrams/investigation-flow.svg` |  |
+| `docs/diagrams/layer-diagram.svg` |  |
 | `docs/diagrams/README.md` | docs/diagrams |
-| `docs/diagrams/refund-desk-dataflow.md` | Refund Desk data flow |
-| `docs/diagrams/verification-sequence.md` | Verification sequence |
+| `docs/diagrams/refund-desk-dataflow.md` | Refund Desk data lineage |
+| `docs/diagrams/refund-desk-dataflow.svg` |  |
+| `docs/diagrams/replay-plan.svg` |  |
+| `docs/diagrams/run-sequence.svg` |  |
+| `docs/diagrams/structure-chart.svg` |  |
+| `docs/diagrams/use-case-diagram.svg` |  |
+| `docs/diagrams/verification-sequence.md` | Sequence diagrams |
+| `docs/diagrams/verification-sequence.svg` |  |
+| `docs/diagrams/vr1-decision.svg` |  |
+| `docs/manuals/code-walkthrough.md` | Code walkthrough |
+| `docs/manuals/coding-standards.md` | Coding standards |
+| `docs/manuals/demo-runbook.md` | Demo runbook: Mid-1 supervisory meeting |
+| `docs/manuals/feature-catalogue.md` | Feature catalogue |
 | `docs/manuals/README.md` | docs/manuals |
 | `docs/manuals/setup-manual.md` | Setup manual |
+| `docs/manuals/system-test-cases.md` | System test cases |
 | `docs/manuals/tool-manual.md` | Tool manual: using Granite |
 | `docs/meetings/README.md` | docs/meetings |
 | `docs/plan/execution-status.md` | Execution status |
@@ -51,9 +82,9 @@ Entries: 611
 | `docs/registers/defect-list.md` | Defect list |
 | `docs/registers/dependency-licence-register.md` | Dependency and licence register |
 | `docs/registers/deployment-record.md` | Deployment record |
-| `docs/registers/form-10-panel-actions.md` | Panel action register (A1 to A6) |
+| `docs/registers/form-10-panel-actions.md` | Panel action register (handbook Form 10) |
 | `docs/registers/form-13-genai-disclosure.md` | Form 13 — External Tool / API / GenAI Disclosure Sheet |
-| `docs/registers/milestone-log.md` | Milestone log |
+| `docs/registers/milestone-log.md` | Milestone log and iteration plan |
 | `docs/registers/README.md` | docs/registers |
 | `docs/registers/risk-register.md` | Granite — RAID Register (Risks, Assumptions, Issues, Dependencies) |
 | `docs/report/.gitignore` |  |
@@ -146,54 +177,11 @@ Entries: 611
 |---|---|
 | `apps/api/.coverage` |  |
 | `apps/api/.gitignore` |  |
-| `apps/api/.mypy_cache/.gitignore` |  |
-| `apps/api/.mypy_cache/3.11/cache.0.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.1.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.10.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.11.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.12.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.13.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.14.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.15.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.2.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.3.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.4.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.5.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.6.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.7.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.8.db` |  |
-| `apps/api/.mypy_cache/3.11/cache.9.db` |  |
-| `apps/api/.mypy_cache/CACHEDIR.TAG` |  |
 | `apps/api/.pytest_cache/.gitignore` |  |
 | `apps/api/.pytest_cache/CACHEDIR.TAG` |  |
 | `apps/api/.pytest_cache/README.md` | pytest cache directory # |
 | `apps/api/.pytest_cache/v/cache/lastfailed` |  |
 | `apps/api/.pytest_cache/v/cache/nodeids` |  |
-| `apps/api/.ruff_cache/.gitignore` |  |
-| `apps/api/.ruff_cache/0.16.10/1268613837147474529` |  |
-| `apps/api/.ruff_cache/0.16.10/9005716141011272895` |  |
-| `apps/api/.ruff_cache/0.16.10/9398265696974144633` |  |
-| `apps/api/.ruff_cache/CACHEDIR.TAG` |  |
-| `apps/api/build/lib/granite_api/__init__.py` | Granite application layer: HTTP API, persistence and background jobs around granite_core. |
-| `apps/api/build/lib/granite_api/config.py` | Runtime configuration, read once from environment variables (twelve-factor). No secrets have defaults. |
-| `apps/api/build/lib/granite_api/db.py` | Engine and session factory. SQLite by default; any SQLAlchemy URL (e.g. PostgreSQL) works. |
-| `apps/api/build/lib/granite_api/errors.py` | RFC 7807 problem responses: every error the API returns has the same shape and never leaks internals. |
-| `apps/api/build/lib/granite_api/jobs.py` | Background jobs: a small thread pool with a persisted job row for progress and crash recovery. |
-| `apps/api/build/lib/granite_api/llm_factory.py` | Choose how model answers are produced: live (Ollama or a hosted endpoint) or recorded (saved answers). |
-| `apps/api/build/lib/granite_api/main.py` | Application factory: wires settings, database, job runner, middleware and routes. |
-| `apps/api/build/lib/granite_api/models.py` | Database tables (master plan 14.6). Evidence and audit rows are append-only: the API has no update path. |
-| `apps/api/build/lib/granite_api/providers.py` | Network LLM providers (infrastructure layer): Ollama and any OpenAI-compatible endpoint. |
-| `apps/api/build/lib/granite_api/registry.py` | Workflows the API can run. Adding a workflow means adding one entry here (the core stays unchanged). |
-| `apps/api/build/lib/granite_api/routes.py` | HTTP endpoints. Handlers stay thin: validation here, behaviour in services. |
-| `apps/api/build/lib/granite_api/schemas.py` | Request and response models (they also drive the OpenAPI documentation at /docs). |
-| `apps/api/build/lib/granite_api/services/__init__.py` |  |
-| `apps/api/build/lib/granite_api/services/analysis.py` | After a run: persist the trace, run the checks, open findings, rank origin hypotheses, record evidence. |
-| `apps/api/build/lib/granite_api/services/common.py` | Shared persistence helpers: evidence, audit log, finding transitions. |
-| `apps/api/build/lib/granite_api/services/experiments.py` | Verification experiments: replay from a hypothesised step with and without the fix, decide with VR-1. |
-| `apps/api/build/lib/granite_api/services/report.py` | A plain-text investigation report for one finding (Markdown), built only from stored records. |
-| `apps/api/build/lib/granite_api/services/reviews.py` | Human review: the analyst accepts or rejects a finding and closes it. Every decision is recorded. |
-| `apps/api/build/lib/granite_api/services/runs.py` | Create runs and execute them in the background. |
-| `apps/api/build/lib/granite_api/views.py` | Turn database rows into API response objects (derived fields live here, not in the tables). |
 | `apps/api/granite_api.egg-info/dependency_links.txt` |  |
 | `apps/api/granite_api.egg-info/PKG-INFO` |  |
 | `apps/api/granite_api.egg-info/requires.txt` |  |
@@ -211,7 +199,7 @@ Entries: 611
 | `apps/api/granite_api/registry.py` | Workflows the API can run. Adding a workflow means adding one entry here (the core stays unchanged). |
 | `apps/api/granite_api/routes.py` | HTTP endpoints. Handlers stay thin: validation here, behaviour in services. |
 | `apps/api/granite_api/schemas.py` | Request and response models (they also drive the OpenAPI documentation at /docs). |
-| `apps/api/granite_api/services/__init__.py` |  |
+| `apps/api/granite_api/services/__init__.py` | Use cases of the application layer: runs, analysis, experiments, reviews and reports. |
 | `apps/api/granite_api/services/analysis.py` | After a run: persist the trace, run the checks, open findings, rank origin hypotheses, record evidence. |
 | `apps/api/granite_api/services/common.py` | Shared persistence helpers: evidence, audit log, finding transitions. |
 | `apps/api/granite_api/services/experiments.py` | Verification experiments: replay from a hypothesised step with and without the fix, decide with VR-1. |
@@ -245,6 +233,7 @@ Entries: 611
 | `apps/web/src/hooks.ts` |  |
 | `apps/web/src/main.tsx` |  |
 | `apps/web/src/pages/FindingDetail.tsx` |  |
+| `apps/web/src/pages/Guide.tsx` |  |
 | `apps/web/src/pages/Home.tsx` |  |
 | `apps/web/src/pages/NewRun.tsx` |  |
 | `apps/web/src/pages/RunDetail.tsx` |  |
@@ -265,32 +254,43 @@ Entries: 611
 | Path | Title / description |
 |---|---|
 | `packages/granite_core/.coverage` |  |
+| `packages/granite_core/.gitignore` |  |
 | `packages/granite_core/.hypothesis/.gitignore` |  |
 | `packages/granite_core/.hypothesis/constants/020e895fd6a059b4` |  |
 | `packages/granite_core/.hypothesis/constants/0bbbdc3240b67114` |  |
 | `packages/granite_core/.hypothesis/constants/0ef890823c425a7c` |  |
+| `packages/granite_core/.hypothesis/constants/287c9005e8775b74` |  |
 | `packages/granite_core/.hypothesis/constants/2a910b6c34d606bf` |  |
+| `packages/granite_core/.hypothesis/constants/3663731d667d476b` |  |
 | `packages/granite_core/.hypothesis/constants/3a76c03500cf6ef4` |  |
 | `packages/granite_core/.hypothesis/constants/3d49abf751a4aeef` |  |
 | `packages/granite_core/.hypothesis/constants/3f95b6cd9cc047e7` |  |
 | `packages/granite_core/.hypothesis/constants/4492b90790a254bf` |  |
+| `packages/granite_core/.hypothesis/constants/45f0634bf80f7b3a` |  |
 | `packages/granite_core/.hypothesis/constants/52b10e8994eec85e` |  |
 | `packages/granite_core/.hypothesis/constants/5d3c6a64ac91e867` |  |
 | `packages/granite_core/.hypothesis/constants/5fa806864b561dcf` |  |
 | `packages/granite_core/.hypothesis/constants/62d0f744afb38256` |  |
+| `packages/granite_core/.hypothesis/constants/6388c1642fcc15cf` |  |
 | `packages/granite_core/.hypothesis/constants/63a4acdfbd5e8e3e` |  |
 | `packages/granite_core/.hypothesis/constants/6485567c1222d2c4` |  |
+| `packages/granite_core/.hypothesis/constants/66193284ddc06407` |  |
 | `packages/granite_core/.hypothesis/constants/7a35ee7ede7d1ced` |  |
 | `packages/granite_core/.hypothesis/constants/7ba9f0d97ebf4e10` |  |
 | `packages/granite_core/.hypothesis/constants/7c7c0c8174dd4fcc` |  |
 | `packages/granite_core/.hypothesis/constants/7e3c026441916e54` |  |
 | `packages/granite_core/.hypothesis/constants/8acb7798546ec761` |  |
 | `packages/granite_core/.hypothesis/constants/8bf5f64806a4bdf5` |  |
+| `packages/granite_core/.hypothesis/constants/945bfc0e454b9541` |  |
 | `packages/granite_core/.hypothesis/constants/97c3fe1be73ed427` |  |
+| `packages/granite_core/.hypothesis/constants/a1ce94c4075112e5` |  |
 | `packages/granite_core/.hypothesis/constants/a400ccb562c8f527` |  |
+| `packages/granite_core/.hypothesis/constants/a6a3b430575dea54` |  |
 | `packages/granite_core/.hypothesis/constants/af5f99b2160918e9` |  |
 | `packages/granite_core/.hypothesis/constants/b1a103582fbe5438` |  |
+| `packages/granite_core/.hypothesis/constants/b1bbb412c682c344` |  |
 | `packages/granite_core/.hypothesis/constants/b7f605f97bb2c987` |  |
+| `packages/granite_core/.hypothesis/constants/ba01687f0adc9f39` |  |
 | `packages/granite_core/.hypothesis/constants/bb97c445387f61f2` |  |
 | `packages/granite_core/.hypothesis/constants/bc3da858fe3b650a` |  |
 | `packages/granite_core/.hypothesis/constants/bcd704d19fa66c84` |  |
@@ -299,11 +299,13 @@ Entries: 611
 | `packages/granite_core/.hypothesis/constants/ca0c5a85814efbd1` |  |
 | `packages/granite_core/.hypothesis/constants/ceb13b2f3daa8d03` |  |
 | `packages/granite_core/.hypothesis/constants/d37e5a8e268e283e` |  |
+| `packages/granite_core/.hypothesis/constants/d67c149f915bd4a6` |  |
 | `packages/granite_core/.hypothesis/constants/de0c498d4ef1db93` |  |
 | `packages/granite_core/.hypothesis/constants/e9f9eb24bf363cba` |  |
 | `packages/granite_core/.hypothesis/constants/ec851c84d5c7621b` |  |
 | `packages/granite_core/.hypothesis/constants/f2223ac708804293` |  |
 | `packages/granite_core/.hypothesis/constants/f3ff697dee19318c` |  |
+| `packages/granite_core/.hypothesis/constants/f9429e97b0d8c4d2` |  |
 | `packages/granite_core/.hypothesis/examples/04e6b3400353b141/7d0909f09d2bf1f5` |  |
 | `packages/granite_core/.hypothesis/examples/04e6b3400353b141/df1b93c879a85422` |  |
 | `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/1e8564ab213306ac` |  |
@@ -326,8 +328,11 @@ Entries: 611
 | `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/ff0ce391d22bdbdf` |  |
 | `packages/granite_core/.hypothesis/examples/df1b93c879a85422/fe9bf3fc01789212` |  |
 | `packages/granite_core/.hypothesis/tmp/tmp0jeles37` |  |
+| `packages/granite_core/.hypothesis/tmp/tmp5f6drd3w` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpa29v7cpx` |  |
+| `packages/granite_core/.hypothesis/tmp/tmpalc_r39q` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpbgixarfu` |  |
+| `packages/granite_core/.hypothesis/tmp/tmpcdioq8lv` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpfpjmdxav` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpfywdfl1u` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpihphwa9u` |  |
@@ -338,62 +343,21 @@ Entries: 611
 | `packages/granite_core/.hypothesis/tmp/tmpqi1o6gdm` |  |
 | `packages/granite_core/.hypothesis/tmp/tmprdzjc177` |  |
 | `packages/granite_core/.hypothesis/tmp/tmprwwod5xx` |  |
+| `packages/granite_core/.hypothesis/tmp/tmpry8unrs5` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpsi9t9dw9` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpt1flvw8a` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpt5l4x68p` |  |
+| `packages/granite_core/.hypothesis/tmp/tmpu6uq97_r` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpusaa32c7` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpuxtemasb` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpyhohe3ni` |  |
 | `packages/granite_core/.hypothesis/unicode_data/14.0.0/charmap.json.gz` |  |
 | `packages/granite_core/.hypothesis/unicode_data/14.0.0/codec-v2-utf-8.json.gz` |  |
-| `packages/granite_core/.mypy_cache/.gitignore` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.0.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.1.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.10.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.11.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.12.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.13.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.14.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.15.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.2.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.3.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.4.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.5.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.6.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.7.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.8.db` |  |
-| `packages/granite_core/.mypy_cache/3.11/cache.9.db` |  |
-| `packages/granite_core/.mypy_cache/CACHEDIR.TAG` |  |
 | `packages/granite_core/.pytest_cache/.gitignore` |  |
 | `packages/granite_core/.pytest_cache/CACHEDIR.TAG` |  |
 | `packages/granite_core/.pytest_cache/README.md` | pytest cache directory # |
 | `packages/granite_core/.pytest_cache/v/cache/lastfailed` |  |
 | `packages/granite_core/.pytest_cache/v/cache/nodeids` |  |
-| `packages/granite_core/.ruff_cache/.gitignore` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/10731053879492683424` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/11616233939615180134` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/11701819773364907638` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/12394674784211129769` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/14839009929315258217` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/4178381786369584450` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/5248883725732258102` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/7358003054907178856` |  |
-| `packages/granite_core/.ruff_cache/0.16.10/8145696949316050166` |  |
-| `packages/granite_core/.ruff_cache/CACHEDIR.TAG` |  |
-| `packages/granite_core/build/lib/granite_core/__init__.py` | Granite core: pure-Python library (no web, no database, no network). |
-| `packages/granite_core/build/lib/granite_core/attribution.py` | Deterministic value-provenance attribution (master plan 21.4; FR-ATT-01/02). |
-| `packages/granite_core/build/lib/granite_core/checks.py` | Checks engine: executable rules over a trace (FR-CHK-01..06). |
-| `packages/granite_core/build/lib/granite_core/dsl.py` | Safe expression language for checks (ADR-004: AST whitelist, never ``eval``). |
-| `packages/granite_core/build/lib/granite_core/evidence.py` | Evidence records: typed, hashed, append-only (master plan 14.5). |
-| `packages/granite_core/build/lib/granite_core/experiment.py` | Verification experiment: N replays with the intervention, M controls without it (FR-VER-01..05, VR-1). |
-| `packages/granite_core/build/lib/granite_core/lifecycle.py` | Finding lifecycle as a state machine (master plan 13.3; FR-REV-02). Illegal transitions raise. |
-| `packages/granite_core/build/lib/granite_core/lineage.py` | Lineage graph over a trace: who read what from whom (derived from each step's ``reads``). |
-| `packages/granite_core/build/lib/granite_core/llm.py` | LLM provider interface and the offline record/replay providers (master plan 21.2; FR-RUN-03/04). |
-| `packages/granite_core/build/lib/granite_core/py.typed` |  |
-| `packages/granite_core/build/lib/granite_core/redaction.py` | PII redaction before anything is stored (FR-SEC-01, NFR-08). Idempotent. |
-| `packages/granite_core/build/lib/granite_core/runner.py` | Workflow runner: executes a workflow definition and records a Granite trace; re-executes for replay. |
-| `packages/granite_core/build/lib/granite_core/trace.py` | Granite Trace v1: the input contract for runs, imports and the SDK (master plan 22.4). |
-| `packages/granite_core/build/lib/granite_core/verification.py` | Controlled-replay verification, protocol VR-1 (master plan 14.4 and 21.5; FR-VER-01..04). |
 | `packages/granite_core/granite_core.egg-info/dependency_links.txt` |  |
 | `packages/granite_core/granite_core.egg-info/PKG-INFO` |  |
 | `packages/granite_core/granite_core.egg-info/requires.txt` |  |
@@ -434,42 +398,12 @@ Entries: 611
 |---|---|
 | `workflows/README.md` | workflows |
 | `workflows/refund_desk/.coverage` |  |
-| `workflows/refund_desk/.mypy_cache/.gitignore` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.0.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.1.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.10.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.11.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.12.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.13.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.14.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.15.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.2.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.3.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.4.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.5.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.6.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.7.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.8.db` |  |
-| `workflows/refund_desk/.mypy_cache/3.11/cache.9.db` |  |
-| `workflows/refund_desk/.mypy_cache/CACHEDIR.TAG` |  |
+| `workflows/refund_desk/.gitignore` |  |
 | `workflows/refund_desk/.pytest_cache/.gitignore` |  |
 | `workflows/refund_desk/.pytest_cache/CACHEDIR.TAG` |  |
 | `workflows/refund_desk/.pytest_cache/README.md` | pytest cache directory # |
 | `workflows/refund_desk/.pytest_cache/v/cache/lastfailed` |  |
 | `workflows/refund_desk/.pytest_cache/v/cache/nodeids` |  |
-| `workflows/refund_desk/.ruff_cache/.gitignore` |  |
-| `workflows/refund_desk/.ruff_cache/0.16.10/3737181727954000509` |  |
-| `workflows/refund_desk/.ruff_cache/0.16.10/5069954027938668190` |  |
-| `workflows/refund_desk/.ruff_cache/0.16.10/7685517349561320950` |  |
-| `workflows/refund_desk/.ruff_cache/CACHEDIR.TAG` |  |
-| `workflows/refund_desk/build/lib/refund_desk/__init__.py` | Refund Desk: Granite's first system under test (master plan 21.3). |
-| `workflows/refund_desk/build/lib/refund_desk/definition.py` | Refund Desk workflow definition: steps and their declared reads, checks, and repair rules. |
-| `workflows/refund_desk/build/lib/refund_desk/faults.py` | Fault operators for Refund Desk. Faults are rule-based and deterministic: no LLM is involved. |
-| `workflows/refund_desk/build/lib/refund_desk/prompts/calculator_v1.md` | You are a refund calculator. You are given the items to refund with their prices. |
-| `workflows/refund_desk/build/lib/refund_desk/prompts/intake_v1.md` | You extract a refund request from a customer's message. |
-| `workflows/refund_desk/build/lib/refund_desk/prompts/writer_v1.md` | You write a short, polite customer-service message of at most two sentences. |
-| `workflows/refund_desk/build/lib/refund_desk/steps.py` | The five Refund Desk steps. Each takes a :class:`StepContext` and returns the step's outputs. |
-| `workflows/refund_desk/build/lib/refund_desk/store.py` | Retail data: the Refund Desk's customers/orders and, independently, Granite's source of truth. |
 | `workflows/refund_desk/granite_refund_desk.egg-info/dependency_links.txt` |  |
 | `workflows/refund_desk/granite_refund_desk.egg-info/PKG-INFO` |  |
 | `workflows/refund_desk/granite_refund_desk.egg-info/requires.txt` |  |
@@ -494,23 +428,51 @@ Entries: 611
 
 | Path | Title / description |
 |---|---|
+| `tests/.pytest_cache/.gitignore` |  |
+| `tests/.pytest_cache/CACHEDIR.TAG` |  |
+| `tests/.pytest_cache/README.md` | pytest cache directory # |
+| `tests/.pytest_cache/v/cache/lastfailed` |  |
+| `tests/.pytest_cache/v/cache/nodeids` |  |
+| `tests/.ruff_cache/.gitignore` |  |
+| `tests/.ruff_cache/0.16.10/1399752670135013274` |  |
+| `tests/.ruff_cache/CACHEDIR.TAG` |  |
+| `tests/pyproject.toml` |  |
 | `tests/README.md` | tests |
+| `tests/system/__init__.py` | System-level tests (black box, over HTTP). |
+| `tests/system/conftest.py` | System-test fixtures: a real Granite server in its own process, driven only through HTTP. |
+| `tests/system/test_system.py` | System-level test cases: the whole product through its HTTP interface, as a user or a script would reach it. |
 
 ## scripts  (active (code))
 
 | Path | Title / description |
 |---|---|
 | `scripts/.ruff_cache/.gitignore` |  |
-| `scripts/.ruff_cache/0.16.10/16623373247564932835` |  |
+| `scripts/.ruff_cache/0.16.10/15579513046367014733` |  |
 | `scripts/.ruff_cache/0.16.10/7006256987119764914` |  |
 | `scripts/.ruff_cache/CACHEDIR.TAG` |  |
 | `scripts/apply_workspace_migration.py` | Apply the 2026-10-06 workspace migration. Idempotent and non-destructive. |
+| `scripts/build_design_pack.py` | Build the design pack: SVG diagrams, Markdown pages, the data dictionary and one interactive HTML file. |
+| `scripts/build_evidence_sheet.py` | Build the one-page assessment evidence sheet (PDF) for the FYP-1 mid evaluation. |
 | `scripts/build_index.py` | Regenerate docs/workspace-index.md: one line per file (path and title), grouped by top-level folder. |
+| `scripts/build_test_docs.py` | Test documentation from the tests themselves. |
 | `scripts/build_truth_snapshot.py` | Build data/seed/taubench_retail_v1/ from the raw tau-bench retail data (deterministic). |
+| `scripts/check_architecture.py` | Check the layer rule of the architecture by reading the imports of every source file (no code is executed). |
 | `scripts/check_links.py` | Check that relative links in Markdown (and plain href/src in HTML) point at files that exist. |
 | `scripts/check_traceability.py` | Requirements traceability: requirement (master plan) -> implementation -> tests, checked against the repositor |
 | `scripts/check_workspace.py` | Check the workspace against docs/workspace-guide.md. |
-| `scripts/export_diagrams.py` | Generate the diagrams that must always match the code, as Mermaid inside Markdown files. |
+| `scripts/design_pack/__init__.py` | Design pack: SVG design artefacts generated from the code (see scripts/build_design_pack.py). |
+| `scripts/design_pack/activity.py` | Behaviour design: activity diagram with swimlanes, deployment diagram, use-case diagram. |
+| `scripts/design_pack/algorithms.py` | Data structure and algorithm design: check pipeline, attribution, the VR-1 verdict rule and the replay plan. |
+| `scripts/design_pack/behaviour.py` | Behaviour design: finding state machine (from the code), investigation flow, interaction overview. |
+| `scripts/design_pack/components.py` | Structure design: component diagram (components, the interfaces they provide, and who uses them). |
+| `scripts/design_pack/data.py` | Database design: ER diagram and data dictionary, both generated from the real tables and models. |
+| `scripts/design_pack/dataflow.py` | Behaviour design: data flow diagrams (context and level 1) and the lineage graph of the Refund Desk. |
+| `scripts/design_pack/domain.py` | Structure design: domain model (class diagram) and structure chart. |
+| `scripts/design_pack/kit.py` | A small SVG drawing kit for the design pack: boxes, connectors, labels, and a layout lint. |
+| `scripts/design_pack/pages.py` | Markdown pages of the design pack: each embeds its diagrams with the explanation the rubric asks for. |
+| `scripts/design_pack/sequences.py` | Behaviour design: two sequence diagrams and a call graph computed from the source code. |
+| `scripts/design_pack/structure.py` | Structure design: layer diagram, component diagram, domain model, structure chart. |
+| `scripts/design_pack/viewer.py` | The interactive design pack: one self-contained HTML file (no external requests) holding every diagram. |
 | `scripts/export_trace_schema.py` | Write the Granite Trace v1 JSON Schema from the pydantic model (the model is the single source of truth). |
 | `scripts/linkcheck-allowlist.txt` |  |
 | `scripts/README.md` | scripts |
@@ -634,7 +596,10 @@ Entries: 611
 | `deliverables/stage-0-proposal/supervisor-briefing/generate_supervisor_pdf.py` | Generates a supervisor-shareable PDF briefing for Granite. |
 | `deliverables/stage-0-proposal/supervisor-briefing/Granite_Supervisor_Briefing.pdf` |  |
 | `deliverables/stage-0-proposal/supervisor-briefing/Supervisor_Briefing.md` | Supervisor Briefing — Granite |
-| `deliverables/stage-1-fyp1-mid/README.md` | stage-1-fyp1-mid |
+| `deliverables/stage-1-fyp1-mid/granite_compliance-audit_fyp1-mid_v1.0.md` | Granite (F26-060): FYP-1 Mid compliance audit |
+| `deliverables/stage-1-fyp1-mid/granite_design-pack_fyp1-mid_v1.0.html` | Granite design pack (FYP-1 Mid) |
+| `deliverables/stage-1-fyp1-mid/granite_evidence-sheet_fyp1-mid_v1.0.pdf` |  |
+| `deliverables/stage-1-fyp1-mid/README.md` | Granite: FYP-1 mid evaluation deliverables (stage 1) |
 | `deliverables/stage-2-fyp1-final/README.md` | stage-2-fyp1-final |
 | `deliverables/stage-3-fyp2-mid/README.md` | stage-3-fyp2-mid |
 | `deliverables/stage-4-fyp2-final/README.md` | stage-4-fyp2-final |
@@ -650,8 +615,17 @@ Entries: 611
 | `evidence/demos/2026-10-07_new-run-form-running.jpg` |  |
 | `evidence/demos/2026-10-07_run-detail-mobile-375px.jpg` |  |
 | `evidence/demos/2026-10-07_run-detail-stale-price-graph.jpg` |  |
+| `evidence/demos/2026-10-11_finding-confirmed-reviewed-evidence.png` |  |
+| `evidence/demos/2026-10-11_guide-features-inputs-outputs.png` |  |
+| `evidence/demos/2026-10-11_guide-mobile-390px.png` |  |
+| `evidence/demos/2026-10-11_investigations-list-filters.png` |  |
+| `evidence/demos/2026-10-11_run-detail-checks-graph.png` |  |
+| `evidence/demos/2026-10-11_run-errored-unrecorded-task.png` |  |
 | `evidence/README.md` | evidence |
+| `evidence/repo/2026-10-09_ci-run-37924480165.md` | CI run 37924480165 (GitHub Actions), 2026-10-09 |
+| `evidence/repo/2026-10-11_repository-evidence.md` | Repository evidence, 2026-10-11 |
 | `evidence/reports/2026-10-07_accessibility-audit.md` | Accessibility audit, 2026-10-07 |
+| `evidence/reports/2026-10-11_test-results.md` | Test results, 2026-10-11 |
 
 ## archive  (history)
 
@@ -676,6 +650,7 @@ Entries: 611
 | `archive/proposal-phase/tracking/Traceability_Matrix.md` | Granite — Traceability Matrix & Final Consistency Audit |
 | `archive/README.md` | archive |
 | `archive/superseded/AgenTracer_vs_WhoWhen_Analysis.md` | Who&When vs. AgenTracer — Overlap, Novelty, and FYP Feasibility Analysis |
+| `archive/superseded/export-diagrams_v1.0_2026-10-11.py` | Generate the diagrams that must always match the code, as Mermaid inside Markdown files. |
 | `archive/superseded/master-plan_v1.0_2026-10-04.md` | Granite — FYP Master Execution Plan |
 
 ## .claude  (tool configuration)
@@ -688,4 +663,14 @@ Entries: 611
 
 | Path | Title / description |
 |---|---|
+| `.github/CONTRIBUTING.md` | How we change this repository |
+| `.github/pull_request_template.md` | ## What changed and why |
+| `.github/workflows/cd.yml` |  |
 | `.github/workflows/ci.yml` |  |
+
+## .ruff_cache  ()
+
+| Path | Title / description |
+|---|---|
+| `.ruff_cache/.gitignore` |  |
+| `.ruff_cache/CACHEDIR.TAG` |  |

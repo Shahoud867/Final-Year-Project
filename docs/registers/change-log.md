@@ -34,3 +34,17 @@ The full record, as drafted in the plan, is in `docs/plan/master-plan.md` sectio
 | k | Finding report as Markdown and JSON | FR-REP-01 (PDF stays Final-1) | None |
 
 Items g to k came from reading the plan's acceptance criteria against the first implementation on 2026-10-07; the traceability file [`docs/plan/requirements-trace.md`](../plan/requirements-trace.md) lists the state of every requirement.
+
+## C-03: Design and process changes made on 2026-10-11 (for the supervisor to note)
+
+| # | Change | Why | Effect |
+|---|---|---|---|
+| a | The diagrams are now generated from the code by `scripts/build_design_pack.py` (21 diagrams, a data dictionary, one interactive file) and replace the hand-written Mermaid pages | A hand-drawn diagram drifts from the code; the rubric gives 4 to 6 of 15 when diagrams conflict with the implementation. Tables, states, data flow, call edges, thresholds and the worked examples are read from the code, and CI fails if a diagram is out of date | Old exporter archived; `docs/diagrams/` regenerated |
+| b | Branching simplified to short-lived branches into `main` (no `develop`) | See ADR-010, revision of this date | `.github/CONTRIBUTING.md`, pull request template |
+| c | A system test level added (`tests/system`, 22 black-box cases over real HTTP), with a catalogue generated from the tests | The handbook's maintenance phase asks for system-level test suites; unit and integration tests alone do not show that the assembled product works | Two product defects found and fixed (D-22, D-23) |
+| d | Delivery workflow added: image to the GitHub Container Registry after CI, deploy to Render through a hook, release on tag | The faculty requirement asks for CI/CD; `autoDeploy` on Render would deploy commits that had not passed CI | Written, **not yet run** |
+| e | Cyclomatic complexity limit is 12 (plan: 10) | Two functions, the expression evaluator and the attribution ranking, are clearer whole than split | Recorded in the coding standards |
+| f | The architecture rule is checked by a small script (`scripts/check_architecture.py`), not by import-linter as planned | Same guarantee with no extra dependency | In CI |
+| g | An in-app guide page lists each feature with its inputs and outputs | Panel actions A2 and A3 asked for exactly this; a document would not be seen in a demo | `apps/web/src/pages/Guide.tsx`, kept equal to the server's limits by a test |
+| h | Docstrings are required on every public module, class, method and function (ruff `D100` to `D104`), and PEP 8 naming is linted (`N`) | The handbook's development phase lists comments and naming conventions; a rule that is not enforced decays | 167 docstrings added |
+

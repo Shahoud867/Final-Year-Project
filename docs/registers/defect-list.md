@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Version | 1.0 |
-| Date | 2026-10-07 |
+| Version | 1.1 |
+| Date | 2026-10-11 |
 | Status | Live. Defects found by tests or by use are recorded here with how they were found; fixed ones stay listed |
 | Severity | high: wrong result or data loss; medium: wrong behaviour with a workaround, or a requirement not met; low: cosmetic or process |
 
@@ -21,6 +21,10 @@
 | D-16 | medium | No limit on request body size: an oversized POST would be read into memory | Self-review | Bodies over 256 KB refused with 413 before parsing (declared length only; chunked uploads without a length are not covered, acceptable for a demo behind a proxy); test added |
 | D-17 | low | Empty column header in the Verify table (screen readers announce a nameless column) | axe-core test | Visually hidden header text "Action"; test added |
 | D-18 | low | The run graph was exposed as an image although its steps are focusable buttons (invalid nesting for assistive technology) | axe-core test | Container role changed to group; test updated |
+| D-21 | low | Build output (`build/lib/...`, 42 files in three packages) had been committed after a clean-install check, so linting reported the same problems twice and stale copies of the code sat in the repository | ruff run with the docstring rules, 2026-10-11 | Folders removed; a `.gitignore` in each package now excludes `build/`, `dist/` and caches |
+| D-22 | medium | `/api/health` took about 2 seconds on a machine without a local model, because every call probed the model endpoint and a refused connection is slow on Windows. Pages felt slow and the system-test server looked unhealthy | System test suite (server start timed out), 2026-10-11 | The probe result is cached for 15 seconds with a 0.6 second timeout (`llm_factory.live_available`); test `test_model_probe_is_cached_so_health_checks_stay_fast` |
+| D-23 | medium | Verifying a suspect whose control replays were never recorded (for example Intake, in recorded mode) ended with "no verdict" and no reason, which reads like a malfunction | Live walkthrough in a browser, 2026-10-11 | The verdict text now says that the replays needed answers that are not in the recording and that a live model is required; the finding stays open for another attempt. Test `test_a_replay_with_no_recorded_answer_gives_no_verdict_and_says_why` |
+| D-24 | low | Field errors showed the validator's internal wording ("Value error, must look like ...", "String should have at least 3 characters"); the review history showed the raw value `request_info`; a verdict with no finished control read "0/0 correct" | Live walkthrough in a browser, 2026-10-11 | Plain sentences ("Enter at least 3 characters", "Must look like #W1234567"), readable decision names, "no control finished". Test `test_field_messages_are_plain_sentences` |
 
 ## Open
 
@@ -28,7 +32,7 @@
 |---|---|---|---|
 | D-19 | medium | **Design limitation found by the feasibility run:** a one-step intervention cannot be CONFIRMED when a second fault sits downstream. With the stale price fixed, the 3B calculator still added 47.76 + 1018.68 wrongly in all 5 replays, so the true origin was REFUTED (task #W1326557) | Feasibility run, M4 | Not fixed (the protocol is frozen); options: multi-step interventions, or judging the target step own contract. Needs a new rule version and a new run |
 | D-20 | low | The small model makes large-sum arithmetic slips (off by 100 or 1000); about 1 in 10 clean runs produced a wrong refund | Feasibility run, M2 | Not a Granite defect; it is the natural failure the system is meant to catch. Prompt v1 is frozen with the recordings |
-| D-07 | medium | **FR-SEC-01 not met:** personal data is not redacted before traces are stored. A redactor exists and is tested, but replays need the original task input | Decide: store redacted copies for display and keep the raw input encrypted or out of the demo; until then use only synthetic data |
+| D-07 | medium | **FR-SEC-01 not met:** personal data is not redacted before traces are stored. A redactor exists and is tested, but replays need the original task input | Decide: store redacted copies for display and keep the raw input encrypted or out of the demo; until then use only synthetic data **Decision 2026-10-11:** not done for Mid-1 (the plan rates it "should" for Mid-1 and "must" for Final-1). Redacting the stored trace alone would break replays in recorded mode, because the recorded answers are keyed by the exact prompt. Design for Iteration 2: tokens in stored step inputs and outputs, check results and evidence, plus a separate vault of original values that only the replay planner reads; an allow-list so order and item numbers are not taken for card or phone numbers. Owner: Shahoud |
 | D-08 | medium | PostgreSQL has never been run; there is no migration tool (tables are created on start) | Run the API tests against a PostgreSQL container; add Alembic before any shared deployment |
 | D-09 | low | **Mostly resolved 2026-10-09:** CI ran on GitHub and built and smoke-tested the image (evidence/repo). Still open: no local build on a team laptop; CI actions use Node-20 versions that GitHub now warns about | Build once with `docker compose up --build` before the demo; bump action versions when convenient |
 | D-10 | medium | A recorded cassette is valid only for the exact prompts it was made with; any prompt edit makes recorded mode fail for every task | Re-record with `scripts/record_cassettes.py` after any prompt change; CI smoke test would catch it |
@@ -36,3 +40,4 @@
 | D-12 | low | The Verify panel accepts out-of-range counts in the form; the server refuses them and the message is shown | Clamp in the form |
 | D-13 | low | The stage-0 PoC console lists no scikit-learn in its requirements (pre-existing; folder is frozen) | Leave; note in the report if the PoC is demoed |
 | D-14 | low | The pipeline graph is horizontal and needs a minimum width of 640 px, so on a phone it scrolls sideways | Accept for now; a vertical layout is a later improvement |
+| D-25 | low | In the hypothesis table the rank and the score can disagree inside one evidence class: rank orders by evidence strength and then upstream first, while the displayed score also decays with distance from the symptom (Intake 0.08 is ranked above Writer 0.10). The top ranks, which carry direct evidence, are not affected | Decide one rule in Iteration 2 (owner: Noor): either show the score without decay, or break ties by score. Changing it needs the feasibility run repeated, so it was not changed before Mid-1 |

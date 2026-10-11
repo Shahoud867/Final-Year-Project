@@ -42,6 +42,7 @@ MAX_HYPOTHESES = 5
 
 
 class HypothesisSpec(BaseModel):
+    """One ranked suspect: the step blamed, how it was found, its score and the evidence behind it."""
     rank: int
     step_id: str
     agent: str

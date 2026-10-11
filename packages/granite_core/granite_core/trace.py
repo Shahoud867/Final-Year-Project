@@ -22,6 +22,7 @@ RunStatus = Literal["completed", "errored"]
 
 
 class Step(BaseModel):
+    """One recorded agent action: what it read, received and produced."""
     model_config = ConfigDict(extra="forbid")
 
     step_id: str = Field(min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_-]+$")
@@ -40,6 +41,7 @@ class Step(BaseModel):
 
 
 class RunInfo(BaseModel):
+    """Facts about the whole run: workflow, status, task input and final output."""
     model_config = ConfigDict(extra="forbid")
 
     external_id: str | None = None
@@ -61,6 +63,7 @@ def split_read(ref: str) -> tuple[str, str]:
 
 
 class TraceV1(BaseModel):
+    """Granite Trace v1: a run and its ordered steps, validated on construction."""
     model_config = ConfigDict(extra="forbid")
 
     schema_version: Literal["granite.trace/v1"] = SCHEMA_VERSION
@@ -82,9 +85,11 @@ class TraceV1(BaseModel):
 
     # ---- convenience views -------------------------------------------------------------
     def step(self, step_id: str) -> Step | None:
+        """Return the step with this id, or None."""
         return next((s for s in self.steps if s.step_id == step_id), None)
 
     def step_index(self, step_id: str) -> int:
+        """Position of a step in the trace; raises KeyError if it is unknown."""
         for i, s in enumerate(self.steps):
             if s.step_id == step_id:
                 return i

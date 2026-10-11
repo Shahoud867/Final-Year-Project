@@ -6,6 +6,7 @@ from enum import StrEnum
 
 
 class FindingStatus(StrEnum):
+    """The eleven states a finding can be in."""
     OPEN = "open"
     HYPOTHESIZED = "hypothesized"
     VERIFYING = "verifying"
@@ -20,6 +21,7 @@ class FindingStatus(StrEnum):
 
 
 class Event(StrEnum):
+    """The events that may move a finding from one state to another."""
     HYPOTHESES_READY = "hypotheses_ready"
     VERIFY_STARTED = "verify_started"
     VERDICT_CONFIRMED = "verdict_confirmed"
@@ -58,12 +60,14 @@ TERMINAL = {S.REJECTED, S.RESOLVED, S.WONT_FIX}
 
 
 class IllegalTransition(Exception):
+    """Raised when an event is not allowed in the finding's current state."""
     def __init__(self, status: FindingStatus, event: Event) -> None:
         super().__init__(f"event '{event.value}' is not allowed while a finding is '{status.value}'")
         self.status, self.event = status, event
 
 
 def transition(status: FindingStatus, event: Event) -> FindingStatus:
+    """Return the state that follows ``status`` on ``event``, or raise IllegalTransition."""
     try:
         return TRANSITIONS[(status, event)]
     except KeyError:
@@ -71,6 +75,7 @@ def transition(status: FindingStatus, event: Event) -> FindingStatus:
 
 
 def allowed_events(status: FindingStatus) -> list[Event]:
+    """Events that are legal in the given state."""
     return [ev for (st, ev) in TRANSITIONS if st is status]
 
 

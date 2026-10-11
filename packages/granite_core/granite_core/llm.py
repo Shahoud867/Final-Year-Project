@@ -34,6 +34,7 @@ class RecordedMiss(Exception):
 
 @dataclass
 class LLMRequest:
+    """One request to a language model; its hash identifies the recorded answer."""
     messages: list[Message]
     model: str
     temperature: float = 0.2
@@ -42,6 +43,7 @@ class LLMRequest:
     json_mode: bool = False
 
     def params(self) -> dict[str, Any]:
+        """The generation parameters that affect the answer."""
         return {
             "temperature": self.temperature,
             "max_tokens": self.max_tokens,
@@ -50,11 +52,13 @@ class LLMRequest:
         }
 
     def key(self) -> str:
+        """SHA-256 of model, messages, parameters and seed: the key of the recorded answer."""
         return sha256_of({"model": self.model, "messages": self.messages, **self.params()})
 
 
 @dataclass
 class Completion:
+    """A model's answer with token counts, latency and whether it came from a recording."""
     text: str
     model: str
     provider: str
@@ -67,9 +71,11 @@ class Completion:
 
 @runtime_checkable
 class LLMProvider(Protocol):
+    """Anything that can answer an LLMRequest; implemented outside the core."""
     name: str
 
-    def complete(self, request: LLMRequest) -> Completion: ...
+    def complete(self, request: LLMRequest) -> Completion:
+        """Return the model's completion, or raise ProviderUnavailable."""
 
 
 class Cassette:
@@ -84,9 +90,11 @@ class Cassette:
                 self._entries = json.load(fh).get("entries", {})
 
     def get(self, key: str) -> dict[str, Any] | None:
+        """Return the recorded entry for a request key, or None."""
         return self._entries.get(key)
 
     def put(self, key: str, completion: Completion, request: LLMRequest) -> None:
+        """Record a completion under a request key and write the file atomically."""
         with self._lock:
             self._entries[key] = {
                 "completion": asdict(completion),
@@ -111,12 +119,14 @@ class Cassette:
 
 
 class RecordedProvider:
+    """Answers only from a cassette; an unknown request raises RecordedMiss."""
     name = "recorded"
 
     def __init__(self, cassette: Cassette) -> None:
         self.cassette = cassette
 
     def complete(self, request: LLMRequest) -> Completion:
+        """Return the recorded completion for this exact request."""
         entry = self.cassette.get(request.key())
         if entry is None:
             raise RecordedMiss(
@@ -148,6 +158,7 @@ class RecordingProvider:
         self.name = f"{live.name}+recording"
 
     def complete(self, request: LLMRequest) -> Completion:
+        """Ask the live provider and record its answer (or reuse a recording if told to)."""
         key = request.key()
         if self.reuse and self.cassette.get(key) is not None:
             return RecordedProvider(self.cassette).complete(request)

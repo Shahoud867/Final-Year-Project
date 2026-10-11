@@ -2,6 +2,7 @@
   "$defs": {
     "RunInfo": {
       "additionalProperties": false,
+      "description": "Facts about the whole run: workflow, status, task input and final output.",
       "properties": {
         "ended_at": {
           "anyOf": [
@@ -80,6 +81,7 @@
     },
     "Step": {
       "additionalProperties": false,
+      "description": "One recorded agent action: what it read, received and produced.",
       "properties": {
         "agent": {
           "maxLength": 120,
@@ -214,6 +216,7 @@
   "$id": "https://granite.example/schema/granite.trace-v1.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
+  "description": "Granite Trace v1: a run and its ordered steps, validated on construction.",
   "properties": {
     "run": {
       "$ref": "#/$defs/RunInfo"

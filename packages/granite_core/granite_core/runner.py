@@ -33,6 +33,7 @@ class StepFailed(Exception):
 
 @dataclass
 class LLMCallInfo:
+    """Facts about one model call made by a step, kept in the trace."""
     model: str
     params: dict[str, Any]
     prompt_hash: str
@@ -45,6 +46,7 @@ class LLMCallInfo:
 
 @dataclass
 class StepContext:
+    """What a step function receives: the task, earlier outputs, its resolved inputs and a model handle."""
     task: dict[str, Any]
     outputs: dict[str, dict[str, Any]]
     inputs: dict[str, Any]
@@ -53,6 +55,7 @@ class StepContext:
     calls: list[LLMCallInfo] = field(default_factory=list)
 
     def ask(self, request: LLMRequest) -> Completion:
+        """Call the model with the run's seed and record the call."""
         if self.llm is None:
             raise StepFailed("this step needs a language model but none is configured")
         if request.seed is None and self.seed is not None:
@@ -75,6 +78,7 @@ class StepContext:
 
 @dataclass
 class StepDef:
+    """A workflow step: its identity, the values it reads and the function that executes it."""
     step_id: str
     agent: str
     kind: StepKind
@@ -85,6 +89,7 @@ class StepDef:
 
 @dataclass
 class FaultRecord:
+    """Ground truth of an injected fault; stored for scoring, never given to the analysis."""
     fault_type: str
     target_step: str
     field_path: str
@@ -94,6 +99,7 @@ class FaultRecord:
 
 
 class Fault(Protocol):
+    """A deterministic fault operator applied to one step's outputs."""
     fault_type: str
     target_step: str
 
@@ -105,6 +111,7 @@ class Fault(Protocol):
 
 @dataclass
 class WorkflowDef:
+    """A runnable workflow: steps, checks, repair rules and its source-of-truth functions."""
     key: str
     title: str
     steps: list[StepDef]
@@ -115,11 +122,13 @@ class WorkflowDef:
     data_snapshot: str = ""  # id of the pinned data the truth functions read (FR-CHK-06)
 
     def step_ids(self) -> list[str]:
+        """Step ids in execution order."""
         return [s.step_id for s in self.steps]
 
 
 @dataclass
 class RunOutcome:
+    """Result of executing a workflow: the trace, the fault record if any, and the model calls."""
     trace: TraceV1
     fault: FaultRecord | None
     calls: list[LLMCallInfo]
@@ -209,6 +218,7 @@ def run_workflow(
     seed: int | None = None,
     external_id: str | None = None,
 ) -> RunOutcome:
+    """Execute a workflow on a task and return its trace; a failing step ends the run as errored."""
     started = _now()
     outputs: dict[str, dict[str, Any]] = {}
     records, fault_rec, calls, err = _execute_steps(defn, defn.steps, task_input, outputs, llm, seed, fault)

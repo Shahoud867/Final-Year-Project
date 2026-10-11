@@ -30,6 +30,7 @@ SEVERITY_ORDER: dict[str, int] = {"low": 0, "medium": 1, "high": 2, "critical": 
 
 
 class CheckStatus(StrEnum):
+    """Outcome of evaluating one check on one run."""
     PASS = "pass"
     FAIL = "fail"
     ABSTAIN = "abstain"  # the data needed to decide is not there; never counted as a pass
@@ -37,6 +38,7 @@ class CheckStatus(StrEnum):
 
 
 class CheckDef(BaseModel):
+    """A check as a workflow author defines it: an expression attached to a step, with scope and severity."""
     model_config = ConfigDict(extra="forbid")
 
     id: str = Field(min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_-]+$")
@@ -53,6 +55,7 @@ class CheckDef(BaseModel):
 
 
 class CheckResult(BaseModel):
+    """What a check found on a run, with the full computation so it can be shown and reproduced."""
     model_config = ConfigDict(extra="forbid")
 
     check_id: str
@@ -78,6 +81,7 @@ def evaluate_check(
     trace: TraceV1,
     truth: Mapping[str, Callable[..., Any]] | None = None,
 ) -> CheckResult:
+    """Evaluate one check on a trace; a missing field gives ABSTAIN, an unevaluable expression ERROR."""
     base = {
         "check_id": check.id,
         "check_version": check.version,
@@ -126,6 +130,7 @@ def evaluate_checks(
     checks: list[CheckDef],
     truth: Mapping[str, Callable[..., Any]] | None = None,
 ) -> list[CheckResult]:
+    """Evaluate every enabled check of a workflow on a trace, in definition order."""
     return [evaluate_check(c, trace, truth) for c in checks if c.enabled]
 
 

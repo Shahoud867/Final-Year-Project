@@ -184,6 +184,7 @@ FUNCTION_NAMES = frozenset(FUNCTIONS) | {"approx"}
 
 @dataclass
 class EvalOutcome:
+    """Result of an evaluation, with operands, resolved fields and truth calls kept as evidence."""
     value: Any
     operands: list[Any] | None = None  # the two sides of a top-level comparison or approx()
     resolved: dict[str, Any] = field(default_factory=dict)  # field path -> value actually read
@@ -219,6 +220,7 @@ class Expression:
         truth: Mapping[str, Callable[..., Any]] | None = None,
         tolerance: float = 0.01,
     ) -> EvalOutcome:
+        """Evaluate against a context (task and step outputs) and optional truth functions."""
         ev = _Evaluator(context, truth or {}, tolerance)
         value = ev.visit(self._tree.body, top=True)
         return EvalOutcome(value, ev.operands, ev.resolved, ev.truth_calls)

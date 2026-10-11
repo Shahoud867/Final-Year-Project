@@ -37,6 +37,7 @@ MAX_CONTROLS = 5
 
 
 class Verdict(StrEnum):
+    """The four possible outcomes of a verification experiment."""
     CONFIRMED = "confirmed"
     REFUTED = "refuted"
     INCONCLUSIVE = "inconclusive"
@@ -84,6 +85,7 @@ class RepairRule(BaseModel):
 
 
 class Intervention(BaseModel):
+    """A patch for one step's outputs: the correct values to use in a replay."""
     step_id: str
     patches: dict[str, Any] = Field(min_length=1)  # a single atomic field per patch (Spike 8 lesson)
     source: Literal["truth", "contract", "user"]
@@ -118,6 +120,7 @@ def build_intervention(
 
 
 class ReplayPlan(BaseModel):
+    """Which steps are copied from the trace and which are executed again."""
     frozen: list[str]  # steps reused verbatim (up to and including the intervention step)
     replay: list[str]  # steps re-executed
     intervention: Intervention
@@ -128,6 +131,7 @@ class ReplayUnavailable(Exception):
 
 
 def plan_replay(trace: TraceV1, intervention: Intervention) -> ReplayPlan:
+    """Split the trace at the intervention step: earlier steps are frozen, later ones replayed."""
     try:
         idx = trace.step_index(intervention.step_id)
     except KeyError:
@@ -144,6 +148,7 @@ def plan_replay(trace: TraceV1, intervention: Intervention) -> ReplayPlan:
 
 
 def patched_outputs(original: dict[str, Any], intervention: Intervention) -> dict[str, Any]:
+    """Return a copy of a step's outputs with the intervention applied."""
     out = copy.deepcopy(original)
     out.update(copy.deepcopy(intervention.patches))
     return out
@@ -153,6 +158,7 @@ def patched_outputs(original: dict[str, Any], intervention: Intervention) -> dic
 
 
 class ReplayJudgement(BaseModel):
+    """Whether a replay passed, and which checks were fixed, still failing or regressed."""
     passed: bool
     fixed: list[str] = Field(default_factory=list)
     still_failing: list[str] = Field(default_factory=list)
@@ -173,6 +179,7 @@ def judge_replay(
 
 
 class ExperimentSummary(BaseModel):
+    """Counts, Wilson interval, verdict and a plain-language explanation of an experiment."""
     rule_version: str = RULE_VERSION
     n_planned: int
     n_completed: int
@@ -187,6 +194,7 @@ class ExperimentSummary(BaseModel):
 
 
 def summarize(intervention_passes: list[bool], control_passes: list[bool], n: int, m: int) -> ExperimentSummary:
+    """Apply VR-1 to the replay and control outcomes and explain the verdict."""
     if not 1 <= n <= MAX_REPLAYS or not 0 <= m <= MAX_CONTROLS:
         raise ValueError(f"n must be 1..{MAX_REPLAYS} and m 0..{MAX_CONTROLS}")
     k, c = sum(intervention_passes), sum(control_passes)

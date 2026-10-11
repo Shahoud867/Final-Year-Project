@@ -10,6 +10,7 @@ from .trace import TASK, TraceV1, split_read
 
 @dataclass(frozen=True)
 class Edge:
+    """A data-flow edge: ``dst`` read ``field`` from ``src``."""
     src: str  # the step that produced the value
     dst: str  # the step that read it
     field: str  # which output field travelled
@@ -27,6 +28,7 @@ def edges(trace: TraceV1) -> list[Edge]:
 
 
 def incoming(trace: TraceV1) -> dict[str, list[Edge]]:
+    """Index the edges of a trace by the step that reads them."""
     inc: dict[str, list[Edge]] = defaultdict(list)
     for e in edges(trace):
         inc[e.dst].append(e)

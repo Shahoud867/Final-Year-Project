@@ -28,6 +28,7 @@ from .verification import (
 
 
 class ReplayRecord(BaseModel):
+    """One replay of an experiment: its trace, check results and whether it passed."""
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     kind: Literal["intervention", "control"]
@@ -40,6 +41,7 @@ class ReplayRecord(BaseModel):
 
 
 class ExperimentRun(BaseModel):
+    """A finished experiment: the intervention used, every replay and the VR-1 summary."""
     intervention: Intervention
     summary: ExperimentSummary
     replays: list[ReplayRecord]

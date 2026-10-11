@@ -23,6 +23,7 @@ _PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 
 
 class Redactor:
+    """Replaces e-mail addresses, phone numbers, CNICs and card-like numbers with stable tokens."""
     def __init__(self) -> None:
         self._seen: dict[tuple[str, str], str] = {}
         self._count: dict[str, int] = {}
@@ -38,11 +39,13 @@ class Redactor:
         return lambda m: self._token(kind, m.group(0))
 
     def text(self, s: str) -> str:
+        """Redact one string; the same value always becomes the same token."""
         for kind, pat in _PATTERNS:
             s = pat.sub(self._replacer(kind), s)
         return s
 
     def value(self, v: Any) -> Any:
+        """Redact every string inside a nested structure of lists and dictionaries."""
         if isinstance(v, str):
             return self.text(v)
         if isinstance(v, list):

@@ -3,6 +3,7 @@ import { api, getToken, setToken } from "./api";
 import { Badge } from "./components/ui";
 import { useLoad, useRoute } from "./hooks";
 import { FindingDetail } from "./pages/FindingDetail";
+import { Guide } from "./pages/Guide";
 import { Home } from "./pages/Home";
 import { NewRun } from "./pages/NewRun";
 import { RunDetail } from "./pages/RunDetail";
@@ -30,6 +31,7 @@ export default function App() {
   const [page = "", id = ""] = useRoute();
   let view = <Home />;
   if (page === "new") view = <NewRun />;
+  else if (page === "guide") view = <Guide />;
   else if (page === "runs" && id) view = <RunDetail id={id} key={id} />;
   else if (page === "findings" && id) view = <FindingDetail id={id} key={id} />;
   else if (page) view = <div className="card"><h1>Page not found</h1><p><a href="#/">Back to investigations</a></p></div>;
@@ -43,6 +45,7 @@ export default function App() {
           <nav className="nav" aria-label="Main">
             <a href="#/" aria-current={here("")}>Investigations</a>
             <a href="#/new" aria-current={here("new")}>New run</a>
+            <a href="#/guide" aria-current={here("guide")}>How it works</a>
           </nav>
           <span className="spacer" />
           <Status />

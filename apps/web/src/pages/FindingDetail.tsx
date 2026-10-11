@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ApiError, api } from "../api";
-import { Experiments, ReviewPanel } from "../components/Outcome";
+import { Experiments, ReviewPanel, BUTTON } from "../components/Outcome";
 import { Badge, ErrorBox, Loading } from "../components/ui";
 import { Verify } from "../components/Verify";
 import { LEVELS, label, short } from "../format";
@@ -51,7 +51,7 @@ export function FindingDetail({ id }: { id: string }) {
       <ReviewPanel f={f} onDone={q.reload} />
       {f.reviews.length > 0 && (
         <section className="card"><h2>Review history</h2>
-          {f.reviews.map((r) => <p key={r.id} className="small"><strong>{r.reviewer}</strong> chose <em>{r.decision}</em> (now {label(r.to_status)}). {r.comment}</p>)}
+          {f.reviews.map((r) => <p key={r.id} className="small"><strong>{r.reviewer}</strong> chose <em>{(BUTTON[r.decision] ?? label(r.decision)).toLowerCase()}</em> (now {label(r.to_status)}). {r.comment}</p>)}
         </section>
       )}
       <section className="card" aria-labelledby="e-h">

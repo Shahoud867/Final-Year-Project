@@ -4,6 +4,7 @@ import axe from "axe-core";
 import App from "../src/App";
 import { Graph } from "../src/components/Graph";
 import { FindingDetail } from "../src/pages/FindingDetail";
+import { Guide } from "../src/pages/Guide";
 import { Home } from "../src/pages/Home";
 import { NewRun } from "../src/pages/NewRun";
 import { RunDetail } from "../src/pages/RunDetail";
@@ -47,6 +48,7 @@ describe("accessibility (axe-core, structure and semantics)", () => {
     ["New run", () => <NewRun />],
     ["Run detail", () => <RunDetail id="run_1" />],
     ["Finding", () => <FindingDetail id="fnd_1" />],
+    ["How it works", () => <Guide />],
     ["App shell", () => <App />],
     ["Graph", () => <Graph graph={graph} />],
   ];

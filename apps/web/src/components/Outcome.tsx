@@ -21,7 +21,7 @@ export function Experiments({ f }: { f: FindingDetail }) {
                 <p>{s.explanation}</p>
                 <p className="small">
                   With the fix: {s.k_pass}/{s.n_completed} correct (95% interval {pct(s.ci_low)} to {pct(s.ci_high)}).
-                  Without it: {s.c_pass}/{s.m_completed} correct. Rule {s.rule_version}.
+                  Without it: {s.m_completed ? `${s.c_pass}/${s.m_completed} correct` : "no control finished"}. Rule {s.rule_version}.
                 </p>
                 <div className="row">
                   {e.replays.map((r) => (
@@ -39,7 +39,7 @@ export function Experiments({ f }: { f: FindingDetail }) {
   );
 }
 
-const BUTTON: Record<string, string> = {
+export const BUTTON: Record<string, string> = {
   accept: "Accept", reject: "Reject", resolve: "Mark resolved", wont_fix: "Close without fixing",
   request_info: "Ask for more information",
 };

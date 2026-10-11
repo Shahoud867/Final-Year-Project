@@ -85,3 +85,28 @@ describe("FR-HIS-01 findings can be searched and filtered", () => {
     expect([params.get("q"), params.get("severity"), params.get("level"), params.get("limit")]).toEqual(["refund", "high", "V2", "25"]);
   });
 });
+
+describe("Panel actions A2 and A3: every feature states what it accepts and what it returns", () => {
+  it("lists each feature with its inputs and outputs, in workflow order", async () => {
+    const { Guide, FEATURES } = await import("../src/pages/Guide");
+    render(<Guide />);
+    expect(screen.getByRole("heading", { level: 1, name: "How it works" })).toBeInTheDocument();
+    expect(FEATURES.map((f) => f.name)).toEqual(["Run", "Check", "Detect", "Trace back", "Verify", "Review", "Record", "Find"]);
+    for (const f of FEATURES) {
+      expect(f.inputs.length).toBeGreaterThan(0);
+      expect(f.outputs.length).toBeGreaterThan(0);
+      expect(screen.getByRole("heading", { level: 2, name: `${f.step}. ${f.name}` })).toBeInTheDocument();
+    }
+    expect(screen.getAllByRole("heading", { level: 3, name: "What it accepts" })).toHaveLength(FEATURES.length);
+    expect(screen.getByText(/Customer message: 3 to 2000 characters/)).toBeInTheDocument();
+  });
+
+  it("is reachable from the main navigation", async () => {
+    mockApi({ "GET /health": () => ({ status: "ok", version: "0", llm_mode: "recorded", live_model_reachable: false, auth_required: false }) });
+    window.location.hash = "#/guide";
+    const { default: App } = await import("../src/App");
+    render(<App />);
+    expect(await screen.findByRole("heading", { level: 1, name: "How it works" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "How it works" })).toHaveAttribute("aria-current", "page");
+  });
+});

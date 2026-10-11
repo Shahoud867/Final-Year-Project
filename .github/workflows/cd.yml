@@ -1,0 +1,118 @@
+name: CD
+
+# Delivery, only after the CI workflow has passed on main:
+#   1. build the container image, smoke-test that exact image, publish it to the GitHub Container Registry;
+#   2. if the Render deploy hook is configured, ask Render to deploy, then smoke-test the public URL.
+# Pushing a tag v* publishes the image under that tag and creates a GitHub Release.
+#
+# Setup (once, by a repository admin; see docs/manuals/setup-manual.md, "Continuous delivery"):
+#   secret   RENDER_DEPLOY_HOOK_URL   the deploy hook of the Render service created from render.yaml
+#   variable GRANITE_DEMO_URL         the public address of that service, without a trailing slash
+# Without them the deploy job says "not configured" and passes; the image is still published.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  image:
+    name: Publish container image
+    # After CI: only when CI succeeded for a push to main (never for a pull request).
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - name: Image name and tags
+        id: meta
+        run: |
+          echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+          echo "sha=sha-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Build
+        run: docker build -t "${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha }}" .
+      - name: Smoke test the exact image that will be published
+        run: |
+          docker run -d --name granite -p 8000:8000 "${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha }}"
+          bash scripts/smoke-test.sh http://127.0.0.1:8000
+      - name: Log in to ghcr.io
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Push
+        env:
+          IMAGE: ${{ steps.meta.outputs.image }}
+          SHA_TAG: ${{ steps.meta.outputs.sha }}
+        run: |
+          docker push "$IMAGE:$SHA_TAG"
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && [ "$GITHUB_REF_TYPE" = "tag" ]; then MOVING="$GITHUB_REF_NAME"
+          elif [ "$GITHUB_EVENT_NAME" = "workflow_run" ]; then MOVING="main"
+          else MOVING=""; fi
+          if [ -n "$MOVING" ]; then
+            docker tag "$IMAGE:$SHA_TAG" "$IMAGE:$MOVING"
+            docker push "$IMAGE:$MOVING"
+          fi
+          echo "Published $IMAGE:$SHA_TAG ${MOVING:+and $IMAGE:$MOVING}" >> "$GITHUB_STEP_SUMMARY"
+      - name: Logs on failure
+        if: failure()
+        run: docker logs granite || true
+
+  deploy:
+    name: Deploy to Render and verify
+    needs: image
+    if: github.event_name != 'push'  # tags publish an image and a release; the demo follows main
+    runs-on: ubuntu-latest
+    env:
+      HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      URL: ${{ vars.GRANITE_DEMO_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - name: Not configured
+        if: env.HOOK == '' || env.URL == ''
+        run: |
+          echo "::notice::Deploy skipped: set the secret RENDER_DEPLOY_HOOK_URL and the variable GRANITE_DEMO_URL."
+          echo "Deploy skipped: not configured." >> "$GITHUB_STEP_SUMMARY"
+      - name: Ask Render to deploy
+        if: env.HOOK != '' && env.URL != ''
+        run: curl -fsS -X POST "$HOOK" -o /dev/null
+      - name: Wait for the service, then smoke-test the public URL
+        if: env.HOOK != '' && env.URL != ''
+        run: |
+          sleep 90  # the build on the free plan takes a few minutes; the old version keeps serving meanwhile
+          for _ in $(seq 1 40); do
+            curl -fs "$URL/api/health" >/dev/null 2>&1 && break
+            sleep 15
+          done
+          bash scripts/smoke-test.sh "$URL"
+          echo "Deployed and smoke-tested: $URL" >> "$GITHUB_STEP_SUMMARY"
+
+  release:
+    name: GitHub Release
+    needs: image
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create the release with generated notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "$GITHUB_REF_NAME" --generate-notes --verify-tag

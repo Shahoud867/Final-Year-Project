@@ -58,6 +58,7 @@ REPAIRS: dict[str, list[RepairRule]] = {
 
 
 def build_workflow(store: RetailStore | None = None, model: str = DEFAULT_MODEL) -> WorkflowDef:
+    """Assemble the Refund Desk: five steps with their reads, seven checks and the repair rules."""
     store = store or default_store()
     step_defs = [
         StepDef("s1", "Intake", "llm", "extract order and items", ["task.message"], steps.intake(model)),

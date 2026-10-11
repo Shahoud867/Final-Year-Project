@@ -23,6 +23,7 @@ class StalePriceFault:
     target_step: str = "s2"
 
     def apply(self, outputs: dict[str, Any], inputs: dict[str, Any]) -> tuple[dict[str, Any], FaultRecord]:
+        """Lower the price of a requested item in the lookup result; return the fault record."""
         items = [dict(it) for it in outputs["items"]]
         wanted = {_norm(n) for n in inputs.get("s1.item_names", [])}
         idx = next((i for i, it in enumerate(items) if _norm(it["name"]) in wanted), 0)
@@ -39,6 +40,7 @@ FAULT_TYPES: dict[str, type[StalePriceFault]] = {"stale_price": StalePriceFault}
 
 
 def make_fault(name: str | None) -> Fault | None:
+    """Create a fault by name; None or 'none' means a clean run."""
     if not name or name == "none":
         return None
     if name not in FAULT_TYPES:

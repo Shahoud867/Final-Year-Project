@@ -28,6 +28,7 @@ _ORDER_ID = re.compile(r"^#W\d{3,12}$")
 
 @lru_cache(maxsize=8)
 def prompt(name: str) -> str:
+    """Load a versioned prompt file from the package."""
     path = resources.files("refund_desk") / "prompts" / f"{name}_{PROMPT_VERSION}.md"
     return path.read_text(encoding="utf-8").strip()
 
@@ -55,6 +56,7 @@ def _norm(name: str) -> str:
 
 
 def intake(model: str) -> StepFn:
+    """Step s1: ask the model to extract the order id and item names from the message."""
     def run(ctx: StepContext) -> dict[str, Any]:
         out = ctx.ask(
             LLMRequest(
@@ -78,6 +80,7 @@ def intake(model: str) -> StepFn:
 
 
 def order_lookup(store: RetailStore) -> StepFn:
+    """Step s2: read the order from the retail store (a tool call, no model)."""
     def run(ctx: StepContext) -> dict[str, Any]:
         order = store.order(str(ctx.inputs["s1.order_id"]))
         if order is None:
@@ -95,6 +98,7 @@ def order_lookup(store: RetailStore) -> StepFn:
 
 
 def policy(store: RetailStore) -> StepFn:
+    """Step s3: decide eligibility in code and select the items to refund."""
     def run(ctx: StepContext) -> dict[str, Any]:
         inp = ctx.inputs
         try:
@@ -127,6 +131,7 @@ def policy(store: RetailStore) -> StepFn:
 
 
 def calculator(model: str) -> StepFn:
+    """Step s4: ask the model to add up the prices of the items to refund."""
     def run(ctx: StepContext) -> dict[str, Any]:
         items = ctx.inputs["s3.items_to_refund"]
         if not items:
@@ -160,6 +165,7 @@ def _method_label(method_id: str) -> str:
 
 
 def writer(model: str) -> StepFn:
+    """Step s5: ask the model to write the customer message."""
     def run(ctx: StepContext) -> dict[str, Any]:
         inp = ctx.inputs
         if inp["s3.eligible"]:

@@ -36,6 +36,7 @@ def find_seed_dir() -> Path:
 
 
 class RetailStore:
+    """Orders, customers and catalogue of the retail snapshot, and the checks' source of truth."""
     def __init__(
         self, orders: dict[str, Any], users: dict[str, Any], products: dict[str, Any], version: str = SNAPSHOT
     ) -> None:
@@ -48,6 +49,7 @@ class RetailStore:
 
     @classmethod
     def load(cls, seed_dir: Path | None = None) -> RetailStore:
+        """Load the snapshot from the seed directory."""
         base = (seed_dir or find_seed_dir()) / SNAPSHOT
 
         def read(name: str) -> dict[str, Any]:
@@ -59,21 +61,26 @@ class RetailStore:
 
     # ---- what the workflow's tool step may call -----------------------------------------------------
     def order(self, order_id: str) -> dict[str, Any] | None:
+        """The order as the workflow's lookup tool sees it, or None."""
         return self.orders.get(order_id)
 
     # ---- source of truth (called from check expressions as truth.<name>) -----------------------------
     def catalog_price(self, item_id: str) -> float:
+        """Catalogue price of an item; an unknown item is reported as a missing field."""
         if item_id not in self._price:
             raise MissingFieldError(f"item '{item_id}' is not in the catalogue")
         return self._price[item_id]
 
     def catalog_total(self, item_ids: list[str]) -> float:
+        """Sum of the catalogue prices of the given items, rounded to cents."""
         return round(sum(self.catalog_price(i) for i in item_ids), 2)
 
     def fix_prices(self, items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Return the items with their prices replaced by catalogue prices."""
         return [{**it, "price": self.catalog_price(it["item_id"])} for it in items]
 
     def user_id_for_email(self, email: str) -> str:
+        """Customer id for an e-mail address (case-insensitive)."""
         uid = self._email_to_user.get(str(email).lower())
         if uid is None:
             raise MissingFieldError("no customer has this e-mail address")
@@ -93,6 +100,7 @@ class RetailStore:
         return all(r["item_id"] in by_id and abs(by_id[r["item_id"]] - r["price"]) < 1e-9 for r in refunded)
 
     def truth_functions(self) -> dict[str, Callable[..., Any]]:
+        """The functions a check may call as ``truth.<name>``."""
         return {
             "catalog_price": self.catalog_price,
             "catalog_total": self.catalog_total,
@@ -134,4 +142,5 @@ class RetailStore:
 
 @lru_cache(maxsize=1)
 def default_store() -> RetailStore:
+    """The snapshot store, loaded once per process."""
     return RetailStore.load()

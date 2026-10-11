@@ -1,0 +1,14 @@
+# Configuration for the cross-package test suites in this folder (run from the repository root: pytest tests/system).
+[tool.pytest.ini_options]
+addopts = "-q"
+markers = [
+    "own_server: the test starts a server with its own configuration; skipped when GRANITE_SYSTEM_BASE_URL is set",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C90", "UP", "N"]
+ignore = ["E501"]  # test-case docstrings are one specification line each

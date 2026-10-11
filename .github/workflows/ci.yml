@@ -28,7 +28,7 @@ jobs:
           pip install -e "packages/granite_core[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
       - name: Lint (ruff)
         run: |
-          ruff check packages/granite_core workflows/refund_desk apps/api scripts
+          ruff check packages/granite_core workflows/refund_desk apps/api scripts tests
       - name: Types (mypy, strict)
         run: |
           (cd packages/granite_core && mypy granite_core)
@@ -40,14 +40,19 @@ jobs:
         run: cd workflows/refund_desk && pytest
       - name: Tests - API
         run: cd apps/api && pytest --cov=granite_api --cov-report=term-missing --cov-fail-under=90
+      - name: Tests - system (black box over HTTP against a real server process)
+        run: pytest tests/system
       - name: Security - bandit (medium and above)
         run: bandit -q -r packages/granite_core/granite_core workflows/refund_desk/refund_desk apps/api/granite_api -ll
       - name: Security - known vulnerabilities in dependencies
         run: pip-audit --skip-editable
-      - name: Generated files match the code (trace schema, diagrams)
+      - name: Architecture rule (the core library imports no web, database or network code)
+        run: python scripts/check_architecture.py
+      - name: Generated files match the code (trace schema, design pack, test catalogue, traceability)
         run: |
           python scripts/export_trace_schema.py --check
-          python scripts/export_diagrams.py --check
+          python scripts/build_design_pack.py --check
+          python scripts/build_test_docs.py --check
           python scripts/check_traceability.py --check
       - name: Workspace and link hygiene
         run: |
@@ -98,6 +103,13 @@ jobs:
         run: docker run -d --name granite -p 8000:8000 granite:ci
       - name: Smoke test (health, UI, recorded run, finding)
         run: bash scripts/smoke-test.sh http://127.0.0.1:8000
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: System tests against the container (cases that need their own server configuration are skipped)
+        run: |
+          python -m pip install --quiet pytest
+          GRANITE_SYSTEM_BASE_URL=http://127.0.0.1:8000 pytest tests/system
       - name: Logs on failure
         if: failure()
         run: docker logs granite

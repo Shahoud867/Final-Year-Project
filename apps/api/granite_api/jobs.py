@@ -15,10 +15,12 @@ log = logging.getLogger("granite.jobs")
 
 
 class JobHandle:
+    """Lets a running job report its progress."""
     def __init__(self, factory: sessionmaker[Session], job_id: str) -> None:
         self._factory, self.job_id = factory, job_id
 
     def progress(self, done: int, total: int, message: str = "") -> None:
+        """Store how many units are done and an optional message."""
         with session_scope(self._factory) as s:
             job = s.get(Job, self.job_id)
             if job:
@@ -28,11 +30,13 @@ class JobHandle:
 
 
 class JobRunner:
+    """Runs jobs on a small thread pool (or inline) and keeps a database row per job."""
     def __init__(self, factory: sessionmaker[Session], inline: bool = False, max_workers: int = 2) -> None:
         self.factory, self.inline = factory, inline
         self._pool = None if inline else ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="granite-job")
 
     def submit(self, kind: str, target_id: str, fn: Callable[[JobHandle], None]) -> str:
+        """Queue a job and return its id."""
         job_id = new_id("job")
         with session_scope(self.factory) as s:
             s.add(Job(id=job_id, kind=kind, target_id=target_id))
@@ -61,6 +65,7 @@ class JobRunner:
                 job.message = message
 
     def shutdown(self) -> None:
+        """Stop the pool without waiting for queued jobs."""
         if self._pool is not None:
             self._pool.shutdown(wait=False, cancel_futures=True)
 

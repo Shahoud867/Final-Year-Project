@@ -16,12 +16,14 @@ PROBLEM = "application/problem+json"
 
 
 class ProblemError(Exception):
+    """An error with an HTTP status and a message that is safe to show to the user."""
     def __init__(self, status: int, title: str, detail: str = "", **extra: Any) -> None:
         super().__init__(f"{status} {title}: {detail}")
         self.status, self.title, self.detail, self.extra = status, title, detail, extra
 
 
 def problem(request: Request, status: int, title: str, detail: str = "", **extra: Any) -> JSONResponse:
+    """Build an RFC 7807 problem response."""
     body = {
         "type": "about:blank",
         "title": title,
@@ -35,6 +37,7 @@ def problem(request: Request, status: int, title: str, detail: str = "", **extra
 
 
 def install_handlers(app: FastAPI) -> None:
+    """Register handlers so that every error leaves the API as a problem response."""
     @app.exception_handler(ProblemError)
     async def _problem(request: Request, exc: ProblemError) -> JSONResponse:
         return problem(request, exc.status, exc.title, exc.detail, **exc.extra)

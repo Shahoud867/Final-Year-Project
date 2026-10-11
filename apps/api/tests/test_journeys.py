@@ -112,3 +112,17 @@ def test_evidence_is_listed_in_the_order_an_investigation_unfolds(client, exampl
     assert types[0] == "check_computation" and types[1] == "step_snapshot"
     assert types.index("provenance_path") < types.index("verdict_computation") < types.index("replay_output")
     assert types[-1] == "diff"
+
+
+def test_a_replay_with_no_recorded_answer_gives_no_verdict_and_says_why(client, example):
+    """Edge case found in a live walkthrough: recorded mode cannot run controls it never recorded.
+
+    The product must not guess: the verdict is "error", the reason is stated, and the finding can be verified again.
+    """
+    finding = open_finding(client, example)
+    intake = hypothesis_for(finding, "s1")
+    exp = verify(client, intake["id"])
+    assert exp["verdict"] == "error" and exp["summary"]["m_completed"] == 0
+    assert "not in the recording" in exp["summary"]["explanation"]
+    after = client.get(f"/api/findings/{finding['id']}").json()
+    assert after["status"] == "hypothesized" and "verify" in after["allowed_actions"]

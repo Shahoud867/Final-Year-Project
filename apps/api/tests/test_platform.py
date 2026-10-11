@@ -199,3 +199,58 @@ class TestResilience:
             Settings(llm_mode="turbo").validate()
         with pytest.raises(ValueError, match="both"):
             Settings(openai_base_url="http://x").validate()
+
+    def test_model_probe_is_cached_so_health_checks_stay_fast(self, monkeypatch):
+        import time
+
+        from granite_api import llm_factory
+
+        calls = []
+
+        def slow_refusal(url, timeout):
+            calls.append(timeout)
+            raise OSError("refused")
+
+        monkeypatch.setattr(llm_factory.urllib.request, "urlopen", slow_refusal)
+        llm_factory._probe_cache.clear()
+        settings = Settings(ollama_url="http://127.0.0.1:9")
+        t0 = time.monotonic()
+        assert [llm_factory.live_available(settings) for _ in range(50)] == [False] * 50
+        assert len(calls) == 1 and calls[0] <= 1.0 and time.monotonic() - t0 < 0.5
+        assert llm_factory.live_available(settings, max_age=0) is False and len(calls) == 2  # an expired entry probes again
+        assert llm_factory.live_available(Settings(openai_base_url="http://x", openai_api_key="k")) is True
+
+
+def test_the_in_app_guide_states_the_limits_the_server_enforces():
+    """Panel action A3: the inputs explained to the user are the ones that are validated (no drift)."""
+    from pathlib import Path
+
+    from granite_core.attribution import MAX_HYPOTHESES
+
+    from granite_api.registry import RefundTask as TaskInput
+    from granite_api.schemas import ExperimentCreate, ReviewCreate, RunCreate
+
+    guide = (Path(__file__).resolve().parents[3] / "apps" / "web" / "src" / "pages" / "Guide.tsx").read_text(encoding="utf-8")
+
+    def limit(model, field, name):
+        return next(getattr(m, name) for m in model.model_fields[field].metadata if hasattr(m, name))
+
+    expected = [
+        f"{limit(TaskInput, 'message', 'min_length')} to {limit(TaskInput, 'message', 'max_length')} characters",
+        f"at most {limit(TaskInput, 'email', 'max_length')} characters",
+        f"0 to {limit(RunCreate, 'seed', 'le'):,}",
+        f"N: {limit(ExperimentCreate, 'n', 'ge')} to {limit(ExperimentCreate, 'n', 'le')} (default {ExperimentCreate().n})",
+        f"M: {limit(ExperimentCreate, 'm', 'ge')} to {limit(ExperimentCreate, 'm', 'le')} (default {ExperimentCreate().m})",
+        f"Comment: at most {limit(ReviewCreate, 'comment', 'max_length')} characters",
+        f"{limit(ReviewCreate, 'reviewer', 'min_length')} to {limit(ReviewCreate, 'reviewer', 'max_length')} characters",
+        f"Up to {MAX_HYPOTHESES} ranked hypotheses",
+    ]
+    missing = [text for text in expected if text not in guide]
+    assert not missing, f"Guide.tsx no longer matches the server's rules: {missing}"
+
+
+def test_field_messages_are_plain_sentences(client, example):
+    """Panel action A1: the form shows a readable sentence next to the field, not a validator's internal wording."""
+    r = post_run(client, {"task_input": {**example, "message": "hi", "order_id": "12"}})
+    messages = {e["field"]: e["message"] for e in r.json()["errors"]}
+    assert messages == {"message": "Enter at least 3 characters", "order_id": "Must look like #W1234567"}

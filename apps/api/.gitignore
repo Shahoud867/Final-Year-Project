@@ -7,3 +7,6 @@
 .ruff_cache/
 .coverage
 htmlcov/
+build/
+dist/
+.hypothesis/

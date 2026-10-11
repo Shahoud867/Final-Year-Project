@@ -80,6 +80,7 @@ def _store_fault(run: Run, fault: FaultRecord | None) -> None:
 
 
 def persist_outcome(session: Session, run: Run, defn: WorkflowDef, outcome: RunOutcome) -> list[Finding]:
+    """Store a finished run: trace, check results, findings, hypotheses and evidence."""
     trace = outcome.trace
     doc: dict[str, Any] = trace.model_dump(mode="json")
     run.trace, run.trace_sha256 = doc, sha256_of(doc)

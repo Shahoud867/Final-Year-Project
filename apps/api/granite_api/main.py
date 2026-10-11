@@ -31,6 +31,7 @@ SECURITY_HEADERS = {
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
+    """Build the application: database, job runner, middleware, error handlers and routes."""
     settings = settings or Settings.from_env()
     settings.validate()
     engine = make_engine(settings.db_url)

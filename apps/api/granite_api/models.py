@@ -17,14 +17,17 @@ from .db import Base
 
 
 def new_id(prefix: str) -> str:
+    """A new record id: the prefix and 12 hexadecimal characters."""
     return f"{prefix}_{uuid.uuid4().hex[:12]}"
 
 
 def now() -> datetime:
+    """Current time in UTC."""
     return datetime.now(UTC)
 
 
 class Project(Base):
+    """A workflow under investigation."""
     __tablename__ = "projects"
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
     name: Mapped[str] = mapped_column(String(120))
@@ -34,6 +37,7 @@ class Project(Base):
 
 
 class Run(Base):
+    """One execution of a workflow, with its trace."""
     __tablename__ = "runs"
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
     project_id: Mapped[str] = mapped_column(ForeignKey("projects.id"), index=True)
@@ -72,6 +76,7 @@ class FaultInjection(Base):
 
 
 class CheckResultRow(Base):
+    """The result of one check on one run."""
     __tablename__ = "check_results"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     run_id: Mapped[str] = mapped_column(ForeignKey("runs.id"), index=True)
@@ -90,6 +95,7 @@ class CheckResultRow(Base):
 
 
 class Finding(Base):
+    """A case opened for a failed outcome check or an errored run."""
     __tablename__ = "findings"
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
     run_id: Mapped[str] = mapped_column(ForeignKey("runs.id"), index=True)
@@ -113,6 +119,7 @@ class Finding(Base):
 
 
 class Hypothesis(Base):
+    """A ranked suspect step for a finding."""
     __tablename__ = "hypotheses"
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
     finding_id: Mapped[str] = mapped_column(ForeignKey("findings.id"), index=True)
@@ -132,6 +139,7 @@ class Hypothesis(Base):
 
 
 class Experiment(Base):
+    """A verification of one hypothesis by replays and controls."""
     __tablename__ = "experiments"
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
     hypothesis_id: Mapped[str] = mapped_column(ForeignKey("hypotheses.id"), index=True)
@@ -155,6 +163,7 @@ class Experiment(Base):
 
 
 class ReplayRow(Base):
+    """One replay or control of an experiment."""
     __tablename__ = "replays"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     experiment_id: Mapped[str] = mapped_column(ForeignKey("experiments.id"), index=True)
@@ -185,6 +194,7 @@ class Evidence(Base):
 
 
 class Review(Base):
+    """A reviewer's decision on a finding."""
     __tablename__ = "reviews"
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
     finding_id: Mapped[str] = mapped_column(ForeignKey("findings.id"), index=True)
@@ -198,6 +208,7 @@ class Review(Base):
 
 
 class Job(Base):
+    """A background job and its progress."""
     __tablename__ = "jobs"
     id: Mapped[str] = mapped_column(String(32), primary_key=True)
     kind: Mapped[str] = mapped_column(String(20))  # run or experiment

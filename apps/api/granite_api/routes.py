@@ -53,16 +53,19 @@ from .views import (
 
 
 def get_settings(request: Request) -> Settings:
+    """The application's settings."""
     settings: Settings = request.app.state.settings
     return settings
 
 
 def get_runner(request: Request) -> JobRunner:
+    """The application's job runner."""
     runner: JobRunner = request.app.state.runner
     return runner
 
 
 def get_session(request: Request) -> Iterator[Session]:
+    """A database session for one request."""
     with session_scope(request.app.state.session_factory) as session:
         yield session
 
@@ -70,6 +73,7 @@ def get_session(request: Request) -> Iterator[Session]:
 def require_token(
     settings: Annotated[Settings, Depends(get_settings)], authorization: Annotated[str | None, Header()] = None
 ) -> None:
+    """Refuse the request unless it carries the configured access token (when one is configured)."""
     if not settings.api_token:
         return
     supplied = (authorization or "").removeprefix("Bearer ").strip()
@@ -86,6 +90,7 @@ router = APIRouter(prefix="/api", dependencies=[Depends(require_token)])
 
 @public.get("/health", tags=["system"])
 def health(request: Request, settings: Cfg) -> dict[str, Any]:
+    """Report that the server and database are up, and whether a live model is reachable."""
     with session_scope(request.app.state.session_factory) as s:
         s.execute(text("select 1"))
     return {
@@ -99,6 +104,7 @@ def health(request: Request, settings: Cfg) -> dict[str, Any]:
 
 @router.get("/workflows", tags=["workflows"])
 def list_workflows(settings: Cfg) -> list[dict[str, Any]]:
+    """List the workflows that can be run, with their steps, checks and available faults."""
     out = []
     for e in WORKFLOWS.values():
         defn = e.build(settings.model)
@@ -114,11 +120,13 @@ def list_workflows(settings: Cfg) -> list[dict[str, Any]]:
 
 @router.get("/workflows/{key}/examples", tags=["workflows"])
 def examples(key: str) -> list[dict[str, Any]]:
+    """Ready-to-run example tasks for a workflow."""
     return run_service.entry_for(key).examples()
 
 
 @router.post("/runs", status_code=202, tags=["runs"])
 def create_run(body: RunCreate, db: Db, settings: Cfg, jobs: Jobs) -> Accepted:
+    """Start a run of a workflow on a task, optionally with an injected fault. Returns a job to poll."""
     run = run_service.create_run(db, settings, body.workflow, body.task_input, body.fault, body.seed, body.mode)
     db.commit()
     job_id = jobs.submit("run", run.id, run_service.run_job(jobs.factory, settings, run.id))
@@ -137,6 +145,7 @@ def list_runs(
     limit: Annotated[int, Query(ge=1, le=100)] = PAGE,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[RunSummary]:
+    """List runs, newest first, optionally filtered by status, fault or text in the task."""
     query = db.query(Run).order_by(Run.created_at.desc())
     if status:
         query = query.filter(Run.status == status)
@@ -156,11 +165,13 @@ def _run(db: Session, run_id: str) -> Run:
 
 @router.get("/runs/{run_id}", tags=["runs"])
 def get_run(run_id: str, db: Db) -> RunDetail:
+    """A run with its trace, check results, findings and (for evaluation only) the injected fault."""
     return run_detail(_run(db, run_id))
 
 
 @router.get("/runs/{run_id}/graph", tags=["runs"])
 def get_graph(run_id: str, db: Db) -> dict[str, Any]:
+    """The run as a graph: steps, data-flow edges and each step's check status."""
     return graph(_run(db, run_id))
 
 
@@ -177,6 +188,7 @@ def list_findings(
     limit: Annotated[int, Query(ge=1, le=100)] = PAGE,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> list[FindingSummary]:
+    """List findings, newest first, filtered by status, severity, level, run, text or date."""
     query = db.query(Finding).order_by(Finding.created_at.desc())
     if status:
         query = query.filter(Finding.status == status)
@@ -204,11 +216,13 @@ def _finding(db: Session, finding_id: str) -> Finding:
 
 @router.get("/findings/summary", tags=["findings"])
 def findings_summary(db: Db) -> dict[str, int]:
+    """Number of findings in each status."""
     return count_by_status(db)
 
 
 @router.get("/findings/{finding_id}", tags=["findings"])
 def get_finding(finding_id: str, db: Db) -> FindingDetail:
+    """A finding with its hypotheses, experiments, reviews, evidence and the actions allowed now."""
     return finding_detail(db, _finding(db, finding_id))
 
 
@@ -229,6 +243,7 @@ def get_report(finding_id: str, db: Db, format: Literal["md", "json"] = "md") ->
 
 @router.post("/hypotheses/{hypothesis_id}/experiments", status_code=202, tags=["verification"])
 def start_experiment(hypothesis_id: str, body: ExperimentCreate, db: Db, settings: Cfg, jobs: Jobs) -> Accepted:
+    """Verify a hypothesis with N replays that apply the fix and M controls. Returns a job to poll."""
     exp = exp_service.create_experiment(db, settings, hypothesis_id, body.n, body.m, body.mode, "analyst")
     db.commit()
     job_id = jobs.submit("experiment", exp.id, exp_service.experiment_job(jobs.factory, settings, exp.id))
@@ -237,6 +252,7 @@ def start_experiment(hypothesis_id: str, body: ExperimentCreate, db: Db, setting
 
 @router.get("/experiments/{experiment_id}", tags=["verification"])
 def get_experiment(experiment_id: str, db: Db) -> ExperimentOut:
+    """An experiment with its replays, summary and verdict."""
     exp = db.get(Experiment, experiment_id)
     if exp is None:
         raise ProblemError(404, "Experiment not found", f"There is no experiment {experiment_id}.")
@@ -245,12 +261,14 @@ def get_experiment(experiment_id: str, db: Db) -> ExperimentOut:
 
 @router.post("/findings/{finding_id}/reviews", status_code=201, tags=["findings"])
 def post_review(finding_id: str, body: ReviewCreate, db: Db) -> ReviewOut:
+    """Record a decision on a finding: accept, reject, resolve, close, or ask for information."""
     review = review_service.apply_review(db, finding_id, body.decision, body.comment, body.reviewer)
     return ReviewOut.model_validate(review)
 
 
 @router.get("/evidence/{evidence_id}", tags=["evidence"])
 def get_evidence(evidence_id: str, db: Db) -> EvidenceOut:
+    """One evidence record; ``hash_valid`` is false if its content no longer matches its hash."""
     ev = db.get(Evidence, evidence_id)
     if ev is None:
         raise ProblemError(404, "Evidence not found", f"There is no evidence record {evidence_id}.")
@@ -259,6 +277,7 @@ def get_evidence(evidence_id: str, db: Db) -> EvidenceOut:
 
 @router.get("/jobs/{job_id}", tags=["jobs"])
 def get_job(job_id: str, db: Db) -> JobOut:
+    """Status and progress of a background job."""
     job = db.get(Job, job_id)
     if job is None:
         raise ProblemError(404, "Job not found", f"There is no job {job_id}.")

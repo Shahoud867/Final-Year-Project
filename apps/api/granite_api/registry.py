@@ -16,6 +16,7 @@ ORDER_ID = re.compile(r"^#W\d{3,12}$")
 
 
 class RefundTask(BaseModel):
+    """A refund request as the Refund Desk accepts it."""
     model_config = ConfigDict(extra="forbid")
 
     message: str = Field(min_length=3, max_length=2000)
@@ -39,6 +40,7 @@ class RefundTask(BaseModel):
 
 @dataclass(frozen=True)
 class WorkflowEntry:
+    """What the API needs to offer a workflow: builder, examples, faults and input validation."""
     key: str
     title: str
     description: str

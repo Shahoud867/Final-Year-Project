@@ -44,11 +44,13 @@ def _post(url: str, payload: dict[str, Any], headers: dict[str, str], timeout: f
 
 @dataclass
 class OllamaProvider:
+    """Calls the chat API of a local Ollama server."""
     base_url: str = "http://127.0.0.1:11434"
     timeout: float = 120.0
     name: str = "ollama"
 
     def complete(self, request: LLMRequest) -> Completion:
+        """Send the request to Ollama and return its answer."""
         options: dict[str, Any] = {"temperature": request.temperature, "num_predict": request.max_tokens}
         if request.seed is not None:
             options["seed"] = request.seed
@@ -77,6 +79,7 @@ class OpenAICompatProvider:
     name: str = "openai-compatible"
 
     def complete(self, request: LLMRequest) -> Completion:
+        """Send the request to the chat-completions endpoint and return its answer."""
         payload: dict[str, Any] = {
             "model": request.model, "messages": request.messages, "temperature": request.temperature,
             "max_tokens": request.max_tokens,

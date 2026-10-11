@@ -44,17 +44,20 @@ EVIDENCE_ORDER = [t.value for t in (
 
 
 def evidence_sort_key(e: Evidence) -> tuple[int, str, str]:
+    """Order evidence by investigation stage, then by time."""
     rank = EVIDENCE_ORDER.index(e.type) if e.type in EVIDENCE_ORDER else len(EVIDENCE_ORDER)
     return rank, e.created_at.isoformat(), e.title
 
 
 def finding_summary(f: Finding) -> FindingSummary:
+    """A finding with its verification level."""
     out = FindingSummary.model_validate(f)
     out.verification_level = verification_level(FindingStatus(f.status))
     return out
 
 
 def run_summary(session: Session, run: Run) -> RunSummary:
+    """A run with its finding and failed-check counts."""
     out = RunSummary.model_validate(run)
     out.finding_count = len(run.findings)
     out.failed_checks = sum(1 for c in run.check_results if c.status == "fail")
@@ -62,6 +65,7 @@ def run_summary(session: Session, run: Run) -> RunSummary:
 
 
 def run_detail(run: Run) -> RunDetail:
+    """A run with trace, check results, findings and injected fault."""
     base = RunSummary.model_validate(run).model_dump()
     detail = RunDetail.model_validate(
         {
@@ -80,6 +84,7 @@ def run_detail(run: Run) -> RunDetail:
 
 
 def evidence_out(e: Evidence) -> EvidenceOut:
+    """An evidence record with its hash re-checked."""
     out = EvidenceOut.model_validate(e)
     out.hash_valid = verify_evidence(
         EvidenceRecord(type=EvidenceType(e.type), payload=e.payload, sha256=e.sha256, reproduce=e.reproduce)
@@ -88,12 +93,14 @@ def evidence_out(e: Evidence) -> EvidenceOut:
 
 
 def experiment_out(e: Any) -> ExperimentOut:
+    """An experiment with its replays."""
     out = ExperimentOut.model_validate(e)
     out.replays = [ReplayOut.model_validate(r) for r in e.replays]
     return out
 
 
 def finding_detail(session: Session, f: Finding) -> FindingDetail:
+    """A finding with hypotheses, experiments, reviews, evidence and allowed actions."""
     status = FindingStatus(f.status)
     actions = [USER_ACTIONS[ev] for ev in allowed_events(status) if ev in USER_ACTIONS]
     if f.status in AWAITING_REVIEW:
@@ -142,5 +149,6 @@ def graph(run: Run) -> dict[str, Any]:
 
 
 def count_by_status(session: Session) -> dict[str, int]:
+    """Number of findings per status."""
     rows = session.query(Finding.status, func.count()).group_by(Finding.status).all()
     return {status: n for status, n in rows}

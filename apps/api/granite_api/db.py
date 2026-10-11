@@ -10,10 +10,12 @@ from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 
 class Base(DeclarativeBase):
+    """Declarative base of all tables."""
     pass
 
 
 def make_engine(url: str) -> Engine:
+    """Create the engine; for SQLite also create the folder and enable foreign keys and WAL."""
     if url.startswith("sqlite"):
         path = url.split("///", 1)[1] if "///" in url else ""
         if path and path != ":memory:":
@@ -34,11 +36,13 @@ def make_engine(url: str) -> Engine:
 
 
 def make_session_factory(engine: Engine) -> sessionmaker[Session]:
+    """Session factory bound to the engine."""
     return sessionmaker(engine, expire_on_commit=False)
 
 
 @contextmanager
 def session_scope(factory: sessionmaker[Session]) -> Iterator[Session]:
+    """A session that commits on success and rolls back on error."""
     session = factory()
     try:
         yield session

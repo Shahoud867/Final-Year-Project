@@ -16,6 +16,7 @@ LEVELS = {
 
 
 def finding_report(session: Session, f: Finding) -> str:
+    """Render the investigation of one finding as Markdown from stored records."""
     level = verification_level(FindingStatus(f.status))
     run = f.run
     lines = [

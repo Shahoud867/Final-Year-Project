@@ -17,6 +17,7 @@ def _bool(name: str, default: bool) -> bool:
 
 @dataclass(frozen=True)
 class Settings:
+    """All runtime settings; each has a GRANITE_* environment variable (see .env.example)."""
     db_url: str = f"sqlite:///{(APP_DIR / '.granite' / 'granite.db').as_posix()}"
     llm_mode: str = "auto"  # recorded: replay saved model answers | live: call the model | auto: live if reachable
     model: str = "llama3.2:3b"
@@ -36,6 +37,7 @@ class Settings:
 
     @classmethod
     def from_env(cls) -> Settings:
+        """Read the settings from environment variables."""
         env = os.environ.get
         static = env("GRANITE_STATIC_DIR")
         timeout = env("GRANITE_LLM_TIMEOUT")
@@ -59,6 +61,7 @@ class Settings:
         )
 
     def validate(self) -> None:
+        """Fail fast on an invalid mode, a half-configured hosted model or a non-http URL."""
         if self.llm_mode not in {"recorded", "live", "auto"}:
             raise ValueError(f"GRANITE_LLM_MODE must be recorded, live or auto (got '{self.llm_mode}')")
         for name, url in (("GRANITE_OLLAMA_URL", self.ollama_url), ("GRANITE_OPENAI_BASE_URL", self.openai_base_url)):

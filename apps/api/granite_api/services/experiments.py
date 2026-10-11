@@ -32,6 +32,7 @@ VERDICT_EVENT = {
 def create_experiment(
     session: Session, settings: Settings, hypothesis_id: str, n: int, m: int, mode: str | None, actor: str
 ) -> Experiment:
+    """Validate and queue a verification; refuses a step with no repair rule or an illegal state."""
     hyp = session.get(Hypothesis, hypothesis_id)
     if hyp is None:
         raise ProblemError(404, "Hypothesis not found", f"There is no hypothesis '{hypothesis_id}'.")
@@ -70,6 +71,7 @@ def _store_replay(factory: sessionmaker[Session], exp_id: str, rec: ReplayRecord
 
 
 def experiment_job(factory: sessionmaker[Session], settings: Settings, exp_id: str) -> Callable[[JobHandle], None]:
+    """Return the job that runs the experiment and stores each replay as it finishes."""
     def job(handle: JobHandle) -> None:
         with session_scope(factory) as s:
             exp = s.get(Experiment, exp_id)
@@ -116,8 +118,19 @@ def _fail(factory: sessionmaker[Session], exp_id: str, message: str) -> None:
         move(s, finding, Event.VERIFY_ERROR)
 
 
+def _why_unfinished(result) -> str:  # type: ignore[no-untyped-def]
+    """Explain replays that could not run because recorded mode holds no saved answer for them."""
+    missed = [r for r in result.replays
+              if not r.completed and any("never recorded" in (step.error or "") for step in r.trace.steps)]
+    if not missed:
+        return ""
+    return (f" {len(missed)} replay(s) needed model answers that are not in the recording, so they could not run. "
+            "Recorded mode only replays saved answers; verify this step with a live model.")
+
+
 def _finish(factory, exp_id, result, trace) -> None:  # type: ignore[no-untyped-def]
     summary = result.summary
+    summary = summary.model_copy(update={"explanation": summary.explanation + _why_unfinished(result)})
     with session_scope(factory) as s:
         exp = s.get(Experiment, exp_id)
         assert exp is not None

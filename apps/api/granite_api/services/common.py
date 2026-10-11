@@ -20,6 +20,7 @@ def add_evidence(
     payload: dict[str, Any],
     reproduce: str = "",
 ) -> Evidence:
+    """Hash and store one evidence record."""
     rec = make_evidence(type_, payload, reproduce)
     row = Evidence(
         id=new_id("ev"),
@@ -36,6 +37,7 @@ def add_evidence(
 
 
 def audit(session: Session, actor: str, action: str, entity_type: str, entity_id: str, **detail: Any) -> None:
+    """Append one entry to the audit log."""
     session.add(AuditLog(actor=actor, action=action, entity_type=entity_type, entity_id=entity_id, detail=detail))
 
 

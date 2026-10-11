@@ -9,10 +9,12 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class Out(BaseModel):
+    """Base for response models read from database rows."""
     model_config = ConfigDict(from_attributes=True)
 
 
 class RunCreate(BaseModel):
+    """Request to start a run."""
     model_config = ConfigDict(extra="forbid")
 
     workflow: str = Field(default="refund_desk", max_length=60)
@@ -23,6 +25,7 @@ class RunCreate(BaseModel):
 
 
 class ExperimentCreate(BaseModel):
+    """Request to verify a hypothesis."""
     model_config = ConfigDict(extra="forbid")
 
     n: int = Field(default=5, ge=1, le=10, description="replays with the fix applied")
@@ -31,6 +34,7 @@ class ExperimentCreate(BaseModel):
 
 
 class ReviewCreate(BaseModel):
+    """A reviewer's decision."""
     model_config = ConfigDict(extra="forbid")
 
     decision: Literal["accept", "reject", "resolve", "wont_fix", "request_info"]
@@ -39,6 +43,7 @@ class ReviewCreate(BaseModel):
 
 
 class JobOut(Out):
+    """A background job's status and progress."""
     id: str
     kind: str
     target_id: str
@@ -51,6 +56,7 @@ class JobOut(Out):
 
 
 class CheckResultOut(Out):
+    """The result of one check."""
     check_id: str
     check_version: int
     scope: str
@@ -65,6 +71,7 @@ class CheckResultOut(Out):
 
 
 class FaultOut(Out):
+    """Ground truth of an injected fault."""
     fault_type: str
     target_step: str
     field_path: str
@@ -74,6 +81,7 @@ class FaultOut(Out):
 
 
 class RunSummary(Out):
+    """A run as shown in lists."""
     id: str
     workflow_key: str
     status: str
@@ -90,6 +98,7 @@ class RunSummary(Out):
 
 
 class RunDetail(RunSummary):
+    """A run with its trace, check results and findings."""
     trace: dict[str, Any] | None
     trace_sha256: str | None
     check_results: list[CheckResultOut]
@@ -100,6 +109,7 @@ class RunDetail(RunSummary):
 
 
 class FindingSummary(Out):
+    """A finding as shown in lists."""
     id: str
     run_id: str
     kind: str
@@ -113,6 +123,7 @@ class FindingSummary(Out):
 
 
 class HypothesisOut(Out):
+    """A ranked origin hypothesis."""
     id: str
     rank: int
     step_id: str
@@ -127,6 +138,7 @@ class HypothesisOut(Out):
 
 
 class ReplayOut(Out):
+    """One replay or control."""
     kind: str
     idx: int
     seed: int
@@ -137,6 +149,7 @@ class ReplayOut(Out):
 
 
 class ExperimentOut(Out):
+    """A verification experiment and its result."""
     id: str
     hypothesis_id: str
     finding_id: str
@@ -155,6 +168,7 @@ class ExperimentOut(Out):
 
 
 class ReviewOut(Out):
+    """A recorded review decision."""
     id: str
     reviewer: str
     decision: str
@@ -165,6 +179,7 @@ class ReviewOut(Out):
 
 
 class EvidenceOut(Out):
+    """An evidence record with the result of its hash check."""
     id: str
     run_id: str
     finding_id: str | None
@@ -178,6 +193,7 @@ class EvidenceOut(Out):
 
 
 class FindingDetail(FindingSummary):
+    """A finding with everything needed to investigate it."""
     detail: str
     hypotheses: list[HypothesisOut]
     experiments: list[ExperimentOut]
@@ -187,6 +203,7 @@ class FindingDetail(FindingSummary):
 
 
 class Accepted(BaseModel):
+    """Returned when work was queued: the job to poll and the record it will fill."""
     job_id: str
     run_id: str | None = None
     experiment_id: str | None = None

@@ -23,6 +23,7 @@ AWAITING_REVIEW = {"confirmed", "inconclusive", "evidence_supported"}
 
 
 def apply_review(session: Session, finding_id: str, decision: str, comment: str, reviewer: str) -> Review:
+    """Apply a reviewer's decision: check the comment rule, move the state, record and audit."""
     finding = session.get(Finding, finding_id)
     if finding is None:
         raise ProblemError(404, "Finding not found", f"There is no finding '{finding_id}'.")

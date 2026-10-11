@@ -26,6 +26,7 @@ RECORDED_HINT = (
 
 
 def entry_for(key: str) -> WorkflowEntry:
+    """The registry entry of a workflow, or a 404 problem."""
     entry = WORKFLOWS.get(key)
     if entry is None:
         raise ProblemError(404, "Unknown workflow", f"No workflow named '{key}'. Available: {', '.join(WORKFLOWS)}.")
@@ -33,6 +34,7 @@ def entry_for(key: str) -> WorkflowEntry:
 
 
 def ensure_project(session: Session, entry: WorkflowEntry) -> Project:
+    """Return the workflow's project, creating it on first use."""
     pid = f"prj_{entry.key}"
     project = session.get(Project, pid)
     if project is None:
@@ -42,15 +44,22 @@ def ensure_project(session: Session, entry: WorkflowEntry) -> Project:
     return project
 
 
+def _plain(message: str) -> str:
+    """Turn a validator message into a sentence for the form ("Value error, must look like" -> "Must look like")."""
+    message = message.removeprefix("Value error, ").replace("String should have", "Enter")
+    return message[:1].upper() + message[1:]
+
+
 def create_run(
     session: Session, settings: Settings, workflow_key: str, task_input: dict[str, Any], fault: str | None,
     seed: int, mode: str | None, actor: str = "analyst",
 ) -> Run:
+    """Validate the task and fault, resolve the model mode and store a queued run."""
     entry = entry_for(workflow_key)
     try:
         clean = entry.validate_task(task_input)
     except ValidationError as exc:
-        errors = [{"field": ".".join(str(p) for p in e["loc"]), "message": str(e["msg"])} for e in exc.errors()]
+        errors = [{"field": ".".join(str(p) for p in e["loc"]), "message": _plain(str(e["msg"]))} for e in exc.errors()]
         raise ProblemError(422, "Invalid task input", "The task does not match this workflow.", errors=errors) from None
     if fault and fault != "none" and fault not in entry.fault_types:
         raise ProblemError(422, "Unknown fault", f"Available faults: {', '.join(entry.fault_types)}.")
@@ -67,6 +76,7 @@ def create_run(
 
 
 def run_job(factory: sessionmaker[Session], settings: Settings, run_id: str) -> Callable[[JobHandle], None]:
+    """Return the job that executes the run and stores its analysis."""
     def job(handle: JobHandle) -> None:
         handle.progress(0, 1, "running workflow")
         with session_scope(factory) as s:

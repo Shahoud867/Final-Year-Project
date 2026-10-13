@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Version | 1.1 |
-| Date | 2026-10-11 |
+| Version | 1.2 |
+| Date | 2026-10-14 |
 | Status | Live. Defects found by tests or by use are recorded here with how they were found; fixed ones stay listed |
 | Severity | high: wrong result or data loss; medium: wrong behaviour with a workaround, or a requirement not met; low: cosmetic or process |
 
@@ -26,6 +26,11 @@
 | D-23 | medium | Verifying a suspect whose control replays were never recorded (for example Intake, in recorded mode) ended with "no verdict" and no reason, which reads like a malfunction | Live walkthrough in a browser, 2026-10-11 | The verdict text now says that the replays needed answers that are not in the recording and that a live model is required; the finding stays open for another attempt. Test `test_a_replay_with_no_recorded_answer_gives_no_verdict_and_says_why` |
 | D-24 | low | Field errors showed the validator's internal wording ("Value error, must look like ...", "String should have at least 3 characters"); the review history showed the raw value `request_info`; a verdict with no finished control read "0/0 correct" | Live walkthrough in a browser, 2026-10-11 | Plain sentences ("Enter at least 3 characters", "Must look like #W1234567"), readable decision names, "no control finished". Test `test_field_messages_are_plain_sentences` |
 | D-26 | medium | A review decision answered 201 before it was saved: the route relied on the session dependency to commit, and FastAPI (0.143) runs a dependency's exit code after the response is sent. A request sent straight after a reject could still see the finding as confirmed and accept it. System test SYS-ERR-03 failed intermittently (2 of 7 runs) | Repeated system-test runs on a second machine (Noor), 2026-10-11 | `post_review` commits before responding, like the run and experiment routes; SYS-ERR-03 then passed 15 of 15 repeated runs |
+| D-12 | low | The Verify panel accepted out-of-range replay counts in the form; only the server refused them | Review of the form, 2026-10-07 | 2026-10-14: the form shows "Use 1 to 10" or "Use 0 to 5" and disables Verify; the limits come from the same constants a server test pins to the server's (`apps/web/tests/verification.test.tsx`) |
+| D-14 | low | The pipeline graph was horizontal with a minimum width of 640 px, so on a phone it scrolled sideways | Browser check at phone width, 2026-10-07 | 2026-10-14: the graph is drawn at real pixel size and turns top-to-bottom when its container is too narrow; no screen scrolls sideways at 390, 768 or 1024 px ([screenshot](../../evidence/demos/2026-10-14_pipeline-trace-phone-390px.png)) |
+| D-27 | low | Times in the interface were off by the viewer's time-zone offset: the API stores UTC without a zone suffix and the browser read such values as local time | Reading a real API payload while rebuilding the interface, 2026-10-14 | Zoneless timestamps are read as UTC (`parseTime` in `apps/web/src/format.ts`); unit test added |
+| D-28 | low | With the new self-hosted fonts, the build inlined one small font file as a `data:` URL, which the server's content-security policy blocks (the text fell back to a system font for those characters) | Browser walk through the production build, 2026-10-14 (console error) | Asset inlining turned off in `apps/web/vite.config.ts`; the same walk then reported no console errors or blocked requests |
+| D-25 | low | In the hypothesis table the rank and the score could disagree inside one evidence class (Intake 0.066 was ranked above Writer 0.100) | Review of the hypothesis table, 2026-10-11 | 2026-10-14: ranking sorts by the same value the table shows (`attribution.py::ranking_score`), guarded by `test_rank_and_score_agree_so_the_table_reads_in_one_order` |
 
 ## Open
 
@@ -38,7 +43,4 @@
 | D-09 | low | **Mostly resolved 2026-10-09:** CI ran on GitHub and built and smoke-tested the image (evidence/repo). Still open: no local build on a team laptop; CI actions use Node-20 versions that GitHub now warns about | Build once with `docker compose up --build` before the demo; bump action versions when convenient |
 | D-10 | medium | A recorded cassette is valid only for the exact prompts it was made with; any prompt edit makes recorded mode fail for every task, at run time with RecordedMiss rather than at the edit | Fixed: the cassette carries a fingerprint of the prompt files and CI checks it (`scripts/check_cassette_prompts.py`), so an edit is caught by whoever made it, with the re-record command named in the error |
 | D-11 | low | The rate limiter is in memory and per process, keyed by client address; behind a proxy all users share one address | Acceptable for a demo; move to the reverse proxy for a shared deployment |
-| D-12 | low | The Verify panel accepts out-of-range counts in the form; the server refuses them and the message is shown | Clamp in the form |
 | D-13 | low | The stage-0 PoC console lists no scikit-learn in its requirements (pre-existing; folder is frozen) | Leave; note in the report if the PoC is demoed |
-| D-14 | low | The pipeline graph is horizontal and needs a minimum width of 640 px, so on a phone it scrolls sideways | Accept for now; a vertical layout is a later improvement |
-| D-25 | low | In the hypothesis table the rank and the score can disagree inside one evidence class: rank ordered by evidence strength and then upstream first, while the displayed score also decays with distance from the symptom (Intake 0.066 was ranked above Writer 0.100). The top ranks, which carry direct evidence, were not affected | Fixed: ranking now sorts by the same value the table shows, so the two can no longer disagree (`attribution.py::ranking_score`), guarded by `test_rank_and_score_agree_so_the_table_reads_in_one_order` |

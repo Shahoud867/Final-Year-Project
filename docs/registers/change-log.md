@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Version | 1.0 |
-| Date | 2026-10-07 |
+| Version | 1.1 |
+| Date | 2026-10-14 |
 | Status | C-01 drafted; **not yet approved** by the supervisor |
 | Rule | Entries are appended, never edited after approval (handbook C.5.3). Record a change *before* its results are known |
 
@@ -47,4 +47,19 @@ Items g to k came from reading the plan's acceptance criteria against the first 
 | f | The architecture rule is checked by a small script (`scripts/check_architecture.py`), not by import-linter as planned | Same guarantee with no extra dependency | In CI |
 | g | An in-app guide page lists each feature with its inputs and outputs | Panel actions A2 and A3 asked for exactly this; a document would not be seen in a demo | `apps/web/src/pages/Guide.tsx`, kept equal to the server's limits by a test |
 | h | Docstrings are required on every public module, class, method and function (ruff `D100` to `D104`), and PEP 8 naming is linted (`N`) | The handbook's development phase lists comments and naming conventions; a rule that is not enforced decays | 167 docstrings added |
+
+## C-04: Interface redesign of 2026-10-14 (for the supervisor to note)
+
+Scope: the web interface only. No feature was added or removed, no API endpoint or response changed, and the finding state machine, the checks, attribution and rule VR-1 are untouched. Made on branch `feat/web-workbench-redesign`; not merged or deployed when this entry was written.
+
+| # | Change | Why | Effect |
+|---|---|---|---|
+| a | The five screens were rebuilt as one workbench: Investigations (telemetry and trace inspector), Task Studio, Pipeline trace with a step inspector, Verification lab, How it works; a sixth screen, Evidence, was added | Panel action A1 ("UI/UX needs improvement") and the Mid-1 criterion for a live core module: the earlier screens worked but read as a developer console | `apps/web/src`; screenshots in `evidence/demos/` dated 2026-10-14. "Improved" remains a claim until the usability check is run |
+| b | Dark theme is the default; a light theme is one click away | The plan (17.4) said light by default for projectors. The redesign brief specified a dark observability palette; the light theme is kept for projection | Both themes are in `src/styles/tokens.css` |
+| c | Three runtime packages were added to the web app: `lucide-react` (icons), `@fontsource-variable/inter` and `@fontsource-variable/jetbrains-mono` (fonts served from our own origin) | The web README had said "no UI library, to keep dependencies few". Icons and two fonts are needed for a professional interface; a component library was still not adopted | Recorded in the [dependency register](dependency-licence-register.md); `npm audit` reports no known vulnerability |
+| d | The pipeline graph stays a linear SVG and is now drawn responsively (vertical on narrow screens). A graph library for branching workflows was not adopted | The only workflow is linear; a graph library would add risk without use before FYP-2 | Defect D-14 closed. Branching graphs are listed as planned for FYP-2 on the Evidence screen |
+| e | The server's content-security policy now allows requests to `https://api.github.com` and names `font-src 'self'` | The Evidence screen reads the public status of the CI and CD workflows from GitHub so that delivery can be shown live, not claimed | One line in `apps/api/granite_api/main.py`; the browser sends no credentials to GitHub; when GitHub is unreachable the screen says "status unknown" |
+| f | The container build records the commit it was built from and the interface shows it | So the running instance can be tied to a commit that passed CI | `Dockerfile` build arguments, one line in `cd.yml`, `apps/web/vite.config.ts`. Without the argument the interface says "no build stamp" |
+| g | The interface carries its own copy of rule VR-1's thresholds and of the lifecycle table, used only to explain a verdict and to draw the rules | A verdict must be explained next to its numbers; fetching the rule at run time would add an endpoint | Two server tests fail if the copies differ from `verification.py` and `lifecycle.py` (`apps/api/tests/test_platform.py`). Verdicts and allowed actions still come only from the server |
+| h | The form validates a task before sending it, with the server's own wording | Faster feedback; the server remains the authority and refuses the same input | Defect D-12 closed for the replay counts as well |
 

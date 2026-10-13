@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| Version | 1.0 |
-| Date | 2026-10-11 |
-| Status | Describes what works today. Each feature was exercised in a browser against the running product on this date, and by the automated tests named in its card |
+| Version | 1.1 |
+| Date | 2026-10-14 |
+| Status | Describes what works today. Each feature was exercised in a browser against the running product on 2026-10-11, and by the automated tests named in its card. On 2026-10-14 the interface was redesigned (same features, same API); the screen names below were updated and the main journey was walked through again in a browser |
 | Answers | Panel actions A2 ("features are not sufficiently clear") and A3 ("unclear what inputs each feature accepts"); rubric criterion 3 (live core module) |
 
 Granite does one job: when a workflow of several AI agents gives an answer that looks fine but is wrong, find the step where the error began and show the proof. The job is done in a fixed order, and each step in that order is one feature:
@@ -17,18 +17,18 @@ The same list, in shorter words, is inside the product on the **How it works** p
 
 | # | Feature | In the product | Status | System tests |
 |---|---|---|---|---|
-| F1 | Run a workflow and record every step | New run; Run page | Implemented, tested | SYS-CORE-01, 02, 04; SYS-ERR-01, 04, 07; SYS-REL-02, 03 |
-| F2 | Check the outcome and detect silent failures | Run page: Checks, Findings | Implemented, tested | SYS-CORE-01, 02 |
-| F3 | Trace back to where it began | Finding page: Where did it begin? | Implemented, tested | SYS-CORE-01; SYS-SEC-03 |
+| F1 | Run a workflow and record every step | Task Studio (New run); Pipeline trace | Implemented, tested | SYS-CORE-01, 02, 04; SYS-ERR-01, 04, 07; SYS-REL-02, 03 |
+| F2 | Check the outcome and detect silent failures | Pipeline trace: Outcome, Observed vs source of truth, Checks, Findings | Implemented, tested | SYS-CORE-01, 02 |
+| F3 | Trace back to where it began | Verification lab (finding page): Where did it begin? | Implemented, tested | SYS-CORE-01; SYS-SEC-03 |
 | F4 | Verify a hypothesis by controlled replay | Finding page: Verify, Verification results | Implemented, tested | SYS-CORE-01, 03; SYS-ERR-05, 06 |
 | F5 | Review: a person decides | Finding page: Your decision, Review history | Implemented, tested | SYS-CORE-01; SYS-ERR-03 |
 | F6 | Record evidence and export a report | Finding page: Evidence, Download report | Implemented, tested | SYS-CORE-01; SYS-SEC-02 |
 | F7 | Find earlier runs and findings | Investigations | Implemented, tested | SYS-CORE-05 |
-| F8 | Explain itself: guide and API reference | How it works; `/docs` | Implemented, tested | SYS-CORE-06, 07 |
+| F8 | Explain itself: guide and API reference | How it works; Evidence; `/docs` | Implemented, tested | SYS-CORE-06, 07 |
 
 Not built yet (planned for Iteration 2, not claimed): importing traces from other tools, a second workflow, a check editor, fix suggestions, PDF export, redaction of stored personal data. See the [execution status](../plan/execution-status.md).
 
-Screenshots: [guide](../../evidence/demos/2026-10-11_guide-features-inputs-outputs.png), [investigations](../../evidence/demos/2026-10-11_investigations-list-filters.png), [run](../../evidence/demos/2026-10-11_run-detail-checks-graph.png), [finding](../../evidence/demos/2026-10-11_finding-confirmed-reviewed-evidence.png), [errored run](../../evidence/demos/2026-10-11_run-errored-unrecorded-task.png), [phone width](../../evidence/demos/2026-10-11_guide-mobile-390px.png).
+Screenshots of the redesigned interface (2026-10-14): [command center](../../evidence/demos/2026-10-14_command-center.png), [Task Studio](../../evidence/demos/2026-10-14_task-studio-scenarios.png), [pipeline trace](../../evidence/demos/2026-10-14_pipeline-trace-silent-failure.png), [step inspector](../../evidence/demos/2026-10-14_step-inspector-order-lookup.png), [verification lab](../../evidence/demos/2026-10-14_verification-lab-accepted.png), [guide](../../evidence/demos/2026-10-14_guide-features-vr1-explorer.png), [evidence page](../../evidence/demos/2026-10-14_evidence-delivery-comparison.png), [phone width](../../evidence/demos/2026-10-14_pipeline-trace-phone-390px.png). Earlier interface (2026-10-11): [guide](../../evidence/demos/2026-10-11_guide-features-inputs-outputs.png), [investigations](../../evidence/demos/2026-10-11_investigations-list-filters.png), [run](../../evidence/demos/2026-10-11_run-detail-checks-graph.png), [finding](../../evidence/demos/2026-10-11_finding-confirmed-reviewed-evidence.png), [errored run](../../evidence/demos/2026-10-11_run-errored-unrecorded-task.png), [phone width](../../evidence/demos/2026-10-11_guide-mobile-390px.png).
 
 ---
 

@@ -2,12 +2,15 @@ import type { FindingDetail as Finding } from "../src/types";
 
 type Handler = (url: string, init?: RequestInit) => unknown | Promise<unknown>;
 
-/** Replace fetch with an in-memory API. Keys look like "GET /runs"; the first key that prefixes the request wins. */
+/**
+ * Replace fetch with an in-memory API. Keys look like "GET /runs"; the first key that prefixes the request wins.
+ * Requests to other origins keep their full URL, for example "GET https://api.github.com/repos".
+ */
 export function mockApi(routes: Record<string, Handler>) {
   const calls: { url: string; init?: RequestInit }[] = [];
   vi.stubGlobal("fetch", async (url: string, init?: RequestInit) => {
     calls.push({ url, init });
-    const request = `${init?.method ?? "GET"} ${url.replace("/api", "")}`;
+    const request = `${init?.method ?? "GET"} ${url.replace(/^\/api/, "")}`;
     const key = Object.keys(routes).find((k) => request.startsWith(k));
     if (!key) return problem(404, { title: "Not found", detail: `no mock for ${request}` });
     const out = await routes[key]!(url, init);

@@ -29,7 +29,7 @@ describe("Home", () => {
 
 describe("NewRun", () => {
   it("loads an example into the form and shows server-side field errors", async () => {
-    const example = { order_id: "#W1", email: "a@b.co", message: "Return the Pet Bed", label: "#W1 (delivered): Pet Bed" };
+    const example = { order_id: "#W1023987", email: "a@b.co", message: "Return the Pet Bed", label: "#W1023987 (delivered): Pet Bed" };
     mockApi({
       "GET /workflows/refund_desk/examples": () => [example],
       "POST /runs": () => problem(422, {
@@ -39,7 +39,7 @@ describe("NewRun", () => {
     const user = userEvent.setup();
     render(<NewRun />);
     await user.selectOptions(await screen.findByLabelText("Load an example"), "0");
-    expect(screen.getByLabelText("Order id")).toHaveValue("#W1");
+    expect(screen.getByLabelText("Order id")).toHaveValue("#W1023987");
     await user.click(screen.getByRole("button", { name: "Run workflow" }));
     expect(await screen.findByText("must look like name@example.com")).toBeInTheDocument();
     expect(screen.getByText("Please fix the highlighted fields.")).toBeInTheDocument();

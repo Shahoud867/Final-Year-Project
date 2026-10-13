@@ -26,7 +26,11 @@ SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "Referrer-Policy": "no-referrer",
-    "Content-Security-Policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:",
+    # connect-src: the Evidence page reads the public status of the CI and CD workflows straight from GitHub.
+    "Content-Security-Policy": (
+        "default-src 'self'; connect-src 'self' https://api.github.com; "
+        "style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'"
+    ),
 }
 
 

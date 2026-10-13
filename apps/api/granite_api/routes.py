@@ -263,6 +263,7 @@ def get_experiment(experiment_id: str, db: Db) -> ExperimentOut:
 def post_review(finding_id: str, body: ReviewCreate, db: Db) -> ReviewOut:
     """Record a decision on a finding: accept, reject, resolve, close, or ask for information."""
     review = review_service.apply_review(db, finding_id, body.decision, body.comment, body.reviewer)
+    db.commit()  # before responding: the dependency's own commit runs after the response is sent
     return ReviewOut.model_validate(review)
 
 

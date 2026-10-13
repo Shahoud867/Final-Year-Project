@@ -1,0 +1,160 @@
+\chapter{Iteration 1: Design and Implementation}
+
+This chapter describes the first iteration: its objectives and selected use cases, the design of the Refund Desk workflow used as the system under test, how the implementation is organised, the algorithms at its core, the tools used, and the evidence that the iteration works.
+
+\section{Iteration Objectives}
+
+Build one complete, working investigation slice: run a real multi-agent workflow on real data with a real model, detect a silent failure without an answer key, trace it to its origin, verify the cause with controls, record a human decision, and export the evidence. Deliver it with automated tests, CI, a deployed instance and design artefacts that match the code.
+
+\section{Selected Use Cases / Features}
+
+UC-03 (run), UC-05 (inspect), UC-06 (analyse), UC-07 (investigate), UC-08 (verify), UC-09 (review), UC-12 (history) and the report part of UC-11. These became eight features: F1 Run, F2 Check and detect, F3 Trace back, F4 Verify, F5 Review, F6 Evidence and report, F7 Find, F8 Guide.
+
+\section{Design}
+
+The Refund Desk has five steps, each declaring what it reads: s1 Intake (LLM) extracts the order number and items from the message; s2 Order Lookup (tool) fetches the order and prices from the store; s3 Policy (deterministic code) decides eligibility from the order status, owner and items; s4 Refund Calculator (LLM) adds up the refund; s5 Writer (LLM) writes the reply. Seven checks are attached: two outcome checks (the stated refund equals the catalogue total of the refunded items; the decision follows policy) and five step contracts, one per step. Repair rules say how to compute the correct output of a step, which verification uses as its intervention. The stale-price fault lowers one requested item's price by \$0.25 at s2 without raising an error. (Figure~\ref{fig:refund-dataflow})
+
+\section{Implementation}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.181\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.053\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.058\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.568\linewidth}}
+\caption{Implementation}\label{tab:chapter6_iteration1-1}\\
+\toprule
+\textbf{Package} & \textbf{Files} & \textbf{Tests} & \textbf{Responsibility} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Package} & \textbf{Files} & \textbf{Tests} & \textbf{Responsibility} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{packages/\allowbreak{}granite\_\allowbreak{}core} & 13 & 207 & Trace, runner, check language, checks, lineage, attribution, verification, experiment, lifecycle, evidence, LLM provider interfaces, redaction \\
+\texttt{workflows/\allowbreak{}refund\_\allowbreak{}desk} & 5 & 49 & Steps, checks, repair rules, fault, retail store \\
+\texttt{apps/\allowbreak{}api} & 20 & 71 & Endpoints, schemas, models, services, jobs, providers, errors \\
+\texttt{apps/\allowbreak{}web} & 16 & 32 & Five screens and shared components \\
+\texttt{tests/\allowbreak{}system} & --- & 22 & Black-box tests over HTTP \\
+\end{longtable}
+}
+
+A run request flows as follows: the New run page posts the task; the route checks the token and rate limit and returns 202 with a job; the run service validates the task, stores a queued run and starts a job; the runner executes the five steps and records the trace, applying the fault if requested; the analysis service stores the trace and hash, evaluates the checks, opens findings, ranks hypotheses and writes evidence. A verification request flows through the experiment service, \texttt{build\_\allowbreak{}intervention} and \texttt{plan\_\allowbreak{}replay}, \texttt{run\_\allowbreak{}experiment} (N + M replays with their own seeds), \texttt{decide} (VR-1) and \texttt{transition} (lifecycle).
+
+Figure~\ref{fig:structure-chart} shows the modules and functions involved.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{structure-chart.pdf}
+\caption{Structure chart with the real function names}
+\label{fig:structure-chart}
+\end{figure}
+
+
+\section{Completed Features / Module}
+
+All eight features are implemented and tested: run and record every step (F1), check the outcome and detect silent failures (F2), trace back to where it began (F3), verify by controlled replay (F4), review (F5), evidence and report export (F6), find earlier runs and findings (F7) and the in-product guide and API reference (F8). Not yet built and not claimed: trace import, a second workflow, a check editor, fix suggestions, PDF export and redaction of stored data.
+
+\section{Technical Implementation Details}
+
+\textbf{Reproducible setup} (from the setup manual; works on Windows, Linux and macOS with Python 3.11 and Node 20+):
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible]
+python -m venv .venv && source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -e "packages/granite_core[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
+(cd apps/web && npm ci && npm run build)
+cd apps/api
+GRANITE_LLM_MODE=recorded GRANITE_STATIC_DIR=../web/dist uvicorn granite_api.main:app_from_env --factory --port 8000
+\end{lstlisting}
+
+Open \url{http://127.0.0.1:8000}. Recorded mode needs no model or key. For live mode, install Ollama, run \texttt{ollama pull llama3.\allowbreak{}2:3b}, and set \texttt{GRANITE\_\allowbreak{}LLM\_\allowbreak{}MODE=live}. The container runs with \texttt{docker compose up}. The setup was repeated on a second team member's laptop on 11 October and all 381 tests passed.
+
+\textbf{Key technical details:} each step's inputs are resolved from its declared reads, so the data flow is recorded rather than inferred. Traces are stored as canonical JSON and hashed with SHA-256. Recorded answers are keyed by a hash of model, messages, parameters and seed; a missing answer raises an error instead of inventing one. Model outputs are requested as JSON and parsed; invalid JSON fails the step visibly. Background work runs in a thread pool with a job table. Errors follow RFC 7807, and internal exception text never reaches the client.
+
+\section{Algorithms and Technical Decisions}
+
+\textbf{Check language.} A check is an expression such as \texttt{approx(\allowbreak{}number\_\allowbreak{}in(\allowbreak{}s5.\allowbreak{}message),\allowbreak{} truth.\allowbreak{}catalog\_\allowbreak{}total(\allowbreak{}pluck(\allowbreak{}s3.\allowbreak{}items\_\allowbreak{}to\_\allowbreak{}refund,\allowbreak{} 'item\_\allowbreak{}id')))}. It is parsed with Python's \texttt{ast} module and accepted only if every syntax node and function is on a whitelist, within 500 characters, 150 nodes and depth 14; it is then evaluated by our own interpreter, never by \texttt{eval}. A missing field gives ABSTAIN, not PASS.
+
+\textbf{Attribution.} Starting from the symptom step, the algorithm walks backwards along the lineage edges that carry the failing field and classifies each step by its evidence: truth mismatch (weight 1.0), contract failure (0.8), hand-off drift where a step's input differs from what upstream produced (0.7), no check defined (0.2) or consistent (0). Candidates are ranked by weight, then by earliest position, with a decay for distance from the symptom. If no step has direct evidence (weight $\geq$ 0.7), all candidates are labelled "structural only, needs verification." Complexity is O(V + E). No language model is used.
+
+\textbf{Verdict rule VR-1.} With k of N intervention replays passing (p = k/N) and c of M controls passing (q = c/M): CONFIRMED if p $\geq$ 0.8 and q $\leq$ 0.2; REFUTED if p $\leq$ 0.2; otherwise INCONCLUSIVE; ERROR if fewer than N replays complete. A 95\% Wilson interval is reported but not used to decide at N = 5. A replay that causes a new check failure counts as not passing (regression guard). Thresholds are versioned; a change would create VR-2.
+
+\textbf{Replay plan.} To test a hypothesis about step s, outputs of all steps before s are kept from the original trace, s's output is replaced with the corrected value from its repair rule, and only the steps after s are re-executed, so frozen steps cost no model calls.
+
+Figures~\ref{fig:check-pipeline} to~\ref{fig:replay-plan} show the four algorithms.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{check-pipeline.pdf}
+\caption{Check language: from expression text to result}
+\label{fig:check-pipeline}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{attribution-algorithm.pdf}
+\caption{Attribution: ranking where a failure began}
+\label{fig:attribution}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{vr1-decision.pdf}
+\caption{Verdict rule VR-1}
+\label{fig:vr1}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{replay-plan.pdf}
+\caption{Replay plan: correct one step, keep everything before it}
+\label{fig:replay-plan}
+\end{figure}
+
+
+\section{Tools, Frameworks and Technologies}
+
+Python 3.11, FastAPI, Pydantic, SQLAlchemy, uvicorn; React 19, TypeScript, Vite; SQLite (PostgreSQL supported); Ollama with llama3.2:3b; pytest, Hypothesis, Vitest, Testing Library, axe-core; ruff, mypy (strict), ESLint, bandit, pip-audit, npm audit, gitleaks; Docker and Docker Compose; GitHub Actions and GitHub Container Registry; Render. AI-assisted development (Claude Code) is disclosed in Section 8.7.
+
+\section{Demonstration Evidence}
+
+The product is deployed at \url{https://granite-demo.onrender.com} and runs locally from the setup steps. Screenshots of every screen, the error state and the phone layout are in \texttt{evidence/\allowbreak{}demos/\allowbreak{}} (insert the run page and finding page as figures). The demonstration script with expected values is \texttt{docs/\allowbreak{}manuals/\allowbreak{}demo-runbook.\allowbreak{}md}: run the first example with the stale-price fault; see the run completed with the Order Lookup and Writer steps failing their checks; open the finding and see Order Lookup ranked first; verify it (CONFIRMED, 5/5 fixed, 0/2 controls); verify the calculator (REFUTED); accept with a comment and download the report; then show that a clean run raises no finding and that invalid input and an unreachable model are handled.
+
+Figures~\ref{fig:shot-newrun} to~\ref{fig:shot-error} show the product during the demonstration.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{2026-10-07_new-run-form-running.jpg}
+\caption{New run: validated input form}
+\label{fig:shot-newrun}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{2026-10-11_run-detail-checks-graph.png}
+\caption{Run page: pipeline graph with failed steps and the seven checks}
+\label{fig:shot-run}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{2026-10-11_finding-confirmed-reviewed-evidence.png}
+\caption{Finding page: ranked hypotheses, verification results, review and evidence}
+\label{fig:shot-finding}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{2026-10-11_run-errored-unrecorded-task.png}
+\caption{Failure case: a run that cannot be answered ends as errored with the reason}
+\label{fig:shot-error}
+\end{figure}
+
+
+\section{Iteration Outcome}
+
+Iteration 1 met its objective: the full investigation loop works end to end on real data with a real model, is deployed, and is covered by 381 automated tests and CI. The pre-registered feasibility run met all thresholds. Shortfalls carried into Iteration 2 are redaction before storage, a usability test with outside users, fully automated deployment, and visible per-member ownership of the code.

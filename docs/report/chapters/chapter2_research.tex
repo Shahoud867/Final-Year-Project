@@ -1,0 +1,113 @@
+\chapter{Research and Existing Solutions}
+
+This chapter reviews the research and products related to failure diagnosis in multi-agent systems, compares them on the criteria that matter for silent failures, identifies the gap Granite addresses, and explains how the findings shaped the design. It also sets out why the problem is a complex computing problem.
+
+\section{Research Method / Approach}
+
+We studied the problem from four directions. First, we read seven research papers on multi-agent failure attribution in full, not only their abstracts: Who\&When (ICML 2025), AgenTracer (ICLR 2026), Scope Delineation Before Localization (SDBL, AAAI 2026), TraceElephant (ACL 2026), ErrorProbe (ACL 2026 Findings), AgentAsk (ACL 2026) and PROTEA (ACL 2026 Demonstrations), and added DoVer (ICLR 2026) after the proposal. For each we recorded the dataset, the ground truth, the reported accuracy and the authors' own stated limitations. Second, we compared commercial and open-source products from their public documentation. Third, we checked the department's entire published FYP archive, 660 registered titles from Spring 2019 to Fall 2025, for overlapping projects. Fourth, we ran eight proof-of-concept spikes to test the riskiest assumptions before committing to a design.
+
+\section{Existing Solutions / Products}
+
+\textbf{Research systems.} Who\&When~\cite{whowhen} formalised automated failure attribution and released a human-annotated benchmark; its best method reached only about 14\% step-level accuracy. AgenTracer~\cite{agentracer} generated training data by programmatic fault injection and counterfactual replay and trained an 8B model, reaching roughly 37--43\% step accuracy. SDBL~\cite{sdbl} first delineates the scope of a failure and then localises it, reaching 33--40\%. TraceElephant~\cite{traceelephant} showed that much of the difficulty came from incomplete traces and released full input-output traces. ErrorProbe~\cite{errorprobe} combines a failure taxonomy, symptom-driven backward tracing and a verification team of LLM agents with a verified memory, reaching about 59.5\% step accuracy. AgentAsk~\cite{agentask} intervenes at message hand-offs to prevent errors rather than diagnose them. PROTEA~\cite{protea} is an interactive tool that suggests prompt fixes and re-runs workflows after a developer adopts them. DoVer~\cite{dover}, the closest work to ours, validates failure hypotheses by intervening at the suspected step and re-executing, flipping 18--28\% of failed trials on GAIA and AssistantBench.
+
+\textbf{Products.} LangSmith Engine~\cite{langsmith} clusters production failures, diagnoses root causes against code and drafts fixes, but only inside LangSmith. Patronus Percival~\cite{percival} detects over twenty failure modes in traces with LLM judges and suggests prompt fixes. Galileo's Insights Engine~\cite{galileo} identifies failure modes and links them to spans. Raindrop~\cite{raindrop} markets silent-failure detection in production agents based on conversation signals and offers experiments to validate fixes. Invariant Labs' analyzer~\cite{invariant} runs rule-based checks over agent traces with a security focus. Langfuse, Arize Phoenix, Braintrust, Weights \& Biases Weave and Opik capture traces and run evaluations, leaving diagnosis to people.
+
+\textbf{Prior FYPs.} None of the 660 titles in the department archive targets the same problem. Multi-agent systems appear only as the product itself (an agent team that does a task), never as the object being diagnosed. The closest neighbour is a Spring 2024 project on hallucination detection in a single model's text output, which has no multi-agent attribution or verification.
+
+\section{Comparison of Existing Solutions}
+
+\begin{landscape}
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.088\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.082\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.125\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.121\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.139\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.099\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.086\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.102\linewidth}}
+\caption{Comparison of Existing Solutions}\label{tab:chapter2_research-1}\\
+\toprule
+\textbf{Solution} & \textbf{Type} & \textbf{Detects silent failures?} & \textbf{Localises origin step?} & \textbf{Verifies cause by re-execution?} & \textbf{Handles model non-determinism?} & \textbf{Self-hosted, \$0?} & \textbf{Accuracy published?} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Solution} & \textbf{Type} & \textbf{Detects silent failures?} & \textbf{Localises origin step?} & \textbf{Verifies cause by re-execution?} & \textbf{Handles model non-determinism?} & \textbf{Self-hosted, \$0?} & \textbf{Accuracy published?} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Who\&When & Research & No & Yes (LLM) & No & No & Research code & Yes (\textasciitilde{}14\% step) \\
+AgenTracer & Research & No & Yes (trained model) & Counterfactual for labelling & No & Partly released & Yes (\textasciitilde{}37--43\%) \\
+ErrorProbe & Research & No (named as a limitation) & Yes (LLM team) & Tool-grounded checks & No & Research code & Yes (\textasciitilde{}59.5\%) \\
+DoVer & Research & No & Uses given hypotheses & Yes (intervention) & Single re-execution & Research code & Flip rates (18--49\%) \\
+PROTEA & Research demo & No & Node level & Re-runs after a human fix & No & Closed & Case studies only \\
+LangSmith Engine & Commercial & Partly & Yes (LLM) & Reopens on regression & Not documented & No (SaaS) & No \\
+Patronus Percival & Commercial & Failure modes via LLM judges & Yes (LLM) & Not documented & No & No (SaaS) & No \\
+Raindrop & Commercial & Yes (conversation signals) & No step-level attribution & Experiments & Not documented & No (SaaS) & No \\
+Invariant analyzer & Open source & Rule-based checks & No & No & n/a & Yes & n/a \\
+\textbf{Granite} & \textbf{This project} & \textbf{Yes (executable checks + source of truth)} & \textbf{Yes (deterministic provenance)} & \textbf{Yes (N replays + M controls)} & \textbf{Yes (controls, verdict rule, INCONCLUSIVE)} & \textbf{Yes} & \textbf{Pre-registered; benchmark planned} \\
+\end{longtable}
+}
+\end{landscape}
+
+\section{Limitations and Gaps}
+
+Three gaps recur. First, \textbf{silent failures}: attribution methods assume a failure leaves an anomaly; ErrorProbe's own limitations section names silent failures, outputs that are valid but semantically wrong, as a case it cannot handle, and points to "test-time oracle feedback" as future work. Second, \textbf{verification under non-determinism}: where hypotheses are re-tested by re-execution (DoVer, PROTEA, commercial "experiments"), a single re-run is used, so a fix can appear to work by chance and the result is not compared against controls. Third, \textbf{trust and access}: commercial diagnoses are language-model opinions, delivered as cloud services that some teams cannot use with client data, with no published accuracy. Benchmarks in the field also contain only failures, with no clean controls, so false-alarm rates are not measured.
+
+\section{Proposed Solution}
+
+Granite addresses these gaps with a self-hostable product that: (1) detects silent failures with operator-declared executable checks against an independent source of truth, the test-time oracles ErrorProbe names as future work; (2) localises the origin with deterministic value-provenance tracing over the run's data flow, with no language model in the core path; and (3) verifies each hypothesis with a controlled replay protocol, N intervention replays and M control replays under a pre-registered, versioned verdict rule, recording every artefact as hashed evidence for a human reviewer. We will evaluate it on a labelled fault-injection benchmark with clean controls against last-agent and LLM-judge baselines, measuring origin accuracy, false-alarm rate, verdict precision and recovery rate.
+
+We no longer claim to be "first" or that "nobody verifies fixes": DoVer and several products already re-execute or experiment. Our contribution is the combination of executable-check detection, deterministic attribution and a verification protocol with controls, measured honestly and runnable at zero cost.
+
+\section{Complex Computing Problem}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.312\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.608\linewidth}}
+\caption{Complex Computing Problem}\label{tab:chapter2_research-2}\\
+\toprule
+\textbf{Seoul Accord characteristic~\cite{seoulaccord}} & \textbf{How Granite meets it} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Seoul Accord characteristic~\cite{seoulaccord}} & \textbf{How Granite meets it} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+1. Conflicting requirements & Verification confidence versus replay cost and latency; privacy (local model) versus model quality; detection sensitivity versus false alarms \\
+2. No obvious solution & Published attribution reaches about 60\% step accuracy at best; single-replay verification is unreliable under non-determinism \\
+3. Depth of knowledge & Graph and provenance algorithms, statistics (interval estimates, controls), LLM behaviour, sandboxed evaluation \\
+4. Unfamiliar issues & Non-deterministic re-execution; failures that appear several steps after their cause \\
+5. Beyond standard practice & Not solvable with a tracing library or a CRUD application \\
+6. Diverse stakeholders & Developers, reviewers, end customers, auditors, privacy roles (to be strengthened with interviews) \\
+7. Significant consequences & Wrong refunds, wrong advice, money moved on wrong numbers \\
+8. Interdependence & Failures propagate through dependent agents and steps \\
+9. Ill-defined cause & Whether a failure exists, where it began and what the correct value is are all unknown at diagnosis time \\
+\end{longtable}
+}
+
+\section{Technical Challenges}
+
+The main challenges are: making replays reproducible enough that a verdict means something when the model is non-deterministic (solved with recorded answers, pinned seeds and control replays); evaluating user-written check expressions safely without allowing code execution (solved with our own evaluator over a whitelist of syntax nodes); attributing a failure without leaking the injected fault's ground truth into the analysis (enforced by a test); keeping upstream outputs fixed while re-running only the downstream steps; handling small local models that are slow (5--35 seconds per call on a CPU) and make arithmetic errors; and keeping design documents consistent with fast-changing code (solved by generating diagrams from the code and checking them in CI).
+
+\section{Research Findings and Design Decisions}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.460\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.460\linewidth}}
+\caption{Research Findings and Design Decisions}\label{tab:chapter2_research-3}\\
+\toprule
+\textbf{Finding (source)} & \textbf{Design decision} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Finding (source)} & \textbf{Design decision} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+LLM-based attribution reaches only 14--60\% step accuracy (Who\&When, AgenTracer, SDBL, ErrorProbe); our own reproduction with a 3B model reached 0--25\% step accuracy over five runs (Spike 1) & Core attribution is deterministic provenance; an LLM opinion is optional and labelled unverified (ADR-005) \\
+ErrorProbe names silent failures and test-time oracles as open & Detection uses executable checks against a source of truth, not an answer key (ADR-004) \\
+A single re-run can pass by chance; our replay spike worked but n was tiny (Spike 5) & Verification uses N = 5 intervention replays plus M = 2 controls under a fixed rule VR-1 (ADR-006) \\
+Run-to-run variance of small models is large (Spike 1 rerun five times) & Results are reported as ranges and intervals, thresholds are pre-registered \\
+TraceElephant: incomplete traces limit diagnosis & Every step records its full inputs, outputs and declared reads (Granite Trace v1, ADR-009) \\
+Fault injection gives exact ground truth (AgenTracer; Spike 3b) & Faults are rule-based and their ground truth is stored but hidden from attribution \\
+A preventive classifier gave near-random signal (Spike 7) & Dropped from scope and reported as a negative result \\
+DoVer and commercial tools already re-execute or diagnose & Novelty re-baselined to checks + provenance + controls + self-hosting \\
+Cost estimate from measured token counts & Zero-cost design: local Ollama model and recorded answers (ADR-008) \\
+\end{longtable}
+}

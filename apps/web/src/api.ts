@@ -1,5 +1,6 @@
 import type {
-  Example, Experiment, FindingDetail, FindingSummary, Graph, Health, Job, RunDetail, RunSummary, TaskInput, Workflow,
+  Example, Experiment, FindingCounts, FindingDetail, FindingSummary, Graph, Health, Job, RunDetail, RunSummary, TaskInput,
+  Workflow,
 } from "./types";
 
 /** An error from the API, already phrased for a person (RFC 7807 problem body). */
@@ -54,7 +55,10 @@ const post = <T>(path: string, body: unknown) => request<T>(path, { method: "POS
 
 export const PAGE = 25;
 
-export interface FindingFilter { q?: string; severity?: string; level?: string; status?: string; limit?: number }
+export interface FindingFilter { q?: string; severity?: string; level?: string; status?: string; run_id?: string; limit?: number }
+/** Filters of GET /runs: text in the task, run status, and a fault name or "none" for clean runs. */
+export interface RunFilter { q?: string; status?: string; fault?: string; limit?: number }
+export type LlmMode = "recorded" | "live" | "auto";
 
 /** Query string from the filters that have a value. */
 export function qs(params: Record<string, string | number | undefined>): string {
@@ -65,19 +69,32 @@ export function qs(params: Record<string, string | number | undefined>): string 
 
 export interface RunRequest { task_input: TaskInput; fault: string | null; mode?: string; seed?: number }
 
+/** Fetch a finding report and hand it to the browser as a file download. */
+export async function downloadReport(id: string, format: "md" | "json" = "md"): Promise<void> {
+  const body = await request<unknown>(`/findings/${id}/report?format=${format}`);
+  const text = typeof body === "string" ? body : JSON.stringify(body, null, 2);
+  const url = URL.createObjectURL(new Blob([text], { type: format === "md" ? "text/markdown" : "application/json" }));
+  Object.assign(document.createElement("a"), { href: url, download: `${id}-report.${format}` }).click();
+  URL.revokeObjectURL(url);
+}
+
 export const api = {
   health: () => request<Health>("/health"),
   workflows: () => request<Workflow[]>("/workflows"),
   examples: (key: string) => request<Example[]>(`/workflows/${key}/examples`),
   createRun: (body: RunRequest) => post<{ run_id: string; job_id: string }>("/runs", { workflow: "refund_desk", ...body }),
-  runs: (q = "") => request<RunSummary[]>(`/runs?${qs({ q, limit: PAGE })}`),
+  runs: (f: RunFilter | string = {}) => {
+    const filter = typeof f === "string" ? { q: f } : f;
+    return request<RunSummary[]>(`/runs?${qs({ ...filter, limit: filter.limit ?? PAGE })}`);
+  },
   run: (id: string) => request<RunDetail>(`/runs/${id}`),
   graph: (id: string) => request<Graph>(`/runs/${id}/graph`),
   findings: (f: FindingFilter = {}) => request<FindingSummary[]>(`/findings?${qs({ ...f, limit: f.limit ?? PAGE })}`),
+  findingCounts: () => request<FindingCounts>("/findings/summary"),
   finding: (id: string) => request<FindingDetail>(`/findings/${id}`),
   report: (id: string) => request<string>(`/findings/${id}/report`),
-  verify: (hypothesisId: string, n: number, m: number) =>
-    post<{ job_id: string; experiment_id: string }>(`/hypotheses/${hypothesisId}/experiments`, { n, m }),
+  verify: (hypothesisId: string, n: number, m: number, mode?: LlmMode) =>
+    post<{ job_id: string; experiment_id: string }>(`/hypotheses/${hypothesisId}/experiments`, mode ? { n, m, mode } : { n, m }),
   experiment: (id: string) => request<Experiment>(`/experiments/${id}`),
   review: (id: string, decision: string, comment: string, reviewer: string) =>
     post(`/findings/${id}/reviews`, { decision, comment, reviewer }),

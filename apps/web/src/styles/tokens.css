@@ -1,0 +1,87 @@
+/* Design tokens. Dark is the default theme; [data-theme="light"] is for projectors and print.
+   Semantic colours: ok = check passed, bad = failed check or symptom, warn = suspected or awaiting review,
+   replay = controlled replay and verification. Each has a text shade that meets WCAG AA on the surfaces below. */
+:root {
+  color-scheme: dark;
+
+  --bg: #0b0f17;
+  --bg-sunken: #080b12;
+  --surface: #111827;
+  --surface-2: #151e2e;
+  --elevated: #1e293b;
+  --line: #1f2a3c;
+  --line-strong: #334155;
+
+  --text: #e6ebf2;
+  --text-2: #a6b2c4;
+  --text-3: #7c899c;
+
+  --ok: #10b981; --ok-text: #34d399; --ok-soft: rgb(16 185 129 / 0.12); --ok-line: rgb(16 185 129 / 0.38);
+  --bad: #ef4444; --bad-text: #f87171; --bad-soft: rgb(239 68 68 / 0.12); --bad-line: rgb(239 68 68 / 0.42);
+  --warn: #f59e0b; --warn-text: #fbbf24; --warn-soft: rgb(245 158 11 / 0.12); --warn-line: rgb(245 158 11 / 0.42);
+  --replay: #6366f1; --replay-text: #a5b4fc; --replay-soft: rgb(99 102 241 / 0.15); --replay-line: rgb(99 102 241 / 0.5);
+  --neutral-soft: rgb(148 163 184 / 0.1); --neutral-line: rgb(148 163 184 / 0.28);
+
+  --primary: #5457e5;
+  --primary-hover: #6366f1;
+  --on-primary: #ffffff;
+  --focus: #818cf8;
+  --link: #a5b4fc;
+  --scrim: rgb(3 6 12 / 0.62);
+
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+
+  --fs-xs: 0.6875rem;   /* 11px: labels */
+  --fs-sm: 0.75rem;     /* 12px */
+  --fs-base: 0.8125rem; /* 13px: dense body */
+  --fs-md: 0.875rem;    /* 14px */
+  --fs-lg: 1rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: 1.5rem;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px;
+  --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-pill: 999px;
+
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-2: 0 12px 32px rgb(0 0 0 / 0.45);
+  --sheen: linear-gradient(180deg, rgb(255 255 255 / 0.025), rgb(255 255 255 / 0) 42%);
+
+  --nav-w: 232px;
+  --topbar-h: 52px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 120ms;
+  --t-med: 220ms;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f4f6f9;
+  --bg-sunken: #e9edf3;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --elevated: #eef2f7;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #5b6b82;
+
+  --ok-text: #047857; --ok-soft: rgb(16 185 129 / 0.13); --ok-line: rgb(5 150 105 / 0.45);
+  --bad-text: #b91c1c; --bad-soft: rgb(239 68 68 / 0.1); --bad-line: rgb(220 38 38 / 0.45);
+  --warn-text: #a14a05; --warn-soft: rgb(245 158 11 / 0.15); --warn-line: rgb(217 119 6 / 0.5);
+  --replay-text: #4338ca; --replay-soft: rgb(99 102 241 / 0.1); --replay-line: rgb(79 70 229 / 0.45);
+  --neutral-soft: rgb(100 116 139 / 0.1); --neutral-line: rgb(100 116 139 / 0.32);
+
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --focus: #4f46e5;
+  --link: #4338ca;
+  --scrim: rgb(15 23 42 / 0.4);
+
+  --shadow-1: 0 1px 2px rgb(15 23 42 / 0.06);
+  --shadow-2: 0 12px 32px rgb(15 23 42 / 0.16);
+  --sheen: none;
+}

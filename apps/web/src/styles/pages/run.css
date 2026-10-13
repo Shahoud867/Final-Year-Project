@@ -1,0 +1,35 @@
+/* Pipeline trace (run page) and the step inspector. */
+.run-outcome { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s-5); }
+.run-exchange { display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; }
+.run-reply { padding: 8px 10px; border-left: 2px solid var(--line-strong); background: var(--bg-sunken); border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+.run-contrast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.run-lane { padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg-sunken); display: flex; flex-direction: column; gap: var(--s-2); min-width: 0; }
+.run-lane-fail { flex-direction: column; gap: 2px !important; padding-left: 22px; color: var(--bad-text); }
+.run-lane-fail > span:last-child { color: var(--text); }
+.run-verdict { margin-top: var(--s-3); }
+
+.run-pathnote { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: var(--s-2); }
+.run-steps { margin-top: var(--s-3); border: 1px solid var(--line); }
+.run-steps td { vertical-align: middle; }
+
+.run-chain { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; max-width: 760px; }
+.run-chain > li { display: flex; flex-direction: column; gap: 6px; }
+.run-chain-head { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.run-chain-arrow { display: flex; justify-content: center; color: var(--text-3); padding: 4px 0; }
+
+.run-checks td:first-child { min-width: 240px; }
+.run-checks details[open] > summary { margin-bottom: 6px; }
+.check-expr { display: block; padding: 6px 8px; border-radius: var(--r-sm); background: var(--bg-sunken); border: 1px solid var(--line); color: var(--text-2); }
+.run-check { display: flex; flex-direction: column; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface-2); }
+.run-check details[open] > summary { margin-bottom: 6px; }
+
+.run-finding { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; padding: 10px 12px; border: 1px solid var(--warn-line); background: var(--warn-soft); border-radius: var(--r-md); }
+.run-fault > summary { display: flex; align-items: center; gap: 6px; }
+.run-fault[open] > summary { margin-bottom: var(--s-2); }
+
+@media (max-width: 900px) {
+  .run-outcome { grid-template-columns: 1fr; gap: var(--s-3); }
+}
+@media (max-width: 520px) {
+  .run-contrast { grid-template-columns: 1fr; }
+}

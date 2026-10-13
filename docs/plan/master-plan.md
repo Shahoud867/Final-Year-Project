@@ -114,7 +114,7 @@ The panel's five comments (UI/UX, unclear features, unclear inputs, unclear veri
 2. **One canonical workflow, visible in the UI as a stepper:** Ingest → Check → Detect → Attribute → Verify → Review → Resolve → Record (§13). For every feature we define inputs, outputs, evidence, verification and what is stored (§14).
 3. **Verification is made concrete.** It has four levels (V0 detected → V1 evidence-reproduced → V2 replay-verified → V3 human-confirmed). It uses a pre-registered verdict rule: N intervention replays **plus control replays**, giving CONFIRMED / REFUTED / INCONCLUSIVE. Every artefact is stored as hashed evidence (§14.3–14.5).
 4. **Novelty is re-baselined honestly.** Since the proposal we found or confirmed close prior work:
-   - **DoVer** (ICLR 2026) already does "intervene at the suspected step, re-execute, see if the failure flips".
+   - **DoVer** (arXiv preprint 2512.06749, 2026) already does "intervene at the suspected step, re-execute, see if the failure flips".
    - Commercial tools (LangSmith Engine, Patronus Percival, Galileo Insights, Raindrop) already market root-cause diagnosis, fix suggestion and "silent failure" detection.
    - ErrorProbe's own limitations section names "test-time oracle feedbacks" as the future work for silent failures.
 
@@ -181,7 +181,7 @@ The panel's five comments (UI/UX, unclear features, unclear inputs, unclear veri
 |---|---|---|---|
 | W1 | **No functional product.** Nothing accepts user input. | `deliverables/stage-0-proposal/poc-console/backend/main.py` has GET endpoints only. The SDS itself calls `POST /api/runs` "the actual gap". LiveDemo makes 0 `fetch` calls. The PoC guide §1.1 says "No backend… No model calls". | Form 2 "Live prototype with core module" (25 marks) capped. Score cap at 40% if no live system (Appendix B §2.2). |
 | W2 | **The silent-failure detector uses an answer key.** | `poc_spike4_silent_failure_detector.py`: `rule_based_constraint_check(stated, case.correct_answer, tol)` | In production the correct answer is unknown, so as built the headline feature cannot run on real traces. A panel will ask "where does `correct_answer` come from?" |
-| W3 | **Novelty claims are outdated or overstated.** | DoVer (ICLR 2026) does intervention + re-execution verification. PROTEA reruns after fixes. Raindrop markets silent-failure detection and replays traffic against proposed changes. LangSmith Engine runs a closed detect→diagnose→fix→evaluator loop. Percival suggests fixes. ErrorProbe's limitation treats "verifiable constraints" as *detectable* anomalies and names test-time oracles as future work. | "Nobody verifies a fix before trusting it" and "catches what ErrorProbe cannot" are false as worded. One informed question at Final-1 can collapse the contribution story. |
+| W3 | **Novelty claims are outdated or overstated.** | DoVer (arXiv preprint, 2026) does intervention + re-execution verification. PROTEA reruns after fixes. Raindrop markets silent-failure detection and replays traffic against proposed changes. LangSmith Engine runs a closed detect→diagnose→fix→evaluator loop. Percival suggests fixes. ErrorProbe's limitation treats "verifiable constraints" as *detectable* anomalies and names test-time oracles as future work. | "Nobody verifies a fix before trusting it" and "catches what ErrorProbe cannot" are false as worded. One informed question at Final-1 can collapse the contribution story. |
 | W4 | **Scope inflation.** | 10 foundational + 8 + 13 extensions + 11 methodology commitments. The ~1,130 h budget is 100% allocated with no slack. ErrorProbe reproduction sits at 13% step accuracy on a 3B model. Benchmark target 500–1,000. 3 frameworks. | Breadth over depth: no polished core by Final-1 (handbook C.19.4 "feature accumulation"). |
 | W5 | **No engineering hygiene** | No tests/CI/Docker/lint. The default branch is personal. 46 MB of datasets in git, including GAIA (redistribution problem). **The local clone is mid-rebase and 5 commits behind `origin/noor`.** | Fails the faculty's CI/CD requirement and Form 2 "Repository evidence" (cap 40%) |
 | W6 | **Contribution visibility is imbalanced** | `git shortlog`: Noor 45 commits, Shahoud 24, **Saif 1** | Form 11 individual-contribution adjustment risk for Saif. "Commit count alone is not enough", but zero visible engineering work is a red flag. |
@@ -374,7 +374,7 @@ The Order Lookup tool returns a **stale price** for one item, so the refund is $
 
 | Solution | Type | What it does that overlaps Granite | What it does **not** do (per public docs) |
 |---|---|---|---|
-| **DoVer** (Microsoft; ICLR 2026; code public) | Research | Validates failure hypotheses by intervening at the suspected step and re-executing from there. Flips 18–28% of failed trials on GAIA/AssistantBench (Magentic-One) and recovers 49% on GSMPlus (AG2). | Not a product. Intervention verification is reported as flip rates. No control-replay protocol is part of an operator workflow, and no executable-check detection of silent failures. **Our closest prior work: cite it and compare against it.** |
+| **DoVer** (Microsoft; arXiv preprint 2512.06749, 2026) | Research | Validates failure hypotheses by intervening at the suspected step and re-executing from there, three runs per intervention, validated if at least 2 of 3 succeed. Flips 18–28% of failed trials on GAIA/AssistantBench (Magentic-One) and recovers 49% on GSMPlus (AG2). | Not a product. Intervention verification is reported as flip rates. Repeats each intervention but runs no unfixed control replays; no control-replay protocol is part of an operator workflow, and no executable-check detection of silent failures. **Our closest prior work: cite it and compare against it.** |
 | **ErrorProbe** (ACL 2026 Findings) | Research | Strategist–Investigator–Arbiter attribution with tool-grounded verification. ~59.5% step accuracy (per our lit review). | Depends on detectable anomalies. Silent failures are named as a limitation, with "test-time oracle feedbacks" as future work. No repair loop. |
 | Who&When, AgenTracer, SDBL, TraceElephant | Research | Attribution benchmarks and methods | Attribution only. Benchmarks contain only failures (no clean controls). |
 | **PROTEA** (Sony; ACL 2026 Demo) | Research tool | Node-level evaluation. Suggests prompt revisions. **Automatically reruns and re-evaluates** after the developer adopts a fix. | Human-steered prompt refinement. No attribution protocol, no controls/verdicts. Closed. |
@@ -421,7 +421,7 @@ Trace capture and graph view · dashboards · LLM-as-judge scoring · prompt-fix
 
 **Stream-A delta sentence (C.18.2):**
 
-> ErrorProbe reports ~59.5% step accuracy on Who&When under the assumption that failures emit detectable anomalies. DoVer reports 18–49% flip/recovery rates using single intervention re-executions on frontier models. We extend this to workflows where failures are silent and models are small and nondeterministic. We evaluate on our clean-control benchmark using origin accuracy, false-alarm rate and verdict precision.
+> ErrorProbe reports up to 59.5% step accuracy on Who&When (about 43% averaged across benchmarks) under the assumption that failures emit detectable anomalies. DoVer reports 18–28% flip rates on GAIA/AssistantBench and 49% on GSMPlus, using three re-executions per intervention (2-of-3 rule) on frontier models, without control replays. We extend this to workflows where failures are silent and models are small and nondeterministic. We evaluate on our clean-control benchmark using origin accuracy, false-alarm rate and verdict precision.
 
 ---
 
@@ -743,7 +743,7 @@ Each card follows the panel's chain: **Input → Processing → Output → Issue
 
 *Thresholds are fixed before any evaluation result exists (C.5.3). An ablation reports how verdicts change with N ∈ {1, 3, 5} and with M = 0.*
 
-**Why the controls matter (say this at every evaluation).** A single re-run that passes may only reflect sampling luck. If the uncorrected controls also pass, the "fix" proved nothing. DoVer-style single-intervention evidence does not separate these two cases. Our protocol does.
+**Why the controls matter (say this at every evaluation).** A single re-run that passes may only reflect sampling luck. If the uncorrected controls also pass, the "fix" proved nothing. DoVer repeats each intervention three times (2-of-3 rule), which reduces luck but runs no uncorrected controls, so it does not separate these two cases. Our protocol does.
 
 ### 14.5 Evidence model (what is captured, exactly)
 
@@ -2441,7 +2441,7 @@ SDK, LangGraph/CrewAI adapters, Math Crew, Fault Lab batches, benchmark generati
   - ErrorProbe (ACL 2026 Findings)
   - AgentAsk (ACL 2026)
   - PROTEA (ACL 2026 Demo)
-  - DoVer (ICLR 2026)
+  - DoVer (arXiv preprint 2512.06749, 2026)
   - tau-bench and GSM8K
   - product documentation pages, with access dates
 
@@ -2631,7 +2631,7 @@ SDK, LangGraph/CrewAI adapters, Math Crew, Fault Lab batches, benchmark generati
 
 | Question | Answer |
 |---|---|
-| "DoVer already re-executes from an intervention point. What's yours?" | "DoVer showed intervention works as a research method. We make it an operator protocol that is robust to nondeterminism: N intervention replays *plus control replays* and a pre-registered verdict rule, so a lucky re-run can't confirm a wrong cause. Every replay is stored as evidence. We measure the difference: single-replay vs our protocol, on labelled faults." |
+| "DoVer already re-executes from an intervention point. What's yours?" | "DoVer showed intervention works as a research method, with three runs per intervention. We make it an operator protocol that is robust to nondeterminism: N intervention replays *plus control replays* and a pre-registered verdict rule, so a lucky re-run can't confirm a wrong cause. Every replay is stored as evidence. We measure the difference: single-replay vs our protocol, on labelled faults." |
 | "LangSmith Engine / Percival already find root causes." | "They do, mainly with LLM judgement inside their SaaS, and they don't publish accuracy. Our core findings need no LLM: executable checks and value provenance. We publish accuracy and false-alarm rates on a labelled benchmark with clean controls. And it runs self-hosted at $0." |
 | "Where does the 'correct value' come from? Isn't that cheating?" | "Never from an answer key in production. Expected values come from (1) the trace's own evidence, e.g. the Calculator's inputs; (2) a source of truth the operator registers, e.g. the catalogue; (3) policy rules. Answer-key checks exist only in Fault Lab, for evaluation, and are labelled as such." |
 | "What if the user defines no checks?" | "Then Granite can only detect explicit errors, and it says so. Coverage, meaning the share of runs with an applicable check, is a reported metric. That boundary is honest, and it's ErrorProbe's own limitation, which our oracles address." |

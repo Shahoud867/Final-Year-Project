@@ -29,7 +29,7 @@ Status words: **Done** (can be shown today), **Partly**, **Late**, **Not started
 | 14 | CD and a deployed URL | Saif | Day 0 to 1 | Workflow and Render blueprint written; **not run, nothing deployed** | **Late** | [Deployment record](deployment-record.md) |
 | 15 | Protected `main`, pull requests per member, tag `v0.1.0-mid1` | Saif; all | Day 0 onward | **None of it exists** | **Late** | [Repository evidence](../../evidence/repo/2026-10-11_repository-evidence.md) |
 | 16 | Redaction of personal data before storage (FR-SEC-01, "should" for Mid-1) | Shahoud | Week 8 | Redactor written and tested, not applied | **Partly**, moved to Iteration 2 | Defect D-07 |
-| 17 | Usability check with three people outside the team | Shahoud | Week 8 | Not done | **Not started** | Form 10, action A1 |
+| 17 | Usability check with three people outside the team | Shahoud | Week 8 | Protocol, task sheet, SUS form, thresholds and scoring script ready 13 Oct (Noor); before/after comparison done; sessions not yet run | **Partly** | [Protocol](../manuals/usability-check-protocol.md), [before/after](../../evidence/demos/2026-10-13_ui-before-after.md) |
 | 18 | Mid-1 report on the LaTeX template | All | Before the demo | Tracked separately | See the report folder | [`docs/report`](../report/) |
 | 19 | Each member explains their module (handbook walkthrough) | All | Before the demo | Not demonstrated | **Not started** | [Code walkthrough](../manuals/code-walkthrough.md), section 6 |
 

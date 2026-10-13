@@ -10,6 +10,7 @@ The manuals the handbook requires, written so a person outside the team can inst
 | `demo-runbook.md` | the Mid-1 demonstration, step by step, with expected values and failure cases |
 | `coding-standards.md` | naming, comments, static analysis and test rules, each with the tool that enforces it |
 | `code-walkthrough.md` | file and function level map of the code, likely questions, planned ownership |
+| `usability-check-protocol.md` | the usability check with three outside participants (panel action A1): consent, five tasks, SUS questionnaire, thresholds fixed in advance, how to score; `usability-results-template.csv` is the results sheet |
 | `system-test-cases.md` | generated catalogue of the system-level test cases (do not edit by hand) |
 | `user-manual.md` | planned for FYP-1 final: how an end user performs the core journeys |
 | `handover.md` | planned for FYP-2 final: source, build and run, dependencies, licences, credentials handling, known limits |

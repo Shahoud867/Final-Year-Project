@@ -1,0 +1,143 @@
+\chapter{Project Management and Development Evidence}
+
+This chapter reports how the project was managed and gives the evidence behind it: work completed and remaining, individual responsibilities and contributions, repository and version-control practice, milestones, tool and AI-assisted development, external components, risks, security and privacy, and current limitations.
+
+\section{Work Completed}
+
+The first iteration of Granite, the core investigation slice, was completed between 6 and 11 October 2026 and is released as version 0.1.0. Granite does one job: when a workflow of several AI agents produces an answer that looks correct but is wrong, it finds the step where the error began and shows the proof. The product follows a fixed sequence of Run, Check, Detect, Trace back, Verify, Review and Record, and each stage in that sequence is a working feature.
+
+A user can run the Refund Desk workflow, in which five agents handle a customer's refund request on real retail orders, and Granite records every step's inputs and outputs as a hashed trace. A fault such as a stale price from the order lookup can be injected before the run. After every run, seven executable checks are evaluated against a source of truth that the workflow does not control; two of these judge the final outcome and five act as contracts for individual steps. When an outcome check fails on a run that completed without any error, Granite opens a finding for a silent failure. It then traces the wrong value back through the data flow between steps and ranks the steps where it most likely entered, without using a language model. The top hypothesis can be verified by controlled replay: the workflow is re-run five times with the suspected step corrected and twice without the correction as controls, and a fixed rule (VR-1) returns CONFIRMED, REFUTED or INCONCLUSIVE. A person then accepts or rejects the finding, every decision is stored as append-only evidence with a SHA-256 hash, and the investigation can be exported as a Markdown or JSON report. Earlier runs and findings can be searched and filtered, and the product explains itself through a guide page and an API reference.
+
+Alongside the product, the team completed a re-check of the master plan against the Mid-1 rubric, a reorganised repository with automated structure and link checks, continuous integration on GitHub Actions (first green run on 9 October), a design pack of 21 diagrams generated from the code, a suite of 22 system-level tests, setup and tool manuals, and the panel action register. On 11 October the product was deployed publicly on Render at \url{https://granite-demo.onrender.com} and verified with a smoke test and the system test suite.
+
+All 381 automated tests pass. Their distribution is shown in Table~\ref{tab:8-1}. Lint, strict type checking, security scanning and dependency audits report no findings.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.607\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.112\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.171\linewidth}}
+\caption{Automated test results, 11 October 2026}\label{tab:8-1}\\
+\toprule
+\textbf{Suite (level)} & \textbf{Tests} & \textbf{Line coverage} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Suite (level)} & \textbf{Tests} & \textbf{Line coverage} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Core library (unit, property-based) & 207 & 97.5\% \\
+Refund Desk workflow (unit, integration) & 49 & 95.4\% \\
+API (integration) & 71 & 96.8\% \\
+System (black box over HTTP) & 22 & n/a \\
+Web UI (component, accessibility) & 32 & n/a \\
+\end{longtable}
+}
+
+Feasibility was checked with a pre-registered validation run on 7 October, in which the thresholds were fixed before any result was seen. Ten tasks were each run once clean and once with the injected fault, using the local model llama3.2:3b. Granite detected the fault in all ten faulty runs, raised no false alarm on the clean runs, ranked the true origin first in all ten cases, confirmed it in nine, refuted the innocent step in all ten and completed all twenty runs. Every pre-registered threshold was met. The single clean-run finding turned out to be a genuine arithmetic error made by the model, which Granite caught although nobody had injected it.
+
+\section{Work Remaining}
+
+Several Iteration 1 items are late or incomplete. Although the public demo is live, the continuous deployment workflow does not yet deploy automatically, because the Render deploy hook has still to be added as a repository secret. The main branch is not protected, no release tag exists, and only one of the three members has opened pull requests. No member has yet demonstrated a file-level walkthrough of their module. Redaction of personal data before storage has been written and tested but not applied, a usability check with three outside users has not been scheduled, and change record C-01 still awaits the supervisor's signature. Each of these has an owner and a date in the recovery plan: the deployment secret, branch protection and tag before the Mid-1 meeting; one reviewed pull request and a walkthrough from every member before the meeting; the usability check in Week 9; and redaction in Week 10.
+
+Of the nineteen functional requirements set for Mid-1, fourteen are met, four are partly met and one is not met. A finding is opened for each failing outcome check rather than as one combined finding (recorded as deviation C-02h). The origin step is ranked first in ten of ten real-model tasks, but the stricter acceptance criterion of 95\% over twenty runs has not been measured. The report export lacks PDF, which is planned for FYP-1 Final, and the history view has no project filter because only one project exists. Redaction before storage (FR-SEC-01) is the requirement not yet met.
+
+\section{Individual Responsibilities}
+
+The three ownership areas approved at the proposal defense are unchanged and have been mapped onto the product modules. Shahoud Shahid owns Workflows, Data and Experience: the Run and Import modules, the Fault Lab and benchmark, the language-model provider layer and redaction, and the web interface. Muhammad Noor Ul Haq owns the Investigation Engine: the check language and checks engine, the trace-back attribution algorithm, and the evaluation harness with its baselines and metrics. Saif Shahzad owns Verification and Platform: replay verification and the verdict rule, the review lifecycle, reporting, the API, database and background jobs, CI/CD, deployment and security.
+
+The writing of this report is divided equally, with each member writing the chapters closest to their own area, about a third of the report each: Shahoud Shahid writes the front matter, Chapters 1, 3, 9 and 10, and Appendices A and F; Muhammad Noor Ul Haq writes Chapters 2, 4 and 8 and Appendices B and E; and Saif Shahzad writes Chapters 5, 6 and 7 and Appendices C and D. Beyond the report, Shahoud is responsible for the vision, use cases, wireframes, user manual, usability testing and poster; Noor for the literature and product review, requirements, algorithm design and evaluation; and Saif for the architecture, data and behaviour models, test plan, CI/CD, deployment and the setup and tool manuals. Architecture decisions, integration testing, code review, ethics and defense preparation are shared, and every member is expected to demonstrate the full investigation journey alone. Table~\ref{tab:8-2} summarises accountability.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.584\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.100\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.084\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.093\linewidth}}
+\caption{Responsibility matrix (R responsible, A accountable, C consulted, I informed)}\label{tab:8-2}\\
+\toprule
+\textbf{Deliverable} & \textbf{Shahoud} & \textbf{Noor} & \textbf{Saif} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Deliverable} & \textbf{Shahoud} & \textbf{Noor} & \textbf{Saif} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Runner, workflows, faults, SDK & R/A & C & C \\
+Checks, attribution, evaluation & C & R/A & C \\
+Verification, review, API/DB, CI/CD, deployment & C & C & R/A \\
+UI consistency, report integration & R/A & R & R \\
+Supervisor minutes, Form 10, milestone log & R/A & I & I \\
+Form 13 and AI usage log & R & R & R/A \\
+Release tagging & C & C & R/A \\
+\end{longtable}
+}
+
+\section{Contribution of Each Team Member}
+
+Contribution is reported as it appears in the repository. Excluding merges, the main branch holds 82 commits: 40 from Shahoud, 40 from Noor and 1 from Saif, who also made seven merge commits on the proposal-stage branch. The history falls into three phases. During the proposal stage, from late August to the defense on 11 September, the work was shared: Shahoud led the early literature and proof-of-concept spikes, and Noor produced most of the proposal deck and defense preparation. No commits were made between 14 September and 4 October. Between 6 and 11 October the entire product was built in AI-assisted sessions run by Shahoud and committed from his account.
+
+Since 11 October Noor has deployed the product, verified it against the public URL, and opened the project's first two pull requests: one recording the deployment and its evidence, and one fixing a defect (D-26) found by repeating the system tests on a second machine. The planned ownership described in Section 8.3 is therefore not yet reflected in the commit history for the implementation. The team recognises this as the main process weakness of Iteration 1 and has adopted the recovery steps in Section 8.2, in which each member makes real changes to their own module through reviewed pull requests from their own account.
+
+\section{Repository and Version Control Evidence}
+
+The code is kept in a private GitHub repository, Shahoud867/Final-Year-Project, with main as the default branch. Commit messages follow the Conventional Commits format, for example \texttt{feat(\allowbreak{}core): \ldots{}} or \texttt{docs(\allowbreak{}deploy): \ldots{}}. Continuous integration runs on every push and pull request in four jobs. The Python job runs ruff, mypy in strict mode, pytest with a 90\% coverage gate, bandit and pip-audit. The web job runs ESLint, the TypeScript compiler, Vitest, a production build and npm audit. A secret scan runs gitleaks, and a container job builds the Docker image and smoke-tests it. The continuous deployment workflow builds and tests the image, publishes it to the GitHub Container Registry, triggers Render and smoke-tests the public URL. Its first run on 11 October published the image, and the deploy step will run once the hook secret is configured.
+
+The agreed branching strategy (ADR-010) is that nobody pushes to main. Each change is made on a short-lived branch named by its type (feat, fix, docs or chore), opened as a pull request, checked by CI and reviewed by another member before a squash merge. Milestones are marked by tags such as v0.1.0-mid1 and v0.2.0-final1, and pushing a tag creates a GitHub Release with a tagged container image. Up to 11 October the history shows direct pushes to main. The first two pull requests were opened on 11 October, and branch protection and the first tag are scheduled before the Mid-1 meeting.
+
+\section{Milestones and Commit Evidence}
+
+The proposal was approved at the defense on 11 September with five panel comments. On 6 October the master plan was revised to version 1.1, the repository was reorganised and the core library and Refund Desk workflow were working. On 7 October the API, web interface, CI definition and pre-registered feasibility run were completed. The code reached GitHub on 9 October, when the first CI run passed, including the container build and smoke test. On 11 October the design pack, system tests, deployment workflow, coding standards and guide page were added and the registers were re-checked. On the same day the public demo went live, and defect D-26 was found and fixed. Each milestone is backed by a commit, a CI or CD run, or an evidence file in the repository.
+
+The core slice planned for Week 8 was delivered between 6 and 11 October. The items delivered late are fully automated deployment, branch protection, the release tag, pull requests from every member and the code walkthroughs, all covered by the recovery plan in Section 8.2.
+
+\section{Tools and Tool-Assisted Development}
+
+Granite is written in Python 3.11 with FastAPI, SQLAlchemy and Pydantic on the server, and React with TypeScript and Vite in the browser. Testing uses pytest, Hypothesis for property-based tests, Vitest, Testing Library and axe-core for accessibility. Code quality and security are enforced with ruff, mypy, ESLint, bandit, pip-audit, npm audit and gitleaks. The system is packaged with Docker, built and deployed through GitHub Actions and hosted on Render. The Refund Desk's language-model steps run on llama3.2:3b through Ollama.
+
+Generative AI tools were used throughout and are disclosed in full in the AI usage log and Form 13. During the proposal stage a general-purpose AI assistant helped with literature-gap synthesis, planning documents, the eight proof-of-concept spike scripts and defense material. The team ran every spike, inspected its output against ground truth and corrected several errors this way, including a scoring bug and a mislabelled preprint. The implementation of Iteration 1, from 6 to 11 October, was carried out with Claude Code, an AI coding agent. This covered the core library, workflow, API, web interface, tests, CI/CD, diagrams and manuals, and is classed as core-assist at its upper bound. The design it implemented (the verdict rule, the attribution weights, the check-language limits, the state machine and the evaluation protocol) was specified by the team in the master plan before any coding. Its output was validated by running it: the automated tests, strict type checks, security scans, a run on a real local model, a browser walkthrough of the full journey and the pre-registered feasibility run. The deployment verification and the D-26 fix after 11 October were also AI-assisted, with the checks run by Noor and the fix submitted for review as a pull request. Ollama and llama3.2:3b form part of the system under test rather than of Granite's reasoning, because the checks, attribution and verdict are deterministic code. The team acknowledges that each member's ability to explain, modify and defend the AI-assisted code in their own module has still to be demonstrated, and this is scheduled before the evaluation.
+
+\section{External Components and Dependencies}
+
+Granite depends on a small number of permissively licensed components. The distributed runtime consists of Pydantic, FastAPI, SQLAlchemy and React, all under the MIT licence, and uvicorn under BSD-3-Clause. Development and test tools such as pytest, ruff, mypy, Vite and ESLint are MIT or Apache-2.0. Hypothesis and axe-core are under MPL-2.0, but they are used unmodified for testing only and are not shipped. The Refund Desk's customers, orders and product catalogue are a 75-order subset of the tau-bench retail dataset~\cite{taubench}, published by Sierra under the MIT licence. This synthetic data also serves as the source of truth for the checks. Ollama (MIT) runs the local model, and the Llama 3.2 3B model is covered by Meta's Llama 3.2 Community License. The weights are not distributed; only the model's recorded answers are, so the demo runs without a model. The public demo is hosted on Render's free plan, and container images are stored in the GitHub Container Registry. Two licensing questions remain open: choosing a licence for Granite itself, and confirming the Llama 3.2 terms for the recorded answers.
+
+\section{Risks and Mitigation}
+
+The project keeps a register of thirty risks, reviewed weekly. Table~\ref{tab:8-3} lists the most significant.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.353\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.032\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.032\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.443\linewidth}}
+\caption{Principal risks}\label{tab:8-3}\\
+\toprule
+\textbf{Risk} & \textbf{P} & \textbf{I} & \textbf{Mitigation} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Risk} & \textbf{P} & \textbf{I} & \textbf{Mitigation} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+A member cannot explain AI-assisted code ("sudden code volume") & H & H & Small pull requests, owner-written tests, walkthrough drills; cut code to what is understood \\
+Uneven contribution visible in the repository & H & H & Each member owns a module and chapters and commits through reviewed pull requests \\
+Reviewers consider the work already done by DoVer or commercial tools & H & H & Honest comparison; contribution is controlled replay with controls, executable checks and self-hosting; measure the delta \\
+Language-model replays too unstable, giving inconclusive verdicts & M & H & Low temperature, structured outputs, deterministic tools; increase N; report instability \\
+Free hosting sleeps or changes during a demo & M & H & Wake the site beforehand; laptop or Docker Compose fallback \\
+Feature creep & M & H & Frozen MoSCoW priorities; changes need a change record \\
+Report diverges from the code & M & H & Diagrams generated from code and checked in CI \\
+Users still find the interface unclear & M & H & Guide page, plain wording, usability pilot \\
+Sandbox escape through check expressions & L & H & AST whitelist, size limits, attack tests, security scan \\
+Real personal data uploaded to the demo & L & H & Synthetic data only, recorded mode, input limits \\
+\end{longtable}
+}
+
+\section{Security and Privacy Considerations}
+
+Granite's main attack surface is the check language, because checks are expressions that the server evaluates. Instead of Python's \texttt{eval}, the project uses its own evaluator built on Python's syntax tree. It accepts only a whitelist of node types and a fixed list of functions, and limits each expression to 500 characters, 150 syntax nodes and a depth of 14. Twenty-five hostile expressions are tested and rejected, and property-based tests confirm that arbitrary input never crashes the compiler. Every user input is typed and bounded, unknown fields are refused and request bodies over 256 KB are rejected. Evidence records are append-only and carry a SHA-256 hash that is re-checked when read, so tampering is detectable. Attribution never has access to the injected fault's ground truth. An optional access token closes every endpoint except the health check, state-changing requests are limited to 120 per minute, and every response carries security headers. Secrets are kept only in GitHub and Render settings, a secret scan runs in CI, and dependencies are audited on every push. Each of these controls is covered by an automated test.
+
+On privacy, the public demo uses only synthetic data and recorded model answers. One requirement is not yet met: personal data in traces is stored without redaction (FR-SEC-01), because verification replays need the original input. A redactor exists and is tested, and a token-vault design that resolves the conflict is planned for Week 10. Ethically, faults are injected only into the project's own workflows, findings are advisory with a person making the final decision, dataset licences are recorded, and usability participants will give written consent.
+
+\section{Current Limitations}
+
+The evidence so far is narrow. Granite has been demonstrated on one workflow, one fault type and one small model, and the feasibility run covered only ten tasks, so its confidence intervals are wide; the lower bound for confirmed origins is 60\%. Four of the ten tasks were not blind, and no baseline comparison has been made yet. Attribution is easier than usual in this workflow, because the origin step has its own check and therefore leaves direct evidence. Workflows without step checks fall back to a structural ranking that has not been tested. The refutation test is also weak, since correcting the calculator cannot repair a wrong price.
+
+The validation exposed one design limit. When a second fault exists further down the chain, correcting a single step cannot produce a confirmed verdict; this happened once, when the model also mis-added two prices (D-19), and resolving it needs a new version of the verdict rule. The small model makes arithmetic slips in roughly one clean run in ten. These are real failures that Granite caught, not defects in Granite. For low-ranked hypotheses, rank and score can disagree (D-25), although the top ranks are unaffected.
+
+On the engineering side, personal data is not yet redacted before storage, PostgreSQL has not been tested and there is no migration tool, the recorded model answers must be re-recorded after any prompt change, and the rate limiter works per process. Trace import, a second workflow, a check editor, fix suggestions and PDF export are not yet built. The free hosting instance sleeps when idle and resets its database on every deploy. Finally, the tests and the code were produced by the same AI-assisted process, so high coverage shows that the code does what was intended, not that the intent is correct.

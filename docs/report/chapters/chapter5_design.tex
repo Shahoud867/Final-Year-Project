@@ -1,0 +1,205 @@
+\chapter{System Design}
+
+This chapter describes Granite's design: the layered architecture and its components, the interfaces between them, the main architecture decisions and their rationale, how the design evolved since the proposal, and the domain, data and behaviour models. All diagrams are generated from the code, so they match the implementation.
+
+\section{System Architecture}
+
+Granite is a modular monolith: one repository, four packages and one direction of dependency. The web interface (React) talks to the API over HTTP; the API (FastAPI) stores data, runs background jobs and calls the workflow and the core library; the Refund Desk workflow depends only on the core; and the core library (\texttt{granite\_\allowbreak{}core}) contains the trace model, runner, check language, checks, attribution, verification, lifecycle and evidence logic with no web, database or network code. Because the core imports only the Python standard library and Pydantic, its algorithms can be tested on their own in seconds, and a script in CI fails the build if a forbidden import appears. External services (the language-model provider and the database) are reached only through the API layer.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.153\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.218\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.224\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.266\linewidth}}
+\caption{System Architecture}\label{tab:chapter5_design-1}\\
+\toprule
+\textbf{Layer} & \textbf{Package} & \textbf{May import} & \textbf{Must not import} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Layer} & \textbf{Package} & \textbf{May import} & \textbf{Must not import} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Presentation & \texttt{apps/\allowbreak{}web} & the API over HTTP & anything else \\
+Application & \texttt{apps/\allowbreak{}api} (\texttt{granite\_\allowbreak{}api}) & core, workflow, FastAPI, SQLAlchemy & UI code \\
+Workflow under test & \texttt{workflows/\allowbreak{}refund\_\allowbreak{}desk} & core & API, web or database libraries \\
+Domain core & \texttt{packages/\allowbreak{}granite\_\allowbreak{}core} & standard library, Pydantic & FastAPI, SQLAlchemy, HTTP clients, any workflow \\
+\end{longtable}
+}
+
+Figure~\ref{fig:layers} shows the layers and the direction of dependency.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{layer-diagram.pdf}
+\caption{Layer diagram: one dependency direction, checked in CI}
+\label{fig:layers}
+\end{figure}
+
+
+\section{Architectural Components}
+
+\textbf{Web interface} (\texttt{apps/\allowbreak{}web}): five screens (Investigations, New run, Run, Finding, How it works), a keyboard-operable pipeline graph, the verification table and the review panel. \textbf{API} (\texttt{granite\_\allowbreak{}api}): sixteen HTTP endpoints, request validation, RFC 7807 error responses, security headers, a body-size limit, rate limiting and an optional access token. \textbf{Services}: one per use case (runs, analysis, experiments, reviews, report). \textbf{Job runner}: a thread pool with a job table, so long runs and replays do not block requests, and interrupted jobs are marked failed on restart. \textbf{Persistence}: SQLAlchemy over SQLite (PostgreSQL supported). \textbf{Provider layer}: live (Ollama or an OpenAI-compatible endpoint), recorded (cassette of real answers) or automatic. \textbf{Core library}: trace, runner, check language (DSL), checks, lineage, attribution, verification, experiment, lifecycle, evidence, redaction. \textbf{Refund Desk}: five steps, seven checks, repair rules, the stale-price fault and an independent retail store used as the source of truth.
+
+Figure~\ref{fig:components} shows these components and the interfaces between them.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{component-diagram.pdf}
+\caption{Component diagram}
+\label{fig:components}
+\end{figure}
+
+
+\section{Interfaces and Dependencies}
+
+\textbf{HTTP API} (all under \texttt{/\allowbreak{}api}, documented automatically at \texttt{/\allowbreak{}docs}):
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.346\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.363\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.181\linewidth}}
+\caption{Interfaces and Dependencies}\label{tab:chapter5_design-2}\\
+\toprule
+\textbf{Method and path} & \textbf{Purpose} & \textbf{Main responses} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Method and path} & \textbf{Purpose} & \textbf{Main responses} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+GET \texttt{/\allowbreak{}workflows}, \texttt{/\allowbreak{}workflows/\allowbreak{}\{key\}/\allowbreak{}examples} & Registered workflows and example tasks & 200 \\
+POST \texttt{/\allowbreak{}runs} & Start a run (task, fault, seed, mode) & 202 with a job id; 422 invalid input; 429 rate limit \\
+GET \texttt{/\allowbreak{}runs}, \texttt{/\allowbreak{}runs/\allowbreak{}\{id\}}, \texttt{/\allowbreak{}runs/\allowbreak{}\{id\}/\allowbreak{}graph} & List, detail (trace, checks, findings), data-flow graph & 200; 404 \\
+GET \texttt{/\allowbreak{}findings}, \texttt{/\allowbreak{}findings/\allowbreak{}summary}, \texttt{/\allowbreak{}findings/\allowbreak{}\{id\}} & List with filters, counts by status, detail with allowed actions & 200; 404 \\
+GET \texttt{/\allowbreak{}findings/\allowbreak{}\{id\}/\allowbreak{}report?format=md|json} & Export the investigation & 200 \\
+POST \texttt{/\allowbreak{}hypotheses/\allowbreak{}\{id\}/\allowbreak{}experiments} & Start a verification (N, M) & 202; 409 not allowed now \\
+GET \texttt{/\allowbreak{}experiments/\allowbreak{}\{id\}} & Replays, summary and verdict & 200 \\
+POST \texttt{/\allowbreak{}findings/\allowbreak{}\{id\}/\allowbreak{}reviews} & Record a decision & 201; 409 illegal transition; 422 missing comment \\
+GET \texttt{/\allowbreak{}evidence/\allowbreak{}\{id\}} & One evidence record with hash check & 200 \\
+GET \texttt{/\allowbreak{}jobs/\allowbreak{}\{id\}} & Job status and progress & 200 \\
+POST \texttt{/\allowbreak{}settings/\allowbreak{}test-llm} & Check the model connection & 200 \\
+\end{longtable}
+}
+
+\textbf{Internal contracts:} the core exposes \texttt{run\_\allowbreak{}workflow} and \texttt{execute\_\allowbreak{}replay} (runner), \texttt{evaluate\_\allowbreak{}checks} and \texttt{derive\_\allowbreak{}findings} (checks), \texttt{attribute} (attribution), \texttt{plan\_\allowbreak{}replay}, \texttt{decide} and \texttt{wilson} (verification), \texttt{run\_\allowbreak{}experiment} (experiment), \texttt{transition} (lifecycle), and \texttt{make\_\allowbreak{}evidence}/\texttt{verify\_\allowbreak{}evidence} (evidence). A workflow is described by a \texttt{WorkflowDef} (steps with declared reads, checks, repair rules and truth functions). Traces follow the published Granite Trace v1 JSON Schema. \textbf{External dependencies:} Ollama with llama3.2:3b (live mode), SQLite/PostgreSQL, Render (hosting), GitHub Actions and the Container Registry (CI/CD).
+
+\section{Architecture Decisions and Rationale}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.038\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.239\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.338\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.245\linewidth}}
+\caption{Architecture Decisions and Rationale}\label{tab:chapter5_design-3}\\
+\toprule
+\textbf{ADR} & \textbf{Decision} & \textbf{Rationale} & \textbf{Alternatives rejected} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ADR} & \textbf{Decision} & \textbf{Rationale} & \textbf{Alternatives rejected} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+001 & Modular monolith with one dependency direction & Simple to run, test and deploy for a three-person team; boundaries enforced by imports & Microservices (operational cost) \\
+002 & Own workflow runner first & Full control of the trace and of replay from any step & Instrumenting CrewAI/LangGraph first (no replay control) \\
+003 & SQLAlchemy persistence; one JSON trace document per run & One source for hashing and replay; fewer tables to keep consistent & Separate step and edge tables \\
+004 & Check language on Python's syntax tree with a whitelist & Safe and explainable code we can defend & \texttt{eval} (unsafe); third-party evaluator \\
+005 & Provenance-first attribution & Deterministic, cheap, testable; LLM opinion only as a labelled second opinion & LLM-judge attribution as the core \\
+006 & Verdict rule VR-1 with controls & Separates real causes from model randomness; versioned thresholds & Single re-run; unversioned thresholds \\
+007 & Free hosting on Render & Zero cost; Docker deploy & Paid hosting; Hugging Face Spaces (free tier changed) \\
+008 & Provider abstraction and recorded mode & Demo and tests run offline and reproducibly & Calling a model on every run \\
+009 & Granite Trace v1 schema & Stable input contract for import and SDK & Framework-specific formats \\
+010 & Short-lived branches into \texttt{main} with pull requests & Reviewed, CI-checked changes; simple for a small team & Git-flow with \texttt{develop} (revised 11 Oct) \\
+\end{longtable}
+}
+
+\section{Design Evolution}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.085\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.199\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.333\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.243\linewidth}}
+\caption{Design Evolution}\label{tab:chapter5_design-4}\\
+\toprule
+\textbf{Aspect} & \textbf{At the proposal} & \textbf{Now (Mid-1)} & \textbf{Why it changed} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Aspect} & \textbf{At the proposal} & \textbf{Now (Mid-1)} & \textbf{Why it changed} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Product shape & Ten mechanisms; read-only PoC console & One workflow and eight user-facing features around the verified finding & Panel comments A1, A2, A5 \\
+Detection & Answer-key comparison (Spike 4) & Executable checks against an independent source of truth & An answer key does not exist in production; ErrorProbe's named gap \\
+Attribution & ErrorProbe-style LLM pipeline (Strategist, Investigator, Arbiter) & Deterministic provenance; LLM opinion optional & Spike 1: 0--25\% step accuracy with a 3B model; deterministic is testable \\
+Verification & "Replay the fix" (single run) & N intervention replays + M controls, rule VR-1, Wilson interval, verification levels V0--V3 & Panel comment A4; model non-determinism \\
+Evidence & Not defined & Typed, SHA-256-hashed, append-only records; review and audit records & Panel comment A4 \\
+Persistence and hosting & PostgreSQL (Neon), Hugging Face Spaces & SQLite (PostgreSQL supported), Render & Simplicity; free-tier change \\
+Baseline & Reproduce ErrorProbe within $\pm$10 points & Last-agent and LLM-judge baselines; ErrorProbe-lite later & Feasibility (change record C-01) \\
+Branching & \texttt{main} + \texttt{develop} & Short-lived branches into \texttt{main} & Team size (ADR-010 revision, C-03b) \\
+Diagrams & Hand-drawn & Generated from the code and checked in CI & Diagrams must match the code (C-03a) \\
+\end{longtable}
+}
+
+\section{Domain Model}
+
+A \textbf{Workflow} (WorkflowDef) has ordered \textbf{Steps} (StepDef), each with an agent name, a kind (llm, tool, code or handoff) and the earlier fields it reads; it also owns \textbf{Checks} (CheckDef) and \textbf{Repair rules}. Executing a workflow produces a \textbf{Run} whose \textbf{Trace} holds one recorded Step per executed step with its inputs, outputs and timing. Evaluating the checks produces \textbf{Check results} (pass, fail, abstain or error). A failed outcome check opens a \textbf{Finding} with a severity and a symptom step. Attribution produces ranked \textbf{Hypotheses}, each naming a step. Verifying a hypothesis creates an \textbf{Experiment} made of \textbf{Replays} and ends in a \textbf{Verdict}. A \textbf{Review} records a human decision on the finding. Every artefact along the way is stored as an \textbf{Evidence} record with a hash, and every state change is written to the \textbf{Audit log}. A \textbf{Fault injection} record stores the ground truth of an injected fault and is never read by attribution.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{domain-model.pdf}
+\caption{Domain model (class diagram) generated from the code}
+\label{fig:domain-model}
+\end{figure}
+
+
+\section{Data Design}
+
+The database has twelve tables, generated into a data dictionary (120 columns) from the models. \texttt{projects} and \texttt{runs} hold the workflow and each execution, with the trace stored as one JSON document and its SHA-256 hash. \texttt{check\_\allowbreak{}results} holds each check's status with observed and expected values. \texttt{fault\_\allowbreak{}injections} holds the ground truth of an injected fault. \texttt{findings} holds each detected failure, its severity, symptom step and lifecycle status. \texttt{hypotheses} holds ranked suspects with method, evidence class and score. \texttt{experiments} and \texttt{replays} hold verification runs and their individual outcomes. \texttt{reviews} holds human decisions. \texttt{evidence} holds typed, hashed, append-only artefacts. \texttt{audit\_\allowbreak{}log} records every state change, and \texttt{jobs} tracks background work. Evidence and audit rows have no update path, so the record cannot be rewritten. The trace itself follows the Granite Trace v1 schema (RunInfo plus a list of Steps).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{database-schema.pdf}
+\caption{Entity relationship diagram of the twelve tables}
+\label{fig:erd}
+\end{figure}
+
+
+\section{Process / Behavior Design}
+
+\textbf{Finding lifecycle.} A finding starts as \textit{open}, becomes \textit{hypothesized} once hypotheses are ranked, and \textit{verifying} when an experiment starts. The verdict moves it to \textit{confirmed}, \textit{refuted} or \textit{inconclusive} (an experiment error returns it to hypothesized). A refuted or inconclusive finding can be verified again (the next hypothesis, or more replays). A confirmed or inconclusive finding is reviewed to \textit{accepted} or \textit{rejected}, and an accepted finding is \textit{resolved} or closed as \textit{won't fix}. Rejected, resolved and won't-fix are terminal. Any other event is refused as an illegal transition. Verification levels follow the state: V0 detected, V1 evidence-reproduced, V2 replay-verified, V3 human-confirmed.
+
+\textbf{Verification sequence.} When the user presses Verify, the API checks that a repair rule exists and stores a queued experiment; a background job builds the intervention (the corrected value), plans the replay (which steps keep their recorded outputs and which re-run), runs N replays with the correction and M without, judges each replay against the target checks, applies VR-1, stores the verdict and replay outputs as evidence, and moves the finding.
+
+\textbf{Data flow.} At level 0, the Developer and Reviewer send tasks, verification requests and decisions to Granite, which exchanges prompts and answers with the LLM Provider and returns runs, findings, verdicts and reports. At level 1, the processes are run workflow, evaluate checks, attribute, verify and review, connected to the stores of the ER diagram.
+
+Figure~\ref{fig:state-machine} shows the lifecycle, Figure~\ref{fig:activity} the activity flow across the five actors, and Figures~\ref{fig:dfd0} and~\ref{fig:dfd1} the data flow at levels 0 and 1.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{finding-state-machine.pdf}
+\caption{Finding state machine, read from the lifecycle code}
+\label{fig:state-machine}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{activity-investigation.pdf}
+\caption{Activity diagram of an investigation}
+\label{fig:activity}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{dfd-context.pdf}
+\caption{Data flow diagram, level 0 (context)}
+\label{fig:dfd0}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{dfd-level-1.pdf}
+\caption{Data flow diagram, level 1}
+\label{fig:dfd1}
+\end{figure}
+

@@ -1,0 +1,36 @@
+\chapter{Detailed Requirements}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.122\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.577\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.044\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.117\linewidth}}
+\caption{Detailed Requirements}\label{tab:appendix_requirements-1}\\
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Milestone} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Milestone} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-IMP-01 & Import Granite Trace v1 and Who\&When JSON ($\leq$ 5 MB, $\leq$ 500 steps) with a validation report giving the JSON path of every error & M & Final-1 \\
+FR-IMP-02 & Imported runs are marked non-replayable and get evidence-level verification only & M & Final-1 \\
+FR-SDK-01 & Python SDK captures a LangGraph workflow's node inputs and outputs into Granite Trace v1 via a decorator or callback & M & Final-1 \\
+FR-SDK-02 & CrewAI adapter & M & Mid-2 \\
+FR-CHK-05 & Create, edit (versioned), dry-run and disable checks from the UI & M & Final-1 \\
+FR-ATT-03 & Tracing terminates on cyclic lineage within a revisit bound (default 3) & M & Final-1 \\
+FR-ATT-04 & Optional LLM second-opinion hypothesis, labelled unverified & S & Final-1 (M at Mid-2) \\
+FR-VER-04 & Verification refused with a message for non-replayable runs & M & Final-1 \\
+FR-VER-05 & Partial experiments keep completed replays, verdict ERROR, and can resume & M & Final-1 \\
+FR-FIX-01 & Suggest a fix (one atomic field value or one prompt patch) and verify it as a fix experiment & M & Final-1 \\
+FR-FIX-02 & Promote a passing replay of a confirmed fix to a recovered run & M & Final-1 \\
+FR-FIX-03 & Store verified fixes by signature and suggest them for new findings & S & Mid-2 \\
+FR-REP-02 & Export a regression case (JSON + pytest) runnable in recorded mode in CI & M & Final-1 \\
+FR-LAB-01 & Batch-generate labelled runs over workflow $\times$ runtime $\times$ fault with a clean-control share (default 20\%) & M & Final-1 \\
+FR-EVA-01 & Compute detection recall, false-alarm rate, top-1/top-3 origin accuracy, verdict precision and recovery rate with bootstrap 95\% intervals, against last-agent and LLM-judge baselines & M & Final-1 v0 / Mid-2 v1 \\
+FR-AUTH-01 & Sign in with GitHub; reviews record the authenticated identity & S & Mid-2 \\
+FR-ADM-01 & Delete a run and its derived records; configure retention & S & Mid-2 \\
+\end{longtable}
+}
+
+Non-functional requirements NFR-01 to NFR-15 are listed in Section 4.5.

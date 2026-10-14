@@ -109,3 +109,24 @@ def test_attribution_never_sees_fault_ground_truth() -> None:
 
     params = set(inspect.signature(attribute).parameters)
     assert params == {"trace", "results", "symptom_step"}
+
+
+def test_baselines_blame_the_wrong_step_where_granite_does_not(truth) -> None:  # TC-ATT-08 (FR-EVA-01)
+    """The baselines exist to be beaten; a comparison is only honest if they are implemented fairly.
+
+    On the stale-price run the fault is injected at s2 and surfaces at s5. Blaming the last agent
+    gives s5; ranking by position gives s1. Both are wrong at rank 1, and both are wrong for a
+    reason a reader can check, which is what makes the comparison worth reporting.
+    """
+    from granite_core.baselines import last_agent, upstream_first
+
+    t = make_trace(stale=True)
+    hyps = _attr(t, truth)
+    assert hyps[0].step_id == "s2"  # Granite finds the origin
+
+    assert [h.step_id for h in last_agent(t, "s5")] == ["s5"]
+    assert upstream_first(t, "s5")[0].step_id == "s1"
+
+    for baseline in (last_agent(t, "s5"), upstream_first(t, "s5")):
+        assert baseline[0].step_id != "s2", "a baseline that already wins needs no comparison"
+        assert all(h.evidence == [] and h.evidence_kind == "none" for h in baseline)

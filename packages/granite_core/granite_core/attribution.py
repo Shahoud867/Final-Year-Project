@@ -46,7 +46,9 @@ class HypothesisSpec(BaseModel):
     rank: int
     step_id: str
     agent: str
-    method: Literal["provenance", "structural"]
+    # "last_agent" and "upstream_first" are the baselines in granite_core.baselines: the
+    # evaluation scores every method through this one shape so none can be favoured.
+    method: Literal["provenance", "structural", "last_agent", "upstream_first"]
     evidence_kind: str
     score: float
     rationale: str

@@ -146,7 +146,11 @@ def attribute(trace: TraceV1, results: list[CheckResult], symptom_step: str) -> 
         # position only, but a step whose own contract PASSED is cleared: it must never outrank an unchecked one
         return between.get(sid, 0.0) * min(1.0, WEIGHTS[kind] / WEIGHTS["unknown"])
 
-    rows.sort(key=lambda r: (-WEIGHTS[r[3]] if has_origin_evidence else -structural(r[0], r[3]), order[r[0]]))
+    def ranking_score(sid: str, kind: str, d: int) -> float:
+        """The value the table shows. Rank and score must agree: a reader compares the numbers (D-25)."""
+        return min(1.0, WEIGHTS[kind] * DECAY**d) if has_origin_evidence else structural(sid, kind)
+
+    rows.sort(key=lambda r: (-ranking_score(r[0], r[3], r[2]), order[r[0]]))
 
     out: list[HypothesisSpec] = []
     edge_fields = {(e.src, e.dst): e.field for e in edges(trace)}

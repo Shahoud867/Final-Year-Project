@@ -111,6 +111,7 @@ def test_attribution_never_sees_fault_ground_truth() -> None:
     assert params == {"trace", "results", "symptom_step"}
 
 
+<<<<<<< HEAD
 def test_rank_and_score_agree_so_the_table_reads_in_one_order(truth) -> None:  # TC-ATT-06 (D-25)
     """A reader compares the scores in the table; the ranking must not contradict them.
 
@@ -122,3 +123,24 @@ def test_rank_and_score_agree_so_the_table_reads_in_one_order(truth) -> None:  #
     scores = [h.score for h in hyps]
     assert scores == sorted(scores, reverse=True), f"rank disagrees with the displayed score: {scores}"
     assert [h.rank for h in hyps] == list(range(1, len(hyps) + 1))
+
+
+def test_cyclic_lineage_terminates_and_still_ranks(truth) -> None:  # TC-ATT-07 (FR-ATT-03)
+    """An imported trace may declare a read that points downstream, making the data flow cyclic.
+
+    Tracing must stay finite and still produce a ranking. The max-revisit bound keeps the
+    backward walk terminating; the structural fallback must not assume a topological order.
+    """
+    # A clean run: no step carries direct evidence, so ranking falls back to graph position.
+    # That fallback counts paths assuming trace order is topological, which a cycle breaks.
+    t = copy.deepcopy(make_trace())
+    for step in t.steps:
+        if step.step_id == "s2":  # the lookup claims to read the calculator's output
+            step.reads = [*step.reads, "s4.refund_amount"]
+
+    hyps = _attr(t, truth)  # must not raise, and must not hang
+
+    assert hyps, "a cyclic trace still has suspects"
+    assert len(hyps) <= 5
+    assert [h.rank for h in hyps] == list(range(1, len(hyps) + 1))
+    assert all(0.0 <= h.score <= 1.0 for h in hyps)

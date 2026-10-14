@@ -35,7 +35,7 @@ Mid-1 requirements: 19. Done: 14. Partly met: 4. Not met: 1.
 | FR-SDK-01 | The Python SDK shall capture a LangGraph workflow's node inputs and outputs into Granite ... | Final-1 |
 | FR-SDK-02 | CrewAI adapter (same AC). | Mid-2. |
 | FR-CHK-05 | Users shall create, edit (versioned), dry-run and disable checks from the UI. | Final-1. |
-| FR-ATT-03 | Tracing shall terminate on cyclic lineage within a max-revisit bound (default 3). | Final-1 |
+| FR-ATT-03 | Tracing shall terminate on cyclic lineage within a max-revisit bound (default 3). | **met** | [lineage.py::ancestors_with_distance](../../packages/granite_core/granite_core/lineage.py), [lineage.py::betweenness_fraction](../../packages/granite_core/granite_core/lineage.py) | [test_cyclic_lineage_terminates_and_still_ranks](../../packages/granite_core/tests/test_attribution.py) | Brought forward from Final-1: the bound existed but was untested, and the structural fallback raised KeyError on a cyclic trace. |
 | FR-ATT-04 | The system shall optionally request an LLM "second opinion" hypothesis labelled `llm_opin... | Final-1 (M at Mid-2). |
 | FR-VER-04 | Verification shall be refused (HTTP 409 + UI message) for non-replayable runs. | Final-1. |
 | FR-VER-05 | Partial experiments (provider failure) shall keep completed replays, set verdict ERROR an... | Final-1 (Mid-1: verdict ERROR + retry). |

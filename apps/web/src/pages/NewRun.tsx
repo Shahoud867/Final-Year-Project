@@ -29,14 +29,11 @@ export function validateTask(t: TaskInput): Partial<Record<keyof TaskInput, stri
 }
 
 type ScenarioId = "silent" | "clean" | "cancelled";
-interface Scenario { id: ScenarioId; title: string; icon: Icon; does: string; expect: string; status: "delivered" | "cancelled"; fault: string }
+interface Scenario { id: ScenarioId; title: string; icon: Icon; expect: string; status: "delivered" | "cancelled"; fault: string }
 const SCENARIOS: Scenario[] = [
-  { id: "silent", title: "Silent price discrepancy", icon: EyeOff, status: "delivered", fault: "stale_price",
-    does: "The lookup tool reports one price too low. Nothing crashes.", expect: "an outcome check fails, one finding opens" },
-  { id: "clean", title: "Clean baseline", icon: ShieldCheck, status: "delivered", fault: "none",
-    does: "The same request with no fault: the control for false alarms.", expect: "every check passes, no finding" },
-  { id: "cancelled", title: "Cancelled-order edge case", icon: CircleSlash, status: "cancelled", fault: "stale_price",
-    does: "The refund is refused either way, so the wrong price never reaches the customer.", expect: "one step check fails, outcome correct, no finding" },
+  { id: "silent", title: "Silent price discrepancy", icon: EyeOff, status: "delivered", fault: "stale_price", expect: "an outcome check fails, one finding opens" },
+  { id: "clean", title: "Clean baseline", icon: ShieldCheck, status: "delivered", fault: "none", expect: "every check passes, no finding" },
+  { id: "cancelled", title: "Cancelled-order edge case", icon: CircleSlash, status: "cancelled", fault: "stale_price", expect: "one step check fails, outcome correct, no finding" },
 ];
 const exampleFor = (examples: Example[] | null, status: string) => examples?.find((e) => e.label.includes(`(${status})`));
 const without = (errors: Record<string, string>, key: string): Record<string, string> =>
@@ -174,8 +171,7 @@ export function NewRun() {
   const fieldsInJson = view === "json" ? Object.entries(fields) : [];
   return (
     <div className="page studio">
-      <PageHeader eyebrow="Task studio" title="New run"
-                  sub="Launch the Refund Desk on one customer request, with or without an injected fault, and see what Granite finds." />
+      <PageHeader title="New run" sub="Run the Refund Desk on one request, with or without an injected fault." />
       <div className="studio-cols">
         <form className="studio-form" onSubmit={submit} noValidate>
           <Card title="1. Scenario" sub="expected results were verified in recorded mode">
@@ -186,7 +182,6 @@ export function NewRun() {
                   <label key={s.id} className={`studio-opt${scenario === s.id ? " on" : ""}${ex ? "" : " off"}`}>
                     <input type="radio" name="scenario" value={s.id} checked={scenario === s.id} disabled={!ex || busy} onChange={() => choose(s)} />
                     <span className="studio-opt-title"><s.icon size={15} aria-hidden="true" />{s.title}</span>
-                    <span className="small muted">{s.does}</span>
                     <span className="small studio-expect">{ex ? <>Expect: {s.expect}</> : examples.loading ? "Loading examples…" : `No ${s.status} example is available`}</span>
                   </label>
                 );

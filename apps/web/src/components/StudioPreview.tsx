@@ -1,4 +1,4 @@
-import { FileCheck2, Fingerprint, ListChecks, Search, Workflow as WorkflowIcon } from "lucide-react";
+import { FileCheck2, ListChecks, Workflow as WorkflowIcon } from "lucide-react";
 import type { Graph as GraphData, Workflow } from "../types";
 import { Graph } from "./Graph";
 import { Card, Chip, Skeleton } from "./ui";
@@ -48,20 +48,10 @@ export function StudioPreview({ workflow, loading, fault, running }: { workflow:
               <li key={c.id}><Chip mono tone={c.scope === "outcome" ? "replay" : "neutral"}>{c.id}</Chip><span className="grow small">{c.name}</span><span className="small dim nowrap">{agent(c.step)}</span></li>
             ))}
           </ul>
-          <p className="small dim">Outcome checks decide whether a finding opens. Step checks are each agent's own contract and feed the ranking.</p>
         </Card>
       ) : null}
-      <Card title="You get" icon={FileCheck2}>
-        <ul className="checklist small">
-          <li><WorkflowIcon size={14} aria-hidden="true" /><span>A run record: queued, running, completed or errored</span></li>
-          <li><Fingerprint size={14} aria-hidden="true" /><span>Granite Trace v1 of every step, with its SHA-256</span></li>
-          <li><ListChecks size={14} aria-hidden="true" /><span>One result per check: pass, fail or abstain, with observed and expected values</span></li>
-          <li><Search size={14} aria-hidden="true" /><span>A finding with ranked origin hypotheses when an outcome check fails</span></li>
-        </ul>
-      </Card>
       <Card title="Accepted input" icon={FileCheck2} className="studio-rules">
         <dl className="kv">{RULES.map(([k, v]) => <div key={k} style={{ display: "contents" }}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
-        <p className="small dim">Invalid input is refused per field before anything is stored.</p>
       </Card>
     </div>
   );

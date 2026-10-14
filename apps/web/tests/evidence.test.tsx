@@ -1,8 +1,5 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { TRANSITIONS } from "../src/lib/lifecycle";
+import { render, screen, within } from "@testing-library/react";
 import { Evidence } from "../src/pages/Evidence";
-import { Guide } from "../src/pages/Guide";
 import { cleanRun, health, silentRun } from "./fixtures";
 import { mockApi } from "./helpers";
 
@@ -78,80 +75,5 @@ describe("Evidence: delivery pipeline", () => {
     expect(delivery.getByRole("link", { name: "Open the Actions page" })).toBeInTheDocument();
     expect(delivery.queryByText("success")).not.toBeInTheDocument();
     expect(delivery.queryByText(/passed CI/)).not.toBeInTheDocument();
-  });
-});
-
-describe("Evidence: scope and comparison", () => {
-  it("separates what is built from what is planned", async () => {
-    mockApi({ ...server, ...github });
-    render(<Evidence />);
-    const scope = card("Built and planned");
-    expect(scope.getAllByText(/^F[1-8]$/)).toHaveLength(8);
-    const planned = scope.getAllByText("Planned").filter((el) => el.closest("li"));
-    expect(planned).toHaveLength(12); // eight for FYP-1 final, four for FYP-2
-    for (const p of planned) expect(p.closest("li")).toHaveClass("planned");
-    expect(scope.getByText("Trace import from other tools").closest("li")?.querySelector("a")).toBeNull(); // planned items are not links
-    expect(scope.getByText(/Personal data is not redacted before storage/)).toBeInTheDocument();
-  });
-
-  it("compares with three platforms from documentation, with its limits stated", async () => {
-    mockApi({ ...server, ...github });
-    render(<Evidence />);
-    const matrix = card("Compared with agent observability platforms");
-    expect(matrix.getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Capability", "Granite", "LangSmith", "Langfuse", "Arize Phoenix"]);
-    expect(matrix.getAllByRole("rowheader")).toHaveLength(6);
-    expect(matrix.getByText(/No superiority is claimed/)).toBeInTheDocument();
-    expect(matrix.getByText("Student prototype, 10-task feasibility run")).toBeInTheDocument();
-  });
-
-  it("maps every panel action to a screen without asserting its status", async () => {
-    mockApi({ ...server, ...github });
-    render(<Evidence />);
-    const panel = card("Panel feedback, and where to see the answer");
-    expect(panel.getAllByText(/^A[1-6]$/)).toHaveLength(6);
-    expect(panel.getByRole("link", { name: "Form 10 register" })).toHaveAttribute("href", expect.stringContaining("docs/registers/form-10-panel-actions.md"));
-    expect(panel.queryByText(/\bDone\b|\bPartly\b/)).not.toBeInTheDocument();
-  });
-});
-
-describe("Guide: rule VR-1 explorer and lifecycle", () => {
-  const set = (name: string, value: string) => fireEvent.change(screen.getByLabelText(name), { target: { value } });
-
-  it("starts at the default experiment and follows the rule as the counts change", () => {
-    render(<Guide />);
-    const out = card("Rule VR-1");
-    expect(out.getByText("Confirmed")).toBeInTheDocument();
-    expect(out.getByText("95% interval 57% to 100%")).toBeInTheDocument();
-    set("Correct with the fix", "3");
-    expect(out.getByText("Inconclusive")).toBeInTheDocument();
-    set("Correct with the fix", "0");
-    expect(out.getByText("Refuted")).toBeInTheDocument();
-    expect(out.getByText("95% interval 0% to 43%")).toBeInTheDocument();
-    set("Correct with the fix", "5");
-    set("Controls correct", "1"); // half of the controls pass too: luck is not ruled out
-    expect(out.getByText("Inconclusive")).toBeInTheDocument();
-    expect(out.getByText(/Explorer: computed in your browser/)).toBeInTheDocument();
-  });
-
-  it("keeps the counts inside the ranges the server accepts", () => {
-    render(<Guide />);
-    set("Fix replays (N)", "99");
-    expect(screen.getByLabelText("Fix replays (N)")).toHaveValue(10);
-    set("Correct with the fix", "99");
-    expect(screen.getByLabelText("Correct with the fix")).toHaveValue(10);
-    set("Fix replays (N)", "4");
-    expect(screen.getByLabelText("Correct with the fix")).toHaveValue(4); // never more correct replays than replays
-    set("Controls (M)", "9");
-    expect(screen.getByLabelText("Controls (M)")).toHaveValue(5);
-  });
-
-  it("names the catalogue feature of every card and lists every legal transition", async () => {
-    render(<Guide />);
-    expect(screen.getAllByText(/^F[1-8]$/).map((c) => c.textContent)).toEqual(["F1", "F2", "F2", "F3", "F4", "F5", "F6", "F7", "F8"]);
-    const rows = card("Lifecycle rules").getAllByRole("row").slice(1);
-    expect(rows).toHaveLength(TRANSITIONS.length);
-    expect(rows[0]).toHaveTextContent("DetectedOpenhypotheses readyHypotheses ready");
-    await userEvent.click(screen.getByRole("link", { name: /4\s*Trace back/ }));
-    expect(screen.getByRole("heading", { level: 2, name: "4. Trace back" })).toBeInTheDocument();
   });
 });

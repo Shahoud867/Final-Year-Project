@@ -22,7 +22,6 @@ describe("command center telemetry", () => {
     mockApi(routes());
     render(<Home />);
     expect(await tile("Executions").findByText("4")).toBeInTheDocument();
-    expect(tile("Executions").getByText("2 with injected fault, 2 clean")).toBeInTheDocument();
     expect(tile("Executions").getByText("3 completed")).toBeInTheDocument();
     expect(tile("Executions").getByText("1 errored")).toBeInTheDocument();
     // a silent failure is a run that completed and still failed an outcome check: only the stale-price run

@@ -7,6 +7,9 @@
   position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column; gap: var(--s-4);
   padding: var(--s-4) var(--s-3); background: var(--bg-sunken); border-right: 1px solid var(--line); overflow-y: auto;
 }
+@supports (backdrop-filter: blur(1px)) {
+  .sidebar { background: var(--glass); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-right-color: var(--glass-line); }
+}
 .brand { display: flex; align-items: center; gap: 10px; padding: 2px 6px; color: var(--text); text-decoration: none; }
 .brand-mark { width: 28px; height: 28px; flex: none; border-radius: 7px; display: grid; place-items: center; background: linear-gradient(145deg, #475569, #1e293b); border: 1px solid var(--line-strong); color: #fff; }
 .brand-name { font-weight: 680; font-size: var(--fs-lg); letter-spacing: -0.01em; line-height: 1.1; }
@@ -37,6 +40,9 @@
 .topbar {
   position: sticky; top: 0; z-index: 30; min-height: var(--topbar-h); display: flex; align-items: center; gap: var(--s-3);
   padding: 8px var(--s-6); background: var(--bg); border-bottom: 1px solid var(--line); flex-wrap: wrap;
+}
+@supports (backdrop-filter: blur(1px)) {
+  .topbar { background: var(--glass); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-bottom-color: var(--glass-line); }
 }
 .crumbs { display: flex; align-items: center; gap: 6px; min-width: 0; color: var(--text-3); font-size: var(--fs-base); }
 .crumbs strong { color: var(--text); font-weight: 600; }

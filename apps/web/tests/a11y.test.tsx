@@ -88,5 +88,6 @@ describe("accessibility (axe-core, structure and semantics)", () => {
     await findAllByText(/./, undefined, { timeout: 2000 });
     await new Promise((r) => setTimeout(r, 250));
     expect(await violations(container)).toEqual([]);
-  });
+    // axe walks the whole rendered tree; the larger pages need more than the 5 s default.
+  }, 30_000);
 });

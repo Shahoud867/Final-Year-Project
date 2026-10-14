@@ -37,3 +37,11 @@
   .guide-levels { grid-template-columns: max-content minmax(0, 1fr); }
   .guide-levels > li > span.muted { grid-column: 1 / -1; }
 }
+
+/* Inputs and outputs are reference detail: available on demand, not shouted on arrival (panel action A3). */
+.guide-io-more > summary { cursor: pointer; color: var(--text-3); font-size: var(--fs-sm); padding: 2px 0; list-style: none; display: flex; align-items: center; gap: 6px; }
+.guide-io-more > summary::-webkit-details-marker { display: none; }
+.guide-io-more > summary::before { content: "›"; transition: transform var(--t-fast) var(--ease); display: inline-block; }
+.guide-io-more[open] > summary::before { transform: rotate(90deg); }
+.guide-io-more > summary:hover { color: var(--text); }
+.guide-io-more > .guide-io { margin-top: var(--s-2); }

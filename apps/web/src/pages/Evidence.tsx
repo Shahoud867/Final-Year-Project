@@ -1,13 +1,13 @@
-/** Evidence: why a silent failure is missed, what Granite does about it, what is built and planned, and how it is delivered. */
+/** Evidence: why a silent failure is missed, what Granite does about it, and how it is delivered. */
 import {
-  ArrowRight, CircleCheck, CircleDashed, CircleHelp, CircleX, ExternalLink, EyeOff, Fingerprint, FlaskConical, GitBranch, Gavel, ListChecks,
-  MessagesSquare, Minus, Package, RefreshCw, Rocket, Route, Scale, Server, ShieldCheck, Sigma, TriangleAlert,
+  ArrowRight, CircleCheck, CircleX, ExternalLink, EyeOff, Fingerprint, FlaskConical, GitBranch, Gavel, ListChecks, Minus, Package,
+  RefreshCw, Rocket, Route, ShieldCheck, Sigma,
 } from "lucide-react";
 import { useState } from "react";
 import { api } from "../api";
 import { comparedWith } from "../components/CheckDetail";
-import { Badge, Card, Chip, Compare, Notice, PageHeader, Skeleton } from "../components/ui";
-import type { Icon, Tone } from "../components/ui";
+import { Badge, Card, Compare, Notice, PageHeader, Skeleton } from "../components/ui";
+import type { Icon } from "../components/ui";
 import { BUILD, CD_JOBS, CI_JOBS, actionsUrl, commitUrl, fetchPipeline, latestRun, passedFor, repoUrl, workflowFileUrl } from "../delivery";
 import type { WorkflowRun } from "../delivery";
 import { finalText, modeLabel, when } from "../format";
@@ -22,39 +22,13 @@ const WEIGHTS: [string, number][] = [
   ["no check on the step", 0.2], ["consistent with its inputs", 0.1],
 ];
 
-const MECHANISMS: { icon: Icon; title: string; text: string; source: string; path: string }[] = [
-  { icon: ListChecks, title: "Independent contracts", text: "Every run is tested by executable rules against data the workflow does not control. No answer key is needed.", source: "checks.py", path: "packages/granite_core/granite_core/checks.py" },
-  { icon: Route, title: "Deterministic attribution", text: "Steps on the path back from the symptom are ranked by the evidence they carry. No model is asked.", source: "attribution.py", path: "packages/granite_core/granite_core/attribution.py" },
-  { icon: FlaskConical, title: "Counterfactual replay", text: "Earlier steps are frozen, the suspect's output is corrected, and the rest of the workflow runs again.", source: "experiment.py", path: "packages/granite_core/granite_core/experiment.py" },
-  { icon: Sigma, title: "Statistical verdict", text: "Fix replays are compared with control replays under a rule fixed in advance, with a 95% interval.", source: "verification.py", path: "packages/granite_core/granite_core/verification.py" },
-  { icon: Gavel, title: "Human review", text: "A named person accepts or rejects. The server refuses any decision the lifecycle does not allow.", source: "lifecycle.py", path: "packages/granite_core/granite_core/lifecycle.py" },
-  { icon: Fingerprint, title: "Hashed evidence", text: "Each record stores the SHA-256 of its canonical JSON, recomputed every time it is shown. Nothing can be edited.", source: "evidence.py", path: "packages/granite_core/granite_core/evidence.py" },
-];
-
-type Cell = [Tone | "none", string];
-/** From research/market/commercial-product-comparison.md (public documentation reviewed 2026-08-22). */
-const MATRIX: { row: string; cells: [Cell, Cell, Cell, Cell] }[] = [
-  { row: "Trace capture and agent graph", cells: [["warn", "One workflow, own runner"], ["ok", "Yes"], ["ok", "Yes: graphs, nested spans"], ["ok", "Yes: OpenTelemetry"]] },
-  { row: "Root-cause attribution", cells: [["ok", "Step-level, deterministic"], ["neutral", "Human-driven. Engine (beta): mechanism not published"], ["neutral", "Human-driven"], ["neutral", "Human-driven, LLM-assisted. Alyx: mechanism not documented"]] },
-  { row: "Fix tested by replay before it is trusted", cells: [["ok", "N fix replays against M controls"], ["none", "Not documented"], ["none", "Not documented"], ["none", "Not documented"]] },
-  { row: "Silent-failure detection", cells: [["ok", "Executable checks against a source of truth"], ["none", "Not documented"], ["none", "Not documented"], ["none", "Not documented"]] },
-  { row: "Framework generality", cells: [["warn", "Refund Desk only; adapters planned"], ["neutral", "LangChain and LangGraph oriented"], ["ok", "Framework-agnostic, open source, self-hostable"], ["ok", "Framework-agnostic, open source"]] },
-  { row: "Maturity and scale", cells: [["warn", "Student prototype, 10-task feasibility run"], ["ok", "Production platform"], ["ok", "Production platform"], ["ok", "Production platform"]] },
-];
-const CELL_ICON: Record<string, Icon> = { ok: CircleCheck, warn: TriangleAlert, neutral: CircleDashed, none: CircleHelp };
-
-const BUILT: [string, string, string][] = [
-  ["F1", "Run a workflow and record every step", "#/new"], ["F2", "Check the outcome, detect silent failures", "#/"],
-  ["F3", "Trace back to where it began", "#/"], ["F4", "Verify by controlled replay", "#/"], ["F5", "Review: a person decides", "#/"],
-  ["F6", "Record evidence, export a report", "#/"], ["F7", "Find earlier runs and findings", "#/"], ["F8", "Explain itself: guide and API reference", "#/guide"],
-];
-const PLANNED_FINAL1 = ["Trace import from other tools", "A second workflow", "Three fault types", "Python SDK with a LangGraph adapter", "Fix suggestions", "Redaction of stored personal data", "PDF reports", "First evaluation against baselines"];
-const PLANNED_FYP2 = ["Benchmark of at least 300 runs", "CrewAI adapter", "User acceptance testing", "Graph view for branching workflows"];
-const LIMITS = [
-  "One workflow and one fault type",
-  "Personal data is not redacted before storage (defect D-07); synthetic data only",
-  "No usability test with outside users yet",
-  "Evaluation so far: ten tasks, one small model",
+const MECHANISMS: { icon: Icon; title: string; source: string; path: string }[] = [
+  { icon: ListChecks, title: "Independent contracts", source: "checks.py", path: "packages/granite_core/granite_core/checks.py" },
+  { icon: Route, title: "Deterministic attribution", source: "attribution.py", path: "packages/granite_core/granite_core/attribution.py" },
+  { icon: FlaskConical, title: "Counterfactual replay", source: "experiment.py", path: "packages/granite_core/granite_core/experiment.py" },
+  { icon: Sigma, title: "Statistical verdict", source: "verification.py", path: "packages/granite_core/granite_core/verification.py" },
+  { icon: Gavel, title: "Human review", source: "lifecycle.py", path: "packages/granite_core/granite_core/lifecycle.py" },
+  { icon: Fingerprint, title: "Hashed evidence", source: "evidence.py", path: "packages/granite_core/granite_core/evidence.py" },
 ];
 
 /** Pre-registered feasibility run, research/eval/results/2026-10-07_refund-desk-feasibility.md (copied exactly). */
@@ -65,15 +39,6 @@ const METRICS: [string, string, string, string][] = [
   ["M4", "Origin confirmed by replay", "9/10", "at least 80%"],
   ["M5", "Innocent step refuted", "10/10", "at least 80%"],
   ["M6", "Runs completed", "20/20", "at least 95%"],
-];
-
-const PANEL: [string, string, [string, string][]][] = [
-  ["A1", "UI/UX needs improvement.", [["This interface", "#/"]]],
-  ["A2", "Features are not sufficiently clear.", [["How it works", "#/guide"]]],
-  ["A3", "It is unclear what inputs each feature will accept.", [["How it works", "#/guide"], ["Task Studio", "#/new"]]],
-  ["A4", "It is unclear how flaws will be verified and how results will be captured.", [["A finding: Verification results, Evidence", "#/"]]],
-  ["A5", "The overall project workflow must be redefined.", [["Lifecycle on every finding", "#/"], ["Guide", "#/guide"]]],
-  ["A6", "Core module with CI/CD on a live interface.", [["Delivery pipeline, on this page", "#/evidence"]]],
 ];
 
 function Lanes() {
@@ -205,8 +170,7 @@ function Delivery() {
 export function Evidence() {
   return (
     <div className="page ev">
-      <PageHeader eyebrow="Evidence and differentiation" title="Evidence"
-                  sub="What Granite does that ordinary monitoring does not, what is built, what is planned, and how it is delivered." />
+      <PageHeader title="Evidence" sub="What Granite does that ordinary monitoring does not." />
       <Lanes />
 
       <Card title="What Granite does about it" icon={ShieldCheck} sub="six mechanisms, each in one file">
@@ -214,7 +178,6 @@ export function Evidence() {
           {MECHANISMS.map((m) => (
             <div key={m.title} className="ev-mech-card">
               <div className="row tight"><span className="ev-icon"><m.icon size={15} aria-hidden="true" /></span><h3>{m.title}</h3></div>
-              <p className="small muted">{m.text}</p>
               {m.source === "attribution.py" ? (
                 <ul className="ev-weights" aria-label="Evidence classes and weights">
                   {WEIGHTS.map(([name, w]) => <li key={name}><span>{name}</span><span className="bar" aria-hidden="true"><i className="tone-warn" style={{ flex: w }} /><i style={{ flex: 1 - w, background: "transparent" }} /></span><span className="mono">{w.toFixed(1)}</span></li>)}
@@ -223,51 +186,6 @@ export function Evidence() {
               <a className="chip mono ev-src" href={doc(m.path)} target="_blank" rel="noreferrer">{m.source}<ExternalLink size={10} aria-hidden="true" /></a>
             </div>
           ))}
-        </div>
-      </Card>
-
-      <Card title="Compared with agent observability platforms" icon={Scale} sub="from public documentation; not a benchmark">
-        <div className="table-wrap">
-          <table className="ev-matrix">
-            <thead><tr><th>Capability</th><th>Granite</th><th>LangSmith</th><th>Langfuse</th><th>Arize Phoenix</th></tr></thead>
-            <tbody>
-              {MATRIX.map((m) => (
-                <tr key={m.row}>
-                  <th scope="row">{m.row}</th>
-                  {m.cells.map(([tone, text], i) => {
-                    const I = CELL_ICON[tone] ?? CircleDashed;
-                    return <td key={i}><span className={`ev-cell${tone === "ok" ? " t-ok" : tone === "warn" ? " t-warn" : ""}`}><I size={13} aria-hidden="true" /><span>{text}</span></span></td>;
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="small muted">
-          Based on what each vendor's public documentation stated when the team reviewed it on 22 August 2026
-          (<a href={doc("research/market/commercial-product-comparison.md")} target="_blank" rel="noreferrer">source and caveats</a>). "Not documented" means no public description was found, not that the capability is absent.
-          No superiority is claimed: these platforms capture traces at production scale, which Granite does not attempt. Granite is a diagnosis layer that could sit beside them.
-        </p>
-      </Card>
-
-      <Card title="Built and planned" icon={Package}>
-        <div className="ev-scope">
-          <div className="ev-col">
-            <div className="row tight"><h3>Built</h3><Chip tone="ok" icon={CircleCheck}>FYP-1 mid, Iteration 1</Chip></div>
-            <ul className="list-plain stack tight">
-              {BUILT.map(([id, text, href]) => <li key={id} className="ev-item"><Chip mono>{id}</Chip><a href={href}>{text}</a></li>)}
-            </ul>
-          </div>
-          <div className="ev-col">
-            <div className="row tight"><h3>FYP-1 final</h3><Chip icon={CircleDashed}>Planned, Iteration 2</Chip></div>
-            <ul className="list-plain stack tight">{PLANNED_FINAL1.map((t) => <li key={t} className="ev-item planned"><span>{t}</span><span className="small dim">Planned</span></li>)}</ul>
-          </div>
-          <div className="ev-col">
-            <div className="row tight"><h3>FYP-2</h3><Chip icon={CircleDashed}>Planned</Chip></div>
-            <ul className="list-plain stack tight">{PLANNED_FYP2.map((t) => <li key={t} className="ev-item planned"><span>{t}</span><span className="small dim">Planned</span></li>)}</ul>
-            <h3 className="ev-limits-h">Known limits today</h3>
-            <ul className="ev-limits small muted">{LIMITS.map((t) => <li key={t}>{t}</li>)}</ul>
-          </div>
         </div>
       </Card>
 
@@ -289,18 +207,6 @@ export function Evidence() {
 
       <Delivery />
 
-      <Card title="Panel feedback, and where to see the answer" icon={MessagesSquare}>
-        <ul className="ev-panel">
-          {PANEL.map(([id, quote, links]) => (
-            <li key={id}>
-              <Chip mono>{id}</Chip>
-              <span className="ev-quote">{quote}</span>
-              <span className="row tight">{links.map(([text, href]) => <a key={text} className="btn sm ghost" href={href}><ArrowRight size={12} aria-hidden="true" />{text}</a>)}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="small muted row tight"><Server size={13} aria-hidden="true" />Status and evidence for each action are kept in the <a href={doc("docs/registers/form-10-panel-actions.md")} target="_blank" rel="noreferrer">Form 10 register</a>, not here.</p>
-      </Card>
     </div>
   );
 }

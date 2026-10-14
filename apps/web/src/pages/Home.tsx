@@ -130,7 +130,6 @@ export function Home() {
   const errored = runs.filter((r) => r.status === "errored").length;
   const other = runs.length - done.length - errored;
   const silent = done.filter((r) => r.finding_count > 0).length;
-  const injected = runs.filter((r) => r.fault_type).length;
   const total = reached(counts.data, 1);
   const stages = STAGES.map((name, i) => ({ name, n: reached(counts.data, i + 1) }));
   const faults = [...new Set(runs.map((r) => r.fault_type).filter((f): f is string => !!f))];
@@ -145,14 +144,13 @@ export function Home() {
 
   return (
     <div className="page home">
-      <PageHeader eyebrow="Investigation command center" title="Investigations"
-                  sub="Every run of the workflow, the silent failures found in them, and how far each investigation has got." />
+      <PageHeader title="Investigations" />
       <ErrorBox message={all.error} onRetry={all.reload} />
 
       <div className="grid cols-4 home-kpis">
         <Stat label="Executions" icon={Activity} value={all.error ? "n/a" : na(all.loading && !all.data, runs.length)}
               unit={runs.length === 100 ? "latest" : undefined}
-              sub={all.error ? undefined : runs.length === 0 && !all.loading ? "No runs yet." : `${injected} with injected fault, ${runs.length - injected} clean`}>
+              sub={all.error || runs.length ? undefined : all.loading ? undefined : "No runs yet."}>
           {runs.length > 0 ? (
             <>
               <div className="bar" aria-hidden="true">{done.length ? <i className="tone-ok" style={{ flex: done.length }} /> : null}{errored ? <i className="tone-bad" style={{ flex: errored }} /> : null}{other ? <i className="tone-replay" style={{ flex: other }} /> : null}</div>
@@ -161,8 +159,7 @@ export function Home() {
           ) : null}
         </Stat>
         <Stat label="Silent failures" icon={EyeOff} hint="Runs that completed without raising an error but failed an outcome check. Output monitoring reports these as successful."
-              value={all.error ? "n/a" : na(all.loading && !all.data, silent)} unit={all.error ? undefined : `of ${done.length} completed`}
-              sub={all.error ? undefined : "completed, no error, wrong outcome"} />
+              value={all.error ? "n/a" : na(all.loading && !all.data, silent)} unit={all.error ? undefined : `of ${done.length} completed`} />
         <Stat label="Verified (V2+)" icon={Target} hint="Findings at level V2 (origin confirmed by controlled replays under rule VR-1) or V3 (accepted by a reviewer)."
               value={counts.error ? "n/a" : na(counts.loading && !counts.data, countIn(counts.data, VERIFIED))} unit={counts.error ? undefined : `of ${total} findings`}>
           {total > 0 ? (
@@ -174,8 +171,7 @@ export function Home() {
           ) : null}
         </Stat>
         <Stat label="Awaiting review" icon={Hourglass} hint="Findings with a verdict (or strong evidence) that a person has not yet accepted or rejected."
-              value={counts.error ? "n/a" : na(counts.loading && !counts.data, countIn(counts.data, AWAITING_REVIEW))}
-              sub={counts.error ? undefined : "a person decides; the software never closes a finding"} />
+              value={counts.error ? "n/a" : na(counts.loading && !counts.data, countIn(counts.data, AWAITING_REVIEW))} />
       </div>
 
       <div className="home-work">

@@ -44,15 +44,15 @@ describe("application shell", () => {
     expect(screen.getByText("no build stamp")).toBeInTheDocument();
   });
 
-  it("switches between the dark and light themes and remembers the choice", async () => {
+  it("switches between the light and dark themes and remembers the choice", async () => {
     mockApi(base);
     const user = userEvent.setup();
     render(<App />);
-    expect(document.documentElement.dataset.theme).toBe("dark");
-    await user.click(screen.getByRole("button", { name: "Switch to light theme" }));
     expect(document.documentElement.dataset.theme).toBe("light");
-    expect(localStorage.getItem("granite.theme")).toBe("light");
-    expect(screen.getByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Switch to dark theme" }));
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(localStorage.getItem("granite.theme")).toBe("dark");
+    expect(screen.getByRole("button", { name: "Switch to light theme" })).toBeInTheDocument();
   });
 
   it("answers the Test model button with the server's own message", async () => {

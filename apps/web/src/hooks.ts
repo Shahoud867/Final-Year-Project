@@ -62,10 +62,10 @@ export type Theme = "dark" | "light";
 const THEME_KEY = "granite.theme";
 
 function storedTheme(): Theme {
-  try { return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark"; } catch { return "dark"; }
+  try { return localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light"; } catch { return "light"; }
 }
 
-/** Dark by default; the choice is kept in this browser. The light theme is for projectors. */
+/** Light by default; the choice is kept in this browser. The dark theme is optional. */
 export function useTheme(): [Theme, () => void] {
   const [theme, setTheme] = useState<Theme>(storedTheme);
   useEffect(() => {

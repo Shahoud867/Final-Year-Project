@@ -111,7 +111,6 @@ def test_attribution_never_sees_fault_ground_truth() -> None:
     assert params == {"trace", "results", "symptom_step"}
 
 
-<<<<<<< HEAD
 def test_rank_and_score_agree_so_the_table_reads_in_one_order(truth) -> None:  # TC-ATT-06 (D-25)
     """A reader compares the scores in the table; the ranking must not contradict them.
 

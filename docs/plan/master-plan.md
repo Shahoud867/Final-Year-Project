@@ -830,7 +830,7 @@ Format: ID · requirement · priority · milestone · acceptance criterion (AC).
 **Trace back**
 - **FR-ATT-01** For each finding, the system shall produce 1–5 ranked origin hypotheses using the provenance algorithm, each with a score, rationale and linked evidence. · M · Mid-1 · *AC:* on the stale-price fault, H1 = Order Lookup step in ≥ 95% of 20 runs.
 - **FR-ATT-02** Hypothesis scores shall be computed from evidence weights and graph position, never from an LLM self-report. · M · Mid-1.
-- **FR-ATT-03** Tracing shall terminate on cyclic lineage within a max-revisit bound (default 3). · M · Final-1 · *AC:* the cyclic fixture terminates and returns hypotheses.
+- **FR-ATT-03** Tracing shall terminate on cyclic lineage within a max-revisit bound (default 3). · M · Mid-1 · *AC:* the cyclic fixture terminates and returns hypotheses. Brought forward: the bound existed but was untested, and the structural fallback raised KeyError on a cyclic trace.
 - **FR-ATT-04** The system shall optionally request an LLM "second opinion" hypothesis labelled `llm_opinion`/Unverified. · S · Final-1 (M at Mid-2).
 
 **Verify**

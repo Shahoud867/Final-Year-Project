@@ -1,49 +1,234 @@
 {
-  "FR-RUN-01": {"status": "done", "impl": ["workflows/refund_desk/refund_desk/definition.py", "packages/granite_core/granite_core/runner.py::run_workflow", "apps/api/granite_api/services/runs.py::create_run"],
-    "tests": ["packages/granite_core/tests/test_runner.py::test_run_records_every_step_with_resolved_inputs_and_lineage", "apps/api/tests/test_journeys.py::test_clean_run_has_no_findings_and_all_checks_pass"],
-    "note": "The AC that the UI shows the run within 3 s of completion has not been measured."},
-  "FR-RUN-02": {"status": "done", "impl": ["workflows/refund_desk/refund_desk/faults.py::StalePriceFault", "apps/api/granite_api/models.py::FaultInjection", "packages/granite_core/granite_core/attribution.py::attribute"],
-    "tests": ["packages/granite_core/tests/test_attribution.py::test_attribution_never_sees_fault_ground_truth", "apps/api/tests/test_requirements.py::test_fr_run_02_hypotheses_are_reproducible_without_the_fault_record"], "note": ""},
-  "FR-RUN-03": {"status": "done", "impl": ["packages/granite_core/granite_core/llm.py::Cassette", "packages/granite_core/granite_core/llm.py::RecordedProvider"],
-    "tests": ["apps/api/tests/test_requirements.py::test_fr_run_03_recorded_mode_gives_byte_identical_step_outputs_across_three_runs", "packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_recording_then_recorded_mode_returns_the_same_real_answer"],
-    "note": "The cache key is the hash of model, messages, parameters and seed; the replay index of the plan is carried by the seed."},
-  "FR-RUN-04": {"status": "done", "impl": ["apps/api/granite_api/providers.py", "apps/api/granite_api/llm_factory.py::build_provider", "apps/web/src/pages/RunDetail.tsx"],
-    "tests": ["apps/api/tests/test_requirements.py::test_fr_run_04_unreachable_model_ends_errored_within_35_seconds_and_defaults_are_set", "apps/web/tests/requirements.test.tsx::re-runs the same task and fault, then opens the new run"],
-    "note": "Deviation C-02g: the default timeout is 30 s for hosted endpoints but 120 s for local Ollama (a CPU-only model needs it)."},
-  "FR-CHK-01": {"status": "done", "impl": ["packages/granite_core/granite_core/checks.py::evaluate_checks"],
-    "tests": ["packages/granite_core/tests/test_trace_and_checks.py::test_outcome_check_fails_on_stale_price_and_reports_observed_vs_expected", "packages/granite_core/tests/test_trace_and_checks.py::test_outcome_check_passes_on_clean_run"], "note": ""},
-  "FR-CHK-02": {"status": "done", "impl": ["packages/granite_core/granite_core/dsl.py::compile_expression"],
-    "tests": ["packages/granite_core/tests/test_dsl.py::test_malicious_expressions_are_rejected", "packages/granite_core/tests/test_dsl.py::test_arbitrary_text_never_crashes_the_compiler"],
-    "note": "25 hostile expressions are tested (the plan asks for 15)."},
-  "FR-CHK-03": {"status": "done", "impl": ["packages/granite_core/granite_core/checks.py::evaluate_check"],
-    "tests": ["packages/granite_core/tests/test_trace_and_checks.py::test_missing_field_abstains_never_passes"], "note": ""},
-  "FR-CHK-04": {"status": "partial", "impl": ["packages/granite_core/granite_core/checks.py::derive_findings"],
-    "tests": ["packages/granite_core/tests/test_trace_and_checks.py::test_failed_outcome_check_on_completed_run_is_a_silent_failure", "workflows/refund_desk/tests/test_faults_and_verification.py::test_exactly_one_silent_failure_finding"],
-    "note": "Deviation C-02h: one finding is opened per failing outcome check, each with that check severity (the plan words it as one finding with the maximum severity)."},
-  "FR-CHK-06": {"status": "done", "impl": ["workflows/refund_desk/refund_desk/store.py::truth_functions", "apps/api/granite_api/services/analysis.py"],
-    "tests": ["apps/api/tests/test_requirements.py::test_fr_chk_06_truth_evidence_stores_query_response_and_data_snapshot", "packages/granite_core/tests/test_dsl.py::test_truth_function_is_called_and_recorded"], "note": ""},
-  "FR-ATT-01": {"status": "partial", "impl": ["packages/granite_core/granite_core/attribution.py::attribute"],
-    "tests": ["workflows/refund_desk/tests/test_faults_and_verification.py::test_attribution_ranks_the_injected_step_first_without_seeing_the_fault"],
-    "note": "Origin ranked first on 10 of 10 real-model tasks (see research/eval/results, with caveats); the AC of at least 95 percent over 20 runs has not been measured."},
-  "FR-ATT-02": {"status": "done", "impl": ["packages/granite_core/granite_core/attribution.py::WEIGHTS"],
-    "tests": ["packages/granite_core/tests/test_attribution.py::test_same_input_gives_byte_identical_output", "packages/granite_core/tests/test_attribution.py::test_scaling_all_prices_does_not_change_the_origin"], "note": ""},
-  "FR-VER-01": {"status": "done", "impl": ["packages/granite_core/granite_core/experiment.py::run_experiment", "packages/granite_core/granite_core/runner.py::execute_replay"],
-    "tests": ["packages/granite_core/tests/test_experiment.py::test_fixing_the_poisoned_step_is_confirmed_and_controls_stay_broken", "workflows/refund_desk/tests/test_faults_and_verification.py::test_frozen_steps_are_copied_and_cost_no_model_calls"], "note": ""},
-  "FR-VER-02": {"status": "done", "impl": ["packages/granite_core/granite_core/verification.py::decide", "packages/granite_core/granite_core/verification.py::wilson"],
-    "tests": ["packages/granite_core/tests/test_verification.py::test_vr1_decision_table", "packages/granite_core/tests/test_verification.py::test_table_has_twenty_rows", "packages/granite_core/tests/test_verification.py::test_wilson_interval_properties"], "note": ""},
-  "FR-VER-03": {"status": "done", "impl": ["packages/granite_core/granite_core/verification.py::judge_replay"],
-    "tests": ["packages/granite_core/tests/test_verification.py::test_replay_that_fixes_target_but_breaks_another_check_does_not_pass"], "note": ""},
-  "FR-REV-01": {"status": "done", "impl": ["apps/api/granite_api/services/reviews.py::apply_review", "apps/web/src/components/Outcome.tsx::ReviewPanel"],
-    "tests": ["apps/api/tests/test_requirements.py::test_fr_rev_01_request_info_and_accepting_an_inconclusive_finding_need_a_comment", "apps/web/tests/requirements.test.tsx::lets a reviewer ask for more information with a comment"],
-    "note": "Change C-02i: request info is a recorded decision that leaves the status unchanged (the state machine of the plan has no needs-info state)."},
-  "FR-REV-02": {"status": "done", "impl": ["packages/granite_core/granite_core/lifecycle.py::transition", "apps/api/granite_api/services/common.py::move"],
-    "tests": ["packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_every_legal_transition", "packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_illegal_transitions_raise", "apps/api/tests/test_requirements.py::test_fr_rev_02_every_transition_is_written_to_the_audit_log"], "note": ""},
-  "FR-REP-01": {"status": "partial", "impl": ["apps/api/granite_api/services/report.py::finding_report", "apps/api/granite_api/routes.py::get_report"],
-    "tests": ["apps/api/tests/test_requirements.py::test_fr_rep_01_report_is_available_as_markdown_and_json_with_evidence_hashes"], "note": "Markdown and JSON exist; PDF is planned for Final-1."},
-  "FR-HIS-01": {"status": "partial", "impl": ["apps/api/granite_api/routes.py::list_findings", "apps/api/granite_api/routes.py::list_runs", "apps/web/src/components/Filters.tsx"],
-    "tests": ["apps/api/tests/test_requirements.py::test_fr_his_01_runs_and_findings_can_be_filtered_searched_and_paged", "apps/web/tests/requirements.test.tsx::sends the filters to the server and explains an empty result"],
-    "note": "Search, status, severity, level and date range work in the API; the page offers search, severity and level. No project filter (there is one project)."},
-  "FR-SEC-01": {"status": "not-met", "impl": ["packages/granite_core/granite_core/redaction.py::Redactor"],
-    "tests": ["packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_redacts_email_cnic_card_and_phone"],
-    "note": "The redactor exists and is tested but is NOT applied before traces are stored (defect D-07). Use synthetic data only."}
+  "FR-ATT-01": {
+    "status": "partial",
+    "impl": [
+      "packages/granite_core/granite_core/attribution.py::attribute"
+    ],
+    "tests": [
+      "workflows/refund_desk/tests/test_faults_and_verification.py::test_attribution_ranks_the_injected_step_first_without_seeing_the_fault"
+    ],
+    "note": "Origin ranked first on 10 of 10 real-model tasks (see research/eval/results, with caveats); the AC of at least 95 percent over 20 runs has not been measured."
+  },
+  "FR-ATT-02": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/attribution.py::WEIGHTS"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_attribution.py::test_same_input_gives_byte_identical_output",
+      "packages/granite_core/tests/test_attribution.py::test_scaling_all_prices_does_not_change_the_origin"
+    ],
+    "note": ""
+  },
+  "FR-ATT-03": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/lineage.py::ancestors_with_distance",
+      "packages/granite_core/granite_core/lineage.py::betweenness_fraction"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_attribution.py::test_cyclic_lineage_terminates_and_still_ranks"
+    ],
+    "note": "Brought forward from Final-1. The max-revisit bound existed but was untested, and the structural fallback assumed trace order is topological, so a cyclic imported trace raised KeyError instead of ranking."
+  },
+  "FR-CHK-01": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/checks.py::evaluate_checks"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_trace_and_checks.py::test_outcome_check_fails_on_stale_price_and_reports_observed_vs_expected",
+      "packages/granite_core/tests/test_trace_and_checks.py::test_outcome_check_passes_on_clean_run"
+    ],
+    "note": ""
+  },
+  "FR-CHK-02": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/dsl.py::compile_expression"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_dsl.py::test_malicious_expressions_are_rejected",
+      "packages/granite_core/tests/test_dsl.py::test_arbitrary_text_never_crashes_the_compiler"
+    ],
+    "note": "25 hostile expressions are tested (the plan asks for 15)."
+  },
+  "FR-CHK-03": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/checks.py::evaluate_check"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_trace_and_checks.py::test_missing_field_abstains_never_passes"
+    ],
+    "note": ""
+  },
+  "FR-CHK-04": {
+    "status": "partial",
+    "impl": [
+      "packages/granite_core/granite_core/checks.py::derive_findings"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_trace_and_checks.py::test_failed_outcome_check_on_completed_run_is_a_silent_failure",
+      "workflows/refund_desk/tests/test_faults_and_verification.py::test_exactly_one_silent_failure_finding"
+    ],
+    "note": "Deviation C-02h: one finding is opened per failing outcome check, each with that check severity (the plan words it as one finding with the maximum severity)."
+  },
+  "FR-CHK-06": {
+    "status": "done",
+    "impl": [
+      "workflows/refund_desk/refund_desk/store.py::truth_functions",
+      "apps/api/granite_api/services/analysis.py"
+    ],
+    "tests": [
+      "apps/api/tests/test_requirements.py::test_fr_chk_06_truth_evidence_stores_query_response_and_data_snapshot",
+      "packages/granite_core/tests/test_dsl.py::test_truth_function_is_called_and_recorded"
+    ],
+    "note": ""
+  },
+  "FR-HIS-01": {
+    "status": "partial",
+    "impl": [
+      "apps/api/granite_api/routes.py::list_findings",
+      "apps/api/granite_api/routes.py::list_runs",
+      "apps/web/src/components/Filters.tsx"
+    ],
+    "tests": [
+      "apps/api/tests/test_requirements.py::test_fr_his_01_runs_and_findings_can_be_filtered_searched_and_paged",
+      "apps/web/tests/requirements.test.tsx::sends the filters to the server and explains an empty result"
+    ],
+    "note": "Search, status, severity, level and date range work in the API; the page offers search, severity and level. No project filter (there is one project)."
+  },
+  "FR-REP-01": {
+    "status": "partial",
+    "impl": [
+      "apps/api/granite_api/services/report.py::finding_report",
+      "apps/api/granite_api/routes.py::get_report"
+    ],
+    "tests": [
+      "apps/api/tests/test_requirements.py::test_fr_rep_01_report_is_available_as_markdown_and_json_with_evidence_hashes"
+    ],
+    "note": "Markdown and JSON exist; PDF is planned for Final-1."
+  },
+  "FR-REV-01": {
+    "status": "done",
+    "impl": [
+      "apps/api/granite_api/services/reviews.py::apply_review",
+      "apps/web/src/components/Outcome.tsx::ReviewPanel"
+    ],
+    "tests": [
+      "apps/api/tests/test_requirements.py::test_fr_rev_01_request_info_and_accepting_an_inconclusive_finding_need_a_comment",
+      "apps/web/tests/requirements.test.tsx::lets a reviewer ask for more information with a comment"
+    ],
+    "note": "Change C-02i: request info is a recorded decision that leaves the status unchanged (the state machine of the plan has no needs-info state)."
+  },
+  "FR-REV-02": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/lifecycle.py::transition",
+      "apps/api/granite_api/services/common.py::move"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_every_legal_transition",
+      "packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_illegal_transitions_raise",
+      "apps/api/tests/test_requirements.py::test_fr_rev_02_every_transition_is_written_to_the_audit_log"
+    ],
+    "note": ""
+  },
+  "FR-RUN-01": {
+    "status": "done",
+    "impl": [
+      "workflows/refund_desk/refund_desk/definition.py",
+      "packages/granite_core/granite_core/runner.py::run_workflow",
+      "apps/api/granite_api/services/runs.py::create_run"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_runner.py::test_run_records_every_step_with_resolved_inputs_and_lineage",
+      "apps/api/tests/test_journeys.py::test_clean_run_has_no_findings_and_all_checks_pass"
+    ],
+    "note": "The AC that the UI shows the run within 3 s of completion has not been measured."
+  },
+  "FR-RUN-02": {
+    "status": "done",
+    "impl": [
+      "workflows/refund_desk/refund_desk/faults.py::StalePriceFault",
+      "apps/api/granite_api/models.py::FaultInjection",
+      "packages/granite_core/granite_core/attribution.py::attribute"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_attribution.py::test_attribution_never_sees_fault_ground_truth",
+      "apps/api/tests/test_requirements.py::test_fr_run_02_hypotheses_are_reproducible_without_the_fault_record"
+    ],
+    "note": ""
+  },
+  "FR-RUN-03": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/llm.py::Cassette",
+      "packages/granite_core/granite_core/llm.py::RecordedProvider"
+    ],
+    "tests": [
+      "apps/api/tests/test_requirements.py::test_fr_run_03_recorded_mode_gives_byte_identical_step_outputs_across_three_runs",
+      "packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_recording_then_recorded_mode_returns_the_same_real_answer"
+    ],
+    "note": "The cache key is the hash of model, messages, parameters and seed; the replay index of the plan is carried by the seed."
+  },
+  "FR-RUN-04": {
+    "status": "done",
+    "impl": [
+      "apps/api/granite_api/providers.py",
+      "apps/api/granite_api/llm_factory.py::build_provider",
+      "apps/web/src/pages/RunDetail.tsx"
+    ],
+    "tests": [
+      "apps/api/tests/test_requirements.py::test_fr_run_04_unreachable_model_ends_errored_within_35_seconds_and_defaults_are_set",
+      "apps/web/tests/requirements.test.tsx::re-runs the same task and fault, then opens the new run"
+    ],
+    "note": "Deviation C-02g: the default timeout is 30 s for hosted endpoints but 120 s for local Ollama (a CPU-only model needs it)."
+  },
+  "FR-SEC-01": {
+    "status": "not-met",
+    "impl": [
+      "packages/granite_core/granite_core/redaction.py::Redactor"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_lifecycle_evidence_redaction_llm.py::test_redacts_email_cnic_card_and_phone"
+    ],
+    "note": "The redactor exists and is tested but is NOT applied before traces are stored (defect D-07). Use synthetic data only."
+  },
+  "FR-VER-01": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/experiment.py::run_experiment",
+      "packages/granite_core/granite_core/runner.py::execute_replay"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_experiment.py::test_fixing_the_poisoned_step_is_confirmed_and_controls_stay_broken",
+      "workflows/refund_desk/tests/test_faults_and_verification.py::test_frozen_steps_are_copied_and_cost_no_model_calls"
+    ],
+    "note": ""
+  },
+  "FR-VER-02": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/verification.py::decide",
+      "packages/granite_core/granite_core/verification.py::wilson"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_verification.py::test_vr1_decision_table",
+      "packages/granite_core/tests/test_verification.py::test_table_has_twenty_rows",
+      "packages/granite_core/tests/test_verification.py::test_wilson_interval_properties"
+    ],
+    "note": ""
+  },
+  "FR-VER-03": {
+    "status": "done",
+    "impl": [
+      "packages/granite_core/granite_core/verification.py::judge_replay"
+    ],
+    "tests": [
+      "packages/granite_core/tests/test_verification.py::test_replay_that_fixes_target_but_breaks_another_check_does_not_pass"
+    ],
+    "note": ""
+  }
 }

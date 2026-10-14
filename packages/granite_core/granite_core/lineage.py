@@ -68,9 +68,12 @@ def betweenness_fraction(trace: TraceV1, symptom: str) -> dict[str, float]:
     order = [s.step_id for s in trace.steps if s.step_id in dist]
     inc = incoming(trace)
     paths_in: dict[str, int] = {}
-    for sid in order:  # trace order is a topological order (validated)
+    for sid in order:  # trace order is a topological order for a recorded run
         preds = [e.src for e in inc.get(sid, []) if e.src in dist]
-        paths_in[sid] = sum(paths_in[p] for p in preds) if preds else 1
+        # An imported trace may declare a read that points downstream (FR-ATT-03). A predecessor
+        # not yet counted contributes nothing rather than raising: the walk stays finite and the
+        # share is computed from the acyclic part.
+        paths_in[sid] = sum(paths_in.get(p, 0) for p in preds) if preds else 1
     paths_out: dict[str, int] = {symptom: 1}
     for sid in reversed(order):
         if sid == symptom:

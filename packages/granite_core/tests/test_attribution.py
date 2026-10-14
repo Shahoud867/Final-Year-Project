@@ -109,3 +109,16 @@ def test_attribution_never_sees_fault_ground_truth() -> None:
 
     params = set(inspect.signature(attribute).parameters)
     assert params == {"trace", "results", "symptom_step"}
+
+
+def test_rank_and_score_agree_so_the_table_reads_in_one_order(truth) -> None:  # TC-ATT-06 (D-25)
+    """A reader compares the scores in the table; the ranking must not contradict them.
+
+    Before this was fixed the rank key used the evidence weight alone while the score also
+    decayed with distance from the symptom, so a far step could be ranked above a nearer one
+    that showed a higher number (Intake 0.066 above Writer 0.100).
+    """
+    hyps = _attr(make_trace(stale=True), truth)
+    scores = [h.score for h in hyps]
+    assert scores == sorted(scores, reverse=True), f"rank disagrees with the displayed score: {scores}"
+    assert [h.rank for h in hyps] == list(range(1, len(hyps) + 1))

@@ -47,7 +47,9 @@ jobs:
           echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
           echo "sha=sha-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
       - name: Build
-        run: docker build -t "${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha }}" .
+        run: >-
+          docker build --build-arg GRANITE_BUILD_SHA="$(git rev-parse --short=7 HEAD)"
+          -t "${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha }}" .
       - name: Smoke test the exact image that will be published
         run: |
           docker run -d --name granite -p 8000:8000 "${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha }}"

@@ -249,6 +249,57 @@ def test_the_in_app_guide_states_the_limits_the_server_enforces():
     assert not missing, f"Guide.tsx no longer matches the server's rules: {missing}"
 
 
+def _web_source(*parts: str) -> str:
+    from pathlib import Path
+
+    return (Path(__file__).resolve().parents[3] / "apps" / "web" / "src").joinpath(*parts).read_text(encoding="utf-8")
+
+
+def test_the_interface_explains_rule_vr1_with_the_servers_thresholds():
+    """Panel action A4: the rule drawn next to a verdict is the rule that decided it (no drift)."""
+    import re
+
+    from granite_core import verification as v
+
+    from granite_api.schemas import ExperimentCreate
+
+    source = _web_source("lib", "vr1.ts")
+
+    def constant(name: str) -> str:
+        found = re.search(rf"export const {name} = ([^;]+);", source)
+        assert found, f"lib/vr1.ts no longer exports {name}"
+        return found.group(1).strip().strip('"')
+
+    assert constant("RULE_VERSION") == v.RULE_VERSION
+    assert float(constant("CONFIRM_MIN_RATE")) == v.CONFIRM_MIN_RATE
+    assert float(constant("CONTROL_MAX_RATE")) == v.CONTROL_MAX_RATE
+    assert float(constant("REFUTE_MAX_RATE")) == v.REFUTE_MAX_RATE
+    assert int(constant("MAX_REPLAYS")) == v.MAX_REPLAYS and int(constant("MAX_CONTROLS")) == v.MAX_CONTROLS
+    assert int(constant("DEFAULT_REPLAYS")) == ExperimentCreate().n and int(constant("DEFAULT_CONTROLS")) == ExperimentCreate().m
+
+
+def test_the_interface_draws_the_lifecycle_the_server_enforces():
+    """Panel action A5: the workflow shown to the user is the state machine in the code (no drift)."""
+    import re
+
+    from granite_core.lifecycle import TERMINAL, TRANSITIONS
+
+    from granite_api.services.reviews import AWAITING_REVIEW
+
+    source = _web_source("lib", "lifecycle.ts")
+    table = source.split("export const TRANSITIONS", 1)[1].split("];", 1)[0]
+    shown = {tuple(row) for row in re.findall(r'\["(\w+)", "(\w+)", "(\w+)"\]', table)}
+    assert shown == {(s.value, e.value, to.value) for (s, e), to in TRANSITIONS.items()}
+
+    def names(constant: str) -> set[str]:
+        found = re.search(rf"export const {constant} = \[([^\]]*)\];", source)
+        assert found, f"lib/lifecycle.ts no longer exports {constant}"
+        return set(re.findall(r'"(\w+)"', found.group(1)))
+
+    assert names("AWAITING_REVIEW") == set(AWAITING_REVIEW)
+    assert names("TERMINAL") == {s.value for s in TERMINAL}
+
+
 def test_field_messages_are_plain_sentences(client, example):
     """Panel action A1: the form shows a readable sentence next to the field, not a validator's internal wording."""
     r = post_run(client, {"task_input": {**example, "message": "hi", "order_id": "12"}})

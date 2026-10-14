@@ -1,0 +1,114 @@
+/* Design tokens. Light is the default theme; [data-theme="dark"] is the optional override.
+   Semantic colours: ok = check passed, bad = failed check or symptom, warn = suspected or awaiting review,
+   replay = controlled replay and verification. Each has a text shade that meets WCAG AA on the surfaces below. */
+:root {
+  color-scheme: light;
+
+  --bg: #f3f1ec;
+  --bg-sunken: #e9e5dc;
+  --surface: #fdfcfa;
+  --surface-2: #f8f6f2;
+  --elevated: #ece8e0;
+  --line: #ded9cf;
+  --line-strong: #bdb6a8;
+
+  --text: #1c1a17;
+  --text-2: #403c36;
+  --text-3: #514d45;
+
+  --ok: #1a8c3c; --ok-text: #0f7032; --ok-soft: rgb(26 140 60 / 0.12); --ok-line: rgb(26 140 60 / 0.45);
+  --bad: #d12b1f; --bad-text: #b3251a; --bad-soft: rgb(209 43 31 / 0.10); --bad-line: rgb(209 43 31 / 0.45);
+  --warn: #b26a00; --warn-text: #8a5200; --warn-soft: rgb(255 159 10 / 0.16); --warn-line: rgb(178 106 0 / 0.45);
+  --replay: #0a66d6; --replay-text: #0a52ad; --replay-soft: rgb(10 102 214 / 0.10); --replay-line: rgb(10 102 214 / 0.45);
+  --neutral-soft: rgb(120 120 128 / 0.12); --neutral-line: rgb(142 142 147 / 0.3);
+
+  --primary: #0071e3;        /* darker than the system blue so white label text clears 4.5:1 */
+  --primary-hover: #005bbd;
+  --on-primary: #ffffff;
+  --focus: #0071e3;
+  --link: #0040a0;
+  --scrim: rgb(0 0 0 / 0.3);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter Variable", Inter, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+  /* Three sizes only: small (labels and metadata), base (body), large (headings).
+     The older names are kept as aliases so no rule has to change. */
+  --fs-sm: 0.8125rem;   /* 13px: labels, captions, metadata */
+  --fs-base: 0.9375rem; /* 15px: body text, the default */
+  --fs-lg: 1.375rem;    /* 22px: page and card headings (large text, 3:1 threshold) */
+
+  --fs-xs: var(--fs-sm);
+  --fs-md: var(--fs-base);
+  --fs-xl: var(--fs-lg);
+  --fs-2xl: var(--fs-lg);
+
+  --s-1: 4px; --s-2: 8px; --s-3: 14px; --s-4: 18px; --s-5: 22px; --s-6: 26px; --s-8: 34px;
+  --r-sm: 8px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+
+  --shadow-1: 0 1px 2px rgb(15 23 42 / 0.06);
+  --shadow-2: 0 12px 32px rgb(15 23 42 / 0.16);
+  --sheen: none;
+
+  --chrome: rgb(250 248 244 / 0.76);
+  --chrome-line: rgb(0 0 0 / 0.07);
+
+  /* liquid glass: translucent panes lit from above, over a colour field */
+  --glass: rgb(253 252 250 / 0.76);
+  --glass-strong: rgb(253 252 250 / 0.88);
+  --glass-line: rgb(255 255 255 / 0.75);
+  --glass-blur: saturate(180%) blur(28px);
+  --glass-specular: linear-gradient(145deg, rgb(255 255 255 / 0.65), rgb(255 255 255 / 0.1) 42%, rgb(255 255 255 / 0) 70%);
+  --aurora-1: rgb(140 100 230 / 0.13);
+  --aurora-2: rgb(10 120 230 / 0.11);
+  --aurora-3: rgb(226 120 90 / 0.10);
+
+  --nav-w: 232px;
+  --topbar-h: 52px;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --t-fast: 120ms;
+  --t-med: 220ms;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #000000;
+  --bg-sunken: #0a0a0c;
+  --surface: #1c1c1e;
+  --surface-2: #161618;
+  --elevated: #2c2c2e;
+  --line: #2e2e32;
+  --line-strong: #48484a;
+
+  --text: #f5f5f7;
+  --text-2: #aeaeb2;
+  --text-3: #98989d;
+
+  --ok-text: #4ade80; --ok-soft: rgb(48 209 88 / 0.16); --ok-line: rgb(17 116 60 / 0.4);
+  --bad-text: #ff8a80; --bad-soft: rgb(255 69 58 / 0.12); --bad-line: rgb(196 38 29 / 0.4);
+  --warn-text: #ffc83d; --warn-soft: rgb(255 159 10 / 0.18); --warn-line: rgb(146 80 10 / 0.4);
+  --replay-text: #7cc0ff; --replay-soft: rgb(10 132 255 / 0.12); --replay-line: rgb(0 64 160 / 0.4);
+  --neutral-soft: rgb(142 142 147 / 0.14); --neutral-line: rgb(120 120 128 / 0.3);
+
+  --primary: #0062cc;
+  --primary-hover: #0071e8;  /* darkens on hover so the white label keeps 4.5:1 */
+  --focus: #64a9ff;
+  --link: #7cc0ff;
+  --scrim: rgb(0 0 0 / 0.6);
+
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-2: 0 12px 32px rgb(0 0 0 / 0.45);
+  --sheen: linear-gradient(180deg, rgb(255 255 255 / 0.025), rgb(255 255 255 / 0) 42%);
+
+  --chrome: rgb(28 28 30 / 0.72);
+  --chrome-line: rgb(255 255 255 / 0.08);
+
+  --glass: rgb(18 18 22 / 0.76);
+  --glass-strong: rgb(28 28 34 / 0.82);
+  --glass-line: rgb(255 255 255 / 0.1);
+  --glass-specular: linear-gradient(145deg, rgb(255 255 255 / 0.11), rgb(255 255 255 / 0.015) 36%, rgb(255 255 255 / 0) 62%);
+  --aurora-1: rgb(124 58 237 / 0.72);
+  --aurora-2: rgb(10 132 255 / 0.55);
+  --aurora-3: rgb(219 39 160 / 0.45);
+}

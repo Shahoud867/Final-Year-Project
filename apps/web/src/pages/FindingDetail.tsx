@@ -1,74 +1,98 @@
-import { useState } from "react";
-import { ApiError, api } from "../api";
-import { Experiments, ReviewPanel, BUTTON } from "../components/Outcome";
-import { Badge, ErrorBox, Loading } from "../components/ui";
+import { ArrowRight, CircleCheck, History, Siren, Workflow } from "lucide-react";
+import { api } from "../api";
+import { EvidenceLedger } from "../components/EvidenceLedger";
+import { BUTTON, Experiments, ReviewPanel } from "../components/Outcome";
+import { Badge, Card, Chip, Compare, ErrorBox, LevelBadge, Loading, PageHeader } from "../components/ui";
 import { Verify } from "../components/Verify";
-import { LEVELS, label, short } from "../format";
+import { label, short, when } from "../format";
 import { useLoad } from "../hooks";
+import { STAGE_INFO, stage } from "../lib/lifecycle";
+import type { Computation } from "../types";
+import "../styles/pages/finding.css";
 
-const STAGES = ["Detected", "Traced", "Verified", "Reviewed"];
+export { stage };
 
-export function stage(status: string): number {
-  if (["accepted", "rejected", "resolved", "wont_fix"].includes(status)) return 4;
-  if (["confirmed", "refuted", "inconclusive", "evidence_supported"].includes(status)) return 3;
-  if (["hypothesized", "verifying"].includes(status)) return 2;
-  return 1;
-}
+const ACTION: Record<string, string> = { verify: "Verify a hypothesis", ...BUTTON };
 
 export function FindingDetail({ id }: { id: string }) {
   const q = useLoad(() => api.finding(id), [id]);
-  const [reportError, setReportError] = useState("");
+  const runId = q.data?.run_id;
+  // the causal map is an aid: if the graph cannot be loaded the page works without it
+  const g = useLoad(() => (runId ? api.graph(runId) : Promise.resolve(null)), [runId]);
   if (q.loading && !q.data) return <Loading />;
   if (q.error || !q.data) return <ErrorBox message={q.error || "Finding not found."} onRetry={q.reload} />;
   const f = q.data;
   const at = stage(f.status);
-
-  async function download() {
-    try {
-      const text = await api.report(f.id);
-      const url = URL.createObjectURL(new Blob([text], { type: "text/markdown" }));
-      Object.assign(document.createElement("a"), { href: url, download: `${f.id}-report.md` }).click();
-      URL.revokeObjectURL(url);
-    } catch (e) { setReportError(e instanceof ApiError ? e.message : "Could not create the report."); }
-  }
+  const check = f.evidence.find((e) => e.type === "check_computation")?.payload as
+    { observed?: unknown; expected?: unknown; computation?: Computation } | undefined;
+  const compared = check && (check.observed !== undefined && check.observed !== null || check.expected !== undefined && check.expected !== null);
+  const silent = f.kind === "silent_failure";
 
   return (
-    <>
-      <p className="small"><a href="#/">&larr; All investigations</a> · <a href={`#/runs/${f.run_id}`}>View the run</a></p>
-      <div className="row between">
-        <div><h1>{short(f.title, 110)}</h1><p className="muted mono">{f.id}</p></div>
-        <div className="row"><Badge value={f.status} /><span className="badge" title={LEVELS[f.verification_level]}>{f.verification_level}</span></div>
+    <div className="page lab">
+      <PageHeader
+        back={{ href: "#/", label: "All investigations" }}
+        eyebrow="Verification lab"
+        title={short(f.title, 110)}
+        meta={<>
+          <Badge value={f.status} large />
+          <LevelBadge level={f.verification_level} showName />
+          <Chip title="Severity of the failed check">{f.severity} severity</Chip>
+          {f.check_id ? <Chip mono title="The check that failed">{f.check_id}</Chip> : null}
+          <Chip title="The step where the wrong outcome showed">symptom at {f.symptom_step}</Chip>
+          <Chip tone={silent ? "bad" : "neutral"}>{silent ? "silent failure" : f.kind.replace(/_/g, " ")}</Chip>
+          <span className="mono small dim">{f.id}</span>
+        </>}
+        actions={<a className="btn sm" href={`#/runs/${f.run_id}`}><Workflow size={13} aria-hidden="true" />View the run</a>}
+      />
+
+      <div className="lab-rail card">
+        <ol className="stepper" aria-label="Investigation progress">
+          {STAGE_INFO.map((s, i) => (
+            <li key={s.name} className={i + 1 < at ? "done" : i + 1 === at ? "current" : ""} aria-current={i + 1 === at ? "step" : undefined}>
+              <strong>{s.name}</strong><span>{s.does}</span>
+            </li>
+          ))}
+        </ol>
+        <div className="lab-allowed">
+          <span className="eyebrow">Allowed now</span>
+          {f.allowed_actions.length === 0 ? <Chip>none: closed</Chip>
+            : f.allowed_actions.map((a) => <Chip key={a} tone="replay" icon={ArrowRight}>{ACTION[a] ?? label(a)}</Chip>)}
+        </div>
       </div>
-      <ol className="stepper" aria-label="Investigation progress">
-        {STAGES.map((s, i) => <li key={s} className={i + 1 < at ? "done" : i + 1 === at ? "current" : ""}>{i + 1}. {s}</li>)}
-      </ol>
-      <div className="card">
-        <p><strong>Why this was flagged:</strong> {f.detail}</p>
-        <p className="small muted">{LEVELS[f.verification_level]}. Severity {f.severity}; check {f.check_id ?? "none"}; symptom appeared at step {f.symptom_step}.</p>
-      </div>
-      <Verify f={f} onDone={q.reload} />
+
+      <Card title="Symptom" icon={Siren} sub="why this was flagged">
+        <p>{f.detail}</p>
+        {compared ? <div className="lab-symptom-compare"><Compare observed={check?.observed} expected={check?.expected} observedLabel="Observed in the run" expectedLabel="Expected by the check" /></div> : null}
+        {check?.computation?.expression ? <p className="mono small muted wrap-any lab-expr">{check.computation.expression}</p> : null}
+        {silent ? (
+          <p className="row tight small muted lab-noerror"><CircleCheck size={13} aria-hidden="true" />The run completed and raised no error: ordinary output monitoring had nothing to report.</p>
+        ) : <p className="small muted">The run stopped at step {f.symptom_step}.</p>}
+      </Card>
+
+      <Verify f={f} graph={g.data} onDone={q.reload} />
       <Experiments f={f} />
       <ReviewPanel f={f} onDone={q.reload} />
+
       {f.reviews.length > 0 && (
-        <section className="card"><h2>Review history</h2>
-          {f.reviews.map((r) => <p key={r.id} className="small"><strong>{r.reviewer}</strong> chose <em>{(BUTTON[r.decision] ?? label(r.decision)).toLowerCase()}</em> (now {label(r.to_status)}). {r.comment}</p>)}
-        </section>
+        <Card title="Review history" icon={History}>
+          <ol className="lab-history">
+            {f.reviews.map((r) => (
+              <li key={r.id}>
+                <div className="row tight">
+                  <strong>{r.reviewer}</strong>
+                  <Chip>{BUTTON[r.decision] ?? label(r.decision)}</Chip>
+                  <span className="small muted">{r.from_status ? `${label(r.from_status)} → ` : ""}{label(r.to_status)}</span>
+                  <span className="small dim">{when(r.created_at)}</span>
+                </div>
+                {r.comment ? <p className="small">{r.comment}</p> : null}
+              </li>
+            ))}
+          </ol>
+        </Card>
       )}
-      <section className="card" aria-labelledby="e-h">
-        <div className="row between"><h2 id="e-h">Evidence</h2><button onClick={download}>Download report (.md)</button></div>
-        <ErrorBox message={reportError} />
-        <div className="table-wrap"><table>
-          <thead><tr><th>Record</th><th>Type</th><th>SHA-256</th><th>Integrity</th></tr></thead>
-          <tbody>{f.evidence.map((e) => (
-            <tr key={e.id}>
-              <td>{e.title}<details><summary className="small">Show content</summary><pre>{JSON.stringify(e.payload, null, 2)}</pre></details></td>
-              <td className="small">{e.type.replace(/_/g, " ")}</td>
-              <td className="mono small" title={e.sha256}>{e.sha256.slice(0, 12)}…</td>
-              <td><Badge value={e.hash_valid ? "pass" : "fail"} text={e.hash_valid ? "hash matches" : "TAMPERED"} /></td>
-            </tr>
-          ))}</tbody>
-        </table></div>
-      </section>
-    </>
+
+      <EvidenceLedger f={f} />
+    </div>
   );
 }

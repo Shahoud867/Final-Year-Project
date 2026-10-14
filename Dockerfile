@@ -8,7 +8,11 @@ WORKDIR /web
 COPY apps/web/package.json apps/web/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY apps/web/ ./
-RUN npm run build
+# The commit the interface is built from, shown in the UI (Evidence > Delivery). CD passes GRANITE_BUILD_SHA;
+# Render passes RENDER_GIT_COMMIT. Without either the UI says "no build stamp".
+ARG GRANITE_BUILD_SHA=""
+ARG RENDER_GIT_COMMIT=""
+RUN GRANITE_BUILD_SHA="${GRANITE_BUILD_SHA:-$RENDER_GIT_COMMIT}" npm run build
 
 FROM python:3.11-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1

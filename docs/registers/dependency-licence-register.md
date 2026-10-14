@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| Version | 1.0 |
-| Date | 2026-10-07 |
-| Status | Draft. Generated from installed package metadata on 2026-10-07; not yet reviewed by the team. |
+| Version | 1.1 |
+| Date | 2026-10-14 |
+| Status | Draft. Generated from installed package metadata on 2026-10-07; the three web packages added on 2026-10-14 were read from their `package.json` on that date. Not yet reviewed by the team. |
 | Owner | Saif (to confirm) |
 | Refresh | Re-run the commands under "How this was produced" whenever a dependency is added or upgraded; the CI jobs `pip-audit` and `npm audit` report known vulnerabilities on every push. |
 
@@ -31,11 +31,13 @@ Only direct dependencies are listed; their own dependencies carry compatible per
 | bandit | 1.9.4 | Apache-2.0 | Static security scan |
 | pip-audit | 2.10.1 | Apache-2.0 | Known-vulnerability scan |
 
-## Web (distributed: react, react-dom; everything else is build or test only)
+## Web (distributed: react, react-dom, the icons that are imported and the two fonts; everything else is build or test only)
 
 | Package | Version | Licence |
 |---|---|---|
 | react, react-dom | 19.3.0 | MIT |
+| lucide-react (icons; only the icons the code imports end up in the bundle) | 1.56.0 | ISC |
+| @fontsource-variable/inter, @fontsource-variable/jetbrains-mono (Inter and JetBrains Mono, served from our own origin; no request to a font service) | 5.3.0, 5.3.0 | OFL-1.1 (SIL Open Font License: fonts may be bundled and redistributed with software; they may not be sold on their own) |
 | vite, @vitejs/plugin-react | 8.3.3, 6.1.2 | MIT |
 | typescript | 6.0.3 | Apache-2.0 |
 | vitest, jsdom | 5.0.3, 30.1.2 | MIT |

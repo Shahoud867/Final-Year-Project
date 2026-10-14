@@ -1,8 +1,8 @@
 # Workspace index (generated)
 
-Generated 2026-10-11 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
+Generated 2026-10-14 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 591
+Entries: 707
 
 ## (repository root)
 
@@ -10,6 +10,7 @@ Entries: 591
 |---|---|
 | `.dockerignore` |  |
 | `.env.example` |  |
+| `.gitattributes` |  |
 | `.gitignore` |  |
 | `CLAUDE.md` | Orientation for AI sessions |
 | `docker-compose.yml` |  |
@@ -72,6 +73,8 @@ Entries: 591
 | `docs/manuals/setup-manual.md` | Setup manual |
 | `docs/manuals/system-test-cases.md` | System test cases |
 | `docs/manuals/tool-manual.md` | Tool manual: using Granite |
+| `docs/manuals/usability-check-protocol.md` | Usability check protocol (panel action A1) |
+| `docs/manuals/usability-results-template.csv` |  |
 | `docs/meetings/README.md` | docs/meetings |
 | `docs/plan/execution-status.md` | Execution status |
 | `docs/plan/master-plan.md` | Granite — FYP Master Execution Plan |
@@ -88,7 +91,65 @@ Entries: 591
 | `docs/registers/README.md` | docs/registers |
 | `docs/registers/risk-register.md` | Granite — RAID Register (Risks, Assumptions, Issues, Dependencies) |
 | `docs/report/.gitignore` |  |
+| `docs/report/chapters/01_students_submission.tex` |  |
+| `docs/report/chapters/02_anti_plagiarism.tex` |  |
+| `docs/report/chapters/03_authors_declaration.tex` |  |
+| `docs/report/chapters/04_abstract.tex` |  |
+| `docs/report/chapters/05_acknowledgments.tex` |  |
+| `docs/report/chapters/06_executive_summary.tex` |  |
+| `docs/report/chapters/07_abbreviations.tex` |  |
+| `docs/report/chapters/appendix_action_register.tex` |  |
+| `docs/report/chapters/appendix_diagrams.tex` |  |
+| `docs/report/chapters/appendix_meetings.tex` |  |
+| `docs/report/chapters/appendix_repository.tex` |  |
+| `docs/report/chapters/appendix_requirements.tex` |  |
+| `docs/report/chapters/appendix_test_cases.tex` |  |
+| `docs/report/chapters/chapter10_fyp2_plan.tex` |  |
+| `docs/report/chapters/chapter1_introduction.tex` |  |
+| `docs/report/chapters/chapter2_research.tex` |  |
+| `docs/report/chapters/chapter3_iteration_plan.tex` |  |
+| `docs/report/chapters/chapter4_requirements.tex` |  |
+| `docs/report/chapters/chapter5_design.tex` |  |
+| `docs/report/chapters/chapter6_iteration1.tex` |  |
+| `docs/report/chapters/chapter8_testing.tex` |  |
+| `docs/report/chapters/chapter9_development_evidence.tex` |  |
+| `docs/report/chapters/conclusion.tex` |  |
+| `docs/report/fast-nuces-bs.cls` |  |
+| `docs/report/figures/2026-10-07_new-run-form-running.jpg` |  |
+| `docs/report/figures/2026-10-11_finding-confirmed-reviewed-evidence.png` |  |
+| `docs/report/figures/2026-10-11_guide-features-inputs-outputs.png` |  |
+| `docs/report/figures/2026-10-11_investigations-list-filters.png` |  |
+| `docs/report/figures/2026-10-11_render-service-live.png` |  |
+| `docs/report/figures/2026-10-11_render-smoke-test.png` |  |
+| `docs/report/figures/2026-10-11_run-detail-checks-graph.png` |  |
+| `docs/report/figures/2026-10-11_run-errored-unrecorded-task.png` |  |
+| `docs/report/figures/2026-10-13_ui-before-after.png` |  |
+| `docs/report/figures/activity-investigation.pdf` |  |
+| `docs/report/figures/attribution-algorithm.pdf` |  |
+| `docs/report/figures/call-graph.pdf` |  |
+| `docs/report/figures/check-pipeline.pdf` |  |
+| `docs/report/figures/component-diagram.pdf` |  |
+| `docs/report/figures/database-schema.pdf` |  |
+| `docs/report/figures/deployment-diagram.pdf` |  |
+| `docs/report/figures/dfd-context.pdf` |  |
+| `docs/report/figures/dfd-level-1.pdf` |  |
+| `docs/report/figures/domain-model.pdf` |  |
+| `docs/report/figures/finding-state-machine.pdf` |  |
+| `docs/report/figures/interaction-overview.pdf` |  |
+| `docs/report/figures/investigation-flow.pdf` |  |
+| `docs/report/figures/layer-diagram.pdf` |  |
+| `docs/report/figures/refund-desk-dataflow.pdf` |  |
+| `docs/report/figures/replay-plan.pdf` |  |
+| `docs/report/figures/run-sequence.pdf` |  |
+| `docs/report/figures/structure-chart.pdf` |  |
+| `docs/report/figures/use-case-diagram.pdf` |  |
+| `docs/report/figures/verification-sequence.pdf` |  |
+| `docs/report/figures/vr1-decision.pdf` |  |
+| `docs/report/main.tex` |  |
 | `docs/report/README.md` | docs/report: report sources (LaTeX) |
+| `docs/report/references/references.bib` |  |
+| `docs/report/ThesisFigs/FASTLogo.jpg` |  |
+| `docs/report/tikz-uml.sty` |  |
 | `docs/workspace-guide.md` | Granite Workspace Guide |
 
 ## research  (active)
@@ -177,6 +238,9 @@ Entries: 591
 |---|---|
 | `apps/api/.coverage` |  |
 | `apps/api/.gitignore` |  |
+| `apps/api/.granite/granite.db` |  |
+| `apps/api/.granite/granite.db-shm` |  |
+| `apps/api/.granite/granite.db-wal` |  |
 | `apps/api/.pytest_cache/.gitignore` |  |
 | `apps/api/.pytest_cache/CACHEDIR.TAG` |  |
 | `apps/api/.pytest_cache/README.md` | pytest cache directory # |
@@ -218,34 +282,64 @@ Entries: 591
 | `apps/README.md` | apps |
 | `apps/web/.gitignore` |  |
 | `apps/web/eslint.config.js` |  |
-| `apps/web/index.html` | Granite |
+| `apps/web/index.html` | Granite · Agent observability and root-cause workbench |
 | `apps/web/package-lock.json` |  |
 | `apps/web/package.json` |  |
 | `apps/web/README.md` | web |
 | `apps/web/src/api.ts` |  |
 | `apps/web/src/App.tsx` |  |
+| `apps/web/src/components/CheckDetail.tsx` |  |
+| `apps/web/src/components/EvidenceLedger.tsx` |  |
 | `apps/web/src/components/Filters.tsx` |  |
 | `apps/web/src/components/Graph.tsx` |  |
 | `apps/web/src/components/Outcome.tsx` |  |
+| `apps/web/src/components/Replay.tsx` |  |
+| `apps/web/src/components/StepInspector.tsx` |  |
+| `apps/web/src/components/StudioPreview.tsx` |  |
 | `apps/web/src/components/ui.tsx` |  |
 | `apps/web/src/components/Verify.tsx` |  |
+| `apps/web/src/components/Vr1Explorer.tsx` |  |
+| `apps/web/src/delivery.ts` |  |
 | `apps/web/src/format.ts` |  |
 | `apps/web/src/hooks.ts` |  |
+| `apps/web/src/lib/lifecycle.ts` |  |
+| `apps/web/src/lib/vr1.ts` |  |
 | `apps/web/src/main.tsx` |  |
+| `apps/web/src/pages/Evidence.tsx` |  |
 | `apps/web/src/pages/FindingDetail.tsx` |  |
 | `apps/web/src/pages/Guide.tsx` |  |
 | `apps/web/src/pages/Home.tsx` |  |
 | `apps/web/src/pages/NewRun.tsx` |  |
 | `apps/web/src/pages/RunDetail.tsx` |  |
 | `apps/web/src/styles.css` |  |
+| `apps/web/src/styles/base.css` |  |
+| `apps/web/src/styles/components.css` |  |
+| `apps/web/src/styles/graph.css` |  |
+| `apps/web/src/styles/pages/evidence.css` |  |
+| `apps/web/src/styles/pages/finding.css` |  |
+| `apps/web/src/styles/pages/guide.css` |  |
+| `apps/web/src/styles/pages/home.css` |  |
+| `apps/web/src/styles/pages/run.css` |  |
+| `apps/web/src/styles/pages/studio.css` |  |
+| `apps/web/src/styles/shell.css` |  |
+| `apps/web/src/styles/tokens.css` |  |
 | `apps/web/src/types.ts` |  |
 | `apps/web/tests/a11y.test.tsx` |  |
+| `apps/web/tests/evidence.test.tsx` |  |
 | `apps/web/tests/finding.test.tsx` |  |
+| `apps/web/tests/fixtures.ts` |  |
+| `apps/web/tests/graph.test.tsx` |  |
 | `apps/web/tests/helpers.ts` |  |
+| `apps/web/tests/home.test.tsx` |  |
+| `apps/web/tests/lib.test.ts` |  |
 | `apps/web/tests/pages.test.tsx` |  |
 | `apps/web/tests/requirements.test.tsx` |  |
+| `apps/web/tests/run.test.tsx` |  |
 | `apps/web/tests/setup.ts` |  |
+| `apps/web/tests/shell.test.tsx` |  |
+| `apps/web/tests/studio.test.tsx` |  |
 | `apps/web/tests/unit.test.ts` |  |
+| `apps/web/tests/verification.test.tsx` |  |
 | `apps/web/tsconfig.json` |  |
 | `apps/web/vite.config.ts` |  |
 
@@ -328,6 +422,7 @@ Entries: 591
 | `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/ff0ce391d22bdbdf` |  |
 | `packages/granite_core/.hypothesis/examples/df1b93c879a85422/fe9bf3fc01789212` |  |
 | `packages/granite_core/.hypothesis/tmp/tmp0jeles37` |  |
+| `packages/granite_core/.hypothesis/tmp/tmp2w5xc2ec` |  |
 | `packages/granite_core/.hypothesis/tmp/tmp5f6drd3w` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpa29v7cpx` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpalc_r39q` |  |
@@ -335,6 +430,7 @@ Entries: 591
 | `packages/granite_core/.hypothesis/tmp/tmpcdioq8lv` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpfpjmdxav` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpfywdfl1u` |  |
+| `packages/granite_core/.hypothesis/tmp/tmpi4bc57em` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpihphwa9u` |  |
 | `packages/granite_core/.hypothesis/tmp/tmpjgmz8m71` |  |
 | `packages/granite_core/.hypothesis/tmp/tmplmcx_slk` |  |
@@ -478,6 +574,7 @@ Entries: 591
 | `scripts/README.md` | scripts |
 | `scripts/record_cassettes.py` | Record real model responses so the demo and the tests can run offline (Granite 'recorded mode'). |
 | `scripts/ruff.toml` |  |
+| `scripts/score_usability.py` | Score a usability check (docs/manuals/usability-check-protocol.md) and print a Markdown summary. |
 | `scripts/smoke-test.sh` |  |
 
 ## references  (read-only reference)
@@ -621,8 +718,27 @@ Entries: 591
 | `evidence/demos/2026-10-11_investigations-list-filters.png` |  |
 | `evidence/demos/2026-10-11_run-detail-checks-graph.png` |  |
 | `evidence/demos/2026-10-11_run-errored-unrecorded-task.png` |  |
+| `evidence/demos/2026-10-13_before-poc-canvas.png` |  |
+| `evidence/demos/2026-10-13_before-poc-console.png` |  |
+| `evidence/demos/2026-10-13_ui-before-after.md` | UI before and after (panel action A1), 2026-10-13 |
+| `evidence/demos/2026-10-13_ui-before-after.png` |  |
+| `evidence/demos/2026-10-14_command-center.png` |  |
+| `evidence/demos/2026-10-14_evidence-delivery-comparison.png` |  |
+| `evidence/demos/2026-10-14_guide-features-vr1-explorer.png` |  |
+| `evidence/demos/2026-10-14_pipeline-trace-phone-390px.png` |  |
+| `evidence/demos/2026-10-14_pipeline-trace-silent-failure.png` |  |
+| `evidence/demos/2026-10-14_step-inspector-order-lookup.png` |  |
+| `evidence/demos/2026-10-14_task-studio-scenarios.png` |  |
+| `evidence/demos/2026-10-14_verification-lab-accepted.png` |  |
+| `evidence/demos/2026-10-14_verification-lab-light-theme.png` |  |
+| `evidence/demos/2026-10-14_verification-lab-phone-390px.png` |  |
+| `evidence/demos/2026-10-14_workbench-redesign.md` | Interface redesign into an investigation workbench, 2026-10-14 |
 | `evidence/README.md` | evidence |
 | `evidence/repo/2026-10-09_ci-run-37924480165.md` | CI run 37924480165 (GitHub Actions), 2026-10-09 |
+| `evidence/repo/2026-10-11_render-app-home.png` |  |
+| `evidence/repo/2026-10-11_render-deployment.md` | First public deployment on Render, 2026-10-11 |
+| `evidence/repo/2026-10-11_render-service-live.png` |  |
+| `evidence/repo/2026-10-11_render-smoke-test.png` |  |
 | `evidence/repo/2026-10-11_repository-evidence.md` | Repository evidence, 2026-10-11 |
 | `evidence/reports/2026-10-07_accessibility-audit.md` | Accessibility audit, 2026-10-07 |
 | `evidence/reports/2026-10-11_test-results.md` | Test results, 2026-10-11 |

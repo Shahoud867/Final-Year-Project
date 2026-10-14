@@ -26,9 +26,14 @@ PROMPTS = ROOT / "workflows" / "refund_desk" / "refund_desk" / "prompts"
 
 
 def fingerprint() -> dict[str, str]:
-    """SHA-256 of each prompt file, by name. Sorted so the result does not depend on the filesystem."""
+    """SHA-256 of each prompt file, by name.
+
+    Line endings are normalised before hashing: git checks these files out as CRLF on Windows and
+    LF on the CI runner, and the model is sent the decoded text either way. Hashing raw bytes would
+    report every prompt as changed on whichever platform did not record the cassette.
+    """
     return {
-        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+        path.name: hashlib.sha256(path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()).hexdigest()
         for path in sorted(PROMPTS.glob("*.md"))
     }
 

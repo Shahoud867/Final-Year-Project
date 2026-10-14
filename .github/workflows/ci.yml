@@ -48,6 +48,8 @@ jobs:
         run: pip-audit --skip-editable
       - name: Architecture rule (the core library imports no web, database or network code)
         run: python scripts/check_architecture.py
+      - name: Recorded cassette matches the prompts in the code (D-10)
+        run: python scripts/check_cassette_prompts.py
       - name: Generated files match the code (trace schema, design pack, test catalogue, traceability)
         run: |
           python scripts/export_trace_schema.py --check

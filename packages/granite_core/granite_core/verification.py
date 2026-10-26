@@ -88,8 +88,9 @@ class Intervention(BaseModel):
     """A patch for one step's outputs: the correct values to use in a replay."""
     step_id: str
     patches: dict[str, Any] = Field(min_length=1)  # a single atomic field per patch (Spike 8 lesson)
-    source: Literal["truth", "contract", "user"]
+    source: Literal["truth", "contract", "user", "check"]  # "check": derived from a failed check (ADR-011)
     description: str = ""
+    derived_from: list[str] = Field(default_factory=list)  # ids of the checks the values came from
 
 
 def build_intervention(
@@ -114,7 +115,7 @@ def build_intervention(
         patches=patches,
         source="truth",
         description=(
-            f"Set {step.agent if step else step_id}.{names} to the value its contract or the source of truth requires"
+            f"Set {step.agent if step else step_id}.{names} to the value the workflow's repair rule gives"
         ),
     )
 

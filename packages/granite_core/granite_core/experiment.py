@@ -12,6 +12,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict
 
 from .checks import CheckResult, evaluate_checks
+from .interventions import derive_intervention
 from .llm import LLMProvider
 from .runner import RunOutcome, WorkflowDef, execute_replay
 from .trace import TraceV1
@@ -47,6 +48,17 @@ class ExperimentRun(BaseModel):
     replays: list[ReplayRecord]
 
 
+def plan_intervention(
+    defn: WorkflowDef, trace: TraceV1, step_id: str, results: list[CheckResult] | None = None
+) -> Intervention | None:
+    """The patch a replay of ``step_id`` would test: derived from the step's failed checks (ADR-011), else from the
+    workflow's repair rules; ``None`` when neither says what the correct value is."""
+    truth: Mapping[str, Callable[..., Any]] = defn.truth()
+    found = results if results is not None else evaluate_checks(trace, defn.checks, truth)
+    derived = derive_intervention(trace, step_id, defn.checks, found, truth)
+    return derived or build_intervention(trace, step_id, defn.repairs.get(step_id, []), truth)
+
+
 def run_experiment(
     defn: WorkflowDef,
     trace: TraceV1,
@@ -61,14 +73,18 @@ def run_experiment(
 ) -> ExperimentRun:
     """Replay the run from ``step_id`` on, with and without the repair, and decide with VR-1.
 
-    Raises :class:`ReplayUnavailable` when the workflow has no repair for that step (the caller then reports the
-    hypothesis as 'cannot be verified automatically' rather than guessing).
+    Raises :class:`ReplayUnavailable` when nothing says what the step's correct output is: no failed check of that
+    step names the value and the workflow has no repair rule for it (the caller then reports the hypothesis as
+    'cannot be verified automatically' rather than guessing).
     """
     truth: Mapping[str, Callable[..., Any]] = defn.truth()
     original = evaluate_checks(trace, defn.checks, truth)
-    chosen = intervention or build_intervention(trace, step_id, defn.repairs.get(step_id, []), truth)
+    chosen = intervention or plan_intervention(defn, trace, step_id, original)
     if chosen is None:
-        raise ReplayUnavailable(f"no repair rule is defined for step '{step_id}', so it cannot be replayed")
+        raise ReplayUnavailable(
+            f"no failed check of step '{step_id}' says what its output should be, and the workflow defines no repair "
+            "rule for it, so it cannot be replayed"
+        )
     plan = plan_replay(trace, chosen)
 
     records: list[ReplayRecord] = []

@@ -99,14 +99,23 @@ class FaultRecord:
 
 
 class Fault(Protocol):
-    """A deterministic fault operator applied to one step's outputs."""
+    """A deterministic fault operator applied to one step.
+
+    By default it corrupts the step's *outputs* after the step ran. A fault whose ``stage`` attribute is ``"input"``
+    corrupts what the step *receives* instead, before it runs: a value damaged in transit between two agents. The
+    upstream step's recorded output stays correct, so the damage is visible as a difference between the two.
+    """
     fault_type: str
     target_step: str
 
     def apply(self, outputs: dict[str, Any], inputs: dict[str, Any]) -> tuple[dict[str, Any], FaultRecord]:
-        """Corrupt ``outputs``. ``inputs`` is the harness view: the task (``task.<f>``) and every earlier step's
-        outputs (``<step>.<f>``), not just what the target step declared it reads."""
+        """Corrupt ``outputs`` (or, for an input-stage fault, the step's resolved inputs). ``inputs`` is the harness
+        view: the task (``task.<f>``) and every earlier step's outputs (``<step>.<f>``)."""
         ...
+
+
+def _stage(fault: Fault) -> str:
+    return str(getattr(fault, "stage", "output"))
 
 
 @dataclass
@@ -169,8 +178,11 @@ def _execute_steps(
         )
         started, error, out = _now(), None, {}
         try:
+            hit = fault is not None and fault.target_step == sd.step_id
+            if hit and fault is not None and _stage(fault) == "input":
+                ctx.inputs, fault_rec = fault.apply(ctx.inputs, _harness_view(task, outputs))
             out = sd.fn(ctx)
-            if fault is not None and fault.target_step == sd.step_id:
+            if hit and fault is not None and _stage(fault) != "input":
                 out, fault_rec = fault.apply(out, _harness_view(task, outputs))
         except StepFailed as e:
             error = str(e)

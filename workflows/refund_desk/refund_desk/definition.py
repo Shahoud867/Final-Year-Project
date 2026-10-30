@@ -26,13 +26,26 @@ CHECKS: list[CheckDef] = [
         description="Only a delivered order that belongs to the identified customer may be refunded.",
     ),
     CheckDef(
-        id="CT-INTAKE", name="Intake kept the order id and found items", type="assert", scope="step", step="s1",
-        severity="medium", expression="s1.order_id == task.order_id and len(s1.item_names) > 0",
+        id="CHK-OUT-3", name="Every item the customer asked about is in the refund decision", type="truth",
+        scope="outcome", step="s3", severity="high",
+        expression=(
+            "not s3.eligible or len(s3.items_to_refund) == len(truth.requested_items(task.order_id, task.message))"
+        ),
+        description="An eligible refund must cover each order item the customer's message names.",
+    ),
+    # Version 2 of the step checks (2026-11-15): each compares an output field with the value it should have, so a
+    # failed check also says what to patch in for a replay (ADR-011). Version 1 compared totals only.
+    CheckDef(
+        id="CT-INTAKE", name="Intake kept the order id and the items the customer named", type="truth", scope="step",
+        step="s1", severity="medium", version=2,
+        expression=(
+            "s1.order_id == task.order_id"
+            " and s1.item_names == truth.requested_items(task.order_id, task.message, s1.item_names)"
+        ),
     ),
     CheckDef(
         id="CT-LOOKUP", name="Lookup prices match the catalogue", type="truth", scope="step", step="s2",
-        severity="high", tolerance=0.005,
-        expression="approx(sum(pluck(s2.items, 'price')), truth.catalog_total(pluck(s2.items, 'item_id')))",
+        severity="high", version=2, expression="s2.items == truth.catalog_items(s2.items)",
     ),
     CheckDef(
         id="CT-POLICY", name="Refunded items carry the prices the lookup reported", type="assert", scope="step",
@@ -49,12 +62,9 @@ CHECKS: list[CheckDef] = [
     ),
 ]
 
-# How to compute the *correct* value of a step's own output (used to build the verification intervention).
-REPAIRS: dict[str, list[RepairRule]] = {
-    "s1": [RepairRule(field="order_id", expression="task.order_id")],
-    "s2": [RepairRule(field="items", expression="truth.fix_prices(s2.items)")],
-    "s4": [RepairRule(field="refund_amount", expression="round(sum(pluck(s3.items_to_refund, 'price')), 2)")],
-}
+# Hand-written repair rules. Empty since 2026-11-15: every intervention is now derived from the failed check
+# (granite_core.interventions, ADR-011). The mechanism stays for workflows whose checks cannot say the correct value.
+REPAIRS: dict[str, list[RepairRule]] = {}
 
 
 def build_workflow(store: RetailStore | None = None, model: str = DEFAULT_MODEL) -> WorkflowDef:

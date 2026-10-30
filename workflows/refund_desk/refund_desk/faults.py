@@ -1,7 +1,22 @@
-"""Fault operators for Refund Desk. Faults are rule-based and deterministic: no LLM is involved."""
+"""Fault operators for Refund Desk. Faults are rule-based and deterministic: no LLM is involved.
+
+Three types, one per place a silent failure can enter a multi-agent workflow:
+
+==============  ======  =======================================================================================
+fault           step    what goes wrong
+==============  ======  =======================================================================================
+stale_price     s2      a tool returns outdated data (Order Lookup reports an old price)
+dropped_item    s1      an agent loses part of the request (Intake keeps one item name, drops the other)
+handoff_drift   s4      a value is damaged in transit (Refund Calculator receives a price Policy never sent)
+==============  ======  =======================================================================================
+
+Each run still completes without an error. The ground truth is returned as a :class:`FaultRecord` and is never shown
+to detection or attribution.
+"""
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 from typing import Any
 
@@ -36,7 +51,64 @@ class StalePriceFault:
         )
 
 
-FAULT_TYPES: dict[str, type[StalePriceFault]] = {"stale_price": StalePriceFault}
+@dataclass
+class DroppedItemFault:
+    """FLT-DROP: Intake keeps only the first item the customer named; the rest of the request is lost.
+
+    Every later step is correct on what it is given, and the customer is told a correct refund for the wrong set of
+    items. When the customer named a single item there is nothing to drop and the run is unaffected.
+    """
+
+    fault_type: str = "dropped_item"
+    target_step: str = "s1"
+
+    def apply(self, outputs: dict[str, Any], inputs: dict[str, Any]) -> tuple[dict[str, Any], FaultRecord]:
+        """Keep the first item name and drop the others; return the fault record."""
+        names = list(outputs.get("item_names", []))
+        kept = names[:1]
+        return {**outputs, "item_names": kept}, FaultRecord(
+            fault_type=self.fault_type, target_step=self.target_step, field_path="item_names",
+            original_value=names, injected_value=kept,
+            note="Intake lost part of the request; no error was raised",
+        )
+
+
+@dataclass
+class HandoffDriftFault:
+    """FLT-HANDOFF: the item list Policy sends to the Refund Calculator arrives with one price changed.
+
+    Policy's own output is correct; only the copy the Calculator receives is damaged (an input-stage fault). The
+    Calculator then adds up the wrong price faithfully.
+    """
+
+    delta: float = 5.0
+    fault_type: str = "handoff_drift"
+    target_step: str = "s4"
+    stage: str = "input"
+
+    def apply(self, outputs: dict[str, Any], inputs: dict[str, Any]) -> tuple[dict[str, Any], FaultRecord]:
+        """Raise the first item's price in what the Calculator receives (``outputs`` here is its resolved input)."""
+        out = copy.deepcopy(outputs)
+        items = out.get("s3.items_to_refund") or []
+        if not items:  # nothing is handed over when the request is not eligible
+            return out, FaultRecord(
+                fault_type=self.fault_type, target_step=self.target_step, field_path="inputs.s3.items_to_refund",
+                original_value=[], injected_value=[], note="nothing was handed over, so nothing could drift",
+            )
+        original = items[0]["price"]
+        items[0]["price"] = round(original + self.delta, 2)
+        return out, FaultRecord(
+            fault_type=self.fault_type, target_step=self.target_step,
+            field_path="inputs.s3.items_to_refund[0].price", original_value=original, injected_value=items[0]["price"],
+            note="the item list was changed between Policy and the Refund Calculator; no error was raised",
+        )
+
+
+FAULT_TYPES: dict[str, type[StalePriceFault] | type[DroppedItemFault] | type[HandoffDriftFault]] = {
+    "stale_price": StalePriceFault,
+    "dropped_item": DroppedItemFault,
+    "handoff_drift": HandoffDriftFault,
+}
 
 
 def make_fault(name: str | None) -> Fault | None:

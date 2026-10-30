@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from collections.abc import Callable
 from functools import lru_cache
 from pathlib import Path
@@ -18,6 +19,12 @@ from typing import Any
 from granite_core.dsl import MissingFieldError
 
 SNAPSHOT = "taubench_retail_v1"
+
+
+def norm_name(name: str) -> str:
+    """How the workflow compares item names: case, a leading article and a plural 's' do not matter."""
+    n = re.sub(r"^(the|a|an|my|your)\s+", "", name.strip().lower())
+    return n[:-1] if n.endswith("s") and len(n) > 3 else n
 
 
 def find_seed_dir() -> Path:
@@ -79,6 +86,27 @@ class RetailStore:
         """Return the items with their prices replaced by catalogue prices."""
         return [{**it, "price": self.catalog_price(it["item_id"])} for it in items]
 
+    def catalog_items(self, items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """The same items as the catalogue describes them (catalogue prices). Used by check CT-LOOKUP."""
+        return self.fix_prices(items)
+
+    def requested_items(self, order_id: str, message: str, observed: list[str] | None = None) -> list[str]:
+        """Names of the order's items that the customer's message mentions, in the order they are mentioned.
+
+        Deterministic text matching against the order record, independent of the workflow's Intake model. When
+        ``observed`` names the same items up to case, a leading article or a plural ``s`` (the differences the
+        workflow itself ignores), ``observed`` is returned unchanged, so such spelling is not reported as an error.
+        """
+        order = self.orders.get(order_id)
+        if order is None:
+            raise MissingFieldError(f"order '{order_id}' does not exist")
+        text = str(message).lower()
+        found = [(text.find(it["name"].lower()), it["name"]) for it in order["items"]]
+        canonical = [name for pos, name in sorted(f for f in found if f[0] >= 0)]
+        if observed is not None and [norm_name(str(n)) for n in observed] == [norm_name(n) for n in canonical]:
+            return list(observed)
+        return canonical
+
     def user_id_for_email(self, email: str) -> str:
         """Customer id for an e-mail address (case-insensitive)."""
         uid = self._email_to_user.get(str(email).lower())
@@ -105,6 +133,8 @@ class RetailStore:
             "catalog_price": self.catalog_price,
             "catalog_total": self.catalog_total,
             "fix_prices": self.fix_prices,
+            "catalog_items": self.catalog_items,
+            "requested_items": self.requested_items,
             "user_id_for_email": self.user_id_for_email,
             "refund_allowed": self.refund_allowed,
             "same_prices": self.same_prices,

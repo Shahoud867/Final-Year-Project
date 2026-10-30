@@ -19,7 +19,7 @@ from typing import Any
 from granite_core.llm import LLMRequest
 from granite_core.runner import StepContext, StepFailed
 
-from .store import RetailStore
+from .store import RetailStore, norm_name
 
 PROMPT_VERSION = "v1"
 StepFn = Callable[[StepContext], dict[str, Any]]
@@ -50,9 +50,7 @@ def parse_json(text: str) -> dict[str, Any]:
     return data
 
 
-def _norm(name: str) -> str:
-    n = re.sub(r"^(the|a|an|my|your)\s+", "", name.strip().lower())
-    return n[:-1] if n.endswith("s") and len(n) > 3 else n
+_norm = norm_name  # one definition, shared with the source of truth
 
 
 def intake(model: str) -> StepFn:

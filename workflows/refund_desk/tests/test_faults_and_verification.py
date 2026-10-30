@@ -7,7 +7,7 @@ from granite_core.attribution import attribute
 from granite_core.checks import CheckStatus, derive_findings, evaluate_checks
 from granite_core.experiment import run_experiment
 from granite_core.runner import run_workflow
-from granite_core.verification import ReplayUnavailable, Verdict
+from granite_core.verification import Intervention, ReplayUnavailable, Verdict
 
 from refund_desk import make_fault
 from tests.conftest import FakeModel
@@ -80,6 +80,68 @@ class TestStalePriceFault:
         assert make_fault(None) is None and make_fault("none") is None
 
 
+def _investigate_top(defn, out):
+    """Detect, rank and verify the top suspect (N=5, M=2) the way the API does."""
+    results = evaluate_checks(out.trace, defn.checks, defn.truth())
+    findings = derive_findings(out.trace, results)
+    assert [f.kind for f in findings] == ["silent_failure"]
+    symptom = findings[0].symptom_step
+    top = attribute(out.trace, results, symptom)[0]
+    exp = run_experiment(defn, out.trace, top.step_id, FakeModel(), n=5, m=2,
+                         target_check_ids=[findings[0].check_id])
+    return findings[0], top, exp
+
+
+class TestDroppedItemFault:
+    def test_silent_detected_by_the_coverage_check_and_confirmed_at_intake(self, defn, task):
+        out = run(defn, task, "dropped_item")
+        assert out.trace.run.status == "completed" and out.fault.target_step == "s1"
+        assert len(out.trace.step("s1").outputs["item_names"]) == 1
+        res = statuses(defn, out.trace)
+        assert res["CHK-OUT-3"] is CheckStatus.FAIL and res["CT-INTAKE"] is CheckStatus.FAIL
+        assert res["CHK-OUT-1"] is CheckStatus.PASS  # the message is consistent with the wrong decision
+        finding, top, exp = _investigate_top(defn, out)
+        assert finding.check_id == "CHK-OUT-3" and finding.symptom_step == "s3"
+        assert top.step_id == "s1" and exp.intervention.patches == {"item_names": out.fault.original_value}
+        assert exp.summary.verdict is Verdict.CONFIRMED
+
+    def test_single_item_request_is_unaffected(self, defn, tasks):
+        t = next(t for t in tasks if "(pending)" in t["label"])
+        out = run(defn, {k: t[k] for k in ("message", "email", "order_id")}, "dropped_item")
+        assert out.fault.original_value == out.fault.injected_value
+        assert CheckStatus.FAIL not in statuses(defn, out.trace).values()
+
+
+class TestHandoffDriftFault:
+    def test_damage_in_transit_is_visible_and_confirmed_at_the_receiver(self, defn, task):
+        out = run(defn, task, "handoff_drift")
+        s3, s4 = out.trace.step("s3"), out.trace.step("s4")
+        assert out.trace.run.status == "completed" and out.fault.target_step == "s4"
+        assert s4.inputs["s3.items_to_refund"] != s3.outputs["items_to_refund"]  # sent one thing, received another
+        res = statuses(defn, out.trace)
+        assert res["CHK-OUT-1"] is CheckStatus.FAIL and res["CT-CALC"] is CheckStatus.FAIL
+        assert res["CT-POLICY"] is CheckStatus.PASS
+        finding, top, exp = _investigate_top(defn, out)
+        assert top.step_id == "s4" and exp.intervention.derived_from == ["CT-CALC"]
+        assert exp.summary.verdict is Verdict.CONFIRMED
+
+    def test_replay_from_upstream_hides_a_transient_fault_and_controls_catch_it(self, defn, task):
+        """Replaying from Policy re-sends the items without the damage, so every replay passes, the controls too.
+        A single replay would 'confirm' the innocent Policy step; VR-1 does not."""
+        out = run(defn, task, "handoff_drift")
+        s3 = out.trace.step("s3")
+        placebo = Intervention(step_id="s3", patches={"eligible": s3.outputs["eligible"]}, source="user")
+        exp = run_experiment(defn, out.trace, "s3", FakeModel(), n=5, m=2, target_check_ids=["CHK-OUT-1"],
+                             intervention=placebo)
+        assert exp.summary.k_pass == 5 and exp.summary.c_pass == 2
+        assert exp.summary.verdict is not Verdict.CONFIRMED
+
+    def test_ineligible_request_has_nothing_to_damage(self, defn, tasks):
+        t = next(t for t in tasks if "(pending)" in t["label"])
+        out = run(defn, {k: t[k] for k in ("message", "email", "order_id")}, "handoff_drift")
+        assert out.fault.injected_value == [] and CheckStatus.FAIL not in statuses(defn, out.trace).values()
+
+
 class TestNaturalSlips:
     def test_calculator_slip_is_attributed_to_the_calculator(self, defn, task):
         out = run(defn, task, model=FakeModel(calc_slip=0.5))
@@ -111,8 +173,22 @@ class TestVerificationExperiment:
 
     def test_innocent_step_is_refuted(self, defn, faulty):
         trace, _ = faulty
-        exp = run_experiment(defn, trace, "s4", FakeModel(), n=5, m=2, target_check_ids=["CHK-OUT-1"])
+        calc = trace.step("s4")
+        placebo = Intervention(step_id="s4", patches={"refund_amount": calc.outputs["refund_amount"]}, source="user")
+        exp = run_experiment(defn, trace, "s4", FakeModel(), n=5, m=2, target_check_ids=["CHK-OUT-1"],
+                             intervention=placebo)
         assert exp.summary.verdict is Verdict.REFUTED and exp.summary.k_pass == 0
+
+    def test_step_whose_checks_pass_cannot_be_replayed(self, defn, faulty):
+        trace, _ = faulty  # the fake calculator adds correctly, so CT-CALC passes: nothing says what to patch
+        with pytest.raises(ReplayUnavailable, match="no failed check"):
+            run_experiment(defn, trace, "s4", FakeModel(), n=5, m=2, target_check_ids=["CHK-OUT-1"])
+
+    def test_origin_patch_comes_from_the_failed_check(self, defn, faulty):
+        trace, _ = faulty
+        exp = run_experiment(defn, trace, "s2", FakeModel(), n=1, m=0, target_check_ids=["CHK-OUT-1"])
+        assert exp.intervention.source == "check" and exp.intervention.derived_from == ["CT-LOOKUP"]
+        assert defn.repairs == {}  # no hand-written repair rule is involved
 
     def test_replays_never_touch_the_original_trace(self, defn, faulty):
         trace, _ = faulty

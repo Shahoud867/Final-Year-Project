@@ -1,8 +1,8 @@
 # Workspace index (generated)
 
-Generated 2026-10-14 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
+Generated 2026-11-11 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 707
+Entries: 711
 
 ## (repository root)
 
@@ -333,6 +333,7 @@ Entries: 707
 | `apps/web/tests/home.test.tsx` |  |
 | `apps/web/tests/lib.test.ts` |  |
 | `apps/web/tests/pages.test.tsx` |  |
+| `apps/web/tests/presentation.test.tsx` |  |
 | `apps/web/tests/requirements.test.tsx` |  |
 | `apps/web/tests/run.test.tsx` |  |
 | `apps/web/tests/setup.ts` |  |
@@ -553,6 +554,7 @@ Entries: 707
 | `scripts/build_test_docs.py` | Test documentation from the tests themselves. |
 | `scripts/build_truth_snapshot.py` | Build data/seed/taubench_retail_v1/ from the raw tau-bench retail data (deterministic). |
 | `scripts/check_architecture.py` | Check the layer rule of the architecture by reading the imports of every source file (no code is executed). |
+| `scripts/check_cassette_prompts.py` | Fail when the recorded cassette no longer matches the prompts in the code (defect D-10). |
 | `scripts/check_links.py` | Check that relative links in Markdown (and plain href/src in HTML) point at files that exist. |
 | `scripts/check_traceability.py` | Requirements traceability: requirement (master plan) -> implementation -> tests, checked against the repositor |
 | `scripts/check_workspace.py` | Check the workspace against docs/workspace-guide.md. |
@@ -588,12 +590,13 @@ Entries: 707
 | `references/papers/2026_acl-findings_errorprobe.pdf` |  |
 | `references/papers/2026_acl-long_agentask.pdf` |  |
 | `references/papers/2026_acl-long_traceelephant.pdf` |  |
+| `references/papers/2026_arxiv_dover.pdf` |  |
 | `references/papers/2026_iclr_agentracer.pdf` |  |
 | `references/papers/README.md` | references/papers |
 | `references/README.md` | references |
 | `references/templates/fyp1-mid-report-template_latex.zip` |  |
 | `references/templates/fyp1-mid-report-template_rendered.pdf` |  |
-| `references/university/bs-fyp-handbook-2026-draft.pdf` |  |
+| `references/university/bs-fyp-handbook-2026.pdf` |  |
 | `references/university/fast-fyp-idea-selection-guide.pdf` |  |
 | `references/university/fyp1-mid-assessment-guidelines-and-rubrics.pdf` |  |
 
@@ -766,6 +769,7 @@ Entries: 707
 | `archive/proposal-phase/tracking/Traceability_Matrix.md` | Granite — Traceability Matrix & Final Consistency Audit |
 | `archive/README.md` | archive |
 | `archive/superseded/AgenTracer_vs_WhoWhen_Analysis.md` | Who&When vs. AgenTracer — Overlap, Novelty, and FYP Feasibility Analysis |
+| `archive/superseded/bs-fyp-handbook-2026-draft_superseded-2026-11-11.pdf` |  |
 | `archive/superseded/export-diagrams_v1.0_2026-10-11.py` | Generate the diagrams that must always match the code, as Mermaid inside Markdown files. |
 | `archive/superseded/master-plan_v1.0_2026-10-04.md` | Granite — FYP Master Execution Plan |
 

@@ -30,7 +30,7 @@
 | Tag | Meaning | Source |
 |---|---|---|
 | **[M-R]** | Mandatory: official Mid-1 rubric (Forms 2/3, gates, red flags) | `references/university/fyp1-mid-assessment-guidelines-and-rubrics.pdf` |
-| **[M-H]** | Mandatory: FYP Handbook 2026 | `references/university/bs-fyp-handbook-2026-draft.pdf` |
+| **[M-H]** | Mandatory: FYP Handbook 2026 | `references/university/bs-fyp-handbook-2026.pdf` |
 | **[M-F]** | Mandatory: faculty statement. The core module must work with a CI/CD pipeline on the live/functional interface (or its improved version), using GitHub branching, CI and CD. | Faculty requirement relayed by the team |
 | **[M-T]** | Mandatory: the prescribed report template | `references/templates/fyp1-mid-report-template_latex.zip` |
 | **[Rec]** | Recommended: the team's engineering and academic judgement | This plan |

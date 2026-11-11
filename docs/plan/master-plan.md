@@ -2147,6 +2147,8 @@ SDK, LangGraph/CrewAI adapters, Math Crew, Fault Lab batches, benchmark generati
 
 ## 31. FYP-1 Completion Plan (Iteration 2: Mid-1 → Final-1)
 
+> **2026-11-11:** a revised scope and schedule for the remaining weeks is proposed in [`fyp1-completion-plan.md`](fyp1-completion-plan.md) (poster due 15 November). It applies once the supervisor agrees the committed scope (change C-05); until then this section stands.
+
 **Goal at Final-1** (handbook "integration readiness gate"):
 - about 45–50% of the committed effort implemented
 - the core scenario working end to end on **real inputs from two sources** (live run + import/SDK)

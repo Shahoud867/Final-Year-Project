@@ -2,7 +2,7 @@
 
 Generated 2026-11-11 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 711
+Entries: 715
 
 ## (repository root)
 
@@ -77,6 +77,7 @@ Entries: 711
 | `docs/manuals/usability-results-template.csv` |  |
 | `docs/meetings/README.md` | docs/meetings |
 | `docs/plan/execution-status.md` | Execution status |
+| `docs/plan/fyp1-completion-plan.md` | FYP-1 completion plan: from demonstration to product |
 | `docs/plan/master-plan.md` | Granite — FYP Master Execution Plan |
 | `docs/plan/requirements-trace.json` |  |
 | `docs/plan/requirements-trace.md` | Requirements traceability (functional requirements, Mid-1) |
@@ -356,6 +357,7 @@ Entries: 711
 | `packages/granite_core/.hypothesis/constants/0ef890823c425a7c` |  |
 | `packages/granite_core/.hypothesis/constants/287c9005e8775b74` |  |
 | `packages/granite_core/.hypothesis/constants/2a910b6c34d606bf` |  |
+| `packages/granite_core/.hypothesis/constants/3329e75fc0dd4421` |  |
 | `packages/granite_core/.hypothesis/constants/3663731d667d476b` |  |
 | `packages/granite_core/.hypothesis/constants/3a76c03500cf6ef4` |  |
 | `packages/granite_core/.hypothesis/constants/3d49abf751a4aeef` |  |
@@ -399,6 +401,7 @@ Entries: 711
 | `packages/granite_core/.hypothesis/constants/e9f9eb24bf363cba` |  |
 | `packages/granite_core/.hypothesis/constants/ec851c84d5c7621b` |  |
 | `packages/granite_core/.hypothesis/constants/f2223ac708804293` |  |
+| `packages/granite_core/.hypothesis/constants/f3fcee98dbf7914d` |  |
 | `packages/granite_core/.hypothesis/constants/f3ff697dee19318c` |  |
 | `packages/granite_core/.hypothesis/constants/f9429e97b0d8c4d2` |  |
 | `packages/granite_core/.hypothesis/examples/04e6b3400353b141/7d0909f09d2bf1f5` |  |
@@ -700,6 +703,7 @@ Entries: 711
 | `deliverables/stage-1-fyp1-mid/granite_design-pack_fyp1-mid_v1.0.html` | Granite design pack (FYP-1 Mid) |
 | `deliverables/stage-1-fyp1-mid/granite_evidence-sheet_fyp1-mid_v1.0.pdf` |  |
 | `deliverables/stage-1-fyp1-mid/README.md` | Granite: FYP-1 mid evaluation deliverables (stage 1) |
+| `deliverables/stage-2-fyp1-final/granite_poster-brief_fyp1-final_draft.md` | Granite FYP-1 poster: master design prompt |
 | `deliverables/stage-2-fyp1-final/README.md` | stage-2-fyp1-final |
 | `deliverables/stage-3-fyp2-mid/README.md` | stage-3-fyp2-mid |
 | `deliverables/stage-4-fyp2-final/README.md` | stage-4-fyp2-final |

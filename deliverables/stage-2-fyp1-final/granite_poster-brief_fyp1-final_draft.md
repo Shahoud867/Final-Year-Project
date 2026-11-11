@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | Draft v2 for the team and the supervisor (11 November 2026). Revised after a line-by-line check against handbook section 7: Band 6 now holds FYP-1 Final deliverables only, the problem statement is bullets, the copy was cut to 464 counted words, and the type floor is one value (22 pt). Items marked **[CONFIRM]** must be checked before printing |
+| Status | Draft v2 for the team and the supervisor (11 November 2026). Revised after a line-by-line check against handbook section 7: Band 6 now holds FYP-1 Final deliverables only, the problem statement is bullets, the copy was cut to 460 counted words, the type floor is one value (22 pt), and the screenshot requirement was removed (the handbook only suggests "screen captures" as an example). Items marked **[CONFIRM]** must be checked before printing |
 | Not done yet | **No poster file exists.** This is a specification. The handbook's deliverables (the Photoshop/Corel file and a JPEG) have not been produced |
 | Deadline | Poster submission **15 November 2026** (supervisor approval first) |
 | Handbook | `references/university/bs-fyp-handbook-2026.pdf`, section 7 (p. 17), Step 4 (p. 7), FYP-1 Process Step 4 (p. 13), Form 4 (p. 39) |
@@ -45,9 +45,9 @@ These override every creative choice.
 |---|---|---|---|
 | H1 | **Poster size must be 22.5" × 34.5"** | §7 | Canvas 22.5 × 34.5 in (571.5 × 876.3 mm) |
 | H2 | **Orientation should be Portrait** | §7 | Portrait; 22.5 in wide |
-| H3 | Don't use too much text; highlight major points; use bullets | §7 | Hard word budget: **at most 480 words in total** (the copy in section 5 counts 464; recount the real file). Every list is a bullet list; the only prose lines are titles, captions and one-line labels |
+| H3 | Don't use too much text; highlight major points; use bullets | §7 | Hard word budget: **at most 480 words in total** (the copy in section 5 counts 460; recount the real file). Every list is a bullet list; the only prose lines are titles, captions and one-line labels |
 | H4 | Font large enough to read from **a metre away** | §7 | Body 32 pt; **no text under 22 pt anywhere** (section 7 table, section 11 and Q9 all use this one value) |
-| H5 | Use illustrations: maps, pictures, photos, design drawings, diagrams, tables, charts, graphs, screen captures | §7 | Four diagrams, one chart, two screen captures |
+| H5 | Use illustrations: maps, pictures, photos, design drawings, diagrams, tables, charts, graphs, screen captures | §7 | Diagrams (the investigation flow and the pipeline), one chart (the replay results and rate axis), the $662.00 vs $662.23 comparison, icons. Screen captures are optional and not used |
 | H6 | Spell check, including capitalised words that spell checkers skip | §7 | QC checklist item Q3 |
 | H7 | **Top-left:** title of the project, names of the group members and the supervisor(s) | §7 | Header, left block |
 | H8 | **Top-right:** project goals | §7 | Header, right block "Project goals" |
@@ -90,13 +90,13 @@ One thin **evidence thread**, a 6 px blue line with small node dots, runs down t
 
 **Impression to create:** a credible engineering tool from a serious team. Calm, precise and data-led, like a well-designed observability product page, not a marketing flyer.
 
-**Visual language:** the poster uses the **same palette, fonts and status colours as the product interface** (`apps/web/src/styles/tokens.css`, light theme), so the screenshots sit on the poster naturally. Colour always carries a meaning:
+**Visual language:** the poster uses the **same palette, fonts and status colours as the product interface** (`apps/web/src/styles/tokens.css`, light theme), so the poster and the product look like one system. Colour always carries a meaning:
 
 | Role | Name | HEX | Use only for |
 |---|---|---|---|
 | Background | Paper | `#F3F1EC` | Whole poster background |
 | Panel | Card | `#FDFCFA` | Section cards, with a 2 px `#DED9CF` border and 24 px corner radius |
-| Sunken | Well | `#E9E5DC` | Diagram wells, the screenshot backdrop |
+| Sunken | Well | `#E9E5DC` | Diagram wells and the metric tiles |
 | Header | Deep ink | `#10243E` | Header band background only (white text on it, contrast 15:1) |
 | Ink | Text | `#1C1A17` | Headings and body |
 | Ink 2 | Secondary | `#403C36` | Captions, labels |
@@ -121,7 +121,7 @@ Contrast: body text `#1C1A17` on `#FDFCFA` is about 16:1; `#403C36` on `#FDFCFA`
 
 ### 5. Section-by-section layout (reading order) and exact content
 
-Word budget for the whole poster: **at most 480 words, target 450**. The copy below is the final wording. Counted by script over every printed string (including diagram labels and chart captions): header 49, goals 33, Band 2 85, Band 3 85, Band 4 78, Band 5 81, Band 6 42, footer 11, **464 words** in total. That is 16 under the cap, so there is room for corrections but not for new content. Re-count in the real file, and cut before adding anything. y values are pixels from the top of the trim at 300 dpi.
+Word budget for the whole poster: **at most 480 words, target 450**. The copy below is the final wording. Counted by script over every printed string (including diagram labels and chart captions): header 49, goals 33, Band 2 85, Band 3 85, Band 4 78, Band 5 77, Band 6 42, footer 11, **460 words** in total. That is 20 under the cap, so there is room for corrections but not for new content. Re-count in the real file, and cut before adding anything. y values are pixels from the top of the trim at 300 dpi.
 
 ---
 
@@ -188,7 +188,7 @@ This band is the **primary focal point**: the largest numbers on the poster appe
 | Verified | Verify | V2 |
 | Reviewed | Review, Record | V3 |
 
-**Bottom-left (cols 1 to 8, height about 1300 px): "Where did it begin?" pipeline diagram.** Redraw from `docs/diagrams/refund-desk-dataflow.svg` in this palette, or use the product's own graph from a screenshot.
+**Bottom-left (cols 1 to 8, height about 1300 px): "Where did it begin?" pipeline diagram.** Redraw from `docs/diagrams/refund-desk-dataflow.svg` in this palette.
 
 - Six nodes left to right: Task input (dashed), Intake (LLM), Order Lookup (Tool), Policy (Code), Refund Calculator (LLM), Writer (LLM). Each node shows a small kind label (LLM / TOOL / CODE) in JetBrains Mono 22 pt above the agent name in Inter 600, 32 pt.
 - **Order Lookup:** amber dashed ring plus the tag "SUSPECT → ORIGIN CONFIRMED" in Replay blue.
@@ -241,16 +241,9 @@ This band is the **primary focal point**: the largest numbers on the poster appe
 
 - **Kicker** "04 · BUILT AND MEASURED". **Heading** "A working product, measured honestly" (72 pt).
 
-**Left (cols 1 to 7): two screenshots** of the **current** web app (light theme, from `main`), overlapping like cards:
+**No screenshots are required.** The handbook only lists "screen captures" as one example of an illustration (section 7), so Band 5 is built from the numbers alone. The page already has its visuals in Bands 2, 3 and 4. If the team later wants a screenshot (for example one cropped pipeline trace in the free space beside the engineering list), it is optional, and must come from the current light interface on `main`.
 
-- Back, rotated −2°: the **Pipeline trace** screen, cropped to the "Outcome" card and the pipeline graph.
-- Front, rotated +1°, offset 240 px right and 200 px down: the **Verification lab**, cropped to the "Verification results" block that shows the replay marks and the rate axis.
-- Frames: 16 px Card border, 24 px radius and the card shadow; **no device mock-ups**.
-- Captions under each screenshot (24 pt): "Pipeline trace" and "Verification lab".
-
-**Right (cols 8 to 12): two result groups.**
-
-**(a) "Pre-registered feasibility run (7 Oct 2026)":** a 2 × 3 grid of metric tiles. Each tile has the value in JetBrains Mono 600, 72 pt, and the label in Inter 500, 26 pt:
+**Left (cols 1 to 8): "Pre-registered feasibility run (7 Oct 2026)":** a 3 × 2 grid of metric tiles. Each tile has the value in JetBrains Mono 600, 72 pt, and the label in Inter 500, 26 pt:
 
 | Value | Label |
 |---|---|
@@ -263,7 +256,7 @@ This band is the **primary focal point**: the largest numbers on the poster appe
 
 Footnote (22 pt, `#403C36`): "*A genuine model error, not injected. 10 tasks, 1 fault type, 1 small model: a first test, not a benchmark."
 
-**(b) "Engineering":** four bullets with icons, 32 pt:
+**Right (cols 9 to 12): "Engineering":** four bullets with icons, 32 pt:
 
 - "451 automated tests" (F6)
 - "CI/CD on GitHub Actions"
@@ -303,7 +296,7 @@ In white at 24 pt, centred: "F26-060 · BS Final Year Project 2026 · Python, Fa
 | Investigation flow source | `docs/diagrams/investigation-flow.svg` | Band 3 reference | Redraw as the seven-node strip |
 | VR-1 decision source | `docs/diagrams/vr1-decision.svg` | Band 4 reference | Thresholds must match: 80% / 20% / 20% |
 | Replay plan source | `docs/diagrams/replay-plan.svg` | Optional inset in Band 4 | Frozen → patched → re-run |
-| Screenshots | **Capture fresh from current `main`** (light theme): the Pipeline trace of a stale-price run and the Verification lab after verifying Order Lookup and the Refund Calculator | Band 5 | Capture at 1440 px wide with browser zoom or device scale 3× (at least 4300 px wide), PNG. **Do not use** `evidence/demos/2026-10-14_*.png`: those show an earlier dark design |
+| Screenshots | **None required** (handbook section 7 only lists screen captures as an example illustration) | none | If one is added anyway, capture it fresh from current `main` (light theme) at 3× scale. **Do not use** `evidence/demos/2026-10-14_*.png`: those show an earlier dark design |
 | Numbers | `research/eval/results/2026-10-07_refund-desk-feasibility.md`; the stored experiment for the example run | Bands 2, 4, 5 | Copy exactly; no rounding beyond what is shown above |
 
 ### 7. Typography scale (at 100% print size)
@@ -324,17 +317,17 @@ In white at 24 pt, centred: "F26-060 · BS Final Year Project 2026 · Python, Fa
 
 Use sentence case everywhere except kickers. Left-align body text; never justify. Lines are at most 60 characters.
 
-### 8. Diagram, screenshot and chart rules
+### 8. Diagram and chart rules
 
 - Every diagram flows **left to right** (time and data flow) and every band **top to bottom**.
 - Status meaning is always icon **plus** colour **plus** word: ✓ green "correct/passed", ✕ red "failed/still wrong", dashed amber "suspect", solid blue "origin confirmed", grey "refuted".
 - Arrows are 6 to 8 px with a solid triangular head. Connectors never cross text.
-- Screenshots are cropped to one idea each, with no browser chrome. Keep their text readable at 1 m: if UI text would print smaller than about 14 pt, crop tighter instead of shrinking.
+- No screenshots are required. If one is added anyway, it comes from the current light interface on `main`, is cropped to one idea with no browser chrome, and its text stays readable at 1 m.
 - **Charts show real values only:** 5/5, 0/2, 0/5, 57% to 100%, and the six feasibility metrics. Do not draw illustrative data.
 
 ### 9. Composition principles applied
 
-- **Focal points:** primary, the $662.00 vs $662.23 comparison (Band 2); secondary, the replay marks and rate axis (Band 4); tertiary, the screenshots (Band 5).
+- **Focal points:** primary, the $662.00 vs $662.23 comparison (Band 2); secondary, the replay marks and rate axis (Band 4); tertiary, the six feasibility numbers (Band 5).
 - **Hierarchy:** wordmark, then section headings, then hero numbers, then body, then captions, in five clear size steps.
 - **Gestalt:**
   - *Proximity:* each label within 40 px of its object.
@@ -371,7 +364,7 @@ Use sentence case everywhere except kickers. Left-align body text; never justify
   - No comparison chart against named commercial products.
   - No competitor logos.
 - **Visuals:**
-  - No screenshots of the old dark interface, and no simulated UI.
+  - No simulated UI, and no screenshots of the old dark interface (screenshots are optional).
   - No stock photos, robot or brain imagery, or AI-art illustrations.
   - No emoji, glassmorphism, neon glow, heavy gradients, gradient text or 3D effects.
   - No colour used for meaning other than as listed in section 4.
@@ -394,7 +387,7 @@ Use sentence case everywhere except kickers. Left-align body text; never justify
 | Q8b | No prose paragraph; every list is bullets | ☐ |
 | Q9 | Body text 32 pt or more; nothing under 22 pt; readable at 1 m in the crop test | ☐ |
 | Q10 | Every status shown with icon + word + colour | ☐ |
-| Q11 | Screenshots are from the current light interface on `main`, at least 3× resolution, cropped to one idea | ☐ |
+| Q11 | If any screenshot is used (optional): from the current light interface on `main`, at least 3× resolution, cropped to one idea | ☐ |
 | Q12 | Logo is official and high resolution, or at most 1.4 in wide | ☐ |
 | Q13 | PSD with live layers and full-resolution JPEG exported, named and saved in `deliverables/stage-2-fyp1-final/` | ☐ |
 | Q14 | QR codes scan correctly from 1 m (if used) | ☐ |

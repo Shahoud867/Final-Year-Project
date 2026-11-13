@@ -359,3 +359,11 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - Produced native PSD, full-resolution JPEG, vector PDF/SVG, review preview, fonts, physical crop tests and a handbook audit. Checked dimensions, sRGB/300-ppi metadata, 65 native text layers, six vector smart objects, PDF font sizes and text safe margins. Recomposition of saved PSD caches matched the JPEG with mean absolute error 0.3337/255.
 - Created a separate editable Figma poster page, https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=31-3, with 65 text and 60 vector nodes; the only raster content is the university logo. Visually checked the composed result and text bounds.
 - Grouped the proposed FYP-1 features into tentative working increments; dates and supervisor agreement were not invented. Physical one-metre crop checks, printer settings, Photoshop application review and supervisor approval remain pending.
+
+
+## Strata and Fault poster background, 2026-11-13 (Codex)
+
+- The team selected the existing minimal v2 Figma poster and delegated the background adaptation. Kept the light header, matched the stepped channel to the section gap above the results and retained all content positions. Applied the confirmed correction placing the final two dots on the right channel.
+- Exported v2.1 SVG, vector PDF, 300-ppi JPEG, layered native PSD, preview, actual-size text crops and a new margin/gap print proof. PSD Background is the bottom group with four separately named vector subgroups. All 65 live type records and transforms are unchanged from v2.0; 11 embedded vector smart objects verified. All PDF text remains on opaque panels; navy body contrast is 15.24:1. PSD cache recomposition mean absolute error versus the JPEG is 0.3579/255.
+- The original Figma frame 31:3 was **not updated**: use_figma returned a Starter-plan tool-call limit. An alternate vector-upload URL was obtained, but POSTing to it was blocked by the environment proxy (CONNECT 403). No canvas change succeeded. Prepared a font-independent vector import and a local native-text-preserving background updater; the updater passed syntax checking but has not run in Figma.
+- Published review files on the existing poster branch. Figma application/visual review, physical proof prints, Photoshop application review, printer settings and supervisor approval remain pending.

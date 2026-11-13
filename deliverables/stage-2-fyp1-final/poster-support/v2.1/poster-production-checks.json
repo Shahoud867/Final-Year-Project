@@ -1,0 +1,144 @@
+{
+  "trim_pixels": [
+    6750,
+    10350
+  ],
+  "trim_inches": [
+    22.5,
+    34.5
+  ],
+  "resolution_ppi": 300,
+  "minimum_font_pt": 26,
+  "maximum_whitespace_token_count": 218,
+  "lexical_word_count": 197,
+  "native_type_layers": 65,
+  "embedded_vector_smart_objects": 11,
+  "named_groups": [
+    "Background",
+    "Base",
+    "Strata",
+    "Fault channel",
+    "Evidence thread",
+    "Content panels",
+    "01 Header",
+    "02 Problem",
+    "03 Architecture",
+    "04 Evidence",
+    "05 Plan",
+    "06 Footer"
+  ],
+  "all_text_srgb": true,
+  "poster_version": "2.1",
+  "degree_label": "BS (DS)",
+  "text_and_typography_unchanged_from_v2": true,
+  "text_records_compared": 65,
+  "cached_psd_mean_abs_error": 0.3579,
+  "outlined_svg_mean_abs_error": 1.6504,
+  "background_bottom_group": true,
+  "background_subgroups": [
+    "Base",
+    "Strata",
+    "Fault channel",
+    "Evidence thread"
+  ],
+  "all_pdf_text_on_opaque_panels": true,
+  "navy_body_contrast_ratio": 15.24,
+  "pdf_raster_images": 1,
+  "raster_image_purpose": "FAST NUCES logo only",
+  "figma_status": "NOT APPLIED: direct editor Starter-plan call limit; fallback upload blocked by environment proxy (CONNECT 403). Original frame 31:3 remains unchanged.",
+  "figma_native_updater": "Prepared and syntax-checked, not executed; requires subsequent Figma visual review.",
+  "background_geometry": {
+    "units": "points; 1 pt = 300/72 px",
+    "canvas": [
+      1620,
+      2484
+    ],
+    "header_end": 530,
+    "turn_y": 1431,
+    "channel_end": 2344.7,
+    "left_center": 24,
+    "right_center": 1596,
+    "channel_width": 14.4,
+    "thread_width": 1.44,
+    "stratum_height": 496.8,
+    "right_displacement": -14.4,
+    "disc_diameter": 5.76,
+    "discs": [
+      [
+        24,
+        558.8
+      ],
+      [
+        24,
+        969.8
+      ],
+      [
+        1596,
+        1445.4
+      ],
+      [
+        1596,
+        1955.2
+      ]
+    ],
+    "opaque_panels": [
+      [
+        "Header",
+        0,
+        0,
+        1620,
+        530,
+        0
+      ],
+      [
+        "Problem",
+        36,
+        558.8,
+        1548,
+        376,
+        5.76
+      ],
+      [
+        "Architecture",
+        36,
+        969.8,
+        1548,
+        446.8,
+        5.76
+      ],
+      [
+        "Evidence",
+        36,
+        1445.4,
+        1548,
+        461.8,
+        5.76
+      ],
+      [
+        "Plan",
+        36,
+        1955.2,
+        1548,
+        360.7,
+        5.76
+      ],
+      [
+        "Footer",
+        0,
+        2344.7,
+        1620,
+        139.3,
+        0
+      ]
+    ],
+    "adaptation": "Adapted to the existing v2 layout by user authorization; all content and typography retained."
+  },
+  "pending": [
+    "Apply background to original Figma frame and visually inspect it",
+    "Physical margin and band-gap print crop at 100%",
+    "Physical one-metre text-legibility check",
+    "Printer bleed / colour-profile confirmation",
+    "Photoshop application review",
+    "Supervisor approval"
+  ]
+}

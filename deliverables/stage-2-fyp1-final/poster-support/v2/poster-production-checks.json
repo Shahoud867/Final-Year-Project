@@ -1,0 +1,52 @@
+{
+  "trim_pixels": [
+    6750,
+    10350
+  ],
+  "trim_inches": [
+    22.5,
+    34.5
+  ],
+  "resolution_ppi": 300,
+  "minimum_font_pt": 26,
+  "maximum_whitespace_token_count": 218,
+  "lexical_word_count": 197,
+  "native_type_layers": 65,
+  "embedded_vector_smart_objects": 6,
+  "named_groups": [
+    "00 Paper",
+    "01 Header",
+    "02 Problem",
+    "03 Architecture",
+    "04 Evidence",
+    "05 Plan",
+    "06 Footer"
+  ],
+  "all_text_srgb": true,
+  "poster_version": "2.0",
+  "degree_label": "BS (DS)",
+  "previous_word_count": 479,
+  "word_reduction_percent": 54.5,
+  "cached_psd_mean_abs_error": 0.3337,
+  "pdf_minimum_font_size": 26.0,
+  "pdf_safe_margin_inches": 0.75,
+  "pdf_text_bounds_within_safe_margin": true,
+  "pdf_raster_images": 1,
+  "raster_image_purpose": "FAST NUCES logo only",
+  "architecture_editable_vector": true,
+  "iteration_plan": "Built investigation \u2192 Planned guided repair \u2192 Planned extensions",
+  "logo_source": "Exact Fault Line horizontal primary lockup with proportional scaling",
+  "pending": [
+    "Physical one-metre crop-print test",
+    "Supervisor approval",
+    "Printer bleed/colour profile confirmation",
+    "Photoshop application review of the native PSD"
+  ],
+  "figma_url": "https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=31-3",
+  "figma_text_nodes": 65,
+  "figma_vector_nodes": 60,
+  "figma_raster_nodes": 1,
+  "figma_raster_purpose": "University logo only",
+  "figma_minimum_font_size": 26,
+  "figma_text_overflow": false
+}

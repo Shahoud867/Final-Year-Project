@@ -1,28 +1,29 @@
-# Granite FYP-1 Final — poster review v1.1
+# Granite poster v2.0 — maximum clarity
 
-The poster degree label is **BS (DS)**, corrected at the team's request on 13 November 2026.
+A new, simpler research poster with the Fault Line logo, a five-block workflow, real replay evidence and a tentative iteration plan.
 
-- [Open the editable poster in Figma](https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=3-2)
-- [Download the complete poster package](granite_poster-package_fyp1-final_v1.1.zip?raw=true)
-- [View the poster preview](granite_poster-preview_fyp1-final_v1.1.jpg)
-- [Download the full-resolution JPEG](granite_poster_fyp1-final_v1.1.jpg?raw=true)
-- [Download the layered PSD master](granite_poster_fyp1-final_v1.1.psd?raw=true)
-- [Open the vector PDF](granite_poster_fyp1-final_v1.1.pdf)
-- [Open the editable SVG source](granite_poster_fyp1-final_v1.1.svg)
-- [Print the A4 crop tests at 100% scale](granite_poster-crop-tests_fyp1-final_v1.1.pdf)
-- [Read the production handoff and outstanding print checks](poster-support/print-review.md)
+- [Open the editable Figma poster](https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=31-3)
+- [Download all v2.0 files](granite_poster-package_fyp1-final_v2.0.zip?raw=true)
+- [View the poster preview](granite_poster-preview_fyp1-final_v2.0.jpg)
+- [Download the print PDF](granite_poster_fyp1-final_v2.0.pdf?raw=true)
+- [Download the full-resolution JPEG](granite_poster_fyp1-final_v2.0.jpg?raw=true)
+- [Download the layered PSD](granite_poster_fyp1-final_v2.0.psd?raw=true)
+- [Open the editable SVG](granite_poster_fyp1-final_v2.0.svg)
+- [Print the A4 crop tests at 100%](granite_poster-crop-tests_fyp1-final_v2.0.pdf)
+- [Review handbook compliance and pending physical checks](poster-support/v2/handbook-checklist.md)
 
-![Granite BS (DS) poster preview](granite_poster-preview_fyp1-final_v1.1.jpg)
+![Granite minimal poster v2.0](granite_poster-preview_fyp1-final_v2.0.jpg)
 
-The print master is 22.5 × 34.5 inches, portrait, with a 6750 × 10350-pixel sRGB JPEG at 300 ppi. The PSD contains 146 live text layers and seven embedded PDF vector smart objects. The Figma version contains 146 editable text nodes and editable vector diagrams; its only raster image is the university logo. The poster has 479 whitespace-separated tokens and no printed text below 22 pt.
+**218 words/tokens, down from 479 (54.5% fewer).** No text below 26 pt. The poster retains the exact registered title, BS (DS), team and supervisor, top-right goals, intended users, institutional identity, tools and technologies, and a bottom plan with developed outcomes per iteration. Implemented and planned work are visibly separated.
 
-This is a **review draft**. The original brief's incompatible typography and geometry required documented layout adjustments; Photoshop application review, printer settings, and supervisor approval remain pending. See the handoff before printing or university submission. The archive includes fonts and OFL licences under `poster-support/fonts/`.
+Print size: **22.5 × 34.5 inches, portrait**. JPEG: 6750 × 10350 px, 300 ppi, sRGB. PSD: 65 live text layers and six embedded vector smart objects. Figma: 65 editable text nodes and 60 vector nodes; its only raster asset is the university logo.
 
-The stage also hosts the FYP-1 Final report, slides and panel demonstration deliverables as they become available. Poster creation does not mark the evaluation stage or planned features complete.
+The master is a native Photoshop-compatible PSD, generated programmatically. Install the supplied fonts before editing. Application compatibility, physical one-metre legibility, printer settings and supervisor approval remain to be checked before final submission.
 
-## Fault Line logo kit
+This redesign follows the handbook and the team's latest simplicity brief. The old design prompt's exact point sizes and pixel coordinates are superseded. The handbook itself does not mandate numerical font sizes, particular typefaces, a fixed word count, screenshots, bleed or a CMYK profile.
 
-- [Download all logo assets](granite_logo-package_fyp1-final_v1.0.zip?raw=true)
-- [Open the one-page usage sheet](../../docs/brand/granite-fault-line/granite-logo-usage.pdf)
-- [Browse the editable SVG, PDF, transparent PNG, favicon and avatar assets](../../docs/brand/granite-fault-line/README.md)
-- [Open the editable Figma logo gallery](https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=24-3)
+## Logo kit and previous review
+
+- [Fault Line logo kit](../../docs/brand/granite-fault-line/README.md)
+- [Download the logo package](granite_logo-package_fyp1-final_v1.0.zip?raw=true)
+- [Previous poster v1.1](granite_poster_fyp1-final_v1.1.pdf)

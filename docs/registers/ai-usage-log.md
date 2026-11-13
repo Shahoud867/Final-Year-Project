@@ -350,3 +350,12 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - Delivered SVG/PDF vectors, transparent PNGs at 512/1024/2048, a favicon set, 1024 px avatar and one-page usage sheet. The small-size version uses the separately specified 10-unit gap, r12 disc, 76% white pieces and radius20 ink tile.
 - Checked exact coordinates, gap widths, disjoint pieces, origin containment, transparent negative ring, colourways, font settings, PDF vector content, PNG dimensions and the exact 16 px ICO/PNG match. Inspected pixel proofs and colour/monochrome/reversed artwork, then recreated the vector kit on a separate Figma page: https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=24-3.
 - Logo artwork remains separate from the poster. No timeline, scope, approval or university-submission status was changed.
+
+
+## Minimal poster redesign, 2026-11-13 (Codex)
+
+- At the team’s request, rebuilt the poster from scratch using the handbook and the latest minimal-design direction. Used the exact Fault Line logo. Reduced the conservative copy count from 479 to 218, enlarged the minimum type from 22 to 26 pt, and replaced the dense board with a refund comparison, one five-block workflow, controlled replay evidence and a three-iteration tentative plan.
+- Rechecked implementation and results against the execution documents, FYP-1 completion proposal, workflow/code and feasibility records. No unsupported deployment or test-count claim was carried forward. The pilot limitations are printed; automatic repair, imports and other proposed increments are labelled Planned.
+- Produced native PSD, full-resolution JPEG, vector PDF/SVG, review preview, fonts, physical crop tests and a handbook audit. Checked dimensions, sRGB/300-ppi metadata, 65 native text layers, six vector smart objects, PDF font sizes and text safe margins. Recomposition of saved PSD caches matched the JPEG with mean absolute error 0.3337/255.
+- Created a separate editable Figma poster page, https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=31-3, with 65 text and 60 vector nodes; the only raster content is the university logo. Visually checked the composed result and text bounds.
+- Grouped the proposed FYP-1 features into tentative working increments; dates and supervisor agreement were not invented. Physical one-metre crop checks, printer settings, Photoshop application review and supervisor approval remain pending.

@@ -390,3 +390,12 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 
 - Removed “· 7 OCT 2026” from the Early Feasibility display heading at the team’s request. Confirmed that exactly one text record and its measured width changed; all type styles, coordinates, numbers, limitations and graphics are preserved.
 - Exported v3.1 PDF, JPEG, native PSD, SVG, preview, Figma import/plugin and crop proofs. Retained previous exports and historical study dates in source/provenance records. Updated the GitHub delivery links and package. Live Figma remains blocked by the already-recorded tool-call limit.
+
+
+## Full-system poster and section redesign, 2026-11-13 (Codex)
+
+- Reviewed the user-supplied raster competitor poster and conceptual workflow image as references, not instructions. Delegated independent code/architecture and visual-reference reviews; findings were integrated into the new v4.0 composition. No competitor PDF, content, branding, figures or technology choices were copied into public deliverables.
+- Rebuilt opening/team as aligned roll-ordered columns plus supervisor block; replaced the limited example workflow graphic with the actual workbench/API/jobs/store, Refund Desk, model adapter, independent retail data paths and check/trace/replay loop. Explicit request/response and suspect-step replay labels were reviewed against code. Supplied repair rules and human review/evidence boundaries remain printed.
+- Combined the recorded replay and scoped pilot into one divided panel. Retained all result values and caveats; kept the date removed. Organized authentic stack logos into Engine/API/Interface/Models with actual roles. Retained the exact Fault Line identity and quiet reusable background. Planned feature cards remain explicit.
+- Exported poster PDF/JPEG/PSD/live SVG, outlined Figma import, separate section SVG/PDF/PNG sets, architecture PDF/SVG, fonts, proofs and source/reference notes. Verified exact trim, 300-ppi sRGB metadata, 26 pt minimum, safe opaque text, 110 native type layers/11 vector smart objects, embedded matching fonts, saved-layer recomposition, official-logo source hashes, ZIP integrity and workspace/link checks.
+- Live Photoshop/Corel/Figma application review and physical proof/one-metre readability remain pending, as do printer settings and supervisor/committee acceptance. No live Figma update or institutional approval is claimed.

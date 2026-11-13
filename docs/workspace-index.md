@@ -2,7 +2,7 @@
 
 Generated 2026-11-13 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 815
+Entries: 870
 
 ## (repository root)
 
@@ -655,9 +655,12 @@ Entries: 815
 | `deliverables/stage-1-fyp1-mid/granite_evidence-sheet_fyp1-mid_v1.0.pdf` |  |
 | `deliverables/stage-1-fyp1-mid/README.md` | Granite: FYP-1 mid evaluation deliverables (stage 1) |
 | `deliverables/stage-2-fyp1-final/granite_logo-package_fyp1-final_v1.0.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-architecture_fyp1-final_v4.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-architecture_fyp1-final_v4.0.svg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v2.1.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v3.0.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v3.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v4.0.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-background_fyp1-final_v2.1.svg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-brief_fyp1-final_draft.md` | Granite FYP-1 poster: master design prompt |
 | `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v1.1.pdf` |  |
@@ -665,19 +668,23 @@ Entries: 815
 | `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v2.1.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v3.0.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v3.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v4.0.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v2.1.svg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v3.0.svg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v3.1.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v4.0.svg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v1.1.zip` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v2.0.zip` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v2.1.zip` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v3.0.zip` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v3.1.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v4.0.zip` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v1.1.jpg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v2.0.jpg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v2.1.jpg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v3.0.jpg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v3.1.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v4.0.jpg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v1.1.jpg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v1.1.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v1.1.psd` |  |
@@ -698,6 +705,10 @@ Entries: 815
 | `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.1.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.1.psd` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.1.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.psd` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.svg` |  |
 | `deliverables/stage-2-fyp1-final/poster-support/figma.md` | Editable Figma poster |
 | `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-bold.ttf` |  |
 | `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-extrabold.ttf` |  |
@@ -806,7 +817,51 @@ Entries: 815
 | `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/react.svg` |  |
 | `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/README.md` | Official technology artwork |
 | `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/typescript-official.svg` |  |
-| `deliverables/stage-2-fyp1-final/README.md` | Granite poster v3.1 — evidence to action |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/architecture-notes.md` | Granite v4.0 — architecture notes and claim boundaries |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/claim-sources.md` | Claims, scope and official artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/editing-guide.md` | Editing and presentation files |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fault-line-logo.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/figma-exhibition-plugin/code.js` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/figma-exhibition-plugin/manifest.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/figma-exhibition-plugin/README.md` | Native-text Figma importer |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-extrabold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-regular.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/handbook-checklist.md` | Granite v4.0 — handbook and design checks |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-layout.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-production-checks.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/reference-review.md` | Reference review and design response |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/opening-and-team.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/opening-and-team.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/opening-and-team.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/replay-and-feasibility.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/replay-and-feasibility.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/replay-and-feasibility.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/system-architecture.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/system-architecture.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/system-architecture.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/tools-and-technologies.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/tools-and-technologies.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/tools-and-technologies.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sha256sums.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/fastapi-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/fastapi-teal-wordmark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/official-logo-provenance.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/ollama.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/python-generic.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/python-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/react.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/README.md` | Official technology artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/typescript-official.svg` |  |
+| `deliverables/stage-2-fyp1-final/README.md` | Granite poster v4.0 — systems and evidence |
 | `deliverables/stage-3-fyp2-mid/README.md` | stage-3-fyp2-mid |
 | `deliverables/stage-4-fyp2-final/README.md` | stage-4-fyp2-final |
 

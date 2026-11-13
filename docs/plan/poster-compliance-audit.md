@@ -1,36 +1,36 @@
 # Granite poster compliance audit
 
-Reviewed 13 November 2026 against the latest **v2.1 print exports**, the team's expanded poster checklist in chat, and `bs-fyp-handbook-2026.pdf`. The complete 86-page handbook was searched for poster references; relevant text and tables on pages 7, 11–13, 17, 22, 25 and 39 were reviewed. The actual poster preview and exported PDF/JPEG/PSD were inspected again.
+Reviewed 13 November 2026 against the latest **v3.0 print exports**, the team's expanded poster checklist in chat, and `bs-fyp-handbook-2026.pdf`. The complete 86-page handbook was searched for poster references; relevant text and tables on pages 7, 11–13, 17, 22, 25 and 39 were reviewed. The actual poster preview and exported PDF/JPEG/PSD were inspected again.
 
-**Finding:** no mandatory poster content is missing from the supplied checklist. The digital dimensions and required source/image formats are present. The complete submission process cannot yet be marked finished: physical one-metre readability, Photoshop application compatibility, printer coordination, supervisor approval and submission to the committee remain unverified. The linked Figma frame still shows v2.0; the v2.1 background is available in the exported files.
+**Finding:** no mandatory poster content is missing from the supplied checklist. The digital dimensions and required source/image formats are present. The complete submission process cannot yet be marked finished: physical one-metre readability, Photoshop application compatibility, printer coordination, supervisor approval and submission to the committee remain unverified. The linked Figma frame still shows v2.0; the complete v3.0 exhibition redesign is available in the exported files.
 
 ## Requirement-by-requirement findings
 
-| Requirement | Evidence in v2.1 | Finding |
+| Requirement | Evidence in v3.0 | Finding |
 |---|---|---|
 | 22.5 × 34.5 inches | Main PDF is 1620 × 2484 points; JPEG and PSD are 6750 × 10350 pixels, 300 ppi. | Verified. |
 | Portrait | Height exceeds width in every primary print export. | Verified. |
-| Condensed, concise representation | 218 conservative whitespace tokens including the outlined project name; 197 lexical words. Short phrases, three goal bullets and diagrams replace paragraphs. | Present; no handbook numerical word limit. |
+| Condensed, concise representation | 242 conservative whitespace tokens including the outlined project name; 217 lexical words. Short phrases, three goal bullets and diagrams replace paragraphs. | Present; no handbook numerical word limit. |
 | Project name and original logo | Granite title with the supplied Fault Line combination logo. Registered full title is also shown. | Present. |
-| Concise objective | “Find the source of silent AI failures.” Goals explain detection, source location and fix verification. | Present. |
-| Architecture or visual problem overview | Wrong refund versus catalogue total; AI workflow → Check → Trace → Replay → Human review. | Both are present. |
-| Plan and tentative deliverables | Investigate → Guide repairs → Extend, with concrete workbench, investigation, import and evaluation outcomes. | Present at the bottom. |
+| Concise objective | “Find why AI agents fail.” Goals explain detection, source location and fix verification. | Present. |
+| Architecture or visual problem overview | Illustrated Intake → Order Lookup → Policy → Calculator → Writer error trail, reverse investigation arrow and correction/control replay experiment. | Both are present. |
+| Plan and tentative deliverables | Investigate → Guide repairs → Extend, with concrete workbench, one-click investigation, check-derived correction, import and regression-test outcomes. | Present at the bottom. |
 | Iterative timeline | Three numbered, connected increments, each producing a developed outcome. Built and Planned labels distinguish status. | Present as an ordered iteration sequence; §7 does not require calendar dates or a Gantt chart. |
 | Team and supervisor | Shahoud Shahid (23i-2515), Muhammad Noor Ul Haq (23i-2520), Saif Shahzad (23i-2634); Dr. Adil Majeed. | All present; ascending roll-number order; professional title, no “Sir” or “ma’am”. |
 | Co-supervisor / industry partner if applicable | Neither is identified in available project records. | Conditional; no person or partner invented. |
 | University name and logo | FAST NUCES, Islamabad Campus and the repository university logo. | Present. |
 | Degree identification | BS (DS). | Verified; no BS (CS) in extracted poster text. |
-| Tools and technologies | Python, FastAPI, React, TypeScript, Ollama. | Present in footer. |
+| Tools and technologies | Python, FastAPI, React, TypeScript, Ollama, with official vector marks and names. | Present in footer; original source URLs, hashes and exact geometry treatments are recorded in the v3.0 support files. |
 | Recommended placement | Title, registered title, team and supervisor at top-left; goals at top-right; plan and tentative deliverables at bottom. | Present. The handbook uses “may” for these placements; the poster follows them. |
-| Text large enough at one metre | PDF minimum 26 pt, body labels mainly 28–36 pt, headings 48–80 pt, hero monetary figures 104 pt. | Digital sizes verified; actual viewing-distance test pending. |
+| Text large enough at one metre | PDF minimum 26 pt, main labels 28–36 pt, headings 52–64 pt, supporting evidence figures 34–56 pt. Inter Medium/Bold and JetBrains Mono Bold are embedded in the PDF and match the live-type source faces. | Digital sizes verified; actual viewing-distance test pending. |
 | Spacing and alignment | All PDF text remains within a 0.75-inch text-safe margin; every text bounding box is on an opaque panel. Consistent alignment and open section gaps. | Digitally verified / visually reviewed. §7 gives no numerical spacing rule. |
-| Illustrations and original graphics | Exact project logo, five-block workflow, refund comparison and replay-result marks. | Present; screenshots are examples in §7, not a required poster element. |
-| Spelling and capitalised terms | Copy visually reviewed, including proper names, FAST NUCES, BS (DS), FastAPI, TypeScript, Ollama and the monetary/results values. | No spelling error found in this review; team confirmation of personal names remains part of sign-off. |
-| Visibility | Prominent problem statement and values; content grouped on opaque panels with spacing. | Design review passed; final evaluation remains the faculty panel's judgement. |
+| Illustrations and original graphics | Exact reversed project logo, five role-specific workflow illustrations, a source-to-symptom trail, replay-result marks and authentic technology emblems. | Present; screenshots are examples in §7, not a required poster element. |
+| Spelling and capitalised terms | Copy visually reviewed, including proper names, FAST NUCES, BS (DS), FastAPI, TypeScript, Ollama and the workflow/technology terms and results values. | No spelling error found in this review; team confirmation of personal names remains part of sign-off. |
+| Visibility | Prominent problem statement and illustrated error trail; content grouped on opaque panels with spacing. | Design review passed; final evaluation remains the faculty panel's judgement. |
 | Consistency | Shared fonts, alignment, label sizes, colour meanings and block/arrow conventions. | Design review passed. |
 | Attention | Clear title → problem → workflow → evidence → plan hierarchy, with restrained colour emphasis. | Design review passed. Animations are not necessary for a printed poster. |
 | Perception / legibility | Plain block labels; check/cross marks and text reinforce colour; body copy is separated from the background. Navy body text on the opaque card has measured contrast 15.24:1. | Digital review passed; print test pending. |
-| Original Photoshop/Corel file plus JPEG | Native PSD contains 65 live text layers and 11 embedded vector smart objects; full-resolution JPEG is supplied. | Files and structure verified; opening and inspecting the PSD in Photoshop remains pending. |
+| Original Photoshop/Corel file plus JPEG | Native PSD contains 67 live text layers and 11 embedded vector smart objects; full-resolution JPEG is supplied. | Files and structure verified; opening and inspecting the PSD in Photoshop remains pending. |
 | Other authoring tools and printing | Figma/SVG/programmatic PSD workflow used. | Permitted by §7 with printing responsibility on the group. Arrange printer handling accordingly. |
 | Supervisor approval before acceptance | Handbook p.7 expressly requires approval before committee acceptance. | Approval not evidenced; university submission is not evidenced. |
 
@@ -51,19 +51,26 @@ The Times New Roman 11 pt body, Arial headings, 1.5 line spacing, 6 pt paragraph
 
 ## Remaining completion steps
 
-1. Print the [text-legibility crops](../../deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v2.1.pdf) at **Actual size / 100%** and read them from one metre. Correct any labels that fail this physical test.
-2. Print the [margin and band-gap proof](../../deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v2.1.pdf) at **100%**. Check the faint background and thread on the chosen printer.
+1. Print the [text-legibility crops](../../deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v3.0.pdf) at **Actual size / 100%** and read them from one metre. Correct any labels that fail this physical test.
+2. Print the [margin and band-gap proof](../../deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v3.0.pdf) at **100%**. Check the faint background and thread on the chosen printer.
 3. Open the original PSD in Photoshop with the supplied fonts and confirm that live text, vectors and colour render correctly. Structural checks and cached previews have passed; an application open test has not been performed.
 4. Confirm printer bleed, colour profile and delivery settings. The supplied artwork is exact trim size with no unconfirmed bleed.
 5. Obtain supervisor approval and submit the required source file plus JPEG through the committee's announced channel and deadline.
-6. Apply and visually verify the background in Figma before treating that file as the same revision as v2.1. This is version synchronization, not an additional handbook requirement. The previous direct edit was blocked by Figma's Starter-plan tool-call limit, and the fallback upload was blocked by the environment.
+6. Apply and visually verify the v3.0 exhibition poster in Figma before treating that file as the same revision as the exports. This is version synchronization, not an additional handbook requirement. The previous direct edit was blocked by Figma's Starter-plan tool-call limit, and the fallback upload was blocked by the environment.
 
 ## Evidence
 
 - [Handbook source](../../references/university/bs-fyp-handbook-2026.pdf), especially §7 p.17, acceptance p.7 and Form 4 p.39.
-- [Latest poster preview](../../deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v2.1.jpg).
-- [Print PDF](../../deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.1.pdf).
+- [Latest poster preview](../../deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v3.0.jpg).
+- [Print PDF](../../deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.0.pdf).
 - [Delivery files and Figma status](../../deliverables/stage-2-fyp1-final/README.md).
-- [Production checks and geometry](../../deliverables/stage-2-fyp1-final/poster-support/v2.1/poster-production-checks.json).
+- [Production checks and geometry](../../deliverables/stage-2-fyp1-final/poster-support/v3/poster-production-checks.json).
 
-No poster content, typography, implementation claim, schedule or approval status was changed during this compliance review.
+This audit accompanies the substantial v3.0 exhibition redesign. The composition, visual narrative and typography were updated at the team’s request. Implementation status, scope approval, delivery dates and supervisor approval were not changed. The earlier v2.1 exports and their original audit remain available in the versioned support files and Git history.
+
+
+## v3.0 claims and artwork review
+
+The new illustration replaces the large monetary example with the actual stale-price fault’s route through the declared Refund Desk steps. Its caption identifies it as a simplified illustration. The recorded 5/5 corrected and 0/2 control result is kept separate from the small 10-task feasibility pilot. Faster diagnosis is explicitly a goal. One-click investigation, check-derived fixes, Retail Agent, imports and regression-test export are labelled PLANNED. See the versioned [claim sources](../../deliverables/stage-2-fyp1-final/poster-support/v3/claim-sources.md).
+
+Official technology marks were obtained from Python’s website and the FastAPI, React, Microsoft TypeScript and Ollama repositories. Python’s emblem paths and FastAPI’s icon group were isolated without redrawing; the other marks retain their supplied SVG bytes. Original vendor colours are retained in the technology row; Python’s own native gradient is retained as part of that official mark. The poster background and illustrations have no added gradients, shadows or effects. See [logo provenance](../../deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/official-logo-provenance.json).

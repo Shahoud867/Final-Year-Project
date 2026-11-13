@@ -5,6 +5,8 @@ Team: Shahoud Shahid, Muhammad Noor, Saif Shahzad. Supervisor: Dr. Adil Majeed.
 
 Granite is an evidence-first investigation workbench for multi-agent LLM workflows: **find the failure, prove the cause, verify the fix.**
 
+[View the FYP poster](deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v3.0.jpg) · [Download poster files](deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v3.0.zip?raw=true) · [Formats and compliance](deliverables/stage-2-fyp1-final/README.md)
+
 ## Run it
 
 A working slice exists (state and gaps: [`docs/plan/execution-status.md`](docs/plan/execution-status.md)). Quick start in recorded mode, which needs no model, key or account:

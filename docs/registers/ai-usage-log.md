@@ -384,3 +384,9 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - Delivered native PSD, full-resolution JPEG, vector PDF/live-text SVG, font-independent Figma import, preview, fonts, actual-size text and background proofs, claim sources and handbook checklist. Verified exact trim, 300-ppi sRGB raster metadata, 26 pt minimum type, safe margins/opaque panels, 67 live text layers and 11 vector smart objects. Static Inter Medium/Bold and JetBrains Mono Bold faces are consistent across print and live-type sources; PDF fonts embedded.
 - The Figma direct editor again returned the Starter-plan tool-call limit; no v3.0 canvas mutation succeeded. Prepared a local importer for 67 native text nodes beside earlier posters. Syntax and font-name normalization were checked; the importer has not run or been visually checked in Figma.
 - Physical one-metre readability, printer proof/settings, Photoshop/live Figma application review, supervisor approval and committee submission remain pending. Exported earlier versions are retained; no project scope/date/approval record was silently changed.
+
+
+## Early Feasibility date removal, 2026-11-13 (Codex)
+
+- Removed “· 7 OCT 2026” from the Early Feasibility display heading at the team’s request. Confirmed that exactly one text record and its measured width changed; all type styles, coordinates, numbers, limitations and graphics are preserved.
+- Exported v3.1 PDF, JPEG, native PSD, SVG, preview, Figma import/plugin and crop proofs. Retained previous exports and historical study dates in source/provenance records. Updated the GitHub delivery links and package. Live Figma remains blocked by the already-recorded tool-call limit.

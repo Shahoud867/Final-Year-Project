@@ -1,0 +1,47 @@
+[
+  {
+    "technology": "Python",
+    "display_asset": "python-mark.svg",
+    "original_asset": "python-generic.svg",
+    "official_source": "https://www.python.org/static/community_logos/python-logo-generic.svg",
+    "original_sha256": "0305d6b2bb2e2761502d072e8e2db1248dbd1a99f51fb4b4bcb9e43c486ef6b2",
+    "display_sha256": "8d3f902f2e07999f9597e802e911f4b91f1f9451bed03cc9c309832f56dcbdff",
+    "treatment": "Exact emblem paths and original paints isolated from official combined logo; no freehand redrawing."
+  },
+  {
+    "technology": "FastAPI",
+    "display_asset": "fastapi-mark.svg",
+    "original_asset": "fastapi-teal-wordmark.svg",
+    "official_source": "https://raw.githubusercontent.com/fastapi/fastapi/master/docs/en/docs/img/logo-teal.svg",
+    "original_sha256": "98cacbb6a2589f9930d8bf00001b28d927d53dac0c53076857d16f5570cc808a",
+    "display_sha256": "048e609dc1ac7483c38bb89040c5941ca79733c4bbf4164b138e193ed9513f49",
+    "treatment": "Exact icon group isolated from official teal wordmark; source geometry and colours retained."
+  },
+  {
+    "technology": "React",
+    "display_asset": "react.svg",
+    "original_asset": "react.svg",
+    "official_source": "https://raw.githubusercontent.com/reactjs/react.dev/main/public/images/brand/logo_dark.svg",
+    "original_sha256": "e5278257e728c9527af74185f73f0715ffde03d713512aded478d832665e8f24",
+    "display_sha256": "e5278257e728c9527af74185f73f0715ffde03d713512aded478d832665e8f24",
+    "treatment": "Complete official mark; proportionally scaled."
+  },
+  {
+    "technology": "TypeScript",
+    "display_asset": "typescript-official.svg",
+    "original_asset": "typescript-official.svg",
+    "official_source": "https://raw.githubusercontent.com/microsoft/TypeScript-Website/v2/packages/typescriptlang-org/static/branding/ts-logo-512.svg",
+    "original_sha256": "139ae451b37a00251fe24358191699efa665f63f1c8369cb9dad833159e159e2",
+    "display_sha256": "139ae451b37a00251fe24358191699efa665f63f1c8369cb9dad833159e159e2",
+    "treatment": "Complete official square mark; proportionally scaled."
+  },
+  {
+    "technology": "Ollama",
+    "display_asset": "ollama.svg",
+    "original_asset": "ollama.svg",
+    "official_source": "https://raw.githubusercontent.com/ollama/ollama/main/docs/ollama-logo.svg",
+    "original_sha256": "397a6ee071cce1496edd8a86dd1c91ce005712ec161690e411b3dc7f151181f5",
+    "display_sha256": "397a6ee071cce1496edd8a86dd1c91ce005712ec161690e411b3dc7f151181f5",
+    "treatment": "Complete official mark; proportionally scaled."
+  }
+]

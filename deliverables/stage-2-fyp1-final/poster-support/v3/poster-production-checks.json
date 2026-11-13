@@ -1,0 +1,117 @@
+{
+  "trim_pixels": [
+    6750,
+    10350
+  ],
+  "trim_inches": [
+    22.5,
+    34.5
+  ],
+  "resolution_ppi": 300,
+  "minimum_font_pt": 26,
+  "maximum_whitespace_token_count": 242,
+  "lexical_word_count": 217,
+  "native_type_layers": 67,
+  "embedded_vector_smart_objects": 11,
+  "named_groups": [
+    "Background",
+    "Base",
+    "Strata",
+    "Fault channel",
+    "Evidence thread",
+    "Content panels",
+    "01 Header",
+    "02 Failure story",
+    "03 Controlled replay",
+    "04 Early evidence",
+    "05 Vision and iterations",
+    "06 Official technologies"
+  ],
+  "all_text_srgb": true,
+  "poster_version": "3.0",
+  "degree_label": "BS (DS)",
+  "source_of_truth": "Handbook section 7 p.17 + user expanded checklist; claims checked against workflow definition, feature catalogue, completion-plan proposal and recorded example/pilot.",
+  "pdf_minimum_font_pt": 26.0,
+  "pdf_safe_margin_inches": 0.75,
+  "all_pdf_text_within_safe_margin": true,
+  "all_text_on_opaque_panels": true,
+  "body_contrast_ratios": {
+    "navy_on_card": 15.24,
+    "secondary_on_card": 10.68,
+    "white_on_navy": 15.63,
+    "light_blue_on_navy": 8.07
+  },
+  "pdf_fonts_embedded": [
+    {
+      "pdf_name": "TCXTOZ+Inter-Bold",
+      "format": "ttf",
+      "embedded_bytes": 6964
+    },
+    {
+      "pdf_name": "BHNIUN+Inter-Medium",
+      "format": "ttf",
+      "embedded_bytes": 7120
+    },
+    {
+      "pdf_name": "PKZDJE+JetBrainsMono-Bold",
+      "format": "ttf",
+      "embedded_bytes": 1924
+    }
+  ],
+  "static_font_faces_match_live_type": true,
+  "pdf_raster_images": 1,
+  "raster_purpose": "University logo only; five technology marks and all diagrams are vectors.",
+  "cached_psd_mean_abs_error": 0.4223,
+  "outlined_svg_mean_abs_error": 2.0404,
+  "official_technology_logos": [
+    "Python",
+    "FastAPI",
+    "React",
+    "TypeScript",
+    "Ollama"
+  ],
+  "logo_source_hashes_checked": true,
+  "logo_geometry_check": "Python exact source path attributes; FastAPI exact source child attributes; React, TypeScript and Ollama unchanged official asset bytes.",
+  "current_implementation": "Refund Desk checks, lineage tracing, controlled replay, human review and saved evidence.",
+  "planned_capabilities": "One-click investigation, check-derived corrections, Retail Agent, imports and regression-test export.",
+  "impact_claim_status": "Faster diagnosis is stated as a goal, not a measured result.",
+  "figma_status": "Direct editor blocked by Starter-plan tool-call limit. v3.0 is not applied to the linked Figma file. Local importer prepared and syntax-checked, not executed.",
+  "background_geometry": {
+    "header": 548,
+    "turn": 1592,
+    "end": 2268,
+    "left": 24,
+    "right": 1596,
+    "channel_width": 14.4,
+    "thread_width": 1.44,
+    "stratum_height": 496.8,
+    "right_shift": -14.4,
+    "dots": [
+      [
+        24,
+        584
+      ],
+      [
+        24,
+        1194
+      ],
+      [
+        1596,
+        1610
+      ],
+      [
+        1596,
+        1810
+      ]
+    ]
+  },
+  "application_compatibility": "PDF/JPEG/SVG parsed and rendered; PSD reopened and native layer caches recomposed. Photoshop and live Figma application review remain pending.",
+  "pending": [
+    "Physical one-metre crop-print test",
+    "Background margin/gap print proof",
+    "Photoshop application open test with supplied fonts",
+    "Apply and visually inspect the new Figma revision",
+    "Printer bleed/profile confirmation",
+    "Supervisor approval and committee submission"
+  ]
+}

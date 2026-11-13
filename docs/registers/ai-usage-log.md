@@ -333,3 +333,75 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - **Who wrote what.** The assistant moved the final handbook to `references/university/bs-fyp-handbook-2026.pdf` and the draft to `archive/superseded/`, and wrote [`docs/plan/fyp1-completion-plan.md`](../plan/fyp1-completion-plan.md) with a pointer from master plan section 31. The poster deadline (15 November) came from Shahoud.
 - **Judgements the team must check, not accept.** That the current results are circular (we author fault, check and repair rule); that the earliest-failing-check baseline ties Granite on Refund Desk; that a tau-bench Retail Agent is feasible in the time left; the week estimate for the FYP-1 Final (inferred from the handbook calendar, not confirmed); the proposed scope cut (C-05).
 - **Not done.** No code was written for the plan; the committed scope is not agreed with the supervisor; nothing was committed.
+
+
+## Poster production and DS correction, 2026-11-13 (Codex)
+
+- At Shahoud’s request, Codex created the Granite FYP-1 poster from the repository brief, corrected the degree from BS (CS) to BS (DS), and prepared the PSD, JPEG, PDF, SVG, preview, fonts and actual-size A4 crop tests.
+- Created an editable Figma version with 146 text nodes and vector diagrams: https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=3-2.
+- Checked print dimensions, sRGB/300-ppi metadata, text count and minimum size, the native PSD text/vector structure, and its cached-layer rendering against the JPEG export. The degree was checked in both the PSD and PDF.
+- The team authorized publishing the corrected files to GitHub. The production handoff records the brief’s incompatible font/layout specifications and the adjustments made. Photoshop application review, physical 1-metre legibility, printer settings, registered-title/SDG/plan confirmations and supervisor approval remain pending; no university submission is claimed.
+
+
+## Fault Line logo production, 2026-11-13 (Codex)
+
+- Built Granite’s logo from the team-supplied polygons on a 96 × 96 grid. No freehand or generative-image approximation was used.
+- Generated primary, reversed, black and white marks and horizontal/vertical lockups, using Inter 4.001 at weight 640 and optical size 32 with −1% tracking; shaped outlines with HarfBuzz.
+- Delivered SVG/PDF vectors, transparent PNGs at 512/1024/2048, a favicon set, 1024 px avatar and one-page usage sheet. The small-size version uses the separately specified 10-unit gap, r12 disc, 76% white pieces and radius20 ink tile.
+- Checked exact coordinates, gap widths, disjoint pieces, origin containment, transparent negative ring, colourways, font settings, PDF vector content, PNG dimensions and the exact 16 px ICO/PNG match. Inspected pixel proofs and colour/monochrome/reversed artwork, then recreated the vector kit on a separate Figma page: https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=24-3.
+- Logo artwork remains separate from the poster. No timeline, scope, approval or university-submission status was changed.
+
+
+## Minimal poster redesign, 2026-11-13 (Codex)
+
+- At the team’s request, rebuilt the poster from scratch using the handbook and the latest minimal-design direction. Used the exact Fault Line logo. Reduced the conservative copy count from 479 to 218, enlarged the minimum type from 22 to 26 pt, and replaced the dense board with a refund comparison, one five-block workflow, controlled replay evidence and a three-iteration tentative plan.
+- Rechecked implementation and results against the execution documents, FYP-1 completion proposal, workflow/code and feasibility records. No unsupported deployment or test-count claim was carried forward. The pilot limitations are printed; automatic repair, imports and other proposed increments are labelled Planned.
+- Produced native PSD, full-resolution JPEG, vector PDF/SVG, review preview, fonts, physical crop tests and a handbook audit. Checked dimensions, sRGB/300-ppi metadata, 65 native text layers, six vector smart objects, PDF font sizes and text safe margins. Recomposition of saved PSD caches matched the JPEG with mean absolute error 0.3337/255.
+- Created a separate editable Figma poster page, https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=31-3, with 65 text and 60 vector nodes; the only raster content is the university logo. Visually checked the composed result and text bounds.
+- Grouped the proposed FYP-1 features into tentative working increments; dates and supervisor agreement were not invented. Physical one-metre crop checks, printer settings, Photoshop application review and supervisor approval remain pending.
+
+
+## Strata and Fault poster background, 2026-11-13 (Codex)
+
+- The team selected the existing minimal v2 Figma poster and delegated the background adaptation. Kept the light header, matched the stepped channel to the section gap above the results and retained all content positions. Applied the confirmed correction placing the final two dots on the right channel.
+- Exported v2.1 SVG, vector PDF, 300-ppi JPEG, layered native PSD, preview, actual-size text crops and a new margin/gap print proof. PSD Background is the bottom group with four separately named vector subgroups. All 65 live type records and transforms are unchanged from v2.0; 11 embedded vector smart objects verified. All PDF text remains on opaque panels; navy body contrast is 15.24:1. PSD cache recomposition mean absolute error versus the JPEG is 0.3579/255.
+- The original Figma frame 31:3 was **not updated**: use_figma returned a Starter-plan tool-call limit. An alternate vector-upload URL was obtained, but POSTing to it was blocked by the environment proxy (CONNECT 403). No canvas change succeeded. Prepared a font-independent vector import and a local native-text-preserving background updater; the updater passed syntax checking but has not run in Figma.
+- Published review files on the existing poster branch. Figma application/visual review, physical proof prints, Photoshop application review, printer settings and supervisor approval remain pending.
+
+## Poster handbook re-audit, 2026-11-13 (Codex)
+
+- At the team's request, searched the complete 86-page final handbook for poster references and reviewed the applicable pages and the expanded chat checklist. Re-inspected the v2.1 preview and independently checked actual PDF dimensions/font sizes/text bounds, JPEG dimensions/300-ppi profile, PSD live text/vector structure, DS label and roll-number ordering.
+- Added [poster-compliance-audit.md](../plan/poster-compliance-audit.md), distinguishing present content and digital checks from physical readability, Photoshop application review, printing, supervisor approval and committee submission. Clarified that p.22's numerical type/spacing rules belong to the report section.
+- Recorded the handbook's differing evaluation timings (Table 1a p.11 versus p.13), Form 4's 10-mark poster item on p.39 and the updated-poster requirement for FYP-2 on p.12. The local completion plan's 15 November deadline is identified as team-supplied rather than invented from handbook week numbers.
+- No poster or Figma edits were made in this review. The v2.1 exports contain the background; Figma synchronization remains pending from the earlier tool-limit/upload blocker. No physical proof, university submission or supervisor approval is claimed.
+
+
+## Exhibition poster redesign, 2026-11-13 (Codex)
+
+- At the team’s request, produced a substantial v3.0 exhibition redesign: navy header, original role illustrations of the actual stale-price path, reverse investigation arrow, corrected/control replay proof, supporting pilot strip and explicit completion vision with a tentative outcome-based plan. Removed the oversized monetary hero. Preserved the exact reversed Fault Line brand asset, team/DS/institution identity and quiet Strata and Fault background.
+- Rechecked current capabilities against the Refund Desk definition/fault/step code and feature catalogue. One-click investigation, check-derived fixes, Retail Agent, imports and regression-test export are labelled PLANNED, sourced to the proposed completion plan. Faster diagnosis is a Goal; no measured speed improvement or automatic production repair is claimed.
+- Obtained official Python, FastAPI, React, Microsoft TypeScript and Ollama SVG artwork from the owners’ sources. Preserved original assets and hashes; isolated Python emblem paths and FastAPI icon group without redrawing. Retained vendor colours and Python’s native gradient as part of the logo; no new poster/background gradients or effects.
+- Delivered native PSD, full-resolution JPEG, vector PDF/live-text SVG, font-independent Figma import, preview, fonts, actual-size text and background proofs, claim sources and handbook checklist. Verified exact trim, 300-ppi sRGB raster metadata, 26 pt minimum type, safe margins/opaque panels, 67 live text layers and 11 vector smart objects. Static Inter Medium/Bold and JetBrains Mono Bold faces are consistent across print and live-type sources; PDF fonts embedded.
+- The Figma direct editor again returned the Starter-plan tool-call limit; no v3.0 canvas mutation succeeded. Prepared a local importer for 67 native text nodes beside earlier posters. Syntax and font-name normalization were checked; the importer has not run or been visually checked in Figma.
+- Physical one-metre readability, printer proof/settings, Photoshop/live Figma application review, supervisor approval and committee submission remain pending. Exported earlier versions are retained; no project scope/date/approval record was silently changed.
+
+
+## Early Feasibility date removal, 2026-11-13 (Codex)
+
+- Removed “· 7 OCT 2026” from the Early Feasibility display heading at the team’s request. Confirmed that exactly one text record and its measured width changed; all type styles, coordinates, numbers, limitations and graphics are preserved.
+- Exported v3.1 PDF, JPEG, native PSD, SVG, preview, Figma import/plugin and crop proofs. Retained previous exports and historical study dates in source/provenance records. Updated the GitHub delivery links and package. Live Figma remains blocked by the already-recorded tool-call limit.
+
+
+## Full-system poster and section redesign, 2026-11-13 (Codex)
+
+- Reviewed the user-supplied raster competitor poster and conceptual workflow image as references, not instructions. Delegated independent code/architecture and visual-reference reviews; findings were integrated into the new v4.0 composition. No competitor PDF, content, branding, figures or technology choices were copied into public deliverables.
+- Rebuilt opening/team as aligned roll-ordered columns plus supervisor block; replaced the limited example workflow graphic with the actual workbench/API/jobs/store, Refund Desk, model adapter, independent retail data paths and check/trace/replay loop. Explicit request/response and suspect-step replay labels were reviewed against code. Supplied repair rules and human review/evidence boundaries remain printed.
+- Combined the recorded replay and scoped pilot into one divided panel. Retained all result values and caveats; kept the date removed. Organized authentic stack logos into Engine/API/Interface/Models with actual roles. Retained the exact Fault Line identity and quiet reusable background. Planned feature cards remain explicit.
+- Exported poster PDF/JPEG/PSD/live SVG, outlined Figma import, separate section SVG/PDF/PNG sets, architecture PDF/SVG, fonts, proofs and source/reference notes. Verified exact trim, 300-ppi sRGB metadata, 26 pt minimum, safe opaque text, 110 native type layers/11 vector smart objects, embedded matching fonts, saved-layer recomposition, official-logo source hashes, ZIP integrity and workspace/link checks.
+- Live Photoshop/Corel/Figma application review and physical proof/one-metre readability remain pending, as do printer settings and supervisor/committee acceptance. No live Figma update or institutional approval is claimed.
+
+
+## Requested poster source assets, 2026-11-13 (Codex)
+
+- Located and bundled the original brief, three requested diagram SVGs and existing FASTLogo.jpg unchanged. Added a coordinate addendum derived from the actual v4.0 layout JSON, clearly separating current geometry from the historical brief. Included the JSON and SHA-256 hashes; verified ZIP integrity and byte-for-byte source copies.
+- The repository contains no verified vector university logo; the official homepage also serves a JPG. Supplied the existing raster original without claiming or manufacturing vector artwork. No poster content, Figma canvas or diagram source was changed.

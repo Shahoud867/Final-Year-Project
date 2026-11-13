@@ -1,0 +1,179 @@
+{
+  "name": "Granite / Fault Line",
+  "grid": [
+    96,
+    96
+  ],
+  "left": [
+    [
+      20,
+      14
+    ],
+    [
+      41,
+      14
+    ],
+    [
+      41,
+      50
+    ],
+    [
+      63,
+      50
+    ],
+    [
+      63,
+      90
+    ],
+    [
+      20,
+      90
+    ],
+    [
+      8,
+      78
+    ],
+    [
+      8,
+      26
+    ]
+  ],
+  "right": [
+    [
+      47,
+      6
+    ],
+    [
+      76,
+      6
+    ],
+    [
+      88,
+      18
+    ],
+    [
+      88,
+      70
+    ],
+    [
+      76,
+      82
+    ],
+    [
+      69,
+      82
+    ],
+    [
+      69,
+      44
+    ],
+    [
+      47,
+      44
+    ]
+  ],
+  "small_left": [
+    [
+      20,
+      14
+    ],
+    [
+      39,
+      14
+    ],
+    [
+      39,
+      52
+    ],
+    [
+      61,
+      52
+    ],
+    [
+      61,
+      90
+    ],
+    [
+      20,
+      90
+    ],
+    [
+      8,
+      78
+    ],
+    [
+      8,
+      26
+    ]
+  ],
+  "small_right": [
+    [
+      49,
+      6
+    ],
+    [
+      76,
+      6
+    ],
+    [
+      88,
+      18
+    ],
+    [
+      88,
+      70
+    ],
+    [
+      76,
+      82
+    ],
+    [
+      71,
+      82
+    ],
+    [
+      71,
+      42
+    ],
+    [
+      49,
+      42
+    ]
+  ],
+  "gap_standard": 6,
+  "gap_small": 10,
+  "origin_center": [
+    28,
+    69
+  ],
+  "origin_disc_radius": 7,
+  "origin_cutout_radius": 10,
+  "small_origin_center": [
+    26,
+    70
+  ],
+  "small_origin_radius": 12,
+  "font_version": "Version 4.001;git-66647c0bb",
+  "weight": 640,
+  "optical_size": 32,
+  "tracking_em": -0.01,
+  "cap_height_font_units": 1490,
+  "horizontal_cap": 40,
+  "horizontal_gap": 28,
+  "symbol_visible_height": 84,
+  "vertical_cap": 24,
+  "vertical_gap": 24,
+  "wordmark_font_bbox": [
+    68.399658203125,
+    -24,
+    6709.824833984376,
+    1514
+  ],
+  "clear_space_symbol": 14,
+  "clear_space_lockup": 20,
+  "minimum_sizes_px": {
+    "small": 16,
+    "standard": 24,
+    "horizontal": 96
+  }
+}

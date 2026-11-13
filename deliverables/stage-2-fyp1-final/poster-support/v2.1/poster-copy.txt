@@ -1,0 +1,66 @@
+Granite
+FAST NUCES, Islamabad Campus
+Find the source of silent AI failures.
+Registered: A Self-Healing Multi-Agent System
+for Semantic Error Diagnosis, Verified Repair and Recovery
+Shahoud Shahid (23i-2515) · Muhammad Noor Ul Haq
+(23i-2520) · Saif Shahzad (23i-2634)
+Supervisor: Dr. Adil Majeed
+Project goals
+Detect wrong answers
+Locate their source
+Verify proposed fixes
+For engineers & QA teams
+F26-060 · BS (DS) · FYP 2026
+AI agents can fail silently.
+Agent reply
+$662.00
+Catalogue total
+$662.23
+Check the facts
+Refund Desk · recorded run, no error raised.
+Find the cause. Test the fix.
+Implemented
+AI workflow
+Record
+agent steps
+Check
+Test against
+trusted data
+Trace
+Find the
+error’s origin
+Replay
+Compare fix
+and control
+Human review
+Accept
+or reject
+Evidence stays with every decision.
+Test with and without the fix.
+Corrected source value
+With fix
+No fix
+5/5 correct
+0/2 correct
+10/10
+faulty runs detected
+9/10
+origins verified
+Feasibility pilot · 7 Oct 2026
+10 tasks; one fault; one small model; four tasks not blind.
+FYP-1 plan · tentative iterations
+Built
+1 · Investigate
+Refund Desk workbench
+Checks · trace · replay
+Planned
+2 · Guide repairs
+One-click investigation
+Derived fixes · Fault Lab
+Planned
+3 · Extend
+Retail Agent + imports
+Baselines + test export
+Tools & technologies
+Python · FastAPI · React · TypeScript · Ollama

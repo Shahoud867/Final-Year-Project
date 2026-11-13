@@ -1,0 +1,37 @@
+{
+  "standard_vertices_exact": true,
+  "standard_gap_axis_width": 6,
+  "small_gap_axis_width": 10,
+  "pieces_disjoint": true,
+  "disc_and_ring_inside_left": true,
+  "ring_transparency_checked": true,
+  "colorways_checked": [
+    "color",
+    "reversed",
+    "black",
+    "white"
+  ],
+  "font": "Version 4.001;git-66647c0bb",
+  "wordmark_weight": 640,
+  "wordmark_opsz": 32,
+  "tracking_em": -0.01,
+  "horizontal_symbol_height": 84,
+  "horizontal_cap_height": 40,
+  "horizontal_gap": 28,
+  "horizontal_vertical_ink_alignment": "centred",
+  "vertical_cap_height": 24,
+  "vertical_gap": 24,
+  "png_exports": 36,
+  "vector_pdf_assets": 13,
+  "pdf_raster_image_count": 0,
+  "usage_pdf_pages": 1,
+  "favicon_16_ico_matches_png": true,
+  "manual_visual_checks": [
+    "16 px small-size rendering",
+    "24 px one-colour and reversed symbols",
+    "one-page usage sheet"
+  ],
+  "figma_url": "https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=24-3",
+  "figma_vector_nodes": 127,
+  "figma_raster_nodes": 0
+}

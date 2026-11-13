@@ -1,8 +1,8 @@
 # Workspace index (generated)
 
-Generated 2026-11-11 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
+Generated 2026-11-13 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 715
+Entries: 872
 
 ## (repository root)
 
@@ -34,6 +34,104 @@ Entries: 715
 | `docs/adr/adr-009-trace-schema-v1.md` | ADR-009: One versioned trace format for every run, replay and import |
 | `docs/adr/adr-010-git-branching.md` | ADR-010: Work on short-lived branches, review every change, release from main |
 | `docs/adr/README.md` | docs/adr: architecture decision records |
+| `docs/brand/granite-fault-line/avatar/granite-avatar-1024.png` |  |
+| `docs/brand/granite-fault-line/favicons/apple-touch-icon.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-16.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-180.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-192.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-24.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-32.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-48.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-512.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon-64.png` |  |
+| `docs/brand/granite-fault-line/favicons/favicon.ico` |  |
+| `docs/brand/granite-fault-line/favicons/favicon.svg` |  |
+| `docs/brand/granite-fault-line/favicons/site.webmanifest` |  |
+| `docs/brand/granite-fault-line/fonts/inter-4-opsz32-wght640.ttf` |  |
+| `docs/brand/granite-fault-line/fonts/inter-4-variable.ttf` |  |
+| `docs/brand/granite-fault-line/fonts/inter-ofl.txt` |  |
+| `docs/brand/granite-fault-line/granite-logo-usage.pdf` |  |
+| `docs/brand/granite-fault-line/granite-logo-usage.png` |  |
+| `docs/brand/granite-fault-line/granite-logo-usage.svg` |  |
+| `docs/brand/granite-fault-line/pdf/granite-horizontal-black.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-horizontal-color.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-horizontal-reversed.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-horizontal-white.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-mark-black.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-mark-color.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-mark-reversed.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-mark-white.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-small-size.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-vertical-black.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-vertical-color.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-vertical-reversed.pdf` |  |
+| `docs/brand/granite-fault-line/pdf/granite-vertical-white.pdf` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-black/granite-horizontal-black-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-black/granite-horizontal-black-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-black/granite-horizontal-black-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-color/granite-horizontal-color-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-color/granite-horizontal-color-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-color/granite-horizontal-color-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-reversed/granite-horizontal-reversed-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-reversed/granite-horizontal-reversed-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-reversed/granite-horizontal-reversed-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-white/granite-horizontal-white-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-white/granite-horizontal-white-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-horizontal-white/granite-horizontal-white-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-black/granite-mark-black-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-black/granite-mark-black-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-black/granite-mark-black-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-color/granite-mark-color-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-color/granite-mark-color-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-color/granite-mark-color-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-reversed/granite-mark-reversed-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-reversed/granite-mark-reversed-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-reversed/granite-mark-reversed-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-white/granite-mark-white-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-white/granite-mark-white-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-mark-white/granite-mark-white-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-black/granite-vertical-black-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-black/granite-vertical-black-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-black/granite-vertical-black-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-color/granite-vertical-color-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-color/granite-vertical-color-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-color/granite-vertical-color-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-reversed/granite-vertical-reversed-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-reversed/granite-vertical-reversed-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-reversed/granite-vertical-reversed-512.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-white/granite-vertical-white-1024.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-white/granite-vertical-white-2048.png` |  |
+| `docs/brand/granite-fault-line/png/granite-vertical-white/granite-vertical-white-512.png` |  |
+| `docs/brand/granite-fault-line/proofs/granite-pixel-checks.png` |  |
+| `docs/brand/granite-fault-line/proofs/horizontal-black-96.png` |  |
+| `docs/brand/granite-fault-line/proofs/horizontal-color-96.png` |  |
+| `docs/brand/granite-fault-line/proofs/horizontal-reversed-96.png` |  |
+| `docs/brand/granite-fault-line/proofs/horizontal-white-96.png` |  |
+| `docs/brand/granite-fault-line/proofs/mark-black-24.png` |  |
+| `docs/brand/granite-fault-line/proofs/mark-color-24.png` |  |
+| `docs/brand/granite-fault-line/proofs/mark-reversed-24.png` |  |
+| `docs/brand/granite-fault-line/proofs/mark-white-24.png` |  |
+| `docs/brand/granite-fault-line/README.md` | Granite — Fault Line logo kit v1.0 |
+| `docs/brand/granite-fault-line/sha256sums.txt` |  |
+| `docs/brand/granite-fault-line/source/build-logo.py` |  |
+| `docs/brand/granite-fault-line/source/geometry.json` |  |
+| `docs/brand/granite-fault-line/source/validation.json` |  |
+| `docs/brand/granite-fault-line/source/verify-logo.py` |  |
+| `docs/brand/granite-fault-line/svg/granite-horizontal-black.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-horizontal-color.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-horizontal-live-text.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-horizontal-reversed.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-horizontal-white.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-mark-black.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-mark-color.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-mark-reversed.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-mark-white.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-small-size.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-vertical-black.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-vertical-color.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-vertical-live-text.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-vertical-reversed.svg` |  |
+| `docs/brand/granite-fault-line/svg/granite-vertical-white.svg` |  |
 | `docs/diagrams/activity-investigation.svg` |  |
 | `docs/diagrams/algorithm-design.md` | Data structure and algorithm design |
 | `docs/diagrams/architecture.md` | Architecture and structure design |
@@ -79,6 +177,7 @@ Entries: 715
 | `docs/plan/execution-status.md` | Execution status |
 | `docs/plan/fyp1-completion-plan.md` | FYP-1 completion plan: from demonstration to product |
 | `docs/plan/master-plan.md` | Granite — FYP Master Execution Plan |
+| `docs/plan/poster-compliance-audit.md` | Granite poster compliance audit |
 | `docs/plan/requirements-trace.json` |  |
 | `docs/plan/requirements-trace.md` | Requirements traceability (functional requirements, Mid-1) |
 | `docs/registers/ai-usage-log.md` | AI Usage Log — Granite |
@@ -219,12 +318,12 @@ Entries: 715
 | `data/cassettes/refund_desk_v1.json` |  |
 | `data/datasets.md` | Granite — Datasets |
 | `data/DOWNLOAD.md` | Datasets — provenance, licensing, and retrieval |
-| `data/raw/agentracer_full/` | third-party dataset: 871 files, 18.4 MB (not listed per file) |
+| `data/raw/agentracer_full/` | third-party dataset: 871 files, 18.3 MB (not listed per file) |
 | `data/raw/gaia_official/` | third-party dataset: 7 files, 0.3 MB (not listed per file) |
 | `data/raw/gsm8k/` | third-party dataset: 2 files, 2.7 MB (not listed per file) |
 | `data/raw/math/` | third-party dataset: 2 files, 4.8 MB (not listed per file) |
 | `data/raw/mbppplus/` | third-party dataset: 4 files, 4.8 MB (not listed per file) |
-| `data/raw/taubench_retail/` | third-party dataset: 33 files, 3.3 MB (not listed per file) |
+| `data/raw/taubench_retail/` | third-party dataset: 33 files, 3.2 MB (not listed per file) |
 | `data/raw/whowhen_full/` | third-party dataset: 200 files, 10.9 MB (not listed per file) |
 | `data/README.md` | data |
 | `data/seed/taubench_retail_v1/LICENSE.txt` |  |
@@ -237,21 +336,7 @@ Entries: 715
 
 | Path | Title / description |
 |---|---|
-| `apps/api/.coverage` |  |
 | `apps/api/.gitignore` |  |
-| `apps/api/.granite/granite.db` |  |
-| `apps/api/.granite/granite.db-shm` |  |
-| `apps/api/.granite/granite.db-wal` |  |
-| `apps/api/.pytest_cache/.gitignore` |  |
-| `apps/api/.pytest_cache/CACHEDIR.TAG` |  |
-| `apps/api/.pytest_cache/README.md` | pytest cache directory # |
-| `apps/api/.pytest_cache/v/cache/lastfailed` |  |
-| `apps/api/.pytest_cache/v/cache/nodeids` |  |
-| `apps/api/granite_api.egg-info/dependency_links.txt` |  |
-| `apps/api/granite_api.egg-info/PKG-INFO` |  |
-| `apps/api/granite_api.egg-info/requires.txt` |  |
-| `apps/api/granite_api.egg-info/SOURCES.txt` |  |
-| `apps/api/granite_api.egg-info/top_level.txt` |  |
 | `apps/api/granite_api/__init__.py` | Granite application layer: HTTP API, persistence and background jobs around granite_core. |
 | `apps/api/granite_api/config.py` | Runtime configuration, read once from environment variables (twelve-factor). No secrets have defaults. |
 | `apps/api/granite_api/db.py` | Engine and session factory. SQLite by default; any SQLAlchemy URL (e.g. PostgreSQL) works. |
@@ -351,118 +436,6 @@ Entries: 715
 |---|---|
 | `packages/granite_core/.coverage` |  |
 | `packages/granite_core/.gitignore` |  |
-| `packages/granite_core/.hypothesis/.gitignore` |  |
-| `packages/granite_core/.hypothesis/constants/020e895fd6a059b4` |  |
-| `packages/granite_core/.hypothesis/constants/0bbbdc3240b67114` |  |
-| `packages/granite_core/.hypothesis/constants/0ef890823c425a7c` |  |
-| `packages/granite_core/.hypothesis/constants/287c9005e8775b74` |  |
-| `packages/granite_core/.hypothesis/constants/2a910b6c34d606bf` |  |
-| `packages/granite_core/.hypothesis/constants/3329e75fc0dd4421` |  |
-| `packages/granite_core/.hypothesis/constants/3663731d667d476b` |  |
-| `packages/granite_core/.hypothesis/constants/3a76c03500cf6ef4` |  |
-| `packages/granite_core/.hypothesis/constants/3d49abf751a4aeef` |  |
-| `packages/granite_core/.hypothesis/constants/3f95b6cd9cc047e7` |  |
-| `packages/granite_core/.hypothesis/constants/4492b90790a254bf` |  |
-| `packages/granite_core/.hypothesis/constants/45f0634bf80f7b3a` |  |
-| `packages/granite_core/.hypothesis/constants/52b10e8994eec85e` |  |
-| `packages/granite_core/.hypothesis/constants/5d3c6a64ac91e867` |  |
-| `packages/granite_core/.hypothesis/constants/5fa806864b561dcf` |  |
-| `packages/granite_core/.hypothesis/constants/62d0f744afb38256` |  |
-| `packages/granite_core/.hypothesis/constants/6388c1642fcc15cf` |  |
-| `packages/granite_core/.hypothesis/constants/63a4acdfbd5e8e3e` |  |
-| `packages/granite_core/.hypothesis/constants/6485567c1222d2c4` |  |
-| `packages/granite_core/.hypothesis/constants/66193284ddc06407` |  |
-| `packages/granite_core/.hypothesis/constants/7a35ee7ede7d1ced` |  |
-| `packages/granite_core/.hypothesis/constants/7ba9f0d97ebf4e10` |  |
-| `packages/granite_core/.hypothesis/constants/7c7c0c8174dd4fcc` |  |
-| `packages/granite_core/.hypothesis/constants/7e3c026441916e54` |  |
-| `packages/granite_core/.hypothesis/constants/8acb7798546ec761` |  |
-| `packages/granite_core/.hypothesis/constants/8bf5f64806a4bdf5` |  |
-| `packages/granite_core/.hypothesis/constants/945bfc0e454b9541` |  |
-| `packages/granite_core/.hypothesis/constants/97c3fe1be73ed427` |  |
-| `packages/granite_core/.hypothesis/constants/a1ce94c4075112e5` |  |
-| `packages/granite_core/.hypothesis/constants/a400ccb562c8f527` |  |
-| `packages/granite_core/.hypothesis/constants/a6a3b430575dea54` |  |
-| `packages/granite_core/.hypothesis/constants/af5f99b2160918e9` |  |
-| `packages/granite_core/.hypothesis/constants/b1a103582fbe5438` |  |
-| `packages/granite_core/.hypothesis/constants/b1bbb412c682c344` |  |
-| `packages/granite_core/.hypothesis/constants/b7f605f97bb2c987` |  |
-| `packages/granite_core/.hypothesis/constants/ba01687f0adc9f39` |  |
-| `packages/granite_core/.hypothesis/constants/bb97c445387f61f2` |  |
-| `packages/granite_core/.hypothesis/constants/bc3da858fe3b650a` |  |
-| `packages/granite_core/.hypothesis/constants/bcd704d19fa66c84` |  |
-| `packages/granite_core/.hypothesis/constants/bfb3523c69904364` |  |
-| `packages/granite_core/.hypothesis/constants/c568580b452a98ed` |  |
-| `packages/granite_core/.hypothesis/constants/ca0c5a85814efbd1` |  |
-| `packages/granite_core/.hypothesis/constants/ceb13b2f3daa8d03` |  |
-| `packages/granite_core/.hypothesis/constants/d37e5a8e268e283e` |  |
-| `packages/granite_core/.hypothesis/constants/d67c149f915bd4a6` |  |
-| `packages/granite_core/.hypothesis/constants/de0c498d4ef1db93` |  |
-| `packages/granite_core/.hypothesis/constants/e9f9eb24bf363cba` |  |
-| `packages/granite_core/.hypothesis/constants/ec851c84d5c7621b` |  |
-| `packages/granite_core/.hypothesis/constants/f2223ac708804293` |  |
-| `packages/granite_core/.hypothesis/constants/f3fcee98dbf7914d` |  |
-| `packages/granite_core/.hypothesis/constants/f3ff697dee19318c` |  |
-| `packages/granite_core/.hypothesis/constants/f9429e97b0d8c4d2` |  |
-| `packages/granite_core/.hypothesis/examples/04e6b3400353b141/7d0909f09d2bf1f5` |  |
-| `packages/granite_core/.hypothesis/examples/04e6b3400353b141/df1b93c879a85422` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/1e8564ab213306ac` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/31584c90d73628a6` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/37470933fe877979` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/4451befc68619979` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/5180fde11d286015` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/653dd7da6c7619e3` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/6a9ff06428ccaafe` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/71676817b0fb0fd3` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/758dccf0a726be53` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/78998a20755b54b2` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/95f64473a0d9cce7` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/9745ea156c486e08` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/a0d5fc81a17d2719` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/cfe82c844ca15cac` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/d576c25b55e4d880` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/f212013e75285397` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/fce8fadca7e8e755` |  |
-| `packages/granite_core/.hypothesis/examples/7d0909f09d2bf1f5/ff0ce391d22bdbdf` |  |
-| `packages/granite_core/.hypothesis/examples/df1b93c879a85422/fe9bf3fc01789212` |  |
-| `packages/granite_core/.hypothesis/tmp/tmp0jeles37` |  |
-| `packages/granite_core/.hypothesis/tmp/tmp2w5xc2ec` |  |
-| `packages/granite_core/.hypothesis/tmp/tmp5f6drd3w` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpa29v7cpx` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpalc_r39q` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpbgixarfu` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpcdioq8lv` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpfpjmdxav` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpfywdfl1u` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpi4bc57em` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpihphwa9u` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpjgmz8m71` |  |
-| `packages/granite_core/.hypothesis/tmp/tmplmcx_slk` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpnukno1to` |  |
-| `packages/granite_core/.hypothesis/tmp/tmppfymygsh` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpqi1o6gdm` |  |
-| `packages/granite_core/.hypothesis/tmp/tmprdzjc177` |  |
-| `packages/granite_core/.hypothesis/tmp/tmprwwod5xx` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpry8unrs5` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpsi9t9dw9` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpt1flvw8a` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpt5l4x68p` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpu6uq97_r` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpusaa32c7` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpuxtemasb` |  |
-| `packages/granite_core/.hypothesis/tmp/tmpyhohe3ni` |  |
-| `packages/granite_core/.hypothesis/unicode_data/14.0.0/charmap.json.gz` |  |
-| `packages/granite_core/.hypothesis/unicode_data/14.0.0/codec-v2-utf-8.json.gz` |  |
-| `packages/granite_core/.pytest_cache/.gitignore` |  |
-| `packages/granite_core/.pytest_cache/CACHEDIR.TAG` |  |
-| `packages/granite_core/.pytest_cache/README.md` | pytest cache directory # |
-| `packages/granite_core/.pytest_cache/v/cache/lastfailed` |  |
-| `packages/granite_core/.pytest_cache/v/cache/nodeids` |  |
-| `packages/granite_core/granite_core.egg-info/dependency_links.txt` |  |
-| `packages/granite_core/granite_core.egg-info/PKG-INFO` |  |
-| `packages/granite_core/granite_core.egg-info/requires.txt` |  |
-| `packages/granite_core/granite_core.egg-info/SOURCES.txt` |  |
-| `packages/granite_core/granite_core.egg-info/top_level.txt` |  |
 | `packages/granite_core/granite_core/__init__.py` | Granite core: pure-Python library (no web, no database, no network). |
 | `packages/granite_core/granite_core/attribution.py` | Deterministic value-provenance attribution (master plan 21.4; FR-ATT-01/02). |
 | `packages/granite_core/granite_core/checks.py` | Checks engine: executable rules over a trace (FR-CHK-01..06). |
@@ -499,16 +472,6 @@ Entries: 715
 | `workflows/README.md` | workflows |
 | `workflows/refund_desk/.coverage` |  |
 | `workflows/refund_desk/.gitignore` |  |
-| `workflows/refund_desk/.pytest_cache/.gitignore` |  |
-| `workflows/refund_desk/.pytest_cache/CACHEDIR.TAG` |  |
-| `workflows/refund_desk/.pytest_cache/README.md` | pytest cache directory # |
-| `workflows/refund_desk/.pytest_cache/v/cache/lastfailed` |  |
-| `workflows/refund_desk/.pytest_cache/v/cache/nodeids` |  |
-| `workflows/refund_desk/granite_refund_desk.egg-info/dependency_links.txt` |  |
-| `workflows/refund_desk/granite_refund_desk.egg-info/PKG-INFO` |  |
-| `workflows/refund_desk/granite_refund_desk.egg-info/requires.txt` |  |
-| `workflows/refund_desk/granite_refund_desk.egg-info/SOURCES.txt` |  |
-| `workflows/refund_desk/granite_refund_desk.egg-info/top_level.txt` |  |
 | `workflows/refund_desk/pyproject.toml` |  |
 | `workflows/refund_desk/README.md` | refund_desk |
 | `workflows/refund_desk/refund_desk/__init__.py` | Refund Desk: Granite's first system under test (master plan 21.3). |
@@ -528,14 +491,6 @@ Entries: 715
 
 | Path | Title / description |
 |---|---|
-| `tests/.pytest_cache/.gitignore` |  |
-| `tests/.pytest_cache/CACHEDIR.TAG` |  |
-| `tests/.pytest_cache/README.md` | pytest cache directory # |
-| `tests/.pytest_cache/v/cache/lastfailed` |  |
-| `tests/.pytest_cache/v/cache/nodeids` |  |
-| `tests/.ruff_cache/.gitignore` |  |
-| `tests/.ruff_cache/0.16.10/1399752670135013274` |  |
-| `tests/.ruff_cache/CACHEDIR.TAG` |  |
 | `tests/pyproject.toml` |  |
 | `tests/README.md` | tests |
 | `tests/system/__init__.py` | System-level tests (black box, over HTTP). |
@@ -546,10 +501,6 @@ Entries: 715
 
 | Path | Title / description |
 |---|---|
-| `scripts/.ruff_cache/.gitignore` |  |
-| `scripts/.ruff_cache/0.16.10/15579513046367014733` |  |
-| `scripts/.ruff_cache/0.16.10/7006256987119764914` |  |
-| `scripts/.ruff_cache/CACHEDIR.TAG` |  |
 | `scripts/apply_workspace_migration.py` | Apply the 2026-10-06 workspace migration. Idempotent and non-destructive. |
 | `scripts/build_design_pack.py` | Build the design pack: SVG diagrams, Markdown pages, the data dictionary and one interactive HTML file. |
 | `scripts/build_evidence_sheet.py` | Build the one-page assessment evidence sheet (PDF) for the FYP-1 mid evaluation. |
@@ -703,8 +654,216 @@ Entries: 715
 | `deliverables/stage-1-fyp1-mid/granite_design-pack_fyp1-mid_v1.0.html` | Granite design pack (FYP-1 Mid) |
 | `deliverables/stage-1-fyp1-mid/granite_evidence-sheet_fyp1-mid_v1.0.pdf` |  |
 | `deliverables/stage-1-fyp1-mid/README.md` | Granite: FYP-1 mid evaluation deliverables (stage 1) |
+| `deliverables/stage-2-fyp1-final/granite_logo-package_fyp1-final_v1.0.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-architecture_fyp1-final_v4.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-architecture_fyp1-final_v4.0.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-assets_fyp1-final_v4.0.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v2.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v3.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v3.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v4.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-background_fyp1-final_v2.1.svg` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-brief_fyp1-final_draft.md` | Granite FYP-1 poster: master design prompt |
-| `deliverables/stage-2-fyp1-final/README.md` | stage-2-fyp1-final |
+| `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v1.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v2.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v2.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v3.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v3.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-crop-tests_fyp1-final_v4.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v2.1.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v3.0.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v3.1.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-figma-import_fyp1-final_v4.0.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v1.1.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v2.0.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v2.1.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v3.0.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v3.1.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-package_fyp1-final_v4.0.zip` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v1.1.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v2.0.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v2.1.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v3.0.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v3.1.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-preview_fyp1-final_v4.0.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v1.1.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v1.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v1.1.psd` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v1.1.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.0.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.0.psd` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.0.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.1.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.1.psd` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v2.1.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.0.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.0.psd` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.0.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.1.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.1.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.1.psd` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v3.1.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.jpg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.pdf` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.psd` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster_fyp1-final_v4.0.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/figma.md` | Editable Figma poster |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-extrabold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-regular.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/inter-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/jetbrainsmono-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/jetbrainsmono-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/jetbrainsmono-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/fonts/jetbrainsmono-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/poster-production-checks.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/print-review.md` | Granite FYP-1 poster — production handoff |
+| `deliverables/stage-2-fyp1-final/poster-support/sha256sums.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/background-geometry.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fault-line-logo.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/figma-background-plugin/code.js` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/figma-background-plugin/manifest.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/figma-background-plugin/README.md` | Apply the background to the original Figma frame |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/inter-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/inter-extrabold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/inter-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/inter-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/inter-regular.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/inter-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/jetbrainsmono-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/jetbrainsmono-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/jetbrainsmono-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/fonts/jetbrainsmono-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/handbook-checklist.md` | Poster v2.1 — handbook and content audit |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/poster-layout.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/poster-production-checks.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2.1/sha256sums.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fault-line-logo.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/inter-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/inter-extrabold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/inter-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/inter-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/inter-regular.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/inter-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/jetbrainsmono-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/jetbrainsmono-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/jetbrainsmono-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/fonts/jetbrainsmono-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/handbook-checklist.md` | Poster v2.0 — handbook and content audit |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/poster-production-checks.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v2/sha256sums.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/claim-sources.md` | Claims, scope and official artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fault-line-logo.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/figma-exhibition-plugin/code.js` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/figma-exhibition-plugin/manifest.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/figma-exhibition-plugin/README.md` | Native-text Figma importer |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/inter-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/inter-extrabold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/inter-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/inter-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/inter-regular.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/inter-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/jetbrainsmono-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/jetbrainsmono-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/jetbrainsmono-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/fonts/jetbrainsmono-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/handbook-checklist.md` | Exhibition poster v3.1 — handbook checklist |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/poster-layout.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/poster-production-checks.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/sha256sums.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/fastapi-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/fastapi-teal-wordmark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/official-logo-provenance.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/ollama.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/python-generic.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/python-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/react.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/README.md` | Official technology artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v3.1/technology-logos/typescript-official.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/claim-sources.md` | Claims, scope and official artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fault-line-logo.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/figma-exhibition-plugin/code.js` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/figma-exhibition-plugin/manifest.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/figma-exhibition-plugin/README.md` | Native-text Figma importer |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/inter-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/inter-extrabold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/inter-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/inter-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/inter-regular.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/inter-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/jetbrainsmono-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/jetbrainsmono-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/jetbrainsmono-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/fonts/jetbrainsmono-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/handbook-checklist.md` | Exhibition poster v3.0 — handbook checklist |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/poster-layout.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/poster-production-checks.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/sha256sums.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/fastapi-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/fastapi-teal-wordmark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/official-logo-provenance.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/ollama.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/python-generic.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/python-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/react.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/README.md` | Official technology artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v3/technology-logos/typescript-official.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/architecture-notes.md` | Granite v4.0 — architecture notes and claim boundaries |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/claim-sources.md` | Claims, scope and official artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/editing-guide.md` | Editing and presentation files |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fault-line-logo.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/figma-exhibition-plugin/code.js` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/figma-exhibition-plugin/manifest.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/figma-exhibition-plugin/README.md` | Native-text Figma importer |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-extrabold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-regular.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/inter-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-bold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-medium.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-ofl.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-semibold.ttf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/handbook-checklist.md` | Granite v4.0 — handbook and design checks |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-layout-brief.md` | Granite v4.0 — exact poster layout brief |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-layout.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-production-checks.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/reference-review.md` | Reference review and design response |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/opening-and-team.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/opening-and-team.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/opening-and-team.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/replay-and-feasibility.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/replay-and-feasibility.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/replay-and-feasibility.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/system-architecture.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/system-architecture.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/system-architecture.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/tools-and-technologies.pdf` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/tools-and-technologies.png` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sections/tools-and-technologies.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/sha256sums.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/fastapi-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/fastapi-teal-wordmark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/official-logo-provenance.json` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/ollama.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/python-generic.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/python-mark.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/react.svg` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/README.md` | Official technology artwork |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/technology-logos/typescript-official.svg` |  |
+| `deliverables/stage-2-fyp1-final/README.md` | Granite poster v4.0 — systems and evidence |
 | `deliverables/stage-3-fyp2-mid/README.md` | stage-3-fyp2-mid |
 | `deliverables/stage-4-fyp2-final/README.md` | stage-4-fyp2-final |
 
@@ -791,10 +950,3 @@ Entries: 715
 | `.github/pull_request_template.md` | ## What changed and why |
 | `.github/workflows/cd.yml` |  |
 | `.github/workflows/ci.yml` |  |
-
-## .ruff_cache  ()
-
-| Path | Title / description |
-|---|---|
-| `.ruff_cache/.gitignore` |  |
-| `.ruff_cache/CACHEDIR.TAG` |  |

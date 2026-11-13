@@ -133,7 +133,7 @@ Word budget for the whole poster: **at most 480 words, target 450**. The copy be
 - **Wordmark:** "Granite" in Inter 800, 150 pt, white. Directly under it, the tagline in Inter 500, 44 pt, `#9CC4F5`: "find the failure · prove the cause · verify the fix".
 - **Registered title** in Inter 600, 54 pt, white, at most 2 lines: "A Self-Healing Multi-Agent System for Semantic Error Diagnosis, Verified Repair and Recovery" (F4).
 - **Team line** in Inter 500, 32 pt, white at 85%: "Shahoud Shahid (23i-2515) · Muhammad Noor Ul Haq (23i-2520) · Saif Shahzad (23i-2634)".
-- **Supervisor line**, same style: "Supervisor: Dr. Adil Majeed · Project F26-060 · BS (CS) FYP 2026" [CONFIRM degree label].
+- **Supervisor line**, same style: "Supervisor: Dr. Adil Majeed · Project F26-060 · BS (DS) FYP 2026" [Degree corrected to DS by the team, 13 November 2026].
 
 **Right block, "Project goals" (cols 9 to 12, x 4505 to 6525; handbook H8):** a white-outlined panel (2 px white at 40%, radius 24 px, inner padding 80 px) headed "PROJECT GOALS" in Inter 700, 30 pt, letter-spacing +8%. Four goals, each a numbered line of up to 9 words in Inter 500, 32 pt, white:
 

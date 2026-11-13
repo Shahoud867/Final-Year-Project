@@ -1,0 +1,68 @@
+Granite
+FAST NUCES, Islamabad Campus
+AI-agent
+investigation workbench
+Find why AI agents fail.
+Registered: A Self-Healing Multi-Agent System
+for Semantic Error Diagnosis, Verified Repair and Recovery
+PROJECT GOALS
+Detect silent failures
+Locate their source
+Verify proposed fixes
+For engineers & QA teams
+People stay in control
+Shahoud Shahid (23i-2515) · Muhammad Noor Ul Haq (23i-2520) · Saif Shahzad (23i-2634)
+Supervisor: Dr. Adil Majeed
+F26-060 · BS (DS) · FYP 2026
+01 / THE SILENT FAILURE
+One bad value. A wrong AI answer.
+The workflow finishes without raising an error.
+Intake
+Request
+Order Lookup
+Old price
+Policy
+Carries price
+Calculator
+Wrong total
+Writer
+Wrong reply
+Granite checks facts and traces the source
+Refund Desk · stale-price fault · simplified illustration
+02 / CONTROLLED REPLAY · IMPLEMENTED
+Prove the cause. Test the correction.
+Source corrected
+5/5 correct
+Source unchanged
+0/2 correct
+Cause verified
+Human review
+Evidence saved
+Recorded case · five correction replays, two controls.
+03 / EARLY FEASIBILITY · 7 OCT 2026
+10/10
+faulty runs detected
+9/10
+origins verified
+10 tasks · one fault · one small model · four tasks not blind.
+04 / VISION & TENTATIVE FYP-1 PLAN
+The finished system: evidence to action.
+Goal: faster diagnosis and reusable tests for QA.
+BUILT
+1 · Investigate
+Refund Desk workbench
+Checks · trace · replay
+PLANNED
+2 · Guide repairs
+One-click investigation
+Check-derived fixes
+PLANNED
+3 · Extend
+Retail Agent · imports
+Regression-test export
+TOOLS & TECHNOLOGIES
+Python
+FastAPI
+React
+TypeScript
+Ollama

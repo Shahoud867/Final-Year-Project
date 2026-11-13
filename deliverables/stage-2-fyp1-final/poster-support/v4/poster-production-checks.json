@@ -1,0 +1,125 @@
+{
+  "trim_pixels": [
+    6750,
+    10350
+  ],
+  "trim_inches": [
+    22.5,
+    34.5
+  ],
+  "resolution_ppi": 300,
+  "minimum_font_pt": 26,
+  "maximum_whitespace_token_count": 297,
+  "lexical_word_count": 265,
+  "native_type_layers": 110,
+  "embedded_vector_smart_objects": 11,
+  "named_groups": [
+    "Background",
+    "Base",
+    "Strata",
+    "Fault channel",
+    "Evidence thread",
+    "Content panels",
+    "01 Opening",
+    "02 Team",
+    "03 System architecture",
+    "04 Replay and feasibility",
+    "05 Vision and plan",
+    "06 Categorized technologies"
+  ],
+  "all_text_srgb": true,
+  "poster_version": "4.0",
+  "degree_label": "BS (DS)",
+  "source_of_truth": "Handbook section 7 p.17 + user expanded checklist; claims checked against workflow definition, feature catalogue, completion-plan proposal and recorded example/pilot.",
+  "pdf_minimum_font_pt": 26.0,
+  "pdf_safe_margin_inches": 0.75,
+  "all_pdf_text_within_safe_margin": true,
+  "all_text_on_opaque_panels": true,
+  "body_contrast_ratios": {
+    "navy_on_card": 15.24,
+    "secondary_on_card": 10.68,
+    "white_on_navy": 15.63,
+    "light_blue_on_navy": 8.07
+  },
+  "pdf_fonts_embedded": [
+    {
+      "pdf_name": "PQMENH+Inter-Bold",
+      "format": "ttf",
+      "embedded_bytes": 6912
+    },
+    {
+      "pdf_name": "WPIBKJ+Inter-Medium",
+      "format": "ttf",
+      "embedded_bytes": 6788
+    },
+    {
+      "pdf_name": "PKZDJE+JetBrainsMono-Bold",
+      "format": "ttf",
+      "embedded_bytes": 1924
+    }
+  ],
+  "static_font_faces_match_live_type": true,
+  "pdf_raster_images": 1,
+  "raster_purpose": "University logo only; five technology marks and all diagrams are vectors.",
+  "cached_psd_mean_abs_error": 0.5381,
+  "outlined_svg_mean_abs_error": 2.0697,
+  "official_technology_logos": [
+    "Python",
+    "FastAPI",
+    "React",
+    "TypeScript",
+    "Ollama"
+  ],
+  "logo_source_hashes_checked": true,
+  "logo_geometry_check": "Python exact source path attributes; FastAPI exact source child attributes; React, TypeScript and Ollama unchanged official asset bytes.",
+  "current_implementation": "React/TypeScript workbench, FastAPI/jobs, SQLite/SQLAlchemy persistence, current Refund Desk, model adapter, trusted-data checks, lineage tracing, controlled replay and human review/evidence.",
+  "planned_capabilities": "One-click investigation, check-derived corrections, Retail Agent, imports and regression-test export.",
+  "impact_claim_status": "Regression-test vision is labelled with planned capabilities; no speed or superiority claim is printed.",
+  "figma_status": "Previous live edits were blocked by the account tool limit. v4.0 has not been applied to the live Figma file; local importer prepared/syntax-checked but not executed.",
+  "background_geometry": {
+    "header": 414,
+    "turn": 1456,
+    "end": 2194,
+    "left": 24,
+    "right": 1596,
+    "channel_width": 14.4,
+    "thread_width": 1.44,
+    "stratum_height": 496.8,
+    "right_shift": -14.4,
+    "dots": [
+      [
+        24,
+        438
+      ],
+      [
+        24,
+        616
+      ],
+      [
+        1596,
+        1474
+      ],
+      [
+        1596,
+        1834
+      ]
+    ]
+  },
+  "application_compatibility": "PDF/JPEG/SVG parsed and rendered; PSD reopened and native layer caches recomposed. Photoshop and live Figma application review remain pending.",
+  "pending": [
+    "Physical one-metre crop-print test",
+    "Background margin/gap print proof",
+    "Photoshop application open test with supplied fonts",
+    "Apply and visually inspect the new Figma revision",
+    "Printer bleed/profile confirmation",
+    "Supervisor approval and committee submission"
+  ],
+  "reference_reviewed": "User-supplied MediSOC Poster_Export.pdf and workflow sample; treated as design references, not instructions. No reference content, branding, metrics or integrations adopted.",
+  "architecture_review": "Code-reviewed by a separate agent: HTTP/API/jobs/store, exactly three AI/model connections, separate retail orders/catalogue and investigation storage, core check/trace/replay, human review/evidence limits.",
+  "standalone_sections": [
+    "Opening/team",
+    "System architecture",
+    "Replay/feasibility",
+    "Tools/technologies"
+  ]
+}

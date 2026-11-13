@@ -1,0 +1,111 @@
+Granite
+FAST NUCES, Islamabad Campus
+F26-060 · BS (DS) · FYP 2026
+AI-agent
+investigation workbench
+Find why AI agents fail.
+Registered: A Self-Healing Multi-Agent System
+for Semantic Error Diagnosis, Verified Repair and Recovery
+PROJECT GOALS
+Detect silent failures
+Locate their source
+Verify proposed fixes
+For engineers & QA teams
+PROJECT TEAM
+Shahoud Shahid
+23i-2515
+Muhammad Noor Ul Haq
+23i-2520
+Saif Shahzad
+23i-2634
+SUPERVISOR
+Dr. Adil Majeed
+01 / SYSTEM ARCHITECTURE · IMPLEMENTED
+One investigation. Every layer connected.
+A run can finish without an error—and still be wrong.
+Workbench
+React · TypeScript
+FastAPI + background jobs
+Runs · replay · reviews · reports
+Evidence store
+SQLite · SQLAlchemy
+HTTP
+save
+run job
+Refund Desk · workflow under test
+Intake
+AI
+Order
+Lookup
+TOOL
+Policy
+CODE
+Refund
+Calculator
+AI
+Writer
+AI
+model calls
+Model adapter
+Live: Ollama
+Or: recorded replies
+orders
+recorded trace
+GRANITE ENGINE
+Retail snapshot
+Orders + catalogue
+Check facts
+Trusted-data rules
+Trace source
+Rank origin steps
+Replay test
+Fix vs controls
+truth
+Replay from suspect
+API saves verdicts, evidence and human reviews · supplied repairs only
+02 / CONTROLLED REPLAY
+Compare a correction with controls.
+Same
+trace
+Corrected
+5/5 correct
+Unchanged
+0/2 correct
+Recorded case · supplied repair rule
+Source confirmed
+EARLY FEASIBILITY
+10/10
+faulty runs
+detected
+9/10
+origins
+verified
+10 tasks · 1 fault · 1 small model
+Four tasks not blind
+03 / VISION & TENTATIVE FYP-1 PLAN
+Turn an investigation into a lasting test.
+BUILT
+1 · Investigate
+Refund Desk workbench
+Checks · trace · replay
+PLANNED
+2 · Guide repairs
+One-click investigation
+Check-derived fixes
+PLANNED
+3 · Extend
+Retail Agent · imports
+Regression-test export
+04 / TOOLS & TECHNOLOGIES
+ENGINE
+Python
+Checks & tracing
+API
+FastAPI
+Runs & replay jobs
+INTERFACE
+React · TypeScript
+Inspect & review
+MODELS
+Ollama
+Local model calls

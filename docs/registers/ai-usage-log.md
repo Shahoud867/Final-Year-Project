@@ -341,3 +341,12 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - Created an editable Figma version with 146 text nodes and vector diagrams: https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=3-2.
 - Checked print dimensions, sRGB/300-ppi metadata, text count and minimum size, the native PSD text/vector structure, and its cached-layer rendering against the JPEG export. The degree was checked in both the PSD and PDF.
 - The team authorized publishing the corrected files to GitHub. The production handoff records the brief’s incompatible font/layout specifications and the adjustments made. Photoshop application review, physical 1-metre legibility, printer settings, registered-title/SDG/plan confirmations and supervisor approval remain pending; no university submission is claimed.
+
+
+## Fault Line logo production, 2026-11-13 (Codex)
+
+- Built Granite’s logo from the team-supplied polygons on a 96 × 96 grid. No freehand or generative-image approximation was used.
+- Generated primary, reversed, black and white marks and horizontal/vertical lockups, using Inter 4.001 at weight 640 and optical size 32 with −1% tracking; shaped outlines with HarfBuzz.
+- Delivered SVG/PDF vectors, transparent PNGs at 512/1024/2048, a favicon set, 1024 px avatar and one-page usage sheet. The small-size version uses the separately specified 10-unit gap, r12 disc, 76% white pieces and radius20 ink tile.
+- Checked exact coordinates, gap widths, disjoint pieces, origin containment, transparent negative ring, colourways, font settings, PDF vector content, PNG dimensions and the exact 16 px ICO/PNG match. Inspected pixel proofs and colour/monochrome/reversed artwork, then recreated the vector kit on a separate Figma page: https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=24-3.
+- Logo artwork remains separate from the poster. No timeline, scope, approval or university-submission status was changed.

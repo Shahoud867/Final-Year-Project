@@ -19,3 +19,10 @@ The print master is 22.5 × 34.5 inches, portrait, with a 6750 × 10350-pixel sR
 This is a **review draft**. The original brief's incompatible typography and geometry required documented layout adjustments; Photoshop application review, printer settings, and supervisor approval remain pending. See the handoff before printing or university submission. The archive includes fonts and OFL licences under `poster-support/fonts/`.
 
 The stage also hosts the FYP-1 Final report, slides and panel demonstration deliverables as they become available. Poster creation does not mark the evaluation stage or planned features complete.
+
+## Fault Line logo kit
+
+- [Download all logo assets](granite_logo-package_fyp1-final_v1.0.zip?raw=true)
+- [Open the one-page usage sheet](../../docs/brand/granite-fault-line/granite-logo-usage.pdf)
+- [Browse the editable SVG, PDF, transparent PNG, favicon and avatar assets](../../docs/brand/granite-fault-line/README.md)
+- [Open the editable Figma logo gallery](https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=24-3)

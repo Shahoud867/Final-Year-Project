@@ -333,3 +333,11 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - **Who wrote what.** The assistant moved the final handbook to `references/university/bs-fyp-handbook-2026.pdf` and the draft to `archive/superseded/`, and wrote [`docs/plan/fyp1-completion-plan.md`](../plan/fyp1-completion-plan.md) with a pointer from master plan section 31. The poster deadline (15 November) came from Shahoud.
 - **Judgements the team must check, not accept.** That the current results are circular (we author fault, check and repair rule); that the earliest-failing-check baseline ties Granite on Refund Desk; that a tau-bench Retail Agent is feasible in the time left; the week estimate for the FYP-1 Final (inferred from the handbook calendar, not confirmed); the proposed scope cut (C-05).
 - **Not done.** No code was written for the plan; the committed scope is not agreed with the supervisor; nothing was committed.
+
+
+## Poster production and DS correction, 2026-11-13 (Codex)
+
+- At Shahoud’s request, Codex created the Granite FYP-1 poster from the repository brief, corrected the degree from BS (CS) to BS (DS), and prepared the PSD, JPEG, PDF, SVG, preview, fonts and actual-size A4 crop tests.
+- Created an editable Figma version with 146 text nodes and vector diagrams: https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=3-2.
+- Checked print dimensions, sRGB/300-ppi metadata, text count and minimum size, the native PSD text/vector structure, and its cached-layer rendering against the JPEG export. The degree was checked in both the PSD and PDF.
+- The team authorized publishing the corrected files to GitHub. The production handoff records the brief’s incompatible font/layout specifications and the adjustments made. Photoshop application review, physical 1-metre legibility, printer settings, registered-title/SDG/plan confirmations and supervisor approval remain pending; no university submission is claimed.

@@ -1,0 +1,47 @@
+{
+  "trim_pixels": [
+    6750,
+    10350
+  ],
+  "trim_inches": [
+    22.5,
+    34.5
+  ],
+  "resolution_ppi": 300,
+  "minimum_font_pt": 22,
+  "maximum_whitespace_token_count": 479,
+  "lexical_word_count": 459,
+  "native_type_layers": 146,
+  "embedded_vector_smart_objects": 7,
+  "named_groups": [
+    "00 Paper",
+    "01 Header",
+    "02 Problem",
+    "03 Method",
+    "04 Proof",
+    "05 Built and measured",
+    "06 Plan",
+    "Evidence thread",
+    "07 Footer"
+  ],
+  "all_text_srgb": true,
+  "cached_layer_composite_mean_abs_error_0_to_255": 0.623,
+  "pdf_page_size_points": [
+    1620,
+    2484
+  ],
+  "pdf_font_families": [
+    "JTLHUW+Inter-Bold",
+    "MDTNFN+Inter-Medium",
+    "WBLMPF+JetBrainsMono-Medium",
+    "FQJFBF+JetBrainsMono-Bold",
+    "EEVNMO+JetBrainsMono-Medium",
+    "IJLWUD+Inter-Bold",
+    "LJGCBP+Inter-Medium"
+  ],
+  "psd_fonts_pruned_to_used_family": true,
+  "degree_label": "BS (DS) FYP 2026",
+  "figma_url": "https://www.figma.com/design/0OR9RnQzzZCGVfZWOulZ73?node-id=3-2",
+  "figma_editable_text_nodes": 146,
+  "figma_vector_nodes": 207
+}

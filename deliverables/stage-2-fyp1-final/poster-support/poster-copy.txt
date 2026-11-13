@@ -1,0 +1,146 @@
+FAST School of Computing, NUCES Islamabad
+Granite
+find the failure · prove the cause · verify the fix
+A Self-Healing Multi-Agent System for Semantic Error
+Diagnosis, Verified Repair and Recovery
+Shahoud Shahid (23i-2515) · Muhammad Noor Ul Haq
+(23i-2520) · Saif Shahzad (23i-2634)
+Supervisor: Dr. Adil Majeed · Project F26-060
+BS (DS) FYP 2026
+PROJECT GOALS
+Detect silent failures in agent
+workflows
+Locate where the error began
+Prove the cause by controlled
+replay
+Keep a person in charge, with
+evidence
+UN SDG 9 · Industry, Innovation
+and Infrastructure
+01 · THE PROBLEM
+It looked fine. It was wrong.
+Agents pass a wrong value along silently
+The run completes; no error is raised
+Blame lands where it showed, not where it
+began
+One lucky re-run can pass a wrong fix
+Two views, same run
+What output
+monitoring sees
+Run status: completed
+Errors raised: none
+Reply: refund of
+$662.00
+Looks healthy
+Checked against the catalogue
+What Granite’s check sees
+Told to the customer
+Catalogue total
+$662.00
+$662.23
+Difference −0.23 · CHK-OUT-1 failed
+Refund Desk run, recorded mode.
+Silent failure found
+02 · THE METHOD
+Seven steps, four stages, one record
+V0
+Detected
+V1
+Traced
+V2
+Verified
+V3
+Reviewed
+Run
+Check
+Detect
+Trace back
+Verify
+Review
+Record
+Where did it begin?
+Task input
+LLM
+Intake
+TOOL
+Order
+Lookup
+CODE
+Policy
+LLM
+Refund
+Calculator
+LLM
+Writer
+SUSPECT → ORIGIN CONFIRMED
+SYMPTOM
+Symptom at Writer; error began at Order Lookup.
+Three ideas
+Executable checks
+Rules test each step against a trusted source.
+Deterministic attribution
+Suspects ranked from the recorded data flow.
+Controlled replay
+Fix replays vs control replays, under a fixed rule.
+03 · THE PROOF
+One re-run proves nothing. Controls do.
+Order Lookup → CONFIRMED
+With the fix
+5/5 correct
+Control, no fix
+0/2 correct
+0%
+20%
+80%
+100%
+refute zone
+confirm zone
+95% Wilson interval 57%–100%
+Refund Calculator → REFUTED
+With the fix
+0/5 correct
+Control
+0/2 correct
+Experiment: 5 fix replays, 2 controls.
+Rule VR-1
+Confirmed: ≥ 80% fix correct, ≤ 20%
+controls correct
+Refuted: ≤ 20% fix correct
+Otherwise: inconclusive
+Rule fixed before any result
+SHA-256 hashed evidence
+A person decides
+04 · BUILT AND MEASURED
+A working product, measured honestly
+Pre-registered feasibility run (7 Oct 2026)
+10/10
+faulty runs detected
+0
+false alarms on clean runs*
+10/10
+origin ranked first
+9/10
+origin confirmed by replay
+10/10
+innocent step refuted
+20/20
+runs completed
+Engineering
+Automated tests
+CI/CD on GitHub Actions
+Live on Render
+21 diagrams from the code
+*A genuine model error, not injected. 10 tasks, 1 fault
+type, 1 small model: a first test, not a benchmark.
+05 · PLAN
+Plan to the FYP-1 final evaluation
+Planned
+Fix values derived from failed checks
+One-click verified investigation
+Three fault types and a batch Fault Lab
+Evaluation against baselines
+Trace import
+Regression-test export
+Retail Agent on tau-bench tasks
+F26-060 · BS Final Year Project 2026 · Python, FastAPI,
+React, TypeScript, Ollama

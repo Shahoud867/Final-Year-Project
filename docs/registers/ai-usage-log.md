@@ -399,3 +399,9 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - Combined the recorded replay and scoped pilot into one divided panel. Retained all result values and caveats; kept the date removed. Organized authentic stack logos into Engine/API/Interface/Models with actual roles. Retained the exact Fault Line identity and quiet reusable background. Planned feature cards remain explicit.
 - Exported poster PDF/JPEG/PSD/live SVG, outlined Figma import, separate section SVG/PDF/PNG sets, architecture PDF/SVG, fonts, proofs and source/reference notes. Verified exact trim, 300-ppi sRGB metadata, 26 pt minimum, safe opaque text, 110 native type layers/11 vector smart objects, embedded matching fonts, saved-layer recomposition, official-logo source hashes, ZIP integrity and workspace/link checks.
 - Live Photoshop/Corel/Figma application review and physical proof/one-metre readability remain pending, as do printer settings and supervisor/committee acceptance. No live Figma update or institutional approval is claimed.
+
+
+## Requested poster source assets, 2026-11-13 (Codex)
+
+- Located and bundled the original brief, three requested diagram SVGs and existing FASTLogo.jpg unchanged. Added a coordinate addendum derived from the actual v4.0 layout JSON, clearly separating current geometry from the historical brief. Included the JSON and SHA-256 hashes; verified ZIP integrity and byte-for-byte source copies.
+- The repository contains no verified vector university logo; the official homepage also serves a JPG. Supplied the existing raster original without claiming or manufacturing vector artwork. No poster content, Figma canvas or diagram source was changed.

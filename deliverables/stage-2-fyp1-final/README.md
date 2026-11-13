@@ -3,6 +3,8 @@
 The main figure now explains Granite itself: workbench, API/jobs, workflow under investigation, model adapter, trusted retail snapshot, investigation engine and stored evidence. Team information is organized into aligned columns. Official technology marks are grouped by role. Recorded replay evidence and the limited pilot share one clear divided panel.
 
 - [Download the complete v4.0 package](granite_poster-package_fyp1-final_v4.0.zip?raw=true)
+- [Requested brief, diagrams and university logo](granite_poster-assets_fyp1-final_v4.0.zip?raw=true)
+- [Current exact coordinate brief](poster-support/v4/poster-layout-brief.md)
 - [View the full poster](granite_poster-preview_fyp1-final_v4.0.jpg)
 - [Print PDF](granite_poster_fyp1-final_v4.0.pdf)
 - [Full-resolution JPEG](granite_poster_fyp1-final_v4.0.jpg)

@@ -2,7 +2,7 @@
 
 Generated 2026-11-13 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 870
+Entries: 872
 
 ## (repository root)
 
@@ -657,6 +657,7 @@ Entries: 870
 | `deliverables/stage-2-fyp1-final/granite_logo-package_fyp1-final_v1.0.zip` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-architecture_fyp1-final_v4.0.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-architecture_fyp1-final_v4.0.svg` |  |
+| `deliverables/stage-2-fyp1-final/granite_poster-assets_fyp1-final_v4.0.zip` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v2.1.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v3.0.pdf` |  |
 | `deliverables/stage-2-fyp1-final/granite_poster-background-crops_fyp1-final_v3.1.pdf` |  |
@@ -836,6 +837,7 @@ Entries: 870
 | `deliverables/stage-2-fyp1-final/poster-support/v4/fonts/jetbrainsmono-semibold.ttf` |  |
 | `deliverables/stage-2-fyp1-final/poster-support/v4/handbook-checklist.md` | Granite v4.0 — handbook and design checks |
 | `deliverables/stage-2-fyp1-final/poster-support/v4/poster-copy.txt` |  |
+| `deliverables/stage-2-fyp1-final/poster-support/v4/poster-layout-brief.md` | Granite v4.0 — exact poster layout brief |
 | `deliverables/stage-2-fyp1-final/poster-support/v4/poster-layout.json` |  |
 | `deliverables/stage-2-fyp1-final/poster-support/v4/poster-production-checks.json` |  |
 | `deliverables/stage-2-fyp1-final/poster-support/v4/reference-review.md` | Reference review and design response |

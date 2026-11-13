@@ -2,7 +2,7 @@
 
 Generated 2026-11-13 by `python scripts/build_index.py`. **Do not edit by hand.** One line per file (path and title); `data/raw/` is summarised per dataset. Layout and naming rules: [`workspace-guide.md`](workspace-guide.md). Old paths: [`archive/migration-map_2026-10-06.tsv`](../archive/migration-map_2026-10-06.tsv).
 
-Entries: 738
+Entries: 739
 
 ## (repository root)
 
@@ -177,6 +177,7 @@ Entries: 738
 | `docs/plan/execution-status.md` | Execution status |
 | `docs/plan/fyp1-completion-plan.md` | FYP-1 completion plan: from demonstration to product |
 | `docs/plan/master-plan.md` | Granite — FYP Master Execution Plan |
+| `docs/plan/poster-compliance-audit.md` | Granite poster compliance audit |
 | `docs/plan/requirements-trace.json` |  |
 | `docs/plan/requirements-trace.md` | Requirements traceability (functional requirements, Mid-1) |
 | `docs/registers/ai-usage-log.md` | AI Usage Log — Granite |

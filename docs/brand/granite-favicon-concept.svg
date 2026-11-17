@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="192" height="192" role="img" aria-labelledby="t">
+  <title id="t">Granite small-size mark (concept): bolder gap, solid origin disc, on an ink tile</title>
+  <!-- For 16 to 48 px use. Gap 10 units (not 6), solid disc r 12 with no ring, white pieces on an ink tile so it reads on light and dark browser tabs. -->
+  <rect width="96" height="96" rx="20" fill="#10243E"/>
+  <g transform="translate(11.5 11.5) scale(.76)">
+    <path fill="#FFFFFF" d="M20 14H39V52H61V90H20L8 78V26Z"/>
+    <path fill="#FFFFFF" d="M49 6H76L88 18V70L76 82H71V42H49Z"/>
+    <circle fill="#7CC0FF" cx="26" cy="70" r="12"/>
+  </g>
+</svg>

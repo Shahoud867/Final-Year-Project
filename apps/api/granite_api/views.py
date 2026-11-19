@@ -4,22 +4,27 @@ from __future__ import annotations
 
 from typing import Any
 
+from granite_core.checks import evaluate_checks
 from granite_core.evidence import EvidenceRecord, EvidenceType, verify_evidence
+from granite_core.experiment import plan_intervention
 from granite_core.lifecycle import Event, FindingStatus, allowed_events, verification_level
 from granite_core.lineage import edges
 from granite_core.trace import TASK, TraceV1, split_read
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from .models import Evidence, Finding, Run
+from .models import Batch, BatchRun, Evidence, Finding, Investigation, Run
 from .registry import WORKFLOWS
 from .schemas import (
+    BatchOut,
     EvidenceOut,
     ExperimentOut,
     FaultOut,
     FindingDetail,
     FindingSummary,
     HypothesisOut,
+    InvestigationOut,
+    LeadOut,
     ReplayOut,
     ReviewOut,
     RunDetail,
@@ -49,10 +54,25 @@ def evidence_sort_key(e: Evidence) -> tuple[int, str, str]:
     return rank, e.created_at.isoformat(), e.title
 
 
+def lead_of(f: Finding) -> LeadOut | None:
+    """The confirmed suspect, else the first-ranked one, with the counts of its latest finished experiment."""
+    if not f.hypotheses:
+        return None
+    h = next((h for h in f.hypotheses if h.status == "confirmed"), f.hypotheses[0])
+    done = [e.summary for e in h.experiments if e.summary]
+    s = done[-1] if done else {}
+    return LeadOut(
+        step_id=h.step_id, agent=h.agent, status=h.status,
+        fix_pass=s.get("k_pass"), fix_n=s.get("n_completed"),
+        control_pass=s.get("c_pass"), control_n=s.get("m_completed"),
+    )
+
+
 def finding_summary(f: Finding) -> FindingSummary:
-    """A finding with its verification level."""
+    """A finding with its verification level and the suspect it leads with."""
     out = FindingSummary.model_validate(f)
     out.verification_level = verification_level(FindingStatus(f.status))
+    out.lead = lead_of(f)
     return out
 
 
@@ -105,12 +125,11 @@ def finding_detail(session: Session, f: Finding) -> FindingDetail:
     actions = [USER_ACTIONS[ev] for ev in allowed_events(status) if ev in USER_ACTIONS]
     if f.status in AWAITING_REVIEW:
         actions.append("request_info")
-    entry = WORKFLOWS[f.run.workflow_key]
-    repairs = entry.build(f.run.model).repairs
     hypotheses = []
+    patchable = replayable_steps(f.run, [h.step_id for h in f.hypotheses])
     for h in f.hypotheses:
         ho = HypothesisOut.model_validate(h)
-        ho.can_verify = bool(repairs.get(h.step_id))
+        ho.can_verify = h.step_id in patchable
         hypotheses.append(ho)
     ev_rows = sorted(session.query(Evidence).filter(Evidence.finding_id == f.id), key=evidence_sort_key)
     experiments = [experiment_out(e) for h in f.hypotheses for e in h.experiments]
@@ -123,8 +142,50 @@ def finding_detail(session: Session, f: Finding) -> FindingDetail:
             "reviews": [ReviewOut.model_validate(r) for r in f.reviews],
             "evidence": [evidence_out(e) for e in ev_rows],
             "allowed_actions": actions,
+            "investigations": [investigation_out(i) for i in
+                               session.query(Investigation).filter(Investigation.finding_id == f.id)
+                               .order_by(Investigation.created_at)],
+            "can_export_regression": any(e.verdict == "confirmed" for h in f.hypotheses for e in h.experiments),
         }
     )
+
+
+def replayable_steps(run: Run, step_ids: list[str]) -> set[str]:
+    """The steps a replay could test: a failed check (or a repair rule) says what their output should be."""
+    if run.trace is None:
+        return set()
+    defn = WORKFLOWS[run.workflow_key].build(run.model)
+    trace = TraceV1.model_validate(run.trace)
+    results = evaluate_checks(trace, defn.checks, defn.truth())
+    return {s for s in step_ids if plan_intervention(defn, trace, s, results) is not None}
+
+
+def investigation_out(i: Investigation) -> InvestigationOut:
+    """An investigation with its attempts in order."""
+    return InvestigationOut.model_validate(i)
+
+
+def batch_out(session: Session, b: Batch) -> BatchOut:
+    """A Fault Lab batch with per-condition counts, computed from its runs.
+
+    Ground truth (which fault was injected) is used here only to score the batch, as on the run page.
+    """
+    runs = (session.query(Run).join(BatchRun, BatchRun.run_id == Run.id)
+            .filter(BatchRun.batch_id == b.id).order_by(BatchRun.position).all())
+    groups: dict[str, dict[str, int]] = {}
+    for r in runs:
+        g = groups.setdefault(r.fault_type or "none", {"runs": 0, "finished": 0, "completed": 0, "errored": 0,
+                                                       "with_finding": 0})
+        g["runs"] += 1
+        if r.status in ("completed", "errored"):
+            g["finished"] += 1
+            g[r.status] += 1
+        if r.status == "completed" and r.findings:
+            g["with_finding"] += 1
+    out = BatchOut.model_validate(b)
+    out.groups = groups
+    out.runs = [run_summary(session, r) for r in runs]
+    return out
 
 
 def graph(run: Run) -> dict[str, Any]:

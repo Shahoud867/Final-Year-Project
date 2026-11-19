@@ -44,6 +44,7 @@ class WorkflowEntry:
     key: str
     title: str
     description: str
+    module: str  # the importable package, named in exported regression tests
     build: Callable[[str], WorkflowDef]
     examples: Callable[[], list[dict[str, Any]]]
     fault_types: tuple[str, ...]
@@ -60,6 +61,7 @@ WORKFLOWS: dict[str, WorkflowEntry] = {
         key=WORKFLOW_KEY,
         title="Refund Desk",
         description="Five-step customer-support refund workflow on synthetic tau-bench retail data.",
+        module="refund_desk",
         build=lambda model: build_workflow(default_store(), model),
         examples=lambda: default_store().example_tasks(12),
         fault_types=tuple(sorted(FAULT_TYPES)),

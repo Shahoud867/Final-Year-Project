@@ -20,33 +20,49 @@ from .db import session_scope
 from .errors import ProblemError
 from .jobs import JobRunner
 from .llm_factory import build_provider, live_available, resolve_mode
-from .models import Evidence, Experiment, Finding, Job, Run
+from .models import Batch, Connection, Evidence, Experiment, Finding, Investigation, Job, Run, TraceLink
 from .registry import WORKFLOWS
 from .schemas import (
     Accepted,
+    BatchCreate,
+    BatchOut,
+    ConnectionCreate,
+    ConnectionOut,
     EvidenceOut,
     ExperimentCreate,
     ExperimentOut,
+    ExportRequest,
     FindingDetail,
     FindingSummary,
+    ImportRequest,
+    InvestigationCreate,
+    InvestigationOut,
     JobOut,
     ReviewCreate,
     ReviewOut,
     RunCreate,
     RunDetail,
     RunSummary,
+    TraceLinkOut,
 )
+from .services import batches as batch_service
+from .services import connections as con_service
+from .services import evaluations as eval_service
 from .services import experiments as exp_service
+from .services import investigations as inv_service
 from .services import reviews as review_service
 from .services import runs as run_service
+from .services.regression import regression_zip
 from .services.report import finding_report
 from .views import (
+    batch_out,
     count_by_status,
     evidence_out,
     experiment_out,
     finding_detail,
     finding_summary,
     graph,
+    investigation_out,
     run_detail,
     run_summary,
 )
@@ -250,6 +266,68 @@ def start_experiment(hypothesis_id: str, body: ExperimentCreate, db: Db, setting
     return Accepted(job_id=job_id, experiment_id=exp.id)
 
 
+@router.post("/findings/{finding_id}/investigations", status_code=202, tags=["verification"])
+def start_investigation(finding_id: str, body: InvestigationCreate, db: Db, settings: Cfg, jobs: Jobs) -> Accepted:
+    """Verify the ranked suspects in order until one is confirmed or the replay budget is spent. Returns a job."""
+    inv = inv_service.create_investigation(db, settings, finding_id, body.n, body.m, body.budget, body.mode, "analyst")
+    db.commit()
+    job_id = jobs.submit("investigation", inv.id, inv_service.investigation_job(jobs.factory, settings, inv.id))
+    return Accepted(job_id=job_id, investigation_id=inv.id)
+
+
+@router.get("/investigations/{investigation_id}", tags=["verification"])
+def get_investigation(investigation_id: str, db: Db) -> InvestigationOut:
+    """An investigation with its attempts so far."""
+    inv = db.get(Investigation, investigation_id)
+    if inv is None:
+        raise ProblemError(404, "Investigation not found", f"There is no investigation {investigation_id}.")
+    return investigation_out(inv)
+
+
+@router.get("/findings/{finding_id}/regression", tags=["findings"], response_model=None)
+def get_regression(finding_id: str, db: Db) -> Response:
+    """A regression test for a confirmed finding: a zip with the case JSON, a pytest module and a README."""
+    name, body = regression_zip(_finding(db, finding_id))
+    disposition = {"Content-Disposition": f'attachment; filename="{name}"'}
+    return Response(body, media_type="application/zip", headers=disposition)
+
+
+@router.post("/batches", status_code=202, tags=["fault lab"])
+def create_batch(body: BatchCreate, db: Db, settings: Cfg, jobs: Jobs) -> Accepted:
+    """Generate one run per chosen fault (or clean) on each chosen example task. Returns a job to poll."""
+    batch = batch_service.create_batch(db, settings, body.workflow, body.faults, body.task_ids, body.seed, body.mode)
+    db.commit()
+    job_id = jobs.submit("batch", batch.id, batch_service.batch_job(jobs.factory, settings, batch.id))
+    return Accepted(job_id=job_id, batch_id=batch.id)
+
+
+@router.get("/batches", tags=["fault lab"])
+def list_batches(db: Db, limit: Annotated[int, Query(ge=1, le=50)] = 10) -> list[BatchOut]:
+    """Recent batches, newest first, with their per-condition counts."""
+    return [batch_out(db, b) for b in db.query(Batch).order_by(Batch.created_at.desc()).limit(limit)]
+
+
+@router.get("/batches/{batch_id}", tags=["fault lab"])
+def get_batch(batch_id: str, db: Db) -> BatchOut:
+    """A batch with its runs and per-condition counts (detected, errored, false alarms on clean runs)."""
+    batch = db.get(Batch, batch_id)
+    if batch is None:
+        raise ProblemError(404, "Batch not found", f"There is no batch {batch_id}.")
+    return batch_out(db, batch)
+
+
+@router.get("/evaluations", tags=["evaluation"])
+def list_evaluations(settings: Cfg) -> list[dict[str, Any]]:
+    """Benchmark results written by the evaluation harness, newest first (read-only)."""
+    return eval_service.list_evaluations(settings.eval_dir)
+
+
+@router.get("/evaluations/{evaluation_id}", tags=["evaluation"])
+def get_evaluation(evaluation_id: str, settings: Cfg) -> dict[str, Any]:
+    """One benchmark result in full: protocol, metrics with intervals, and every run."""
+    return eval_service.get_evaluation(settings.eval_dir, evaluation_id)
+
+
 @router.get("/experiments/{experiment_id}", tags=["verification"])
 def get_experiment(experiment_id: str, db: Db) -> ExperimentOut:
     """An experiment with its replays, summary and verdict."""
@@ -300,3 +378,67 @@ def test_llm(settings: Cfg) -> dict[str, Any]:
     except Exception as exc:
         return {"ok": False, "mode": "live", "message": str(exc)}
     return {"ok": True, "mode": "live", "message": f"{settings.model} answered in {out.latency_ms} ms."}
+
+
+# ---- integrations: Arize Phoenix and Langfuse (F13, ADR-012) -------------------------------------------------------
+def _connection_out(db: Session, settings: Settings, conn: Connection) -> ConnectionOut:
+    out = ConnectionOut.model_validate(conn)
+    links = db.query(TraceLink).filter_by(connection_id=conn.id).all()
+    out.imported_runs = sum(1 for link in links if link.direction == "imported")
+    out.exported_runs = sum(1 for link in links if link.direction == "exported")
+    out.keys_configured = conn.kind == "phoenix" or bool(settings.langfuse_public_key and settings.langfuse_secret_key)
+    return out
+
+
+@router.get("/connections", tags=["integrations"])
+def list_connections(db: Db, settings: Cfg) -> list[ConnectionOut]:
+    """Connected Phoenix and Langfuse projects, newest first."""
+    rows = db.query(Connection).order_by(Connection.created_at.desc()).all()
+    return [_connection_out(db, settings, c) for c in rows]
+
+
+@router.post("/connections", status_code=201, tags=["integrations"])
+def create_connection(body: ConnectionCreate, db: Db, settings: Cfg) -> ConnectionOut:
+    """Add a Phoenix or Langfuse project. Only the URL and names are stored; keys stay in the server environment."""
+    conn = con_service.create_connection(db, body.kind, body.name, body.base_url, body.project, body.workflow,
+                                         body.steps)
+    db.commit()
+    return _connection_out(db, settings, conn)
+
+
+@router.post("/connections/{connection_id}/test", tags=["integrations"])
+def test_connection(connection_id: str, db: Db, settings: Cfg) -> dict[str, Any]:
+    """Reach the platform with the configured keys and report what it said."""
+    return con_service.test_connection(con_service.get_connection(db, connection_id), settings)
+
+
+@router.post("/connections/{connection_id}/import", tags=["integrations"])
+def import_traces(connection_id: str, body: ImportRequest, db: Db, settings: Cfg) -> dict[str, Any]:
+    """Import the newest traces not imported before, run the workflow's checks on them and open findings."""
+    conn = con_service.get_connection(db, connection_id)
+    result = con_service.import_traces(db, settings, conn, body.limit)
+    db.commit()
+    return result
+
+
+@router.post("/runs/{run_id}/export", tags=["integrations"])
+def export_run(run_id: str, body: ExportRequest, db: Db, settings: Cfg) -> dict[str, Any]:
+    """Send a run to a connected platform as spans, so it can be seen there next to the team's other traces."""
+    result = con_service.export_run(db, settings, con_service.get_connection(db, body.connection_id), _run(db, run_id))
+    db.commit()
+    return result
+
+
+@router.get("/runs/{run_id}/links", tags=["integrations"])
+def run_links(run_id: str, db: Db) -> list[TraceLinkOut]:
+    """Platforms this run was imported from or sent to, with the span id of each step."""
+    _run(db, run_id)
+    return [TraceLinkOut.model_validate(link) for link in con_service.links_of(db, run_id)]
+
+
+@router.post("/findings/{finding_id}/writeback", tags=["integrations"])
+def write_back(finding_id: str, db: Db, settings: Cfg) -> dict[str, Any]:
+    """Write the finding's verdict to the linked platforms: a span annotation (Phoenix) or a score (Langfuse)."""
+    result = con_service.write_back(db, settings, _finding(db, finding_id))
+    db.commit()
+    return result

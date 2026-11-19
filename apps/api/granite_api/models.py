@@ -222,6 +222,89 @@ class Job(Base):
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
+class Investigation(Base):
+    """Verified attribution in one action: ranked suspects verified in order within a replay budget (F12-INV).
+
+    ``attempts`` lists each suspect in order with what happened to it (verified with a verdict and an experiment id,
+    skipped because nothing says what its output should be, or not reached because the budget was spent).
+    """
+
+    __tablename__ = "investigations"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True)
+    finding_id: Mapped[str] = mapped_column(ForeignKey("findings.id"), index=True)
+    status: Mapped[str] = mapped_column(String(20), default="queued")  # queued, running, done, error
+    llm_mode: Mapped[str] = mapped_column(String(20), default="recorded")
+    n: Mapped[int] = mapped_column(Integer)
+    m: Mapped[int] = mapped_column(Integer)
+    budget: Mapped[int] = mapped_column(Integer)
+    replays_used: Mapped[int] = mapped_column(Integer, default=0)
+    outcome: Mapped[str | None] = mapped_column(String(20), nullable=True)  # confirmed, exhausted, no_candidate
+    confirmed_step: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    attempts: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+    error: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class Batch(Base):
+    """A Fault Lab batch: many runs of one workflow over chosen faults and tasks, generated in one action (F12)."""
+
+    __tablename__ = "batches"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True)
+    workflow_key: Mapped[str] = mapped_column(String(60))
+    status: Mapped[str] = mapped_column(String(20), default="queued")  # queued, running, done, cancelled
+    llm_mode: Mapped[str] = mapped_column(String(20), default="recorded")
+    faults: Mapped[list[str]] = mapped_column(JSON, default=list)  # "none" stands for clean runs
+    task_count: Mapped[int] = mapped_column(Integer)
+    seed: Mapped[int] = mapped_column(Integer, default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, index=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class BatchRun(Base):
+    """Membership of a run in a batch (a separate table, so the runs table keeps its shape)."""
+
+    __tablename__ = "batch_runs"
+    batch_id: Mapped[str] = mapped_column(ForeignKey("batches.id"), primary_key=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("runs.id"), primary_key=True)
+    position: Mapped[int] = mapped_column(Integer)
+
+
+class Connection(Base):
+    """A third-party observability project Granite reads traces from and writes verdicts to (ADR-012).
+
+    Holds no secrets: API keys come from environment variables on the server (``GRANITE_PHOENIX_API_KEY``,
+    ``GRANITE_LANGFUSE_PUBLIC_KEY`` and ``GRANITE_LANGFUSE_SECRET_KEY``), so the database can be shared or exported.
+    """
+
+    __tablename__ = "connections"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True)
+    kind: Mapped[str] = mapped_column(String(20))  # phoenix, langfuse
+    name: Mapped[str] = mapped_column(String(120))
+    base_url: Mapped[str] = mapped_column(String(300))
+    project: Mapped[str] = mapped_column(String(120), default="")  # Phoenix project; Langfuse trace-name filter
+    workflow_key: Mapped[str] = mapped_column(String(60))
+    profile: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)  # span name -> step alias
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    last_sync_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_error: Mapped[str] = mapped_column(Text, default="")
+
+
+class TraceLink(Base):
+    """A run that came from, or was sent to, a connection: the external trace id and each step's span id."""
+
+    __tablename__ = "trace_links"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    connection_id: Mapped[str] = mapped_column(ForeignKey("connections.id"), index=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("runs.id"), index=True)
+    direction: Mapped[str] = mapped_column(String(10))  # imported, exported
+    external_trace_id: Mapped[str] = mapped_column(String(120), index=True)
+    root_span_id: Mapped[str] = mapped_column(String(120), default="")
+    span_ids: Mapped[dict[str, str]] = mapped_column(JSON, default=dict)  # step_id -> external span id
+    lineage: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)  # how each read was established
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
 class AuditLog(Base):
     """Append-only record of who did what (FR-AUD)."""
 

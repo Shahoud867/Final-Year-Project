@@ -33,6 +33,10 @@ class Settings:
     max_workers: int = 2
     static_dir: Path | None = None
     llm_timeout_s: float | None = None  # per model call; default 30 s hosted, 120 s local Ollama (see change C-02g)
+    eval_dir: Path = REPO_ROOT / "research" / "eval" / "results"  # benchmark result files the Evaluation page reads
+    phoenix_api_key: str = ""  # only when the Phoenix server has authentication on
+    langfuse_public_key: str = ""
+    langfuse_secret_key: str = ""
     extra: dict[str, str] = field(default_factory=dict)
 
     @classmethod
@@ -58,6 +62,10 @@ class Settings:
             max_workers=int(env("GRANITE_MAX_WORKERS", "2")),
             static_dir=Path(static) if static else None,
             llm_timeout_s=float(timeout) if timeout else None,
+            eval_dir=Path(env("GRANITE_EVAL_DIR", str(defaults.eval_dir))),
+            phoenix_api_key=env("GRANITE_PHOENIX_API_KEY", ""),
+            langfuse_public_key=env("GRANITE_LANGFUSE_PUBLIC_KEY", ""),
+            langfuse_secret_key=env("GRANITE_LANGFUSE_SECRET_KEY", ""),
         )
 
     def validate(self) -> None:
@@ -67,5 +75,7 @@ class Settings:
         for name, url in (("GRANITE_OLLAMA_URL", self.ollama_url), ("GRANITE_OPENAI_BASE_URL", self.openai_base_url)):
             if url and not url.startswith(("http://", "https://")):
                 raise ValueError(f"{name} must start with http:// or https:// (got '{url}')")
+        if bool(self.langfuse_public_key) != bool(self.langfuse_secret_key):
+            raise ValueError("set both GRANITE_LANGFUSE_PUBLIC_KEY and GRANITE_LANGFUSE_SECRET_KEY, or neither")
         if bool(self.openai_base_url) != bool(self.openai_api_key):
             raise ValueError("set both GRANITE_OPENAI_BASE_URL and GRANITE_OPENAI_API_KEY, or neither")

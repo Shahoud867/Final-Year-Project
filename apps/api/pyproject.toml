@@ -10,6 +10,7 @@ requires-python = ">=3.11"
 dependencies = [
   "granite-core",
   "granite-refund-desk",
+  "granite-connectors",
   "fastapi>=0.110",
   "uvicorn>=0.29",
   "sqlalchemy>=2.0",
@@ -46,5 +47,5 @@ max-complexity = 12
 [tool.mypy]
 python_version = "3.11"
 strict = true
-mypy_path = "../../packages/granite_core:../../workflows/refund_desk"
+mypy_path = "../../packages/granite_core:../../packages/granite_connectors:../../workflows/refund_desk"
 plugins = ["pydantic.mypy"]

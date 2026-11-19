@@ -8,6 +8,7 @@ from typing import Any
 from granite_core.attribution import attribute
 from granite_core.checks import CheckResult, FindingSpec, derive_findings, evaluate_checks
 from granite_core.evidence import EvidenceType, sha256_of
+from granite_core.experiment import plan_intervention
 from granite_core.lifecycle import Event
 from granite_core.runner import FaultRecord, RunOutcome, WorkflowDef
 from granite_core.trace import TraceV1
@@ -65,8 +66,8 @@ def _open_finding(
     if hypotheses:
         move(session, finding, Event.HYPOTHESES_READY)
         top = hypotheses[0]
-        if top.method == "provenance" and not defn.repairs.get(top.step_id):
-            move(session, finding, Event.EVIDENCE_SUPPORTED)  # strong provenance evidence, but no replay is defined
+        if top.method == "provenance" and plan_intervention(defn, trace, top.step_id, results) is None:
+            move(session, finding, Event.EVIDENCE_SUPPORTED)  # strong provenance evidence, but nothing to replay
     return finding
 
 

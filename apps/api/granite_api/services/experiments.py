@@ -5,10 +5,10 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from granite_core.evidence import EvidenceType
-from granite_core.experiment import ReplayRecord, run_experiment
+from granite_core.experiment import ReplayRecord, plan_intervention, run_experiment
 from granite_core.lifecycle import Event
 from granite_core.trace import TraceV1
-from granite_core.verification import RULE_VERSION, ReplayUnavailable, Verdict, build_intervention
+from granite_core.verification import RULE_VERSION, ReplayUnavailable, Verdict
 from sqlalchemy.orm import Session, sessionmaker
 
 from ..config import Settings
@@ -42,11 +42,11 @@ def create_experiment(
     entry = entry_for(run.workflow_key)
     defn = entry.build(run.model)
     trace = TraceV1.model_validate(run.trace)
-    if build_intervention(trace, hyp.step_id, defn.repairs.get(hyp.step_id, []), defn.truth()) is None:
+    if plan_intervention(defn, trace, hyp.step_id) is None:
         raise ProblemError(
             422, "Cannot be verified automatically",
-            f"This workflow defines no repair for step '{hyp.step_id}', so a replay would have nothing to test. "
-            "Review the evidence instead.",
+            f"No failed check of step '{hyp.step_id}' says what its output should have been, so a replay would "
+            "have nothing to test. Review the evidence instead.",
         )
     move(session, finding, Event.VERIFY_STARTED, actor)  # raises IllegalTransition (409) if not allowed now
     exp = Experiment(

@@ -85,9 +85,12 @@ class Cassette:
         self.path = os.fspath(path)
         self._lock = threading.Lock()
         self._entries: dict[str, dict[str, Any]] = {}
+        self._extra: dict[str, Any] = {}  # other top-level fields (e.g. the prompt fingerprint): kept on every write
         if os.path.exists(self.path):
             with open(self.path, encoding="utf-8") as fh:
-                self._entries = json.load(fh).get("entries", {})
+                data = json.load(fh)
+            self._entries = data.get("entries", {})
+            self._extra = {k: v for k, v in data.items() if k not in ("format", "entries")}
 
     def get(self, key: str) -> dict[str, Any] | None:
         """Return the recorded entry for a request key, or None."""
@@ -106,7 +109,7 @@ class Cassette:
             tmp = self.path + ".tmp"
             with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
                 json.dump(
-                    {"format": "granite.cassette/v1", "entries": self._entries},
+                    {**self._extra, "format": "granite.cassette/v1", "entries": self._entries},
                     fh,
                     indent=1,
                     sort_keys=True,

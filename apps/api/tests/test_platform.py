@@ -88,11 +88,11 @@ class TestNotFoundAndState:
         again = client.post(f"/api/hypotheses/{hyp}/experiments", json={})
         assert again.status_code == 409 and "confirmed" in again.json()["detail"]
 
-    def test_step_without_a_repair_cannot_be_verified(self, client, example):
+    def test_step_whose_checks_pass_cannot_be_verified(self, client, example):
         finding = open_finding(client, example)
         blind = next(h for h in finding["hypotheses"] if not h["can_verify"])
         r = client.post(f"/api/hypotheses/{blind['id']}/experiments", json={})
-        assert r.status_code == 422 and "no repair" in r.json()["detail"]
+        assert r.status_code == 422 and "No failed check" in r.json()["detail"]
         assert client.get(f"/api/findings/{finding['id']}").json()["status"] == "hypothesized"
 
 

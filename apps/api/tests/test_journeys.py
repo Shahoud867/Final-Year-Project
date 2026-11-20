@@ -8,7 +8,7 @@ from tests.conftest import hypothesis_for, open_finding, start_run, verify
 def test_workflow_catalogue_and_examples(client):
     wf = client.get("/api/workflows").json()[0]
     assert wf["key"] == "refund_desk" and [s["id"] for s in wf["steps"]] == ["s1", "s2", "s3", "s4", "s5"]
-    assert len(wf["checks"]) == 7 and wf["faults"] == ["stale_price"]
+    assert len(wf["checks"]) == 8 and wf["faults"] == ["dropped_item", "handoff_drift", "stale_price"]
     examples = client.get("/api/workflows/refund_desk/examples").json()
     assert len(examples) == 12 and all("order_id" in e and "email" in e for e in examples)
 
@@ -88,6 +88,20 @@ def test_review_workflow_accept_then_resolve_and_report(client, example):
         assert needle in report.text
 
 
+def test_finding_lists_name_the_leading_suspect_and_its_latest_replay_counts(client, example):
+    finding = open_finding(client, example)
+    [row] = client.get("/api/findings").json()
+    assert row["lead"] == {"step_id": "s2", "agent": "Order Lookup", "status": "open",
+                           "fix_pass": None, "fix_n": None, "control_pass": None, "control_n": None}
+    verify(client, hypothesis_for(finding, "s4")["id"])  # a refuted suspect does not take the lead
+    verify(client, hypothesis_for(finding, "s2")["id"])
+    [row] = client.get("/api/findings").json()
+    assert (row["lead"]["step_id"], row["lead"]["status"]) == ("s2", "confirmed")
+    assert (row["lead"]["fix_pass"], row["lead"]["fix_n"], row["lead"]["control_pass"], row["lead"]["control_n"]) == (5, 5, 0, 2)
+    run = client.get(f"/api/runs/{finding['run_id']}").json()
+    assert run["findings"][0]["lead"]["agent"] == "Order Lookup"
+
+
 def test_findings_can_be_listed_and_filtered(client, example):
     open_finding(client, example)
     start_run(client, example)  # clean run adds no finding
@@ -120,9 +134,9 @@ def test_a_replay_with_no_recorded_answer_gives_no_verdict_and_says_why(client, 
     The product must not guess: the verdict is "error", the reason is stated, and the finding can be verified again.
     """
     finding = open_finding(client, example)
-    intake = hypothesis_for(finding, "s1")
-    exp = verify(client, intake["id"])
-    assert exp["verdict"] == "error" and exp["summary"]["m_completed"] == 0
+    lookup = hypothesis_for(finding, "s2")
+    exp = verify(client, lookup["id"], n=10)  # replays 6 to 10 use seeds that were never recorded
+    assert exp["verdict"] == "error" and exp["summary"]["n_completed"] == 5
     assert "not in the recording" in exp["summary"]["explanation"]
     after = client.get(f"/api/findings/{finding['id']}").json()
     assert after["status"] == "hypothesized" and "verify" in after["allowed_actions"]

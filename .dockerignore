@@ -4,6 +4,7 @@
 archive
 references
 research
+!research/eval/results/*_benchmark-v*.json
 deliverables
 docs
 evidence

@@ -51,11 +51,11 @@ def test_sys_core_02_clean_run_opens_no_finding(api: Client) -> None:
 
     Requirement: FR-CHK-01, FR-CHK-04, NFR-06
     Steps: run the first example without a fault.
-    Expected: the run completes; all seven checks pass; no finding is opened; no injected-fault record exists.
+    Expected: the run completes; all eight checks pass; no finding is opened; no injected-fault record exists.
     """
     run = api.run(api.example())
     assert run["status"] == "completed" and run["findings"] == [] and run["injected_fault"] is None
-    assert len(run["check_results"]) == 7 and {c["status"] for c in run["check_results"]} == {"pass"}
+    assert len(run["check_results"]) == 8 and {c["status"] for c in run["check_results"]} == {"pass"}
 
 
 def test_sys_core_03_innocent_step_is_refuted_then_the_origin_is_confirmed(api: Client) -> None:
@@ -120,6 +120,44 @@ def test_sys_core_06_api_documents_itself(api: Client) -> None:
     described = [op.get("description") for item in spec["paths"].values() for op in item.values()]
     assert all(described), "every endpoint has a description"
     assert api.get("/docs").status == 200
+
+
+def test_sys_core_08_investigate_confirms_the_origin_and_exports_a_regression_test(api: Client) -> None:
+    """SYS-CORE-08 Verified attribution in one action, then a regression test to keep.
+
+    Requirement: FR-VER-01, FR-VER-02, FR-REP-02
+    Steps: run the first example with the fault; ask for the regression export (refused: nothing confirmed yet); start an
+    investigation with the default budget; ask for the export again.
+    Expected: the first export is refused (409); the investigation confirms Order Lookup (s2) on its first attempt using
+    7 replays, with the correction taken from check CT-LOOKUP; the finding is 'confirmed'; the export is a zip file.
+    """
+    finding = api.finding_of(api.run(api.example(), "stale_price"))
+    assert api.get(f"/api/findings/{finding['id']}/regression").status == 409
+    r = api.post(f"/api/findings/{finding['id']}/investigations", {})
+    assert r.status == 202, r.text
+    assert api.wait_job(r.json()["job_id"], seconds=120)["status"] == "succeeded"
+    inv = api.get(f"/api/investigations/{r.json()['investigation_id']}").json()
+    assert inv["outcome"] == "confirmed" and inv["confirmed_step"] == "s2" and inv["replays_used"] == 7
+    after = api.get(f"/api/findings/{finding['id']}").json()
+    assert after["status"] == "confirmed" and after["experiments"][0]["intervention"]["derived_from"] == ["CT-LOOKUP"]
+    zipped = api.get(f"/api/findings/{finding['id']}/regression")
+    assert zipped.status == 200 and zipped.headers["content-type"] == "application/zip" and zipped.text.startswith("PK")
+
+
+def test_sys_core_09_fault_lab_batch_scores_each_condition(api: Client) -> None:
+    """SYS-CORE-09 Fault Lab generates a batch and scores it per condition.
+
+    Requirement: FR-LAB-01
+    Steps: generate stale_price and clean runs on two recorded example tasks in recorded mode.
+    Expected: four runs; both faulty runs completed with a finding; neither clean run has one.
+    """
+    tasks = [api.example(0)["order_id"], api.example(1)["order_id"]]
+    r = api.post("/api/batches", {"faults": ["stale_price", "none"], "task_ids": tasks, "mode": "recorded"})
+    assert r.status == 202, r.text
+    assert api.wait_job(r.json()["job_id"], seconds=120)["status"] == "succeeded"
+    batch = api.get(f"/api/batches/{r.json()['batch_id']}").json()
+    assert len(batch["runs"]) == 4 and batch["groups"]["stale_price"]["with_finding"] == 2
+    assert batch["groups"]["none"]["with_finding"] == 0
 
 
 def test_sys_core_07_web_ui_is_served_with_the_api(api: Client, has_ui: bool) -> None:
@@ -206,13 +244,14 @@ def test_sys_err_05_step_without_a_repair_rule_cannot_be_verified(api: Client) -
     """SYS-ERR-05 A hypothesis that cannot be tested is refused, not guessed.
 
     Requirement: FR-VER-01
-    Steps: on a new finding, ask to verify a hypothesis whose step has no repair rule (Policy or Writer).
+    Steps: on a new finding, ask to verify a hypothesis whose step has no failed check that names a correct value
+    (Policy or Writer).
     Expected: refused (422) with an explanation; the finding keeps its status.
     """
     finding = api.finding_of(api.run(api.example(), "stale_price"))
     blind = next(h for h in finding["hypotheses"] if not h["can_verify"])
     r = api.post(f"/api/hypotheses/{blind['id']}/experiments", {})
-    assert r.status == 422 and "no repair" in r.json()["detail"]
+    assert r.status == 422 and "No failed check" in r.json()["detail"]
     assert api.get(f"/api/findings/{finding['id']}").json()["status"] == "hypothesized"
 
 

@@ -54,7 +54,8 @@ class Client:
             req.add_header(k, v)
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
-                return Response(resp.status, {k.lower(): v for k, v in resp.headers.items()}, resp.read().decode("utf-8"))
+                return Response(resp.status, {k.lower(): v for k, v in resp.headers.items()},
+                                resp.read().decode("utf-8", "replace"))  # a zip download is not text
         except urllib.error.HTTPError as e:
             try:
                 text = e.read().decode("utf-8", "replace")

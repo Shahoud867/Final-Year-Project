@@ -18,12 +18,15 @@ FROM python:3.11-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
 WORKDIR /app
 COPY packages/granite_core packages/granite_core
+COPY packages/granite_connectors packages/granite_connectors
 COPY workflows/refund_desk workflows/refund_desk
 COPY apps/api apps/api
-RUN pip install ./packages/granite_core ./workflows/refund_desk ./apps/api \
+RUN pip install ./packages/granite_core ./packages/granite_connectors ./workflows/refund_desk ./apps/api \
     && rm -rf packages/granite_core/tests workflows/refund_desk/tests apps/api/tests
 COPY data/seed data/seed
 COPY data/cassettes/refund_desk_v1.json data/cassettes/refund_desk_v1.json
+# Benchmark results for the Evaluation page (read-only; written by research/eval/benchmark_v0.py).
+COPY research/eval/results/ data/evaluations/
 COPY --from=web /web/dist /app/web
 
 RUN useradd --system --uid 10001 --home /app granite && mkdir /data && chown granite /data
@@ -32,6 +35,7 @@ ENV GRANITE_DB_URL=sqlite:////data/granite.db \
     GRANITE_SEED_DIR=/app/data/seed \
     GRANITE_CASSETTE=/app/data/cassettes/refund_desk_v1.json \
     GRANITE_STATIC_DIR=/app/web \
+    GRANITE_EVAL_DIR=/app/data/evaluations \
     GRANITE_LLM_MODE=recorded
 VOLUME /data
 EXPOSE 8000

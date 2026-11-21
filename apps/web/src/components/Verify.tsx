@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ApiError, api, waitForJob } from "../api";
 import { evidenceKind, label } from "../format";
 import { DEFAULT_CONTROLS, DEFAULT_REPLAYS, MAX_CONTROLS, MAX_REPLAYS } from "../lib/vr1";
-import type { Experiment, FindingDetail, Graph as GraphData, Hypothesis, Job } from "../types";
+import type { Experiment, FindingDetail, Graph as GraphData, Hypothesis, Investigation, Job } from "../types";
 import { Graph } from "./Graph";
 import type { NodeMark } from "./Graph";
 import { ReplayDots } from "./Replay";
@@ -26,6 +26,43 @@ export function leading(hypotheses?: Hypothesis[] | null): Hypothesis | undefine
 
 const inRange = (v: number, lo: number, hi: number) => Number.isInteger(v) && v >= lo && v <= hi;
 
+export const DEFAULT_BUDGET = 21;
+const ATTEMPT_TEXT: Record<string, string> = {
+  confirmed: "Confirmed", refuted: "Refuted", inconclusive: "Inconclusive", error: "No verdict",
+};
+
+/** The suspects an investigation tried, in order: verdict, or why it was skipped or not reached. */
+export function Attempts({ inv }: { inv: Investigation }) {
+  const ended = inv.status === "done" || inv.status === "error";
+  return (
+    <div className="lab-attempts" aria-live="polite">
+      <div className="row between small">
+        <strong>
+          {inv.outcome === "confirmed" ? `Origin confirmed: ${inv.attempts.find((a) => a.verdict === "confirmed")?.agent ?? inv.confirmed_step}`
+            : inv.outcome === "exhausted" ? "No suspect confirmed within the budget"
+              : inv.outcome === "no_candidate" ? "No suspect could be replayed"
+                : inv.status === "error" ? "Investigation stopped with an error" : "Investigating…"}
+        </strong>
+        <span className="mono dim">{inv.replays_used}/{inv.budget} replays</span>
+      </div>
+      <ol className="lab-attempt-list">
+        {inv.attempts.map((a, i) => (
+          <li key={`${a.step_id}-${i}`} className={`lab-attempt ${a.status}`}>
+            <span className="mono dim">{i + 1}</span>
+            <strong>{a.agent ?? a.step_id}</strong>
+            {a.status === "verified"
+              ? <Badge value={a.verdict ?? "error"} text={ATTEMPT_TEXT[a.verdict ?? "error"]} />
+              : <Chip tone="neutral">{a.status === "skipped" ? "Skipped" : "Not reached"}</Chip>}
+            <span className="small muted">{a.status === "verified" ? `${a.replays_used} replays` : a.reason}</span>
+          </li>
+        ))}
+        {!ended ? <li className="lab-attempt pending small muted">verifying the next suspect…</li> : null}
+      </ol>
+      {inv.error ? <p className="small t-bad">{inv.error}</p> : null}
+    </div>
+  );
+}
+
 /** Ranked origin hypotheses with the causal map, and the controlled-replay experiment that tests one of them. */
 export function Verify({ f, graph, onDone }: { f: FindingDetail; graph?: GraphData | null; onDone: () => void }) {
   const [busy, setBusy] = useState("");
@@ -42,6 +79,24 @@ export function Verify({ f, graph, onDone }: { f: FindingDetail; graph?: GraphDa
   const steps = graph?.nodes.filter((nd) => nd.kind !== "input") ?? [];
   const cut = chosen ? steps.findIndex((s) => s.id === chosen.step_id) : -1;
   const symptom = steps.find((s) => s.id === f.symptom_step)?.label ?? f.symptom_step;
+
+  const [budget, setBudget] = useState(DEFAULT_BUDGET);
+  const [inv, setInv] = useState<Investigation | null>(null);
+  const bOk = inRange(budget, nOk && mOk ? n + m : 1, 60);
+  const last = inv ?? f.investigations?.[f.investigations.length - 1] ?? null;
+
+  async function investigate() {
+    setBusy("investigation"); setError(""); setJob(null); setLive(null); setInv(null);
+    try {
+      const { job_id, investigation_id } = await api.investigate(f.id, { n, m, budget });
+      await waitForJob(job_id, (j) => {
+        setJob(j);
+        void api.investigation(investigation_id).then(setInv, () => undefined);
+      });
+      setInv(await api.investigation(investigation_id));
+    } catch (e) { setError(e instanceof ApiError ? e.message : "Something went wrong."); }
+    setBusy(""); onDone();
+  }
 
   async function run(h: Hypothesis) {
     setBusy(h.id); setError(""); setJob(null); setLive(null); setPicked(h.id);
@@ -73,6 +128,24 @@ export function Verify({ f, graph, onDone }: { f: FindingDetail; graph?: GraphDa
         </figure>
       ) : null}
 
+      <div className="lab-investigate">
+        <div>
+          <strong>Investigate</strong>
+          <p className="small muted">Verify the suspects below in order, {n} replays with the fix and {m} without each, until one is confirmed or the budget runs out.</p>
+        </div>
+        <div className="field">
+          <label htmlFor="budget">Replay budget</label>
+          <input id="budget" type="number" min={1} max={60} step={1} value={Number.isNaN(budget) ? "" : budget}
+                 onChange={(e) => setBudget(e.target.valueAsNumber)} {...describe("budget", { error: bOk ? "" : "x" })} />
+          {bOk ? null : <div className="field-error" id="budget-err">Use {nOk && mOk ? n + m : 1} to 60</div>}
+        </div>
+        <button type="button" className="btn primary" onClick={investigate}
+                disabled={!canVerify || !!busy || !nOk || !mOk || !bOk || f.hypotheses.length === 0}>
+          <Search size={14} aria-hidden="true" />Investigate
+        </button>
+      </div>
+      {last ? <Attempts inv={last} /> : null}
+
       <ol className="lab-hyps">
         {f.hypotheses.map((h) => {
           const on = chosen?.id === h.id;
@@ -98,7 +171,7 @@ export function Verify({ f, graph, onDone }: { f: FindingDetail; graph?: GraphDa
                 </button>
                 {h.can_verify
                   ? <button type="button" className="btn primary sm" onClick={() => run(h)} disabled={!canVerify || !!busy || !nOk || !mOk}><Play size={12} aria-hidden="true" />Verify</button>
-                  : <span className="small dim" title="The workflow defines no repair rule for this step, so a replay would have nothing to test">no automatic replay</span>}
+                  : <span className="small dim" title="No failed check of this step says what its output should have been, so a replay would have nothing to test">no automatic replay</span>}
               </div>
             </li>
           );
@@ -122,7 +195,7 @@ export function Verify({ f, graph, onDone }: { f: FindingDetail; graph?: GraphDa
         </div>
         {cut >= 0 && chosen ? (
           <div className="lab-plan" aria-label={`Replay plan for ${chosen.agent}`} role="group">
-            <span className="eyebrow">Replay plan <InfoTip text="Steps up to the suspect are reused exactly as recorded. The suspect's output is replaced with the value its contract or the source of truth requires, then the later steps run again: N times with the correction and M times without it (controls)." label="About the replay plan" align="start" /></span>
+            <span className="eyebrow">Replay plan <InfoTip text="Steps up to the suspect are reused exactly as recorded. The suspect's output is replaced with the value its failed check expects, then the later steps run again: N times with the correction and M times without it (controls)." label="About the replay plan" align="start" /></span>
             <div className="lab-plan-steps">
               {steps.map((s, i) => (
                 <span key={s.id} className={`lab-plan-step ${i < cut ? "frozen" : i === cut ? "patched" : "rerun"}`}>

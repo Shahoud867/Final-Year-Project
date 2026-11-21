@@ -49,7 +49,9 @@ export function ModeBadge({ mode, model }: { mode: string; model?: string }) {
   const recorded = mode === "recorded";
   const title = recorded
     ? "Saved real model answers were replayed. Deterministic; no model was called."
-    : mode === "live" ? "A model was called for this execution." : "Live model when one is reachable, otherwise the recorded cassette.";
+    : mode === "live" ? "A model was called for this execution."
+      : mode === "imported" ? "Read from a connected Phoenix or Langfuse project; Granite did not execute this run."
+        : "Live model when one is reachable, otherwise the recorded cassette.";
   return (
     <span className={`chip tone-${recorded ? "neutral" : "replay"}`} title={title}>
       {recorded ? <CassetteTape size={12} aria-hidden="true" /> : <Cpu size={12} aria-hidden="true" />}
@@ -73,6 +75,46 @@ export function LevelBadge({ level, showName }: { level: string; showName?: bool
       <span className="level-bars" aria-hidden="true">{[0, 1, 2, 3].map((i) => <i key={i} className={i <= n ? "on" : undefined} />)}</span>
       {level}{showName && LEVEL_NAME[level] ? <span className="muted" style={{ fontFamily: "var(--font-sans)", fontWeight: 500 }}>{LEVEL_NAME[level]}</span> : null}
     </span>
+  );
+}
+
+/**
+ * The evidence ladder: four segments V0 to V3, filled to the finding's level. Each segment names its level on hover;
+ * the whole ladder reads as one image ("Evidence level V2 of V3: replay-verified").
+ */
+export function Ladder({ level, compact }: { level: string; compact?: boolean }) {
+  const n = ["V0", "V1", "V2", "V3"].indexOf(level);
+  const text = n < 0 ? `Evidence level ${level}` : `Evidence level ${level} of V3: ${(LEVEL_NAME[level] ?? "").toLowerCase()}`;
+  return (
+    <span className={`ladder${n === 3 ? " full" : ""}${compact ? " compact" : ""}`} role="img" aria-label={text} title={LEVELS[level] ?? level}>
+      {["V0", "V1", "V2", "V3"].map((v, i) => <i key={v} className={i <= n ? "on" : undefined} title={`${v}: ${LEVEL_NAME[v]}`} />)}
+      <span className="ladder-text" aria-hidden="true">{level}{compact ? null : <span className="ladder-name">{LEVEL_NAME[level]}</span>}</span>
+    </span>
+  );
+}
+
+/** A 0..1 value as a bar with an optional threshold marker (scores, coverage). The number is printed beside it. */
+export function Meter({ value, max = 1, threshold, label: name, tone = "replay", format }: {
+  value: number; max?: number; threshold?: number; label: string; tone?: Tone; format?: (v: number) => string;
+}) {
+  const w = Math.max(0, Math.min(1, value / max)) * 100;
+  return (
+    <span className="meter" role="meter" aria-label={name} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max}>
+      <span className="meter-track"><i className={`tone-${tone}`} style={{ width: `${w}%` }} />
+        {threshold !== undefined ? <b style={{ left: `${(threshold / max) * 100}%` }} aria-hidden="true" /> : null}</span>
+      <span className="meter-value mono">{format ? format(value) : value}</span>
+    </span>
+  );
+}
+
+/** The Granite mark (docs/brand): a block split by a stepped fault line, with the origin marked upstream. */
+export function BrandMark({ size = 28 }: { size?: number }) {
+  return (
+    <svg className="brand-mark" viewBox="8 6 80 84" width={size} height={size} aria-hidden="true" focusable="false">
+      <path fill="currentColor" fillRule="evenodd" d="M20 14H41V50H63V90H20L8 78V26ZM38 69A10 10 0 1 0 18 69A10 10 0 1 0 38 69Z" />
+      <path fill="currentColor" d="M47 6H76L88 18V70L76 82H69V44H47Z" />
+      <circle className="origin" cx="28" cy="69" r="7" />
+    </svg>
   );
 }
 

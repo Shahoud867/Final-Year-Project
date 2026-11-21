@@ -6,6 +6,8 @@ import { Card, Chip, Skeleton } from "./ui";
 /** What is known about each fault the workflow offers: where it strikes and what it does (workflows/refund_desk/faults.py). */
 export const FAULT_INFO: Record<string, { target: string; text: string }> = {
   stale_price: { target: "s2", text: "The order-lookup tool returns an outdated price for one requested item. No error is raised." },
+  dropped_item: { target: "s1", text: "Intake keeps only the first item the customer named and loses the rest. No error is raised." },
+  handoff_drift: { target: "s4", text: "The item list arrives at the Refund Calculator with one price changed in transit; Policy sent it correctly. No error is raised." },
 };
 
 /** Field rules, exactly as the server enforces them (registry.py RefundTask, schemas.py RunCreate). */

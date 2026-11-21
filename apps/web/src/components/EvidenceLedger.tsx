@@ -5,30 +5,37 @@ import { evidenceType, when } from "../format";
 import type { Evidence, FindingDetail } from "../types";
 import { Badge, Card, ErrorBox, Hash, InfoTip, JsonView, KV, Drawer, Notice } from "./ui";
 
+/** Download the finding's report as Markdown or JSON; the server's own error is shown if it cannot be built. */
+export function ReportButtons({ id }: { id: string }) {
+  const [error, setError] = useState("");
+  async function download(format: "md" | "json") {
+    setError("");
+    try { await downloadReport(id, format); }
+    catch (e) { setError(e instanceof ApiError ? e.message : "Could not create the report."); }
+  }
+  return (
+    <>
+      <span className="row tight">
+        <button type="button" className="btn sm" onClick={() => download("md")}><Download size={13} aria-hidden="true" />Download report (.md)</button>
+        <button type="button" className="btn sm" onClick={() => download("json")}><FileJson size={13} aria-hidden="true" />Report (.json)</button>
+      </span>
+      <ErrorBox message={error} />
+    </>
+  );
+}
+
 /**
- * The evidence behind a finding: every record with its SHA-256 and the server's integrity check, the full payload on
- * demand, and the report export. `hash_valid` is the server's answer each time the finding is read, not a stored flag.
+ * The evidence behind a finding: every record with its SHA-256 and the server's integrity check, and the full payload
+ * on demand. `hash_valid` is the server's answer each time the finding is read, not a stored flag.
  */
 export function EvidenceLedger({ f }: { f: FindingDetail }) {
   const [open, setOpen] = useState<Evidence | null>(null);
-  const [error, setError] = useState("");
   const valid = f.evidence.filter((e) => e.hash_valid).length;
   const broken = f.evidence.length - valid;
 
-  async function download(format: "md" | "json") {
-    setError("");
-    try { await downloadReport(f.id, format); }
-    catch (e) { setError(e instanceof ApiError ? e.message : "Could not create the report."); }
-  }
-
   return (
     <Card title="Evidence" icon={Fingerprint} className="lab-evidence"
-          sub={<>{`${f.evidence.length} record${f.evidence.length === 1 ? "" : "s"}, ${valid} hash${valid === 1 ? "" : "es"} verified`} <InfoTip label="How evidence is checked" text="Each record is stored once with the SHA-256 of its canonical JSON. Every time the finding is opened the server recomputes the hash and compares. The API has no way to edit or delete a record." /></>}
-          actions={<>
-            <button type="button" className="btn sm" onClick={() => download("md")}><Download size={13} aria-hidden="true" />Download report (.md)</button>
-            <button type="button" className="btn sm" onClick={() => download("json")}><FileJson size={13} aria-hidden="true" />Report (.json)</button>
-          </>}>
-      <ErrorBox message={error} />
+          sub={<>{`${f.evidence.length} record${f.evidence.length === 1 ? "" : "s"}, ${valid} hash${valid === 1 ? "" : "es"} verified`} <InfoTip label="How evidence is checked" text="Each record is stored once with the SHA-256 of its canonical JSON. Every time the finding is opened the server recomputes the hash and compares. The API has no way to edit or delete a record." /></>}>
       {broken > 0 ? (
         <Notice tone="bad" role="alert" title="Integrity check failed">
           {broken} record{broken === 1 ? "" : "s"} no longer match{broken === 1 ? "es" : ""} the stored hash. Treat the conclusions that rest on {broken === 1 ? "it" : "them"} as unproven.

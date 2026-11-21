@@ -37,10 +37,14 @@ export const STEP_KIND: Record<string, string> = { llm: "LLM", tool: "Tool", cod
 export const stepKind = (kind: string): string => STEP_KIND[kind] ?? kind;
 
 /** How the model answers were produced. "recorded" replays saved real answers; "live" calls the model. */
-export const MODE_LABEL: Record<string, string> = { recorded: "Recorded cassette", live: "Live model", auto: "Automatic" };
+export const MODE_LABEL: Record<string, string> = {
+  recorded: "Recorded cassette", live: "Live model", auto: "Automatic", imported: "Imported trace",
+};
 export const modeLabel = (mode: string): string => MODE_LABEL[mode] ?? mode;
 
-export const FAULT_LABEL: Record<string, string> = { stale_price: "Stale price" };
+export const FAULT_LABEL: Record<string, string> = {
+  stale_price: "Stale price", dropped_item: "Dropped item", handoff_drift: "Handoff drift",
+};
 export const faultLabel = (fault: string | null | undefined): string => (fault ? FAULT_LABEL[fault] ?? label(fault) : "None");
 
 export function short(value: unknown, max = 70): string {

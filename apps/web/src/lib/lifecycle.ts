@@ -29,6 +29,13 @@ export const TERMINAL = ["rejected", "resolved", "wont_fix"];
 /** Statuses whose verification level is V2 or V3. */
 export const VERIFIED = ["confirmed", "accepted", "resolved", "wont_fix"];
 
+/** Inbox tabs: who has to act next. Every status belongs to exactly one group. */
+export const INBOX_GROUPS: { id: string; label: string; statuses: string[] }[] = [
+  { id: "needs", label: "Needs you", statuses: AWAITING_REVIEW },
+  { id: "verifying", label: "Verifying", statuses: ["open", "hypothesized", "verifying", "refuted"] },
+  { id: "decided", label: "Decided", statuses: ["accepted", ...TERMINAL] },
+];
+
 /** [from, event, to] for every legal transition, in the order lifecycle.py lists them. */
 export const TRANSITIONS: [string, string, string][] = [
   ["open", "hypotheses_ready", "hypothesized"],

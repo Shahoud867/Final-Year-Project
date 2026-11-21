@@ -1,6 +1,7 @@
 import type {
-  Example, Experiment, FindingCounts, FindingDetail, FindingSummary, Graph, Health, Job, RunDetail, RunSummary, TaskInput,
-  Workflow,
+  Batch, Connection, Evaluation, EvaluationSummary, Example, Experiment, ExportResult, FindingCounts, FindingDetail,
+  FindingSummary, Graph, Health, ImportResult, Investigation, Job, RunDetail, RunSummary, TaskInput, TraceLink, Workflow,
+  WriteBackResult,
 } from "./types";
 
 /** An error from the API, already phrased for a person (RFC 7807 problem body). */
@@ -69,6 +70,25 @@ export function qs(params: Record<string, string | number | undefined>): string 
 
 export interface RunRequest { task_input: TaskInput; fault: string | null; mode?: string; seed?: number }
 
+/** Fetch the regression-test zip of a confirmed finding and hand it to the browser as a download. */
+export async function downloadRegression(id: string): Promise<void> {
+  const token = getToken();
+  let res: Response;
+  try {
+    res = await fetch(`/api/findings/${id}/regression`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+  } catch {
+    throw new ApiError("Cannot reach the Granite server. Is it running?", 0);
+  }
+  if (!res.ok) {
+    let detail = `Export failed (${res.status})`;
+    try { detail = ((await res.json()) as Problem).detail ?? detail; } catch { /* not JSON */ }
+    throw new ApiError(detail, res.status);
+  }
+  const url = URL.createObjectURL(await res.blob());
+  Object.assign(document.createElement("a"), { href: url, download: `test_granite_${id}.zip` }).click();
+  URL.revokeObjectURL(url);
+}
+
 /** Fetch a finding report and hand it to the browser as a file download. */
 export async function downloadReport(id: string, format: "md" | "json" = "md"): Promise<void> {
   const body = await request<unknown>(`/findings/${id}/report?format=${format}`);
@@ -98,6 +118,23 @@ export const api = {
   experiment: (id: string) => request<Experiment>(`/experiments/${id}`),
   review: (id: string, decision: string, comment: string, reviewer: string) =>
     post(`/findings/${id}/reviews`, { decision, comment, reviewer }),
+  investigate: (findingId: string, body: { n: number; m: number; budget: number }) =>
+    post<{ job_id: string; investigation_id: string }>(`/findings/${findingId}/investigations`, body),
+  investigation: (id: string) => request<Investigation>(`/investigations/${id}`),
+  createBatch: (body: { faults: string[]; task_ids: string[] | null; mode?: LlmMode; seed?: number }) =>
+    post<{ job_id: string; batch_id: string }>("/batches", { workflow: "refund_desk", ...body }),
+  batches: () => request<Batch[]>("/batches"),
+  batch: (id: string) => request<Batch>(`/batches/${id}`),
+  evaluations: () => request<EvaluationSummary[]>("/evaluations"),
+  evaluation: (id: string) => request<Evaluation>(`/evaluations/${id}`),
+  connections: () => request<Connection[]>("/connections"),
+  createConnection: (body: { kind: string; name: string; base_url: string; project: string; steps?: Record<string, string> }) =>
+    post<Connection>("/connections", { workflow: "refund_desk", ...body }),
+  testConnection: (id: string) => post<{ ok: boolean; detail: Record<string, unknown> }>(`/connections/${id}/test`, {}),
+  importTraces: (id: string, limit = 20) => post<ImportResult>(`/connections/${id}/import`, { limit }),
+  exportRun: (runId: string, connectionId: string) => post<ExportResult>(`/runs/${runId}/export`, { connection_id: connectionId }),
+  runLinks: (runId: string) => request<TraceLink[]>(`/runs/${runId}/links`),
+  writeBack: (findingId: string) => post<WriteBackResult>(`/findings/${findingId}/writeback`, {}),
   job: (id: string) => request<Job>(`/jobs/${id}`),
   testLlm: () => post<{ ok: boolean; mode: string; message: string }>("/settings/test-llm", {}),
 };

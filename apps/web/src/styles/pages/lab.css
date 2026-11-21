@@ -1,0 +1,22 @@
+/* Fault Lab and Evaluation pages. */
+.lab-conditions { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s-2); }
+.lab-condition { display: flex; gap: var(--s-2); align-items: flex-start; padding: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); cursor: pointer; }
+.lab-condition > span { display: flex; flex-direction: column; gap: 2px; }
+.lab-condition.on { border-color: var(--replay-line); background: var(--replay-soft); }
+.lab-condition input { margin-top: 3px; }
+.lab-plan-line { margin: var(--s-3) 0; }
+.lab-progress { margin-top: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); }
+
+.eval-headline { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s-3); }
+.eval-stat { padding: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-md); display: flex; flex-direction: column; gap: 4px; }
+.eval-stat .eval-value { font-size: var(--fs-lg); font-weight: 650; font-variant-numeric: tabular-nums; }
+.eval-cell { display: flex; flex-direction: column; gap: 3px; min-width: 120px; }
+.eval-interval { position: relative; height: 8px; border-radius: 4px; background: var(--neutral-soft); }
+.eval-interval > i { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: var(--replay-line); }
+.eval-interval > b { position: absolute; top: -2px; width: 3px; height: 12px; margin-left: -1px; border-radius: 2px; background: var(--replay); }
+.eval-best { font-weight: 650; }
+.eval-provenance { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); }
+
+/* Observability platforms card on the run page (F13). */
+.platform-send { flex-wrap: nowrap; }
+.platform-send select { width: auto; min-width: 0; max-width: min(320px, 60vw); }

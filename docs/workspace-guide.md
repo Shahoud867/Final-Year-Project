@@ -33,7 +33,8 @@ Final-Year-Project/                      repo root, project F26-060-Granite
 ├── .github/                             [created by the first CI pull request] workflows/, issue and PR templates, CODEOWNERS
 │
 ├── docs/                                ACTIVE. Documents we write
-│   ├── plan/master-plan.md              execution plan; the source of truth for scope, schedule, rubric mapping
+│   ├── plan/                            product strategy, FYP-1 completion plan, execution status, and master-plan.md
+│   │                                    (the source of truth for scope, schedule, rubric mapping); plan/README.md says which to read
 │   ├── report/                          LaTeX report source (prescribed template); exported PDFs go to deliverables/
 │   ├── diagrams/                        diagram sources and exports (Mermaid, PlantUML, draw.io)
 │   ├── adr/                             architecture decision records: adr-NNN-slug.md

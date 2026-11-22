@@ -45,6 +45,7 @@ Only direct dependencies are listed; their own dependencies carry compatible per
 | eslint, @eslint/js, typescript-eslint, eslint-plugin-react-hooks, globals | 10.12.0, 10.0.1, 8.71.1, 7.1.1, 17.13.0 | MIT |
 | @types/node, @types/react, @types/react-dom | 26.6.4, 19.3.0, 19.3.0 | MIT |
 | axe-core (accessibility tests only) | 4.14.0 | MPL-2.0 |
+| @playwright/test (browser journey test only; not shipped) | 1.65.1 | Apache-2.0 |
 
 ## Data, models and services
 

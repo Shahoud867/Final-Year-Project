@@ -2,10 +2,40 @@
 
 | | |
 |---|---|
-| Date | 2026-10-11 (sections 1 to 4 were written on 2026-10-07 and 2026-10-09; section 0 is the current state) |
+| Date | 2026-11-14 (sections 1 to 4 were written on 2026-10-07 and 2026-10-09; section 0 on 2026-10-11; the update below is the current state) |
 | Companion to | [`master-plan.md`](master-plan.md) (the roadmap) and the Mid-1 rubric (`references/university/`) |
 | Rule | A row says **Done** only if it can be shown today by a command or a file. Everything else says what is missing |
 | Written by | The AI assistant that did the implementation (see [`ai-usage-log.md`](../registers/ai-usage-log.md)); not yet reviewed by the team |
+
+## Update, 2026-11-15
+
+The five committed items of the [completion plan](fyp1-completion-plan.md) are implemented, tested and the evaluation was run, on branch `feat/fyp1-final-scope`, **uncommitted, unmerged, not deployed, and before the supervisor approved the scope (C-05)**. Checklist: completion plan, section 0.
+
+| Area | Now | Evidence |
+|---|---|---|
+| Tests | 559 passing: core 221 (93% lines), connectors 20 (93%), Refund Desk 61, API 93 (96%), system 24, web 140; plus the Playwright browser journey (2: desktop and phone). The web suite passes in full when run file by file (`npx vitest run --no-file-parallelism`); with all files in parallel on a fully loaded machine some tests exceed their wait time | `pytest` in each package; `pytest tests/system`; `npm test`; `npm run e2e` |
+| Interface (frontend roadmap P0 and P1) | Inbox with lifecycle tabs, Runs page, case file with a sticky verdict rail, run page tabs with checks under each step, flat design tokens, Granite mark, style guide. Browser journey with real-browser contrast checks passes locally; its CI job has not run on GitHub yet. No person has used the new screens | [roadmap section 10.1](../../apps/web/FRONTEND_DESIGN_ROADMAP.md), [Inbox](../../evidence/demos/2026-11-15_ui-inbox.png), [case file](../../evidence/demos/2026-11-15_ui-case-file-rail.png) |
+| Integrations (C-07, extended scope) | Phoenix: send a run, import traces, investigate, write the verdict back. **Verified live** against a local Phoenix 21.0.0 server: the imported trace equals the original step by step, checks fail identically, replay confirms the origin, and the `granite.verdict` annotation shows on the Order Lookup span in Phoenix's own UI. Langfuse: implemented against the documented API, **tested only against an in-memory stand-in** (no instance or keys) | [live check report](../../evidence/demos/2026-11-15_phoenix-live-check.json), [Phoenix screenshot](../../evidence/demos/2026-11-15_phoenix-verdict-annotation.png), [Connections](../../evidence/demos/2026-11-15_connections-phoenix.png), [finding](../../evidence/demos/2026-11-15_imported-finding-verdict-sent.png); ADR-012 |
+| Static checks | ruff, mypy strict (four packages), bandit, ESLint, tsc clean; architecture rule covers the new connectors layer; `npm audit --audit-level=high` clean (fixes the CI failure of 11 November) | as in CI |
+| Generated artefacts | trace schema, design pack, system-test catalogue, traceability: all `--check` pass | `scripts/*.py --check` |
+| Benchmark v0 (pre-registered, live, 40 runs) | Detection 30/30; clean runs flagged 1/10 (a genuine model error); top-1 at 40% check coverage: Granite 82% vs earliest-failing-check 44%; placebo confirmations: VR-1 0/30 vs one replay 9/30 | [results](../../research/eval/results/2026-11-15_benchmark-v0.md) and the [notes](../../research/eval/results/2026-11-15_benchmark-v0-notes.md), which list what the numbers do not support |
+| Recorded mode | The cassette now also holds every answer of the benchmark, so all three faults, Investigate and Fault Lab batches on the 10 delivered tasks run with no model | `data/cassettes/refund_desk_v1.json` |
+
+## Update, 2026-11-14
+
+Checked on this date by the AI assistant; not yet reviewed by the team.
+
+| Area | Now | Evidence |
+|---|---|---|
+| Product code | **Unchanged since 14 October.** The three commits since are documents | `git log --since=2026-10-15 --oneline` |
+| CI on `main` | **Failing since 11 November.** The web job stops at the dependency audit: high-severity advisories in `undici` and `zod`, both with a fix available. The Python job passes. CD is skipped while CI fails | `gh run list --branch main`; `cd apps/web && npm audit --audit-level=high` |
+| Tests, run locally today | Core 209, Refund Desk 49 and the API suite pass. Web and system suites not re-run today | `pytest` in each package |
+| Since 11 October, now true | The code is on `main` through pull requests (eight merges, numbered #1 to #11); the service is deployed on Render; tag `v0.1.0-mid1` exists | [Deployment record](../registers/deployment-record.md); `git tag` |
+| Still not true | No change is approved by the supervisor (C-01 to C-04 unsigned); no meeting minutes are on file; no GitHub issue exists; no member has done the code walkthrough; FR-SEC-01 is not met; the hosted database is lost on each deploy | [Change log](../registers/change-log.md); [`docs/meetings/`](../meetings/) |
+| Final-1 features | Of the master plan's Final-1 Must list, F10 to F13, F15 to F18 and F20 are not started. One fault type | `workflows/refund_desk/refund_desk/faults.py` |
+| Open pull request | #12 (draft) adds six poster versions with duplicated fonts to the stage-2 folder; its CI fails for the same audit reason | `gh pr view 12` |
+
+What to do about it: [`fyp1-completion-plan.md`](fyp1-completion-plan.md), version 1.1.
 
 ## 0. Update, 2026-10-11
 

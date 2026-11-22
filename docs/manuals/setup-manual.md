@@ -25,7 +25,7 @@ git clone <repository-url> && cd Final-Year-Project
 python -m venv .venv
 # Windows PowerShell:  .venv\Scripts\Activate.ps1      macOS/Linux: source .venv/bin/activate
 python -m pip install --upgrade pip setuptools wheel
-pip install -e "packages/granite_core[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
+pip install -e "packages/granite_core[dev]" -e "packages/granite_connectors[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
 cd apps/web && npm ci && npm run build && cd ../..
 ```
 
@@ -68,6 +68,20 @@ ollama pull llama3.2:3b
 
 In the UI use "Test model" (top right). Expect 5 to 15 seconds per model call on a laptop CPU, so one run takes about a minute and a verification about three.
 
+### Connect Arize Phoenix or Langfuse (optional)
+
+Phoenix runs locally with no account. Use a separate environment, because it brings many dependencies:
+
+```bash
+python -m venv ~/venvs/phoenix && ~/venvs/phoenix/bin/pip install "arize-phoenix==21.0.0"
+PYTHONUTF8=1 ~/venvs/phoenix/bin/phoenix serve          # http://localhost:6006
+python scripts/check_connectors_live.py --phoenix http://localhost:6006   # 8 checks, all must pass
+```
+
+On Windows set `PYTHONUTF8=1` (Phoenix 21 crashes printing its banner to a non-UTF-8 console). Then open **Connections** in Granite, add "Arize Phoenix" with that URL and a project name, send a run from its run page ("Send to"), press **Import traces**, investigate the imported finding and press **Send verdict**: the annotation `granite.verdict` appears on the origin span in Phoenix.
+
+Langfuse: create a project in Langfuse Cloud or a self-hosted Langfuse, put its keys in `GRANITE_LANGFUSE_PUBLIC_KEY` and `GRANITE_LANGFUSE_SECRET_KEY` where the Granite server runs, and add a Langfuse connection. Keys are never stored in Granite's database. The Langfuse connector has been tested only against an in-memory stand-in so far; run `scripts/check_connectors_live.py --langfuse <host>` once you have keys.
+
 ## 5. Check that it works
 
 ```bash
@@ -80,6 +94,7 @@ It checks health, the UI, and a recorded run that must open one finding. Expecte
 
 ```bash
 (cd packages/granite_core && pytest --cov=granite_core && ruff check . && mypy granite_core)
+(cd packages/granite_connectors && pytest --cov=granite_connectors && ruff check . && mypy granite_connectors)
 (cd workflows/refund_desk && pytest && ruff check . && mypy refund_desk)
 (cd apps/api && pytest --cov=granite_api && ruff check . && mypy granite_api)
 (cd apps/web && npm test && npm run lint && npm run typecheck)

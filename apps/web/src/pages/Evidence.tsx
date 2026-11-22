@@ -170,7 +170,7 @@ function Delivery() {
 export function Evidence() {
   return (
     <div className="page ev">
-      <PageHeader title="Evidence" sub="What Granite does that ordinary monitoring does not." />
+      <PageHeader title="Why Granite" sub="What Granite does that ordinary monitoring does not." />
       <Lanes />
 
       <Card title="What Granite does about it" icon={ShieldCheck} sub="six mechanisms, each in one file">

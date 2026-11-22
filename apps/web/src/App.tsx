@@ -1,31 +1,48 @@
-import { BookOpen, ChevronRight, FileCode2, FlaskConical, GitBranch, GitCommitHorizontal, Moon, Mountain, Plus, Radar, ShieldCheck, Sun } from "lucide-react";
+import { BookOpen, ChevronRight, FileCode2, FlaskConical, GitBranch, GitCommitHorizontal, Inbox, Moon, PlugZap, Plus, ShieldCheck, Sigma, Sun, Workflow } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, getToken, setToken } from "./api";
-import { Card, ModeBadge } from "./components/ui";
+import { BrandMark, Card, ModeBadge } from "./components/ui";
 import type { Icon } from "./components/ui";
 import { BUILD, commitUrl, repoUrl } from "./delivery";
 import { useLoad, useRoute, useTheme } from "./hooks";
+import { Connections } from "./pages/Connections";
+import { Evaluation } from "./pages/Evaluation";
 import { Evidence } from "./pages/Evidence";
+import { Lab } from "./pages/Lab";
 import { FindingDetail } from "./pages/FindingDetail";
 import { Guide } from "./pages/Guide";
 import { Home } from "./pages/Home";
 import { NewRun } from "./pages/NewRun";
 import { RunDetail } from "./pages/RunDetail";
+import { Runs } from "./pages/Runs";
+import { StyleGuide } from "./pages/StyleGuide";
 import type { Health } from "./types";
 
-const NAV: { route: string; href: string; label: string; icon: Icon }[] = [
-  { route: "", href: "#/", label: "Investigations", icon: Radar },
-  { route: "new", href: "#/new", label: "Task Studio", icon: FlaskConical },
-  { route: "guide", href: "#/guide", label: "How it works", icon: BookOpen },
-  { route: "evidence", href: "#/evidence", label: "Evidence", icon: ShieldCheck },
+type NavItem = { route: string; href: string; label: string; icon: Icon };
+/** Working pages first; explanation last, in its own group (roadmap section 4). The case file is reached from the Inbox. */
+const NAV: NavItem[] = [
+  { route: "", href: "#/", label: "Inbox", icon: Inbox },
+  { route: "runs", href: "#/runs", label: "Runs", icon: Workflow },
+  { route: "lab", href: "#/lab", label: "Fault Lab", icon: FlaskConical },
+  { route: "evaluation", href: "#/evaluation", label: "Evaluation", icon: Sigma },
+  { route: "connections", href: "#/connections", label: "Connections", icon: PlugZap },
 ];
-const SECTION: Record<string, string> = { "": "Investigations", new: "Task Studio", guide: "How it works", evidence: "Evidence", runs: "Investigations", findings: "Investigations" };
+const HELP: NavItem[] = [
+  { route: "guide", href: "#/guide", label: "How it works", icon: BookOpen },
+  { route: "evidence", href: "#/evidence", label: "Why Granite", icon: ShieldCheck },
+];
+const SECTION: Record<string, string> = {
+  "": "Inbox", findings: "Inbox", runs: "Runs", new: "New run", lab: "Fault Lab", evaluation: "Evaluation",
+  connections: "Connections", guide: "How it works", evidence: "Why Granite", styleguide: "Style guide",
+};
+/** The style guide renders every component in every state; it ships only in development or when the build asks for it. */
+const STYLEGUIDE = import.meta.env.DEV || import.meta.env.VITE_STYLEGUIDE === "1";
 
 function Brand() {
   return (
     <a className="brand" href="#/">
-      <span className="brand-mark"><Mountain size={16} aria-hidden="true" /></span>
-      <span className="brand-text"><span className="brand-name">Granite</span><span className="brand-tag">find · prove · verify</span></span>
+      <BrandMark />
+      <span className="brand-text"><span className="brand-name">Granite</span><span className="brand-tag">find · prove · fix</span></span>
     </a>
   );
 }
@@ -82,26 +99,37 @@ export default function App() {
 
   let view = <Home />;
   if (page === "new") view = <NewRun />;
+  else if (page === "lab") view = <Lab />;
+  else if (page === "evaluation") view = <Evaluation />;
+  else if (page === "connections") view = <Connections />;
   else if (page === "guide") view = <Guide />;
   else if (page === "evidence") view = <Evidence />;
   else if (page === "runs" && id) view = <RunDetail id={id} key={id} />;
+  else if (page === "runs") view = <Runs />;
   else if (page === "findings" && id) view = <FindingDetail id={id} key={id} />;
-  else if (page) view = <Card><h1>Page not found</h1><p className="muted"><a href="#/">Back to investigations</a></p></Card>;
+  else if (page === "styleguide" && STYLEGUIDE) view = <StyleGuide />;
+  else if (page) view = <Card><h1>Page not found</h1><p className="muted"><a href="#/">Back to the inbox</a></p></Card>;
 
-  const section = SECTION[page] ?? "Not found";
+  const section = page === "styleguide" && !STYLEGUIDE ? "Not found" : SECTION[page] ?? "Not found";
   const exact = (route: string) => (page === route && !id ? "page" : undefined);
-  const within = (route: string) => route === "" && (page === "runs" || page === "findings");
+  // a case file belongs to the Inbox and a run page to Runs, so their section stays highlighted
+  const within = (route: string) => (route === "" && page === "findings") || (route === "runs" && page === "runs" && !!id);
+  const link = (n: NavItem) => (
+    <a key={n.route} href={n.href} aria-current={exact(n.route)} data-active={within(n.route) || undefined}>
+      <n.icon size={16} aria-hidden="true" /><span>{n.label}</span>
+    </a>
+  );
   return (
     <div className="shell">
       <a className="skip" href="#main">Skip to content</a>
       <aside className="sidebar">
         <Brand />
         <nav className="nav" aria-label="Main">
-          {NAV.map((n) => (
-            <a key={n.route} href={n.href} aria-current={exact(n.route)} data-active={within(n.route) || undefined}>
-              <n.icon size={16} aria-hidden="true" /><span>{n.label}</span>
-            </a>
-          ))}
+          {NAV.map(link)}
+          <div className="nav-help" role="group" aria-labelledby="nav-help-h">
+            <div className="nav-group" id="nav-help-h">Help</div>
+            {HELP.map(link)}
+          </div>
         </nav>
         <div className="sidebar-foot">
           <Instance health={health.data} error={health.error} />

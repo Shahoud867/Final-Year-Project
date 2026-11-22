@@ -1,19 +1,55 @@
 import {
-  ArrowDown, CircleCheck, CircleX, Eye, EyeOff, ListChecks, MessageSquare, RotateCcw, Scale, Search, ShieldAlert, Syringe, Waypoints,
+  ArrowRight, Braces, CircleCheck, CircleX, Eye, EyeOff, ListChecks, MessageSquare, RotateCcw, Search, ShieldAlert, Syringe, Waypoints,
 } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { ApiError, api, waitForJob } from "../api";
 import { Computation, comparedWith } from "../components/CheckDetail";
 import { Graph } from "../components/Graph";
+import { RunPlatforms } from "../components/Platforms";
 import type { NodeMark } from "../components/Graph";
 import { StepInspector, produced } from "../components/StepInspector";
-import { Badge, Card, Chip, Compare, ErrorBox, FaultBadge, Hash, LevelBadge, Loading, ModeBadge, Notice, PageHeader, Skeleton } from "../components/ui";
+import { Badge, Card, Chip, Compare, ErrorBox, FaultBadge, Hash, JsonView, Ladder, Loading, ModeBadge, Notice, PageHeader, Skeleton, TabPanel, Tabs } from "../components/ui";
 import { leading, markOf, pathOf } from "../components/Verify";
 import { duration, finalText, show, stepKind, when } from "../format";
 import { useLoad } from "../hooks";
 import type { CheckResult } from "../types";
 import "../styles/pages/run.css";
+
+/** Failures first, then outcome before step checks, then pipeline order. */
+const byConcern = (order: (c: CheckResult) => number) => (a: CheckResult, b: CheckResult) =>
+  Number(b.status === "fail") - Number(a.status === "fail") || order(a) - order(b);
+
+/** One group of checks (outcome or step): what each compared, the result, and how it was computed on demand. */
+function CheckGroup({ title, checks, agent }: { title: string; checks: CheckResult[]; agent: (step: string) => string }) {
+  if (checks.length === 0) return null;
+  return (
+    <section className="stack tight" aria-label={title}>
+      <h3 className="eyebrow">{title}</h3>
+      <div className="table-wrap">
+        <table className="run-checks">
+          <thead><tr><th>Check</th><th>Step</th><th>Compared with</th><th>Observed and expected</th><th>Result</th></tr></thead>
+          <tbody>
+            {checks.map((c) => (
+              <tr key={c.check_id}>
+                <td>
+                  <span className="mono">{c.check_id}</span>
+                  <div className="small muted">{c.message}</div>
+                  <details><summary className="small">How it was computed</summary><Computation c={c} /></details>
+                </td>
+                <td>{agent(c.step)}</td>
+                <td className="small">{comparedWith(c)}</td>
+                <td>{c.observed !== undefined && c.observed !== null || c.expected !== undefined && c.expected !== null
+                  ? <Compare observed={c.observed} expected={c.expected} match={c.status === "pass"} /> : <span className="dim">n/a</span>}</td>
+                <td><Badge value={c.status} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
 
 /** One line of the "what monitoring sees" list: a fact of the run and whether it looks healthy. */
 function Seen({ ok, children }: { ok: boolean; children: ReactNode }) {
@@ -28,8 +64,9 @@ export function RunDetail({ id }: { id: string }) {
   const graph = useLoad(() => api.graph(id), [id]);
   const findingId = run.data?.findings[0]?.id;
   // the leading hypothesis decides which step is marked as suspect or confirmed origin; the page works without it
-  const finding = useLoad(() => (findingId ? api.finding(findingId) : Promise.resolve(null)), [findingId]);
+  const caseFile = useLoad(() => (findingId ? api.finding(findingId) : Promise.resolve(null)), [findingId]);
   const [selected, setSelected] = useState<string | null>(null);
+  const [tab, setTab] = useState("trace");
   const [reveal, setReveal] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [retryError, setRetryError] = useState("");
@@ -45,10 +82,10 @@ export function RunDetail({ id }: { id: string }) {
   const outcome = r.check_results.filter((c) => c.scope === "outcome");
   const failedOutcome = outcome.filter((c) => c.status === "fail");
   const passedOutcome = outcome.filter((c) => c.status === "pass");
-  const failed = r.check_results.filter((c) => c.status === "fail").sort((a, b) => order(a) - order(b) || (a.scope === "outcome" ? 1 : -1));
-  const failedSteps = failed.filter((c) => c.scope === "step");
+  const failedSteps = r.check_results.filter((c) => c.status === "fail" && c.scope === "step");
   const count = (status: string) => r.check_results.filter((c) => c.status === status).length;
-  const lead = finding.data ? leading(finding.data.hypotheses) : undefined;
+  const finding = r.findings[0];
+  const lead = caseFile.data ? leading(caseFile.data.hypotheses) : undefined;
   const path = pathOf(lead);
   const marks: Record<string, NodeMark> = {};
   if (lead) marks[lead.step_id] = markOf(lead);
@@ -69,8 +106,8 @@ export function RunDetail({ id }: { id: string }) {
   return (
     <div className="page run">
       <PageHeader
-        back={{ href: "#/", label: "All investigations" }}
-        eyebrow="Pipeline trace"
+        back={{ href: "#/runs", label: "Runs" }}
+        eyebrow="Run"
         title={`Run ${r.task_input.order_id}`}
         meta={<>
           <Badge value={r.status} large />
@@ -80,7 +117,12 @@ export function RunDetail({ id }: { id: string }) {
           {r.trace_sha256 ? <span className="row tight small muted">trace <Hash value={r.trace_sha256} label="trace SHA-256" /></span> : null}
           <span className="small dim">{when(r.created_at)}{duration(r.created_at, r.finished_at) ? ` · ${duration(r.created_at, r.finished_at)}` : ""}</span>
         </>}
-        actions={<span className="mono small dim">{r.id}</span>}
+        actions={finding ? (
+          <span className="row run-case">
+            <Ladder level={finding.verification_level} compact />
+            <a className="btn sm" href={`#/findings/${finding.id}`} aria-label={`Open case ${finding.id}`}>Open case<ArrowRight size={13} aria-hidden="true" /></a>
+          </span>
+        ) : <span className="small dim">{completed ? "No finding: no outcome check failed." : "No finding."}</span>}
       />
 
       <Card title="Outcome" icon={MessageSquare}>
@@ -135,100 +177,76 @@ export function RunDetail({ id }: { id: string }) {
         ) : null}
       </Card>
 
-      <Card title="Pipeline" icon={Waypoints} sub="select a step to inspect it"
-            actions={r.injected_fault ? (
-              <button type="button" className="btn sm" aria-pressed={reveal} onClick={() => setReveal(!reveal)} title="Ground truth of the injected fault. The analysis never reads it.">
-                {reveal ? <EyeOff size={13} aria-hidden="true" /> : <Eye size={13} aria-hidden="true" />}{reveal ? "Hide injected fault" : "Reveal injected fault"}
-              </button>
-            ) : null}>
-        {graph.loading && !graph.data ? <Skeleton lines={3} /> : graph.data && graph.data.nodes.length > 0 ? (
-          <Graph graph={graph.data} onSelect={setSelected} selected={selected} marks={marks} path={path.length > 1 ? path : undefined} legend />
-        ) : <p className="small dim">{graph.error ? "The graph could not be loaded; the steps are listed below." : "No step was recorded for this run."}</p>}
-        {lead && path.length > 1 ? (
-          <p className="small muted run-pathnote">
-            <Search size={13} aria-hidden="true" /> Highlighted: the recorded data-flow path from <strong>{lead.agent}</strong> ({lead.status === "confirmed" ? "origin confirmed by replay" : lead.status === "refuted" ? "refuted by replay" : "first-ranked suspect"}) to the symptom.
-          </p>
-        ) : null}
-        {steps.length > 0 ? (
-          <div className="table-wrap run-steps">
-            <table>
-              <thead><tr><th>#</th><th>Step</th><th>Kind</th><th>Answer</th><th>Duration</th><th>Checks</th><th><span className="sr-only">Inspect</span></th></tr></thead>
-              <tbody>
-                {steps.map((s, i) => (
-                  <tr key={s.step_id} aria-selected={selected === s.step_id || undefined}>
-                    <td className="mono dim">{i + 1}</td>
-                    <td><strong>{s.agent}</strong><div className="small dim mono">{s.step_id}{s.name ? ` · ${s.name}` : ""}</div></td>
-                    <td>{stepKind(s.kind)}</td>
-                    <td className="small">{produced(s)}</td>
-                    <td className="mono small">{duration(s.started_at, s.ended_at) || "n/a"}</td>
-                    <td><div className="row tight">
-                      {s.error ? <Badge value="error" text="errored" /> : null}
-                      {r.check_results.filter((c) => c.step === s.step_id).map((c) => <Badge key={c.check_id} value={c.status} text={`${c.check_id} ${c.status}`} />)}
-                    </div></td>
-                    <td><button type="button" className="btn ghost sm" onClick={() => setSelected(s.step_id)} aria-label={`Inspect ${s.agent}`}><Eye size={13} aria-hidden="true" />Inspect</button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : null}
-      </Card>
-
-      {failed.length > 0 ? (
-        <Card title="Observed vs source of truth" icon={Scale} sub="each failed check, in pipeline order">
-          <ol className="run-chain">
-            {failed.map((c, i) => (
-              <li key={c.check_id}>
-                <div className="run-chain-head">
-                  <strong>{agent(c.step)}</strong><Chip mono>{c.check_id}</Chip><Chip tone={c.scope === "outcome" ? "bad" : "neutral"}>{c.scope} check</Chip>
-                  <span className="small muted">compared with {comparedWith(c)}</span>
-                </div>
-                <Compare observed={c.observed} expected={c.expected} />
-                {i < failed.length - 1 ? <div className="run-chain-arrow" aria-hidden="true"><ArrowDown size={14} /></div> : null}
-              </li>
-            ))}
-          </ol>
-        </Card>
-      ) : null}
-
-      <Card title="Checks" icon={ListChecks}
-            sub={<span className="row tight">
-              <Badge value="pass" text={`${count("pass")} passed`} /><Badge value="fail" text={`${count("fail")} failed`} tone={count("fail") ? "bad" : "neutral"} />
-              {count("abstain") ? <Badge value="abstain" text={`${count("abstain")} abstained`} /> : null}{count("error") ? <Badge value="error" text={`${count("error")} errored`} /> : null}
-            </span>}>
-        <div className="table-wrap">
-          <table className="run-checks">
-            <thead><tr><th>Check</th><th>Scope</th><th>Step</th><th>Severity</th><th>Result</th></tr></thead>
-            <tbody>
-              {r.check_results.map((c) => (
-                <tr key={c.check_id}>
-                  <td>
-                    <span className="mono">{c.check_id}</span>
-                    <div className="small muted">{c.message}</div>
-                    <details><summary className="small">How it was computed</summary><Computation c={c} /></details>
-                  </td>
-                  <td>{c.scope}</td>
-                  <td>{agent(c.step)}</td>
-                  <td>{c.severity}</td>
-                  <td><Badge value={c.status} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <Card flush className="run-tabs">
+        <div className="run-tabbar">
+          <Tabs idBase="run" label="Run views" value={tab} onChange={setTab}
+                tabs={[{ id: "trace", label: "Trace", icon: Waypoints, count: steps.length },
+                       { id: "checks", label: "Checks", icon: ListChecks, count: `${count("fail")} failed` },
+                       { id: "data", label: "Data", icon: Braces }]} />
+          {r.injected_fault ? (
+            <button type="button" className="btn sm" aria-pressed={reveal} onClick={() => setReveal(!reveal)} title="Ground truth of the injected fault. The analysis never reads it.">
+              {reveal ? <EyeOff size={13} aria-hidden="true" /> : <Eye size={13} aria-hidden="true" />}{reveal ? "Hide injected fault" : "Reveal injected fault"}
+            </button>
+          ) : null}
         </div>
+
+        <TabPanel idBase="run" id="trace" active={tab === "trace"} className="run-panel">
+          {graph.loading && !graph.data ? <Skeleton lines={3} /> : graph.data && graph.data.nodes.length > 0 ? (
+            <Graph graph={graph.data} onSelect={setSelected} selected={selected} marks={marks} path={path.length > 1 ? path : undefined} legend />
+          ) : <p className="small dim">{graph.error ? "The graph could not be loaded; the steps are listed below." : "No step was recorded for this run."}</p>}
+          {lead && path.length > 1 ? (
+            <p className="small muted run-pathnote">
+              <Search size={13} aria-hidden="true" /> Highlighted: the recorded data-flow path from <strong>{lead.agent}</strong> ({lead.status === "confirmed" ? "origin confirmed by replay" : lead.status === "refuted" ? "refuted by replay" : "first-ranked suspect"}) to the symptom.
+            </p>
+          ) : null}
+          {steps.length > 0 ? (
+            <div className="table-wrap run-steps">
+              <table>
+                <thead><tr><th>#</th><th>Step and its checks</th><th>Kind</th><th>Answer</th><th>Duration</th><th><span className="sr-only">Inspect</span></th></tr></thead>
+                <tbody>
+                  {steps.map((s, i) => {
+                    const mine = r.check_results.filter((c) => c.step === s.step_id).sort(byConcern(order));
+                    return (
+                      <tr key={s.step_id} aria-selected={selected === s.step_id || undefined}>
+                        <td className="mono dim">{i + 1}</td>
+                        <td>
+                          <strong>{s.agent}</strong><span className="small dim mono"> {s.step_id}{s.name ? ` · ${s.name}` : ""}</span>
+                          <div className="row tight run-marks">
+                            {s.error ? <Badge value="error" text="errored" /> : null}
+                            {mine.map((c) => <Badge key={c.check_id} value={c.status} text={`${c.check_id} ${c.status}`} />)}
+                            {!s.error && mine.length === 0 ? <span className="small dim">no check on this step</span> : null}
+                          </div>
+                        </td>
+                        <td>{stepKind(s.kind)}</td>
+                        <td className="small">{produced(s)}</td>
+                        <td className="mono small">{duration(s.started_at, s.ended_at) || "n/a"}</td>
+                        <td><button type="button" className="btn ghost sm" onClick={() => setSelected(s.step_id)} aria-label={`Inspect ${s.agent}`}><Eye size={13} aria-hidden="true" />Inspect</button></td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+          <p className="small dim">Inspect a step to see what it received and produced, and each of its checks against what it was compared with.</p>
+        </TabPanel>
+
+        <TabPanel idBase="run" id="checks" active={tab === "checks"} className="run-panel">
+          <div className="row tight">
+            <Badge value="pass" text={`${count("pass")} passed`} /><Badge value="fail" text={`${count("fail")} failed`} tone={count("fail") ? "bad" : "neutral"} />
+            {count("abstain") ? <Badge value="abstain" text={`${count("abstain")} abstained`} /> : null}{count("error") ? <Badge value="error" text={`${count("error")} errored`} /> : null}
+          </div>
+          {r.check_results.length === 0 ? <p className="small dim">No check was evaluated on this run.</p> : null}
+          <CheckGroup title="Outcome checks" checks={r.check_results.filter((c) => c.scope === "outcome").sort(byConcern(order))} agent={agent} />
+          <CheckGroup title="Step checks" checks={r.check_results.filter((c) => c.scope !== "outcome").sort(byConcern(order))} agent={agent} />
+        </TabPanel>
+
+        <TabPanel idBase="run" id="data" active={tab === "data"} className="run-panel">
+          {r.trace ? <JsonView value={r.trace} label="Trace (Granite Trace v1)" maxHeight={560} /> : <p className="small dim">No trace was stored for this run.</p>}
+        </TabPanel>
       </Card>
 
-      <Card title="Findings" icon={Search}>
-        {r.findings.length === 0
-          ? <p className="muted">{completed ? "No outcome check failed." : "No findings."}</p>
-          : <ul className="list-plain stack tight">{r.findings.map((f) => (
-            <li key={f.id} className="run-finding">
-              <div className="grow"><a href={`#/findings/${f.id}`}><strong>{f.title}</strong></a><div className="small dim mono">{f.id}</div></div>
-              <Badge value={f.status} /><LevelBadge level={f.verification_level} />
-              <a className="btn primary sm" href={`#/findings/${f.id}`} aria-label={`Open investigation ${f.id}`}>Open investigation</a>
-            </li>
-          ))}</ul>}
-      </Card>
+      <RunPlatforms runId={r.id} />
 
       {r.injected_fault && (
         <details className="card run-fault">

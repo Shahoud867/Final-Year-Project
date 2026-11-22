@@ -8,7 +8,7 @@ The ER diagram of the twelve tables. Column-by-column meanings, the trace docume
 
 *Handbook Table 1a item: Schema Design / ER Diagram.*
 
-Read it as a chain: a project has runs; a run has check results, at most one injected-fault record, and findings; a finding has ranked hypotheses and reviews; a hypothesis has experiments; an experiment has replays. Evidence hangs off findings by id without a foreign key on purpose: evidence and the audit log are append-only and must survive the rows they describe. The fault record (yellow) is kept in its own table so that no analysis query can read it by accident. The full column meanings are in the data dictionary.
+Read it as a chain: a project has runs; a run has check results, at most one injected-fault record, and findings; a finding has ranked hypotheses and reviews; a hypothesis has experiments; an experiment has replays. A finding may also have investigations, which record the order in which its suspects were verified; a Fault Lab batch groups runs through batch_runs, so the runs table did not change. Evidence hangs off findings by id without a foreign key on purpose: evidence and the audit log are append-only and must survive the rows they describe. The fault record (yellow) is kept in its own table so that no analysis query can read it by accident. The full column meanings are in the data dictionary.
 
 ![Database schema (ER diagram)](database-schema.svg)
 

@@ -26,7 +26,7 @@ MEANING: dict[str, str] = {
     "runs.project_id": "Project the run belongs to",
     "runs.workflow_key": "Workflow that was executed",
     "runs.status": "`queued`, `running`, `completed` or `errored`",
-    "runs.llm_mode": "What actually answered: `live` or `recorded`",
+    "runs.llm_mode": "What actually answered: `live` or `recorded`; `imported` for a trace read from a connected platform",
     "runs.model": "Model name, for example `llama3.2:3b`",
     "runs.seed": "Random seed passed to the model",
     "runs.fault_type": "Name of the injected fault; null for a clean run",
@@ -130,6 +130,51 @@ MEANING: dict[str, str] = {
     "jobs.created_at": "When the job was queued",
     "jobs.started_at": "When a worker picked it up",
     "jobs.finished_at": "When it ended",
+    "investigations.id": "`inv_` + 12 hex characters",
+    "investigations.finding_id": "Finding whose suspects are verified",
+    "investigations.status": "`queued`, `running`, `done` or `error`",
+    "investigations.llm_mode": "What answered in the replays: `live` or `recorded`",
+    "investigations.n": "Replays with the fix, per suspect",
+    "investigations.m": "Control replays without the fix, per suspect",
+    "investigations.budget": "Most replays the whole investigation may use",
+    "investigations.replays_used": "Replays spent so far",
+    "investigations.outcome": "`confirmed`, `exhausted` (budget spent) or `no_candidate` (nothing replayable)",
+    "investigations.confirmed_step": "Step confirmed as the origin, if any",
+    "investigations.attempts": "Each suspect tried, in rank order: verdict and experiment id, or why it was skipped",
+    "investigations.error": "Why the investigation stopped, if it failed",
+    "investigations.created_at": "When it was requested (UTC)",
+    "investigations.finished_at": "When it ended (UTC)",
+    "batches.id": "`bat_` + 12 hex characters",
+    "batches.workflow_key": "Workflow every run of the batch uses",
+    "batches.status": "`queued`, `running` or `done`",
+    "batches.llm_mode": "What answered: `live` or `recorded`",
+    "batches.faults": "Conditions generated, in order; `none` stands for clean runs",
+    "batches.task_count": "Number of example tasks in the batch",
+    "batches.seed": "Run seed used for every run",
+    "batches.created_at": "When it was requested (UTC)",
+    "batches.finished_at": "When its last run ended (UTC)",
+    "batch_runs.batch_id": "Batch the run belongs to",
+    "batch_runs.run_id": "A run of the batch",
+    "batch_runs.position": "Order in which the run was generated",
+    "connections.id": "`con_` + 12 hex characters",
+    "connections.kind": "`phoenix` or `langfuse`",
+    "connections.name": "Name shown in the interface",
+    "connections.base_url": "Server URL of the platform (http or https)",
+    "connections.project": "Phoenix project; for Langfuse an optional trace name to import",
+    "connections.workflow_key": "Granite workflow whose checks apply to imported traces",
+    "connections.profile": "Span name to step alias mapping (`steps`)",
+    "connections.created_at": "When it was added (UTC)",
+    "connections.last_sync_at": "When traces were last imported (UTC)",
+    "connections.last_error": "Last platform error during a write-back; empty if none",
+    "trace_links.id": "Sequence number",
+    "trace_links.connection_id": "Connection the run came from or went to",
+    "trace_links.run_id": "The Granite run",
+    "trace_links.direction": "`imported` or `exported`",
+    "trace_links.external_trace_id": "Trace id on the platform",
+    "trace_links.root_span_id": "Root span (Phoenix) or trace record (Langfuse)",
+    "trace_links.span_ids": "Step id to span id on the platform, used to write verdicts on the right span",
+    "trace_links.lineage": "Each read edge with how it was established: `declared`, `value` or `order`",
+    "trace_links.created_at": "When the link was made (UTC)",
     "audit_log.id": "Sequence number",
     "audit_log.ts": "When the action happened (UTC)",
     "audit_log.actor": "`system`, `analyst` or the reviewer's name",
@@ -172,6 +217,8 @@ _POS = {
     "check_results": (650, 60), "findings": (650, 370), "reviews": (650, 650),
     "hypotheses": (960, 370), "evidence": (960, 650),
     "experiments": (1270, 370), "replays": (1270, 700),
+    "batches": (30, 1010), "batch_runs": (340, 1010), "investigations": (650, 1010),
+    "connections": (960, 1010), "trace_links": (1270, 1010),
 }
 
 
@@ -187,8 +234,8 @@ def _columns() -> dict[str, list[Any]]:
 
 def er_diagram() -> Sheet:
     tables = _columns()
-    d = Diagram("database-schema", "Database schema (ER diagram)", 1550, 930,
-                "The twelve tables, their keys and the relationships between them.")
+    d = Diagram("database-schema", "Database schema (ER diagram)", 1550, 1400,
+                "The seventeen tables, their keys and the relationships between them.")
     boxes = {}
     for name, cols in tables.items():
         rows = []
@@ -209,6 +256,14 @@ def er_diagram() -> Sheet:
         ("findings", "reviews"): [b["findings"].bottom(), b["reviews"].top()],
         ("hypotheses", "experiments"): [(1210, 420), (1270, 420)],
         ("experiments", "replays"): [b["experiments"].bottom(), b["replays"].top()],
+        ("findings", "investigations"): [
+            b["findings"].right(0.9), (930, b["findings"].y + b["findings"].h * 0.9), (930, 1040), (900, 1040)],
+        ("batches", "batch_runs"): [(280, 1040), (340, 1040)],
+        ("runs", "batch_runs"): [
+            b["runs"].right(0.97), (612, b["runs"].y + b["runs"].h * 0.97), (612, 1070), (590, 1070)],
+        ("connections", "trace_links"): [(1210, 1040), (1270, 1040)],
+        ("runs", "trace_links"): [
+            b["runs"].right(0.93), (606, b["runs"].y + b["runs"].h * 0.93), (606, 985), (1395, 985), (1395, 1010)],
     }
     if fks != set(routes):
         raise SystemExit(f"ER diagram is out of date; foreign keys changed: {sorted(fks ^ set(routes))}")
@@ -229,7 +284,8 @@ def er_diagram() -> Sheet:
         d, "Data", "Schema Design / ER Diagram",
         "Read it as a chain: a project has runs; a run has check results, at most one injected-fault record, and "
         "findings; a finding has ranked hypotheses and reviews; a hypothesis has experiments; an experiment has "
-        "replays. Evidence hangs off findings by id without a foreign key on purpose: evidence and the audit log "
+        "replays. A finding may also have investigations, which record the order in which its suspects were verified; "
+        "a Fault Lab batch groups runs through batch_runs, so the runs table did not change. Evidence hangs off findings by id without a foreign key on purpose: evidence and the audit log "
         "are append-only and must survive the rows they describe. The fault record (yellow) is kept in its own "
         "table so that no analysis query can read it by accident. The full column meanings are in the data "
         "dictionary.",

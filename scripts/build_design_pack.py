@@ -32,7 +32,8 @@ from design_pack.viewer import build_viewer  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "diagrams"
-PACK = ROOT / "deliverables" / "stage-1-fyp1-mid" / "granite_design-pack_fyp1-mid_v1.0.html"
+# The stage in progress gets the interactive pack; the stage-1 copy is a frozen record and is never rewritten.
+PACK = ROOT / "deliverables" / "stage-2-fyp1-final" / "granite_design-pack_fyp1-final_draft.html"
 
 BUILDERS = [
     activity.use_case_diagram, structure.layer_diagram, components.component_diagram, domain.domain_model,

@@ -18,6 +18,35 @@ Contents: [stored data](#1-stored-data-12-tables) · [trace document](#2-trace-d
 | `entity_id` | VARCHAR(32) | no |  | Id of the record concerned |
 | `detail` | JSON | no |  | Action-specific facts; for a transition: event, from_status, to_status |
 
+### batches
+
+| Column | Type | Null | Key | Meaning |
+|---|---|---|---|---|
+| `id` | VARCHAR(32) | no | PK | `bat_` + 12 hex characters |
+| `workflow_key` | VARCHAR(60) | no |  | Workflow every run of the batch uses |
+| `status` | VARCHAR(20) | no |  | `queued`, `running` or `done` |
+| `llm_mode` | VARCHAR(20) | no |  | What answered: `live` or `recorded` |
+| `faults` | JSON | no |  | Conditions generated, in order; `none` stands for clean runs |
+| `task_count` | INTEGER | no |  | Number of example tasks in the batch |
+| `seed` | INTEGER | no |  | Run seed used for every run |
+| `created_at` | DATETIME | no |  | When it was requested (UTC) |
+| `finished_at` | DATETIME | yes |  | When its last run ended (UTC) |
+
+### connections
+
+| Column | Type | Null | Key | Meaning |
+|---|---|---|---|---|
+| `id` | VARCHAR(32) | no | PK | `con_` + 12 hex characters |
+| `kind` | VARCHAR(20) | no |  | `phoenix` or `langfuse` |
+| `name` | VARCHAR(120) | no |  | Name shown in the interface |
+| `base_url` | VARCHAR(300) | no |  | Server URL of the platform (http or https) |
+| `project` | VARCHAR(120) | no |  | Phoenix project; for Langfuse an optional trace name to import |
+| `workflow_key` | VARCHAR(60) | no |  | Granite workflow whose checks apply to imported traces |
+| `profile` | JSON | no |  | Span name to step alias mapping (`steps`) |
+| `created_at` | DATETIME | no |  | When it was added (UTC) |
+| `last_sync_at` | DATETIME | yes |  | When traces were last imported (UTC) |
+| `last_error` | TEXT | no |  | Last platform error during a write-back; empty if none |
+
 ### evidence
 
 | Column | Type | Null | Key | Meaning |
@@ -65,7 +94,7 @@ Contents: [stored data](#1-stored-data-12-tables) · [trace document](#2-trace-d
 | `project_id` | VARCHAR(32) | no | FK to projects | Project the run belongs to |
 | `workflow_key` | VARCHAR(60) | no |  | Workflow that was executed |
 | `status` | VARCHAR(20) | no |  | `queued`, `running`, `completed` or `errored` |
-| `llm_mode` | VARCHAR(20) | no |  | What actually answered: `live` or `recorded` |
+| `llm_mode` | VARCHAR(20) | no |  | What actually answered: `live` or `recorded`; `imported` for a trace read from a connected platform |
 | `model` | VARCHAR(80) | no |  | Model name, for example `llama3.2:3b` |
 | `seed` | INTEGER | no |  | Random seed passed to the model |
 | `fault_type` | VARCHAR(40) | yes |  | Name of the injected fault; null for a clean run |
@@ -75,6 +104,14 @@ Contents: [stored data](#1-stored-data-12-tables) · [trace document](#2-trace-d
 | `error` | TEXT | no |  | Why the run stopped; empty if it completed |
 | `created_at` | DATETIME | no |  | When the run was requested |
 | `finished_at` | DATETIME | yes |  | When execution and analysis ended |
+
+### batch_runs
+
+| Column | Type | Null | Key | Meaning |
+|---|---|---|---|---|
+| `batch_id` | VARCHAR(32) | no | PK | Batch the run belongs to |
+| `run_id` | VARCHAR(32) | no | PK | A run of the batch |
+| `position` | INTEGER | no |  | Order in which the run was generated |
 
 ### check_results
 
@@ -122,6 +159,20 @@ Contents: [stored data](#1-stored-data-12-tables) · [trace document](#2-trace-d
 | `created_at` | DATETIME | no |  | When the finding was opened |
 | `updated_at` | DATETIME | no |  | Last status change |
 
+### trace_links
+
+| Column | Type | Null | Key | Meaning |
+|---|---|---|---|---|
+| `id` | INTEGER | no | PK | Sequence number |
+| `connection_id` | VARCHAR(32) | no | FK to connections | Connection the run came from or went to |
+| `run_id` | VARCHAR(32) | no | FK to runs | The Granite run |
+| `direction` | VARCHAR(10) | no |  | `imported` or `exported` |
+| `external_trace_id` | VARCHAR(120) | no |  | Trace id on the platform |
+| `root_span_id` | VARCHAR(120) | no |  | Root span (Phoenix) or trace record (Langfuse) |
+| `span_ids` | JSON | no |  | Step id to span id on the platform, used to write verdicts on the right span |
+| `lineage` | JSON | no |  | Each read edge with how it was established: `declared`, `value` or `order` |
+| `created_at` | DATETIME | no |  | When the link was made (UTC) |
+
 ### hypotheses
 
 | Column | Type | Null | Key | Meaning |
@@ -137,6 +188,25 @@ Contents: [stored data](#1-stored-data-12-tables) · [trace document](#2-trace-d
 | `rationale` | TEXT | no |  | Sentence shown to the user |
 | `evidence` | JSON | no |  | Supporting facts as JSON |
 | `status` | VARCHAR(20) | no |  | `open`, `confirmed`, `refuted`, `inconclusive` or `error` |
+
+### investigations
+
+| Column | Type | Null | Key | Meaning |
+|---|---|---|---|---|
+| `id` | VARCHAR(32) | no | PK | `inv_` + 12 hex characters |
+| `finding_id` | VARCHAR(32) | no | FK to findings | Finding whose suspects are verified |
+| `status` | VARCHAR(20) | no |  | `queued`, `running`, `done` or `error` |
+| `llm_mode` | VARCHAR(20) | no |  | What answered in the replays: `live` or `recorded` |
+| `n` | INTEGER | no |  | Replays with the fix, per suspect |
+| `m` | INTEGER | no |  | Control replays without the fix, per suspect |
+| `budget` | INTEGER | no |  | Most replays the whole investigation may use |
+| `replays_used` | INTEGER | no |  | Replays spent so far |
+| `outcome` | VARCHAR(20) | yes |  | `confirmed`, `exhausted` (budget spent) or `no_candidate` (nothing replayable) |
+| `confirmed_step` | VARCHAR(40) | yes |  | Step confirmed as the origin, if any |
+| `attempts` | JSON | no |  | Each suspect tried, in rank order: verdict and experiment id, or why it was skipped |
+| `error` | TEXT | no |  | Why the investigation stopped, if it failed |
+| `created_at` | DATETIME | no |  | When it was requested (UTC) |
+| `finished_at` | DATETIME | yes |  | When it ended (UTC) |
 
 ### reviews
 
@@ -280,7 +350,7 @@ Validated by pydantic before anything is stored; unknown keys are refused.
 | Check type | `assert`, `truth`, `policy`, `schema`, `answer_key` | `granite_core.checks.CheckDef.type` |
 | Check scope | `outcome`, `step` | `granite_core.checks.CheckDef.scope` |
 | Severity | `critical`, `high`, `medium`, `low` | `granite_core.checks.CheckDef.severity` |
-| Intervention source | `truth`, `contract`, `user` | `granite_core.verification.Intervention.source` |
+| Intervention source | `truth`, `contract`, `user`, `check` | `granite_core.verification.Intervention.source` |
 | Review decision | `accept`, `reject`, `resolve`, `wont_fix`, `request_info` | `granite_api.schemas.ReviewCreate` |
 
 ## 5. Identifiers and hashes

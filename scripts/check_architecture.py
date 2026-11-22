@@ -6,6 +6,9 @@ Rules (docs/diagrams/architecture.md, ADR-001):
   granite_core   may import the standard library, pydantic and itself. Nothing else: no web framework, database
                  driver, HTTP client, workflow or application code.
   refund_desk    may import the standard library, granite_core and itself.
+  granite_connectors
+                 may import the standard library, pydantic, granite_core and itself (no workflow or application
+                 code); it talks to third-party platforms over HTTP with urllib only (ADR-012).
   granite_api    may import anything except test code; it is the only layer allowed to touch the network or a database.
 
 Exit code 1 lists every violation with file and line.
@@ -21,6 +24,10 @@ ROOT = Path(__file__).resolve().parents[1]
 LAYERS: dict[str, tuple[Path, set[str]]] = {
     "granite_core": (ROOT / "packages" / "granite_core" / "granite_core", {"granite_core", "pydantic"}),
     "refund_desk": (ROOT / "workflows" / "refund_desk" / "refund_desk", {"refund_desk", "granite_core"}),
+    "granite_connectors": (
+        ROOT / "packages" / "granite_connectors" / "granite_connectors",
+        {"granite_connectors", "granite_core", "pydantic"},
+    ),
 }
 # Even from the standard library, the core must not reach the network, a database or a subprocess.
 CORE_FORBIDDEN_STDLIB = {"urllib", "http", "socket", "sqlite3", "subprocess", "ftplib", "smtplib", "asyncio"}

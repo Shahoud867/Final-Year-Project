@@ -9,15 +9,36 @@ afterEach(() => { vi.unstubAllGlobals(); window.location.hash = ""; localStorage
 const base = { "GET /health": () => health, "GET /runs": () => [], "GET /findings": () => [] };
 
 describe("application shell", () => {
-  it("offers the four sections and marks the current one", async () => {
+  it("puts the working pages first and the explanations in a help group, and marks the current one", async () => {
     mockApi(base);
     window.location.hash = "#/evidence";
     render(<App />);
     const nav = screen.getByRole("navigation", { name: "Main" });
-    expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(["Investigations", "Task Studio", "How it works", "Evidence"]);
-    expect(within(nav).getByRole("link", { name: "Evidence" })).toHaveAttribute("aria-current", "page");
-    expect(within(nav).getByRole("link", { name: "Investigations" })).not.toHaveAttribute("aria-current");
-    expect(await screen.findByRole("heading", { level: 1, name: "Evidence" })).toBeInTheDocument();
+    expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(["Inbox", "Runs", "Fault Lab", "Evaluation", "Connections", "How it works", "Why Granite"]);
+    expect(within(within(nav).getByRole("group", { name: "Help" })).getAllByRole("link").map((a) => a.textContent)).toEqual(["How it works", "Why Granite"]);
+    expect(within(nav).getByRole("link", { name: "Why Granite" })).toHaveAttribute("aria-current", "page");
+    expect(within(nav).getByRole("link", { name: "Inbox" })).not.toHaveAttribute("aria-current");
+    expect(await screen.findByRole("heading", { level: 1, name: "Why Granite" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "New run" })).toHaveAttribute("href", "#/new");
+  });
+
+  it("keeps the section of a run page and a case file highlighted", async () => {
+    mockApi(base);
+    window.location.hash = "#/runs/run_x";
+    const { unmount } = render(<App />);
+    expect(within(screen.getByRole("navigation", { name: "Main" })).getByRole("link", { name: "Runs" })).toHaveAttribute("data-active");
+    unmount();
+    window.location.hash = "#/findings/fnd_x";
+    render(<App />);
+    expect(within(screen.getByRole("navigation", { name: "Main" })).getByRole("link", { name: "Inbox" })).toHaveAttribute("data-active");
+  });
+
+  it("serves the style guide in development builds", async () => {
+    mockApi(base);
+    window.location.hash = "#/styleguide";
+    render(<App />);
+    expect(await screen.findByRole("heading", { level: 1, name: "Style guide" })).toBeInTheDocument();
+    expect(screen.getAllByRole("img", { name: /^Evidence level V\d of V3/ })).toHaveLength(4);
   });
 
   it("shows how the server produces model answers, as the server reports it", async () => {
@@ -68,6 +89,6 @@ describe("application shell", () => {
     window.location.hash = "#/nowhere";
     render(<App />);
     expect(screen.getByRole("heading", { level: 1, name: "Page not found" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Back to investigations" })).toHaveAttribute("href", "#/");
+    expect(screen.getByRole("link", { name: "Back to the inbox" })).toHaveAttribute("href", "#/");
   });
 });

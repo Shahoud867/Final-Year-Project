@@ -39,12 +39,15 @@ describe("presentation: theme and type scale", () => {
     expect(await screen.findByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
   });
 
-  it("defines three font sizes, with the older names kept as aliases", () => {
-    const real = [...light.matchAll(/--fs-[\w-]+:\s*([\d.]+rem)/g)].map((m) => m[1]);
-    expect(new Set(real).size).toBe(3);
-    for (const alias of ["xs", "md", "xl", "2xl"]) {
-      expect(light).toMatch(new RegExp(`--fs-${alias}:\\s*var\\(--fs-`));
-    }
+  it("defines the five-step type scale of the roadmap (13, 15, 17, 22, 30 px), never below 13 px", () => {
+    const px = [...light.matchAll(/--fs-[\w-]+:\s*([\d.]+)rem/g)].map((m) => Number(m[1]) * 16);
+    expect(px).toEqual([13, 15, 17, 22, 30]);
+    for (const alias of ["xs", "2xl"]) expect(light).toMatch(new RegExp(`--fs-${alias}:\\s*var\\(--fs-`));
+  });
+
+  it("keeps surfaces flat: no translucent glass or decorative colour field behind the content", () => {
+    const css = ["tokens", "base", "components", "shell"].map((f) => readFileSync(resolve(process.cwd(), `src/styles/${f}.css`), "utf8")).join("\n");
+    expect(css).not.toMatch(/backdrop-filter|--glass|--aurora/);
   });
 
   it("keeps every status colour readable on the page and on a card", () => {
@@ -74,15 +77,15 @@ describe("presentation: what the pages show", () => {
     expect((folds[0] as HTMLElement).querySelector("summary")).toHaveTextContent(/inputs and outputs/i);
   });
 
-  it("states a count once: the run tile shows the legend, not the same split in words", async () => {
+  it("states each total once, in one line above the inbox", async () => {
     mockApi({
       "GET /findings/summary": () => ({ confirmed: 1 }),
       "GET /findings": () => [findingConfirmed],
       "GET /runs": () => [silentRun, cleanRun, cancelledRun, erroredRun],
     });
     render(<Home />);
-    const tile = within((await screen.findByText("Executions")).closest(".stat") as HTMLElement);
-    expect(tile.getByText(/\d+ completed/)).toBeInTheDocument();
-    expect(tile.queryByText(/with injected fault/)).not.toBeInTheDocument();
+    const totals = within((await screen.findByText(/silent failures of/)).closest("p") as HTMLElement);
+    expect(totals.getAllByText(/runs$/)).toHaveLength(1);
+    expect(totals.queryByText(/with injected fault/)).not.toBeInTheDocument();
   });
 });

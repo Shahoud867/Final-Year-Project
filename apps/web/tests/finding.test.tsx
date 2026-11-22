@@ -1,6 +1,7 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FindingDetail } from "../src/pages/FindingDetail";
+import { findingConfirmed, silentGraph } from "./fixtures";
 import { finding, mockApi } from "./helpers";
 
 afterEach(() => { vi.unstubAllGlobals(); });
@@ -45,6 +46,33 @@ describe("FindingDetail", () => {
     await user.type(screen.getByLabelText("Comment"), "price was correct");
     await user.click(screen.getByRole("button", { name: "Reject" }));
     await waitFor(() => expect(calls.some((c) => c.init?.method === "POST")).toBe(true));
+  });
+
+  it("keeps the verdict, the replays behind it and the next step in a rail beside the case", async () => {
+    mockApi({ [`GET /findings/${findingConfirmed.id}`]: () => findingConfirmed, [`GET /runs/${findingConfirmed.run_id}/graph`]: () => silentGraph });
+    const user = userEvent.setup();
+    render(<FindingDetail id={findingConfirmed.id} />);
+    const rail = within(await screen.findByRole("complementary", { name: "Case summary" }));
+    expect(rail.getByText("Order Lookup")).toBeInTheDocument();
+    expect(rail.getByText("5/5")).toBeInTheDocument();
+    expect(rail.getByText("0/2")).toBeInTheDocument();
+    expect(rail.getByText("57%–100%")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /^Evidence level V\d of V3/ })).toBeInTheDocument();
+    const next = rail.getByRole("button", { name: findingConfirmed.allowed_actions.includes("verify") ? "Verify the suspects" : "Record your decision" });
+    await user.click(next);
+    expect(document.activeElement?.id).toMatch(/^case-(origin|decision)$/);
+    await user.click(within(screen.getByRole("navigation", { name: "Case sections" })).getByRole("button", { name: /Evidence/ }));
+    expect(document.activeElement?.id).toBe("case-evidence");
+  });
+
+  it("says why nothing can be replayed when no suspect has a workflow Granite can run", async () => {
+    const f = finding();
+    f.hypotheses = f.hypotheses.map((h) => ({ ...h, can_verify: false }));
+    mockApi({ "GET /findings/fnd_1": () => f });
+    render(<FindingDetail id="fnd_1" />);
+    const rail = within(await screen.findByRole("complementary", { name: "Case summary" }));
+    expect(rail.getByText("Replay needs a workflow Granite can run; no suspect here can be replayed.")).toBeInTheDocument();
+    expect(rail.getByText("Not verified by replay yet.")).toBeInTheDocument();
   });
 
   it("flags tampered evidence loudly", async () => {

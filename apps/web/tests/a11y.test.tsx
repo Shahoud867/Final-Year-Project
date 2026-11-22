@@ -9,6 +9,8 @@ import { Guide } from "../src/pages/Guide";
 import { Home } from "../src/pages/Home";
 import { NewRun } from "../src/pages/NewRun";
 import { RunDetail } from "../src/pages/RunDetail";
+import { Runs } from "../src/pages/Runs";
+import { StyleGuide } from "../src/pages/StyleGuide";
 import type { Graph as GraphData } from "../src/types";
 import { erroredRun, examples, findingConfirmed, findingTraced, health, silentGraph, silentRun, workflows } from "./fixtures";
 import { finding, mockApi } from "./helpers";
@@ -66,15 +68,18 @@ const real = {
 
 describe("accessibility (axe-core, structure and semantics)", () => {
   const cases: [string, Record<string, () => unknown>, () => ReactElement][] = [
-    ["Investigations", sparse, () => <Home />],
+    ["Inbox", sparse, () => <Home />],
+    ["Runs", sparse, () => <Runs />],
+    ["Style guide", sparse, () => <StyleGuide />],
     ["New run", sparse, () => <NewRun />],
     ["Run detail", sparse, () => <RunDetail id="run_1" />],
     ["Finding", sparse, () => <FindingDetail id="fnd_1" />],
     ["How it works", sparse, () => <Guide />],
     ["App shell", sparse, () => <App />],
     ["Graph", sparse, () => <Graph graph={graph} />],
-    ["Investigations with a full investigation", real, () => <Home />],
-    ["Task Studio with the workflow preview", real, () => <NewRun />],
+    ["Inbox with a full investigation", real, () => <Home />],
+    ["Runs with a full investigation", real, () => <Runs />],
+    ["New run with the workflow preview", real, () => <NewRun />],
     ["Pipeline trace of a silent failure", real, () => <RunDetail id={silentRun.id} />],
     ["Pipeline trace of an errored run", real, () => <RunDetail id={erroredRun.id} />],
     ["Verification lab with two experiments", real, () => <FindingDetail id={findingConfirmed.id} />],

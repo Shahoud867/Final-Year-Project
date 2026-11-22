@@ -13,7 +13,7 @@ describe("Home", () => {
     mockApi({ "GET /runs": () => [], "GET /findings": () => [] });
     render(<Home />);
     expect(await screen.findByText(/No findings yet/)).toBeInTheDocument();
-    expect(screen.getByText("No runs yet.")).toBeInTheDocument();
+    expect(await screen.findByText("Nothing has run yet.")).toBeInTheDocument();
   });
 
   it("shows an error with a retry button when the server fails", async () => {

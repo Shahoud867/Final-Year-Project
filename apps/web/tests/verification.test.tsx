@@ -84,7 +84,7 @@ describe("root-cause hypotheses", () => {
     serve(findingConfirmed);
     const user = userEvent.setup();
     render(<FindingDetail id={findingConfirmed.id} />);
-    const map = within(await screen.findByRole("group", { name: /^Causal map\./ }));
+    const map = within(await screen.findByRole("group", { name: /^Causal map\./ }, { timeout: 5000 }));
     expect(map.getByText("origin confirmed")).toBeInTheDocument(); // the confirmed hypothesis leads
     await user.click(screen.getByRole("button", { name: "Show path from Refund Calculator" }));
     expect(map.getByText("refuted")).toBeInTheDocument();

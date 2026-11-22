@@ -27,16 +27,33 @@ describe("pipeline trace of a silent failure", () => {
     expect(screen.getByRole("link", { name: "Investigate" })).toHaveAttribute("href", `#/findings/${silentRun.findings[0]!.id}`);
   });
 
-  it("shows each failed check against what it was compared with, in pipeline order", async () => {
+  it("lists the checks once, grouped by scope with failures first, each against what it was compared with", async () => {
     serve(silentRun);
+    const user = userEvent.setup();
     render(<RunDetail id={silentRun.id} />);
-    const chain = within((await screen.findByRole("heading", { name: "Observed vs source of truth" })).closest("section") as HTMLElement);
-    const items = chain.getAllByRole("listitem");
-    expect(items.map((li) => within(li).getByText(/^(CT|CHK)-/).textContent)).toEqual(["CT-LOOKUP", "CT-CALC", "CHK-OUT-1"]);
-    expect(within(items[0]!).getByText("compared with source of truth (catalog_total)")).toBeInTheDocument();
-    expect(within(items[0]!).getByText("661.98")).toBeInTheDocument();
-    expect(within(items[0]!).getByText("662.23")).toBeInTheDocument();
-    expect(within(items[1]!).getByText("compared with the step's own contract over its inputs")).toBeInTheDocument();
+    await user.click(await screen.findByRole("tab", { name: /Checks/ }));
+    const ids = (name: string) => within(screen.getByRole("region", { name })).getAllByText(/^(CT|CHK)-/).map((e) => e.textContent);
+    expect(ids("Outcome checks")).toEqual(["CHK-OUT-1", "CHK-OUT-2"]);
+    expect(ids("Step checks").slice(0, 2)).toEqual(["CT-LOOKUP", "CT-CALC"]);
+    const lookup = screen.getByText("CT-LOOKUP").closest("tr") as HTMLElement;
+    expect(within(lookup).getByText("source of truth (catalog_total)")).toBeInTheDocument();
+    const compare = within(lookup.querySelector(".compare") as HTMLElement);
+    expect(compare.getByText("661.98")).toBeInTheDocument();
+    expect(compare.getByText("662.23")).toBeInTheDocument();
+    const calc = screen.getByText("CT-CALC").closest("tr") as HTMLElement;
+    expect(within(calc).getByText("the step's own contract over its inputs")).toBeInTheDocument();
+  });
+
+  it("shows each step's checks under its name in the trace, and the raw trace on the Data tab", async () => {
+    serve(silentRun);
+    const user = userEvent.setup();
+    render(<RunDetail id={silentRun.id} />);
+    const row = (await screen.findByRole("button", { name: "Inspect Order Lookup" })).closest("tr") as HTMLElement;
+    expect(within(row).getByText("CT-LOOKUP fail")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Observed vs source of truth" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("tab", { name: /Data/ }));
+    expect(screen.getByRole("group", { name: "Trace (Granite Trace v1)" })).toHaveTextContent('"step_id": "s2"');
+    expect(screen.getByRole("link", { name: `Open case ${silentRun.findings[0]!.id}` })).toHaveAttribute("href", `#/findings/${silentRun.findings[0]!.id}`);
   });
 
   it("marks the origin a replay confirmed, and reveals the injected fault only on request", async () => {
@@ -92,7 +109,7 @@ describe("pipeline trace of the other scenarios", () => {
     serve(cleanRun, null);
     render(<RunDetail id={cleanRun.id} />);
     expect(await screen.findByText("Every check that could be evaluated passed.")).toBeInTheDocument();
-    expect(screen.getByText("No outcome check failed.")).toBeInTheDocument();
+    expect(screen.getByText("No finding: no outcome check failed.")).toBeInTheDocument();
     expect(screen.getByText("Clean run")).toBeInTheDocument();
     expect(screen.queryByText("Silent failure")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Reveal injected fault" })).not.toBeInTheDocument();
@@ -102,7 +119,7 @@ describe("pipeline trace of the other scenarios", () => {
     serve(cancelledRun, null);
     render(<RunDetail id={cancelledRun.id} />);
     expect(await screen.findByText("1 step check failed, but the outcome is correct, so no finding was opened.")).toBeInTheDocument();
-    expect(screen.getByText("No outcome check failed.")).toBeInTheDocument();
+    expect(screen.getByText("No finding: no outcome check failed.")).toBeInTheDocument();
   });
 
   it("gives the reason once when a run stopped early", async () => {

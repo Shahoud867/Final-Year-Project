@@ -9,8 +9,6 @@ env/
 *.egg-info/
 
 # Environment / secrets — never commit API keys
-.env
-.env.*
 !.env.example
 *.key
 credentials.json
@@ -19,7 +17,6 @@ credentials.json
 .DS_Store
 Thumbs.db
 desktop.ini
-.vscode/
 .idea/
 
 # Notes
@@ -40,3 +37,5 @@ desktop.ini
 # Do NOT ignore dev/spikes/poc/*.json — those output files are
 # proposal-defense evidence (guide §12) and belong in git.
 # --------------------------------------------------------------------
+config.bat
+node_modules

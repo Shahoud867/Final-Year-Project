@@ -86,6 +86,17 @@
     ],
     "note": ""
   },
+  "FR-EVA-01": {
+    "status": "partial",
+    "impl": [
+      "research/eval/benchmark_v0.py::metrics",
+      "apps/api/granite_api/services/evaluations.py::list_evaluations"
+    ],
+    "tests": [
+      "apps/api/tests/test_fyp1_final_features.py::test_lists_and_serves_result_files_only"
+    ],
+    "note": "v0: Wilson intervals instead of bootstrap; baselines last-agent, earliest failing check and an all-at-once LLM judge; top-3 accuracy, verdict precision and recovery rate are not computed."
+  },
   "FR-HIS-01": {
     "status": "partial",
     "impl": [
@@ -99,6 +110,91 @@
     ],
     "note": "Search, status, severity, level and date range work in the API; the page offers search, severity and level. No project filter (there is one project)."
   },
+  "FR-INT-01": {
+    "status": "done",
+    "impl": [
+      "apps/api/granite_api/services/connections.py::import_traces",
+      "packages/granite_connectors/granite_connectors/phoenix.py::PhoenixClient",
+      "packages/granite_connectors/granite_connectors/langfuse.py::LangfuseClient"
+    ],
+    "tests": [
+      "apps/api/tests/test_integrations.py::test_send_import_investigate_and_write_back_round_trip",
+      "apps/api/tests/test_integrations.py::test_send_import_and_score_round_trip",
+      "packages/granite_connectors/tests/test_connectors.py::test_phoenix_send_import_and_annotate_round_trip"
+    ],
+    "note": "Phoenix verified live against a local Phoenix 21.0.0 server (scripts/check_connectors_live.py); Langfuse built against the documented public API and tested against an in-memory server only, because no Langfuse instance or keys were available. Import is on request (a button), not a scheduled sync."
+  },
+  "FR-INT-02": {
+    "status": "done",
+    "impl": [
+      "packages/granite_connectors/granite_connectors/mapping.py::map_trace",
+      "packages/granite_connectors/granite_connectors/spans.py::Profile"
+    ],
+    "tests": [
+      "packages/granite_connectors/tests/test_connectors.py::test_export_then_map_round_trips_steps_and_declared_lineage",
+      "packages/granite_connectors/tests/test_connectors.py::test_value_matching_finds_handoffs_when_nothing_is_declared",
+      "packages/granite_connectors/tests/test_connectors.py::test_order_is_the_fallback_and_profile_names_steps"
+    ],
+    "note": "Value-matched lineage is a heuristic and has not been evaluated on third-party traces; Granite's own exports declare their reads, so the demo lineage is exact."
+  },
+  "FR-INT-03": {
+    "status": "done",
+    "impl": [
+      "apps/api/granite_api/services/connections.py::write_back"
+    ],
+    "tests": [
+      "apps/api/tests/test_integrations.py::test_send_import_investigate_and_write_back_round_trip",
+      "apps/api/tests/test_integrations.py::test_send_import_and_score_round_trip"
+    ],
+    "note": "Phoenix: span annotation named granite.verdict with identifier granite (updates in place). Langfuse: categorical score with a stable id."
+  },
+  "FR-INT-04": {
+    "status": "done",
+    "impl": [
+      "packages/granite_connectors/granite_connectors/export.py::trace_to_spans",
+      "apps/api/granite_api/services/connections.py::export_run"
+    ],
+    "tests": [
+      "packages/granite_connectors/tests/test_connectors.py::test_export_ids_are_stable_and_otel_shaped",
+      "apps/api/tests/test_integrations.py::test_send_import_investigate_and_write_back_round_trip"
+    ],
+    "note": ""
+  },
+  "FR-INT-05": {
+    "status": "done",
+    "impl": [
+      "apps/api/granite_api/models.py::class Connection",
+      "apps/api/granite_api/config.py::langfuse_secret_key"
+    ],
+    "tests": [
+      "apps/api/tests/test_integrations.py::test_needs_keys_in_the_environment",
+      "packages/granite_connectors/tests/test_connectors.py::test_http_connection_errors_and_client_errors_become_connector_errors"
+    ],
+    "note": "Chosen instead of encrypting keys in the database (ADR-012): nothing secret is stored at all. Per-connection keys for several Langfuse projects are therefore not supported yet."
+  },
+  "FR-INT-06": {
+    "status": "done",
+    "impl": [
+      "apps/api/granite_api/services/connections.py::import_traces"
+    ],
+    "tests": [
+      "apps/api/tests/test_integrations.py::test_traces_that_do_not_match_the_workflow_are_skipped_with_a_reason"
+    ],
+    "note": "Imported traces that match a workflow Granite can run are replayable (integrations strategy 4.6, route 1), which goes beyond FR-IMP-02's V1-only rule for those traces."
+  },
+  "FR-LAB-01": {
+    "status": "partial",
+    "impl": [
+      "workflows/refund_desk/refund_desk/faults.py::FAULT_TYPES",
+      "apps/api/granite_api/services/batches.py::create_batch"
+    ],
+    "tests": [
+      "apps/api/tests/test_fyp1_final_features.py::test_generates_every_pair_and_scores_by_condition",
+      "workflows/refund_desk/tests/test_faults_and_verification.py::test_silent_detected_by_the_coverage_check_and_confirmed_at_intake",
+      "workflows/refund_desk/tests/test_faults_and_verification.py::test_damage_in_transit_is_visible_and_confirmed_at_the_receiver"
+    ],
+    "note": "Three fault types on one workflow and one runtime; clean runs are chosen as a condition rather than as a percentage share."
+  },
   "FR-REP-01": {
     "status": "partial",
     "impl": [
@@ -109,6 +205,19 @@
       "apps/api/tests/test_requirements.py::test_fr_rep_01_report_is_available_as_markdown_and_json_with_evidence_hashes"
     ],
     "note": "Markdown and JSON exist; PDF is planned for Final-1."
+  },
+  "FR-REP-02": {
+    "status": "partial",
+    "impl": [
+      "packages/granite_core/granite_core/regression.py::render_pytest",
+      "apps/api/granite_api/services/regression.py::regression_zip"
+    ],
+    "tests": [
+      "workflows/refund_desk/tests/test_regression_export.py::test_fixed_system_passes_and_reinjected_fault_fails",
+      "workflows/refund_desk/tests/test_regression_export.py::test_exported_files_run_under_pytest",
+      "apps/api/tests/test_fyp1_final_features.py::test_zip_holds_case_test_and_readme"
+    ],
+    "note": "Exported for findings whose origin is confirmed (V2) rather than only resolved ones, so a reviewer can keep the test before closing the finding. Not yet run in an external CI."
   },
   "FR-REV-01": {
     "status": "done",

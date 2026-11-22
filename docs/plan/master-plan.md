@@ -819,6 +819,14 @@ Format: ID · requirement · priority · milestone · acceptance criterion (AC).
 - **FR-SDK-01** The Python SDK shall capture a LangGraph workflow's node inputs and outputs into Granite Trace v1 and submit them to the API with an API key, without modifying the user's node functions beyond adding a decorator/callback. · M · Final-1 · *AC:* the sample LangGraph app produces a run in Granite with all nodes; time-to-first-finding in the pilot < 30 min.
 - **FR-SDK-02** CrewAI adapter (same AC). · M · Mid-2.
 
+**Integrate** (added by change C-07, 2026-11-15; design in [`integrations-strategy.md`](integrations-strategy.md))
+- **FR-INT-01** The system shall import traces from a Langfuse or Arize Phoenix project through its public API, without importing a trace twice. · S · Final-1 · *AC:* a second import of the same project adds no run and reports each trace as already imported.
+- **FR-INT-02** The system shall map imported spans to Granite Trace v1 through a profile (span name to step alias) and record, for every read edge, whether it was declared, inferred from values or assumed from order. · S · Final-1 · *AC:* a Refund Desk run sent to Phoenix and read back equals the original step by step, with every edge declared.
+- **FR-INT-03** The system shall write a finding's verdict back to the platform it is linked to, as a span annotation (Phoenix) or a score (Langfuse) on the origin step, only on an explicit request, updating rather than duplicating it. · S · Final-1 · *AC:* writing twice leaves one `granite.verdict` annotation on the origin span.
+- **FR-INT-04** The system shall send a Granite run to a connected platform as spans with stable ids, so sending it again adds nothing. · C · Final-1.
+- **FR-INT-05** Third-party credentials shall never be stored in Granite's database, returned by the API or written to logs. · M · Final-1 · *AC:* the connections table has no secret column; keys are read from the server environment.
+- **FR-INT-06** An imported trace whose steps do not match the connection's workflow shall be skipped with a stated reason rather than analysed with the wrong checks (extends FR-IMP-02). · S · Final-1.
+
 **Check**
 - **FR-CHK-01** The system shall evaluate all enabled checks on every run and store PASS/FAIL/ABSTAIN/ERROR with observed and expected values. · M · Mid-1.
 - **FR-CHK-02** Check expressions shall be evaluated by a whitelisted AST evaluator. Any disallowed construct (attribute access outside refs, imports, comprehensions, lambdas, calls to non-whitelisted functions) shall be rejected at save time. · M · Mid-1 · *AC:* the 15 malicious expressions in the test suite are rejected.
@@ -2147,7 +2155,7 @@ SDK, LangGraph/CrewAI adapters, Math Crew, Fault Lab batches, benchmark generati
 
 ## 31. FYP-1 Completion Plan (Iteration 2: Mid-1 → Final-1)
 
-> **2026-11-11:** a revised scope and schedule for the remaining weeks is proposed in [`fyp1-completion-plan.md`](fyp1-completion-plan.md) (poster due 15 November). It applies once the supervisor agrees the committed scope (change C-05); until then this section stands.
+> **2026-11-11, updated 2026-11-14:** a revised scope and schedule for the remaining weeks is proposed in [`fyp1-completion-plan.md`](fyp1-completion-plan.md) (version 1.1; poster due 15 November). It applies once the supervisor agrees the committed scope (change C-05); until then this section stands. The product direction and the FYP-2 phases are in [`product-strategy.md`](product-strategy.md).
 
 **Goal at Final-1** (handbook "integration readiness gate"):
 - about 45–50% of the committed effort implemented
@@ -2210,6 +2218,8 @@ SDK, LangGraph/CrewAI adapters, Math Crew, Fault Lab batches, benchmark generati
 ---
 
 ## 33. Final Product Roadmap (beyond the FYP; context only, not graded scope)
+
+> **2026-11-15:** integrations with Langfuse and Arize Phoenix (read traces, write verdicts back) and the business model are worked out in [`integrations-strategy.md`](integrations-strategy.md); adopting any of it into graded scope is proposed as change C-07.
 
 | Horizon | Item |
 |---|---|

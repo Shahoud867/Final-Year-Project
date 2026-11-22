@@ -35,6 +35,12 @@ Mid-1 requirements: 20. Done: 15. Partly met: 4. Not met: 1.
 | FR-IMP-02 | Imported runs shall be marked non-replayable, with V1 verification only. | Final-1. |
 | FR-SDK-01 | The Python SDK shall capture a LangGraph workflow's node inputs and outputs into Granite ... | Final-1 |
 | FR-SDK-02 | CrewAI adapter (same AC). | Mid-2. |
+| FR-INT-01 | The system shall import traces from a Langfuse or Arize Phoenix project through its publi... | Final-1 |
+| FR-INT-02 | The system shall map imported spans to Granite Trace v1 through a profile (span name to s... | Final-1 |
+| FR-INT-03 | The system shall write a finding's verdict back to the platform it is linked to, as a spa... | Final-1 |
+| FR-INT-04 | The system shall send a Granite run to a connected platform as spans with stable ids, so ... | Final-1. |
+| FR-INT-05 | Third-party credentials shall never be stored in Granite's database, returned by the API ... | Final-1 |
+| FR-INT-06 | An imported trace whose steps do not match the connection's workflow shall be skipped wit... | Final-1. |
 | FR-CHK-05 | Users shall create, edit (versioned), dry-run and disable checks from the UI. | Final-1. |
 | FR-ATT-04 | The system shall optionally request an LLM "second opinion" hypothesis labelled `llm_opin... | Final-1 (M at Mid-2). |
 | FR-VER-04 | Verification shall be refused (HTTP 409 + UI message) for non-replayable runs. | Final-1. |

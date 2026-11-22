@@ -11,7 +11,7 @@ A working slice exists (state and gaps: [`docs/plan/execution-status.md`](docs/p
 
 ```bash
 python -m venv .venv && source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
-pip install -e "packages/granite_core[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
+pip install -e "packages/granite_core[dev]" -e "packages/granite_connectors[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
 (cd apps/web && npm ci && npm run build)
 cd apps/api && GRANITE_LLM_MODE=recorded GRANITE_STATIC_DIR=../web/dist uvicorn granite_api.main:app_from_env --factory --port 8000
 ```
@@ -29,7 +29,9 @@ Open <http://127.0.0.1:8000>, choose **New run**, load an example and press Run.
 
 ## Start here
 
-- **What to do now and what to build:** [`docs/plan/master-plan.md`](docs/plan/master-plan.md) (section 0 is the action card)
+- **What Granite is and where it is going:** [`docs/plan/product-strategy.md`](docs/plan/product-strategy.md)
+- **What to do before the FYP-1 Final:** [`docs/plan/fyp1-completion-plan.md`](docs/plan/fyp1-completion-plan.md)
+- **The detailed specification:** [`docs/plan/master-plan.md`](docs/plan/master-plan.md); which plan to read for what: [`docs/plan/README.md`](docs/plan/README.md)
 - **Where everything lives and how to name it:** [`docs/workspace-guide.md`](docs/workspace-guide.md)
 - **Looking for a file that used to be somewhere else?** `grep` its old name in [`archive/migration-map_2026-10-06.tsv`](archive/migration-map_2026-10-06.tsv)
 

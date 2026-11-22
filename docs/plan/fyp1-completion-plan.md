@@ -1,174 +1,168 @@
-# FYP-1 completion plan: from demonstration to product
+# FYP-1 completion plan
 
 | | |
 |---|---|
-| Version | 1.0 |
-| Date | 2026-11-11 |
-| Status | Proposal from an AI-assisted assessment (see the [AI usage log](../registers/ai-usage-log.md)). **Not yet agreed by the team or the supervisor.** It refines [master plan section 31](master-plan.md); where the two disagree, this plan applies once the committed scope (section 6) is agreed with the supervisor and recorded as change C-05 |
-| Basis | The repository at `main` `00e0c40` (14 October), the registers, the feasibility results, the datasets in `data/raw/`, and the final [handbook](../../references/university/bs-fyp-handbook-2026.pdf) (Appendix A stage 2; Forms 4 and 5) |
-| Fixed dates | **Poster submission: 15 November 2026.** FYP-1 Final: **not confirmed**; by the handbook calendar (proposal defense on 11 September = week 4) week 15 falls around 27 November to 3 December |
+| Version | 1.1 (v1.0 of 2026-11-11 is in the git history) |
+| Date | 2026-11-14 |
+| Status | Proposal from an AI-assisted assessment (see the [AI usage log](../registers/ai-usage-log.md)). **Not yet agreed by the team or the supervisor.** It applies once the supervisor approves change C-05 in the [change log](../registers/change-log.md); until then master plan section 31 stands |
+| Job of this document | What to do between today and the FYP-1 Final, by whom and by when. Why the product is shaped this way is in [`product-strategy.md`](product-strategy.md) |
+| What changed in 1.1 | Committed scope cut from eight items to five; day-level schedule; CI repair added as the first task; the market and architecture sections moved to the strategy document |
+| Fixed dates | **Poster submission: 15 November 2026.** FYP-1 Final: **not confirmed**; the handbook calendar puts week 15 around 27 November to 3 December |
+| Progress | Section 0 (updated 2026-11-15) |
 
-## What FYP-1 Final is marked on
+## 0. Implementation checklist (2026-11-15)
 
-The panel marks the demo and defense (42.5 marks) on Form 4; the report (7.5 marks) is marked on Form 5. The largest items: **implementation progress, at least 60% of committed scope (25)**, quality and robustness of the live demo beyond the happy path (15), poster (10), previous actions addressed (10), testing (10), design evolution (10), code quality and integration readiness (10). Caps: undisclosed core GenAI use sets the tool-use item to 0; a member who cannot explain their module gets an individual adjustment; commit counts alone earn nothing.
+All feature work below was written in one AI-assisted session on branch `feat/fyp1-final-scope` at Shahoud's request, **before the supervisor approved C-05** and **not committed**. The handbook (C.5.3) asks for approval before a scope change is acted on: merge only after C-05 is signed. Section 4 assigned these items to Noor and Saif; each owner must now read, change if needed, and be able to explain their item (walkthrough).
 
-Because the 25-mark item is measured against **committed** scope, the scope in section 6 must be agreed with the supervisor now.
-
-## 1. Honest assessment
-
-**Strong:** clean architecture (framework-free core, thin API, typed trace format); a real evidence chain (SHA-256 re-checked on display, append-only API, server-enforced lifecycle); the pre-registered rule VR-1; about 400 tests; CI/CD and a live Render deployment; honest registers; an interface that shows only real backend output.
-
-**Weak:**
-
-1. **Progress has stopped.** No commit on `main` since 14 October. Of the master plan's FYP-1 Final Must list, F10 to F13, F15 to F18 and F20 are not started. One workflow; one fault type (`FAULT_TYPES` holds only `stale_price`).
-2. **The research result is circular.** We wrote the workflow, the fault, the step check that catches that fault, and the repair rule that undoes it. The [feasibility notes](../../research/eval/results/2026-10-07_refund-desk-feasibility-notes.md) say attribution is "easy by construction". Verification puts the source-of-truth value back and confirms that this fixes the output, which is close to a tautology.
-3. **A trivial baseline ties us.** "Blame the earliest step whose check fails" gives Granite's answer on every Refund Desk task. On this benchmark the provenance ranking adds nothing measurable.
-4. **"Robust to nondeterminism" is a claim, not a result.** Recorded mode is deterministic; controls were always 0/2; no experiment compares single-replay verification with VR-1.
-5. **No baselines, 10 tasks, one 3B model;** four tasks not blind.
-6. **Not usable as a product.** No import, SDK or adapter, so no one can bring their own agent system. Checks are Python inside the workflow definition; repair rules are hand-written per step.
-7. **The demo is narrow.** The public instance runs only the 12 recorded tasks and its database resets on every deploy.
-8. **Ownership.** Recent commits come from one account. The handbook adjusts individual marks when a member cannot explain the work.
-
-**Readiness:** a well-built Iteration 1 with a thin Iteration 2. As it stands it would score well on design and testing and poorly on implementation progress and on whether the research adds anything.
-
-## 2. The product
-
-**Users:** developers and QA staff running LLM agent workflows that act on real data (support agents, back-office automation, tool-using assistants), whose failures are silent: the run succeeds and the answer is wrong.
-
-**One sentence:** connect your agent workflow, declare what "correct" means, and Granite flags the runs that are wrong, finds the step where it went wrong, proves it with controlled replays, and turns it into a regression test.
-
-**Minimum for a real product:** it works on a system whose failures we did not author; it works on traces from outside; it needs no hand-written repair rule per step; it gives the user something to keep (a regression case).
-
-## 3. Competitors and the gap
-
-From the [market comparison](../../research/market/commercial-product-comparison.md) and master plan section 10. Re-check vendor documentation before the panel; the comparison is dated 22 August 2026.
-
-| Who | What they do | What their documentation does not show |
+| Item | State | Evidence |
 |---|---|---|
-| LangSmith, Langfuse, Arize Phoenix, Braintrust | Trace capture, graphs, evaluations | Diagnosis by a person; no fix-testing by replay |
-| LangSmith Engine (beta), Arize Alyx | Automated root cause and drafted fixes | Mechanism unpublished; tied to their platform; no controls |
-| Raindrop, Percival, Galileo | Silent-failure detection judged by an LLM | No step-level causal attribution; SaaS only |
-| Who&When, AgenTracer, ErrorProbe | Attribution research | LLM-judged; assume detectable anomalies; no verification |
-| **DoVer** (closest prior work) | Intervene at the suspect step and re-execute | Single replay, flip rates; no controls or verdict rule; no executable checks |
+| CI green (web dependency audit) | **Done** on the branch: `npm audit fix`; no high advisory left | `npm audit --audit-level=high` exits 0 |
+| 10. Check-derived interventions | **Done.** No repair rules remain in Refund Desk; CT-LOOKUP and CT-INTAKE at version 2; [ADR-011](../adr/adr-011-check-derived-interventions.md) | `granite_core/interventions.py`; 7 unit tests; SYS-CORE-08 |
+| 11. Fault types 2 and 3, batch | **Done.** `dropped_item` (s1), `handoff_drift` (s4, in transit); outcome check CHK-OUT-3; Fault Lab API and screen | `refund_desk/faults.py`; `services/batches.py`; `pages/Lab.tsx`; SYS-CORE-09 |
+| 12. Investigate | **Done.** Verifies suspects in rank order within a replay budget; each attempt is a stored experiment | `granite_core/investigation.py`; `services/investigations.py`; Investigate in `Verify.tsx`; SYS-CORE-08 |
+| 13. Evaluation harness v0 | **Done and run.** Pre-registered (`research/eval/prereg-v2.md`, hashed, not yet committed); 40 live runs; baselines; both ablations; Evaluation screen | [results](../../research/eval/results/2026-11-15_benchmark-v0.md), [notes](../../research/eval/results/2026-11-15_benchmark-v0-notes.md) |
+| 14. Regression export | **Done.** Zip with case JSON, pytest file, README | `granite_core/regression.py`; `test_regression_export.py`; SYS-CORE-08 |
+| Pre-registration v2 | Written and hashed before the run; **commit it** | `research/eval/prereg-v2.md` |
+| Design pack, test catalogue, traceability regenerated | **Done.** The interactive pack now goes to the stage-2 draft; the stage-1 copy stays frozen | `--check` scripts pass |
+| Tests | **559 passing:** core 221, connectors 20, Refund Desk 61, API 93, system 24, web 140, plus a Playwright browser journey at desktop and phone width. Coverage core 93%, connectors 93%, API 96%. ruff, mypy strict, bandit, ESLint, tsc clean | commands in the [execution status](execution-status.md) |
+| Interface redesign (frontend roadmap P0 and P1) | **Done** on the branch; no person has used it yet | [roadmap section 10.1](../../apps/web/FRONTEND_DESIGN_ROADMAP.md) |
+| Browser check | Done by the assistant in headless Chrome, recorded mode; no person yet | `evidence/demos/2026-11-15_*.png` |
+| Supervisor meeting, C-05 signed, minutes | **Not done** | |
+| GitHub issues per item | **Not done** | |
+| Retail Agent spike | **Not done** (FYP-2 go/no-go) | |
+| Code walkthrough by each member | **Not done** | |
+| Usability check with three people (A1) | **Not done** | |
+| Report v2.0 | **Not done** | |
+| Commit, pull requests from members' own accounts, tag `v0.2.0`, deploy | **Not done**; the deployed demo still runs the October version | |
+| Stretch (C-07): Phoenix and Langfuse round trip | **Done** for Phoenix, verified live against a local Phoenix 21.0.0 server; Langfuse built and tested against an in-memory server only (no instance or keys available). Connections screen, send run, import, write verdict back. [ADR-012](../adr/adr-012-observability-connectors.md), FR-INT-01 to 06 | `packages/granite_connectors/`; `services/connections.py`; `pages/Connections.tsx`; `scripts/check_connectors_live.py`; [live report](../../evidence/demos/2026-11-15_phoenix-live-check.json) |
+| Stretch: hosted Postgres | Not started (FYP-2 first milestone) | |
 
-**The gap to own:** *verified* attribution for silent failures: detection by executable checks against an independent oracle, verification that holds under nondeterminism (N fix replays against M controls), and one auditable record that ends in a regression test. It counts only if measured against the cheap alternatives. No superiority claim over any product or paper.
+## 1. What the Final is marked on
 
-## 4. Novelty strategy: break the circularity
+From the handbook, Forms 4 and 5.
 
-1. **Check-derived interventions.** When a source-of-truth check fails, its computation already holds the correct value: patch the step from it and remove the hand-written per-step repair rules. Answers "you wrote the fix yourselves".
-2. **Verified attribution loop.** Rank suspects, verify them in order until one is confirmed, within a replay budget. Claim to test: verification raises top-1 accuracy over ranking alone when check coverage is incomplete.
-3. **Check-coverage ablation (main experiment).** Remove step checks, including the origin's own, at 100%, 60% and 30% coverage. Compare: earliest failing check, last agent, an all-at-once LLM judge (as in Who&When), Granite's ranking alone, and Granite with verification. At full coverage the trivial baseline ties; the result that matters is below it.
-4. **Nondeterminism ablation.** Live mode, temperature above 0: single-replay verification (DoVer style) against VR-1 (N=5, M=2). Metric: false confirmations on innocent steps.
-5. **A system whose failures are natural.** `data/raw/taubench_retail/` holds the full tau-bench retail environment: 16 tools, the policy and 635 tasks with gold action sequences (Refund Desk data is already a subset). A **Retail Agent** (an LLM agent calling those tools) is judged against tau-bench's own gold end state of the database, an oracle we did not write. Small models fail on it without injected faults.
+| Form 4 item (demo and defence, 42.5 marks) | Max | What decides it here |
+|---|---|---|
+| Implementation progress against approved scope | 25 | At least 60% of committed work, "unless scope formally revised". Section 3 is that revision |
+| Quality and robustness of the live demo | 15 | Works beyond the happy path; not hardcoded |
+| Poster | 10 | Format and content |
+| Previous actions addressed | 10 | Form 10: A1 and A6 are still "Partly" |
+| Testing on completed modules | 10 | Tests run and explained by their owner |
+| Design evolution and updated artefacts | 10 | Diagrams regenerated after the new modules land |
+| Code quality and integration readiness | 10 | Buildable without the original developer; green CI |
+| Tool and GenAI ownership defence | 5 | Each member explains what was generated and how it was checked |
+| Presentation and questions | 5 | Balanced participation |
 
-**External validity:** the 184 annotated Who&When traces are on disk (`data/raw/whowhen_full/`). Import them and run the baselines. Granite's deterministic ranking will likely be weak there (chat logs, no data flow, no checks); report that as the boundary of the method and the FYP-2 extension point (LLM opinion, F19).
+Form 5 (report, 7.5 marks) asks that the report match the demonstrated system and contain the FYP-2 evaluation plan. Caps apply: undisclosed core GenAI use sets the tool item to zero, and a member who cannot explain their module gets an individual adjustment.
 
-## 5. Target architecture
+## 2. The four things that would cost the most marks today
 
-Keep the modular monolith ([ADR-001](../adr/adr-001-modular-monolith.md)); add components, rewrite nothing.
+1. **No agreed scope.** The 25-mark item is measured against committed scope, and the change log records no approved change, not even C-01. Against the master plan's Final-1 Must list the project is below 60%.
+2. **A red build.** CI on `main` has failed since 11 November on the web dependency audit. A panel member who opens the Actions tab sees failures.
+3. **Ownership.** No member has done the code walkthrough, and Saif has eight commits. The handbook says the panel may ask any member to show any part of the code.
+4. **A result that proves little.** One fault that we wrote, caught by a check that we wrote. See the [strategy](product-strategy.md), section 6.
 
-```
-Agent systems ──┐  Refund Desk (own runner)       Retail Agent (tau-bench tools, own runner)
-                ├─ Trace import  POST /api/traces  (Granite Trace v1; Who&When converter)
-                └─ SDK / LangGraph adapter (FYP-2: replay by forking a checkpoint)
-                        │
-granite_core:  checks ─ attribution ─ interventions (check-derived + rule) ─ verification (VR-1)
-               lifecycle ─ evidence ─ NEW: investigation orchestrator (verify top-k within a budget)
-                        │
-apps/api:      runs · findings · experiments · NEW: imports, fault-lab batches, evaluations, auto-investigate
-               jobs (thread pool) · Postgres on Neon (free) · SQLite locally
-apps/web:      existing 6 screens + NEW: Import, Fault Lab / Benchmark, Evaluation, "Investigate" button
-LLM:           Ollama locally (qwen2.5:7b if hardware allows) · OpenAI-compatible endpoint · recorded cassettes
-research/eval: pre-registration v2 · harness (CLI = same code as the API) · results JSON -> Evaluation screen
-```
+## 3. Scope proposed for change C-05
 
-## 6. Committed scope for FYP-1 Final (to agree with the supervisor)
+The whole-project scope, restated as 21 capabilities so the 60% rule can be counted. The count is this plan's proposal; the supervisor decides.
 
-| # | Feature | Priority | Backend | Frontend | Done when |
-|---|---|---|---|---|---|
-| 1 | Check-derived interventions | **Critical** | `build_intervention` falls back to the failed truth check's expected value; drop `s2` from `REPAIRS` | "Patched from check X" on the experiment | Refund Desk verifies Order Lookup with no repair rule; unit tests |
-| 2 | Fault types 2 and 3 (handoff drift, dropped field) and Fault Lab batch | **Critical** | `faults.py`; batch job and endpoint | Fault Lab screen with progress | 3 faults × 12 tasks plus clean controls generated from the UI |
-| 3 | Auto-investigate (verified attribution) | **Critical** | Orchestrator job: verify ranked suspects until confirmed or out of budget | "Investigate" button and sequential timeline | Finding reaches V2 in one click; budget respected; tests |
-| 4 | Evaluation harness v0 with baselines and both ablations | **Critical** | `research/eval/` harness and `/api/evaluations` | Evaluation screen: metrics, Wilson intervals, baseline table | Pre-registered run reproduces from one command |
-| 5 | Retail Agent (natural failures, gold oracle) | **High**, critical if the spike succeeds | New workflow: single-turn tool loop; generic checks (arguments exist in the database, policy rules, end-state diff) | Existing screens (the registry plugs it in) | 30 or more tau-bench tasks run live; failure rate and findings reported |
-| 6 | Trace import and Who&When converter (F10) | **High** | `POST /api/traces`, schema validation, V1 evidence with replay marked unavailable | Import screen with validation report | 58 hand-crafted Who&When traces imported; attribution runs |
-| 7 | Regression export (F17) | **High** | Confirmed finding → JSON case and a pytest file that replays it | "Export regression test" | Test fails on the faulty trace and passes on the fixed one |
-| 8 | Durable deployment | **High** | Neon Postgres; the PostgreSQL test (D-08); live-model demo path | Instance panel shows the database | Data survives a redeploy; system tests pass on Postgres |
-| 9 | Redaction before storage (D-07) | Optional | Token vault as designed in D-07 | Redaction marks in the inspector | FR-SEC-01 tests pass |
-| 10 | SDK and LangGraph adapter with checkpoint-fork replay | FYP-2 | | | |
-| 11 | Check suggestion validated on clean runs | FYP-2 | | | |
-| 12 | LLM second opinion (F19), PDF export, CrewAI, OAuth | FYP-2 | | | |
+| # | Capability | State | Target |
+|---|---|---|---|
+| 1 to 9 | Run a workflow (F1), trace store and inspector (F2), checks and findings (F3), attribution (F4), verification by controlled replay (F5), review and lifecycle (F6), history (F7), report export in Markdown and JSON (F8), graceful errors (F9) | **Built** | Keep green |
+| 10 | Corrections derived from the failed check | Not built | **FYP-1 Final** |
+| 11 | Three fault types and batch generation (F12) | One type | **FYP-1 Final** |
+| 12 | Verified attribution in one action ("Investigate") | Not built | **FYP-1 Final** |
+| 13 | Evaluation harness with baselines and the two ablations (F20 v0) | Not built | **FYP-1 Final** |
+| 14 | Regression-test export (F17) | Not built | **FYP-1 Final** |
+| 15 | Trace import and Who&When converter (F10) | Not built | FYP-2, first milestone. Stretch for the Final |
+| 16 | A system with natural failures: Retail Agent on tau-bench (replaces F11 Math Crew) | Not built | FYP-2. A five-task spike before the Final decides feasibility |
+| 17 | LangGraph adapter with checkpoint-fork replay (F13) | Not built | FYP-2 |
+| 18 | Redaction before storage (F18, defect D-07) | Not built | FYP-2, first milestone |
+| 19 | Durable hosted database with migrations (D-08) | Not built | FYP-2, first milestone |
+| 20 | Reviewer login and API keys (F22) | Not built | FYP-2 |
+| 21 | LLM second opinion and the Who&When boundary study (F19) | Not built | FYP-2 |
 
-**Changes against the master plan, for C-05:** F11 Math Crew is replaced by the Retail Agent (more realistic, reuses our data). F13 SDK and LangGraph adapter, F15 fix suggestion, F16 recovered run, F18 redaction and PDF export move to FYP-2 or become optional. Rows 1 to 8 are the committed FYP-1 Final scope.
+Nine of 21 are built (43%). With items 10 to 14 the count is 14 of 21 (67%).
 
-## 7. User journey of the finished product
+**Removed, to be recorded in C-05 with reasons:** the CrewAI adapter (F14), the known-fix library (F21), the fix-suggestion agent as an LLM component (F15, replaced by item 10), PDF export, webhooks (F24) and the seven-framework compatibility layer (F25).
 
-1. Connect the system: pick the Retail Agent, or import traces from another tool.
-2. Run the panel's chosen task live, or a Fault Lab batch.
-3. Checks flag a run that completed but is wrong.
-4. **Investigate:** suspects ranked, the top ones replayed with controls, origin confirmed with an interval.
-5. A reviewer accepts; the evidence is hashed.
-6. Export a regression test that runs in CI.
-7. The Evaluation screen shows how reliable this is in general: accuracy and false alarms against the baselines.
+**The registered title.** "Verified Repair and Recovery" is met in this sense and no further: Granite derives a corrected value for the suspect step (item 10), verifies by replay that it fixes the outcome (F5), and shows the corrected run that the replay produced. A person decides whether to apply it. Nothing repairs itself. Say this in the report and in C-05 so the panel does not find it for themselves.
 
-## 8. Roadmap
+## 4. The five committed items
 
-Owners follow master plan section 34.1. Every member opens their own pull requests throughout.
+| # | Item | Owner | Backend | Interface | Done when | Days |
+|---|---|---|---|---|---|---|
+| 10 | Check-derived interventions | Noor | `build_intervention` takes the expected value from the failed source-of-truth check; remove `s2` from `REPAIRS` | "Patched from check CT-LOOKUP" on the experiment | Refund Desk verifies Order Lookup with no repair rule; unit tests; ADR-006 updated | 1.5 |
+| 11 | Fault types 2 and 3 (handoff drift, dropped field) and batch runs | Saif | `faults.py`; a batch job and endpoint; ground truth stored apart from the trace | Fault Lab: choose faults and tasks, watch progress | 3 faults × 12 tasks plus clean controls generated in one action | 3.5 |
+| 12 | Investigate | Saif | Orchestrator job: verify ranked suspects in order until one is confirmed or the replay budget is spent | One button; a timeline of the suspects tried | A finding reaches V2 in one action; the budget is respected; tests | 3 |
+| 13 | Evaluation harness v0 | Noor | `research/eval/` harness calling the core; baselines; coverage and nondeterminism ablations; results as JSON | Evaluation screen: one table with intervals, including ties and losses | A pre-registered run reproduces from one command | 4 |
+| 14 | Regression export | Shahoud | Confirmed finding to a JSON case and a pytest file that replays it | "Export regression test" | The test fails on the faulty trace and passes on the corrected one | 2 |
 
-| Window | Shahoud (workflows and experience) | Noor (investigation engine) | Saif (verification and platform) | Gate |
+**If time runs out, cut in this order:** the Evaluation screen (keep the command and put the table in the report), the Fault Lab screen (keep the endpoint and a command), then item 14. Items 10, 11 without its screen, 12 and 13 are the minimum that removes the circularity objection.
+
+**Stretch, only after the five are merged, the walkthrough is done and report v2.0 is drafted:** one real Langfuse round trip (Refund Desk runs sent to a free Langfuse Cloud project, read back by Granite, verdict written back as Langfuse scores; about 5.5 days; [integrations strategy](integrations-strategy.md), section 5.1, needs change C-07). It replaces the earlier stretch item, a plain JSON trace import. Hosted Postgres on Neon (item 19) stays a stretch item.
+
+## 5. Work that is not a feature and is still required
+
+| Task | Owner | Evidence |
+|---|---|---|
+| Make CI green: `cd apps/web && npm audit fix`, run the web tests and build, open a pull request | Saif | Green run on `main` |
+| Meet the supervisor: confirm the Final date, approve C-05, sign the poster; write the minutes | Shahoud | `docs/meetings/2026-11-NN_supervisor-meeting.md`; C-05 marked approved |
+| One GitHub issue per item in sections 4 and 5, assigned | Shahoud | Issue list |
+| Pre-registration v2, committed before any benchmark run | Noor | `research/eval/prereg-v2.md` and its hash |
+| Retail Agent spike on five tau-bench tasks, two days at most | Shahoud | A spike note with the natural failure rate and a go or no-go for FYP-2 |
+| Code walkthrough: each member explains their module to the other two, then fills in "evidence of understanding" in the ADRs they own | All | [Walkthrough](../manuals/code-walkthrough.md) section 6 completed |
+| Usability check with three people outside the team (closes panel action A1) | Noor | `evidence/uat/` record |
+| Report v2.0 in the prescribed template, each member writing their own chapters | All; Shahoud edits | `deliverables/stage-2-fyp1-final/granite_report_fyp1-final_v2.0.pdf` |
+| Regenerate the design pack, traceability and index after the last merge | Saif | The `--check` scripts pass in CI |
+| Form 13 and the AI usage log brought up to date | Saif collates | [Form 13](../registers/form-13-genai-disclosure.md) |
+| Poster: one JPEG and one original design file in `deliverables/stage-2-fyp1-final/`; close pull request #12 without merging its six versions | Shahoud | Two files in the stage folder |
+
+## 6. Schedule
+
+Dates assume the Final falls between 27 November and 3 December. If it is earlier, apply the cut order in section 4.
+
+| Dates | Shahoud | Noor | Saif | Gate |
 |---|---|---|---|---|
-| **12 to 15 Nov** | **Poster** (lead; supervisor approval before 15 Nov) | Pre-registration v2 written and committed before any run; start check-derived interventions (#1) | Fault types 2 and 3 (#2) | **Poster submitted 15 Nov** |
-| **16 to 22 Nov** | Retail Agent spike on 5 tasks, then generic checks and the gold end-state oracle; record cassettes overnight | #1 merged; harness with baselines and the coverage ablation (#4); Who&When converter (#6) | Fault Lab batch (#2); Neon and the Postgres test (#8); start auto-investigate (#3) | #1, #2 merged; benchmark generation running overnight (120 or more runs, live model) |
-| **23 Nov to the Final** | Fault Lab, Import and Evaluation screens; usability pilot with 3 peers; demo rehearsal | Run the evaluation; results and limitations into the report | #3 merged; regression export (#7); nondeterminism ablation; browser E2E test in CI; tag `v0.2.0` | Report v2.0 approved by the supervisor; code freeze 24 hours before the Final |
+| **Sat 14 to Sun 15 Nov** | Poster approved and submitted; request the supervisor meeting; open the issues | Pre-registration v2 drafted | CI green | **Poster submitted; CI green** |
+| **Mon 16 to Thu 19 Nov** | Retail Agent spike (two days), then start item 14 | Pre-registration committed (Mon); item 10 merged (Wed); start the harness | Fault types 2 and 3 merged (Wed); batch endpoint | **C-05 approved; items 10 and 11 (faults) merged** |
+| **Fri 20 to Tue 24 Nov** | Item 14 merged; Fault Lab screen | Harness with baselines and the coverage ablation; benchmark generation overnight on two laptops | Item 12 merged; "Investigate" in the interface | **Benchmark generated; items 12 and 14 merged** |
+| **Wed 25 to Fri 27 Nov** | Report chapters; demo script; Evaluation screen | Run the evaluation; nondeterminism ablation; results and limitations chapter | Design pack regenerated; browser end-to-end test; tag `v0.2.0` | **Evaluation results exist; walkthrough done; report draft to the supervisor** |
+| **Sat 28 Nov to the Final** | Rehearsal; stretch items | Usability check; rehearsal | Code freeze 24 hours before; warm the hosted instance | **Report v2.0 approved** |
 
-**Poster (due 15 Nov).** Portrait, 22.5" × 34.5", little text; submit the Photoshop or Corel source with a JPEG; supervisor approval first. Top left: title, members, supervisor. Top right: goals. Middle: the silent-failure contrast and the verification visual from the current interface (real screenshots). Bottom: the plan and the tentative FYP-1 Final deliverables (rows 1 to 8), labelled as planned, as the handbook's poster guidelines suggest.
+Estimated effort is 14 person-days of features and about 9 of report and evidence, against roughly 18 available if each member gives half of each day. It fits only with the cut order ready and no further time spent on the poster or the interface.
 
-## 9. Testing and evaluation
+## 7. Evaluation to run before the Final
 
-- **Functional:** current suites stay green; unit, API and system tests for every new feature; the scripted browser walk becomes a CI end-to-end test.
-- **Performance:** time per run, per replay and per investigation; replay budget per investigation.
-- **Research, pre-registered in `research/eval/prereg-v2.md` before any result exists:**
+Pre-registered in `research/eval/prereg-v2.md` before any result exists. Design and reasons: [strategy](product-strategy.md), section 6.
 
 | Metric | Measures |
 |---|---|
-| Detection | Share of faulty runs caught |
-| False alarms | Findings on clean runs |
-| Top-1 attribution | At 100%, 60% and 30% check coverage |
-| Verified top-1 | Accuracy after auto-investigate |
-| False confirmations | Single replay against VR-1 on innocent steps |
-| Retail Agent | Natural failure rate and investigation outcomes |
-| Who&When | Agent- and step-level accuracy against the published baselines |
+| Detection and false alarms | Faulty runs caught; findings on clean runs, across three fault types |
+| Top-1 attribution at 100%, 60% and 30% check coverage | Granite's ranking against the earliest failing check, the last agent and an all-at-once LLM judge |
+| Verified top-1 | Accuracy after "Investigate", and replays spent per confirmed origin |
+| False confirmations | Single replay against VR-1 on innocent steps, live model, temperature above 0 |
 
-- **Baselines:** earliest failing check, last agent, an all-at-once LLM judge, single-replay verification.
-- **Reporting:** Wilson intervals throughout; natural failures labelled blind by two members, with agreement (κ); negative results reported.
+Wilson intervals throughout. Report ties and losses.
 
-## 10. Final demonstration (15 minutes, live)
+## 8. Demonstration (15 minutes, live)
 
-1. The panel chooses a tau-bench task; the Retail Agent runs it live on a local model and succeeds or fails naturally.
-2. On a failure: **Investigate**, the ranking, sequential replays with controls, the confirmed origin; accept; export the regression test and run it in a terminal.
-3. Edge cases: an imported Who&When trace reaches V1 with replay honestly unavailable; a clean run raises no false alarm; a model outage is handled; a review out of lifecycle order is refused (409).
-4. Evaluation screen: real benchmark numbers against the baselines, including where Granite ties or loses.
-5. Code walkthrough: each member explains the module they own.
+1. A faulty run completes with no error. The checks open a finding.
+2. **Investigate:** the ranking, the replays with controls, the confirmed origin patched from the check; a reviewer accepts.
+3. Export the regression test and run it in a terminal: it fails on the faulty trace and passes on the corrected one.
+4. Beyond the happy path: a clean run raises no finding; an innocent suspect is refuted; the model is unavailable and the run fails cleanly; a review out of order is refused.
+5. Evaluation: the real table against the baselines, including where Granite ties.
+6. Each member explains the module they own.
 
-Fallback: recorded mode and the deployed instance (warm it a minute before; the free tier sleeps).
+Fallback: recorded mode on a laptop. The hosted instance sleeps; wake it a minute before.
 
-## 11. Risks
+## 9. Risks
 
-| Risk | Mitigation |
+| Risk | Response |
 |---|---|
-| Time | Rows 1 to 4 are the critical path; the Retail Agent drops to 10 tasks or moves to FYP-2 Mid; scope agreed formally (C-05) |
-| Local LLM speed (5 to 35 s per call) | Benchmark generation overnight on two laptops; small N; a free OpenAI-compatible endpoint is acceptable because the data is synthetic (disclose it in Form 13) |
-| Retail Agent complexity | Single-turn instruction with a tool loop, no simulated user; generic checks only |
-| Negative results | Fine when pre-registered and reported honestly |
-| One person does the work | One track per member; pull requests from own accounts; the supervisor's weekly tracking form |
-| Free-tier hosting resets | Neon Postgres; limits recorded in the deployment record |
-
-## 12. First actions
-
-1. Confirm the FYP-1 Final date and agree the committed scope (section 6) with the supervisor; record it as C-05 in the [change log](../registers/change-log.md).
-2. Poster (Shahoud), approved by the supervisor before 15 November.
-3. `research/eval/prereg-v2.md` (Noor), committed before any benchmark data is generated.
-4. Check-derived interventions (Noor or Saif): small, unblocks auto-investigate, removes the circularity critique.
-5. Fault types 2 and 3 and the batch job (Saif), so benchmark generation can start overnight.
-6. Retail Agent spike on 5 tau-bench tasks (Shahoud), to measure the natural failure rate before committing to it.
-7. One issue per row of section 6, with its owner.
+| The Final is earlier than assumed | Confirm the date on Monday; the cut order in section 4 |
+| The supervisor does not approve C-05 | The master plan's list stands and the 60% count fails; raise it at the first meeting and bring section 3 on one page |
+| A member does not deliver | One track per member; raise a stall of more than three days with the supervisor, as the master plan (34.1) already says |
+| Local model too slow for the benchmark | Generate overnight on two laptops; a free hosted endpoint for synthetic data, disclosed in Form 13 |
+| The evaluation shows no advantage over the trivial baseline | Report it. A pre-registered negative result with the coverage ablation is a defensible FYP-1 finding and sets up FYP-2 |
+| Members cannot explain AI-generated code | The walkthrough is scheduled, not optional; new code in this plan is written by its owner |

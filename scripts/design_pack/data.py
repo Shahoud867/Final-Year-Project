@@ -130,6 +130,51 @@ MEANING: dict[str, str] = {
     "jobs.created_at": "When the job was queued",
     "jobs.started_at": "When a worker picked it up",
     "jobs.finished_at": "When it ended",
+    "batches.id": "`bat_` plus 12 hex characters",
+    "batches.workflow_key": "Which workflow the batch runs",
+    "batches.status": "`queued`, `running`, `done` or `cancelled`",
+    "batches.llm_mode": "`live` or `recorded`",
+    "batches.faults": "List of fault names to inject; `none` means a clean run",
+    "batches.task_count": "Number of example tasks to run per fault",
+    "batches.seed": "Random seed for the batch",
+    "batches.created_at": "When the batch was requested",
+    "batches.finished_at": "When all runs ended",
+    "batch_runs.batch_id": "Batch this run belongs to",
+    "batch_runs.run_id": "The run",
+    "batch_runs.position": "Order within the batch, from 0",
+    "connections.id": "`con_` plus 12 hex characters",
+    "connections.kind": "`phoenix` or `langfuse`",
+    "connections.name": "Display name",
+    "connections.base_url": "Platform URL, for example `https://cloud.langfuse.com`",
+    "connections.project": "Phoenix project name or Langfuse trace-name filter",
+    "connections.workflow_key": "Workflow whose traces are exchanged",
+    "connections.profile": "Span name to step alias mapping (JSON)",
+    "connections.created_at": "Creation time (UTC)",
+    "connections.last_sync_at": "When the last import or export succeeded",
+    "connections.last_error": "Error from the most recent failed sync; empty on success",
+    "investigations.id": "`inv_` plus 12 hex characters",
+    "investigations.finding_id": "Finding being investigated",
+    "investigations.status": "`queued`, `running`, `done` or `error`",
+    "investigations.llm_mode": "`live` or `recorded`",
+    "investigations.n": "Replays with the fix applied (1 to 10)",
+    "investigations.m": "Control replays without it (0 to 5)",
+    "investigations.budget": "Maximum replays across all suspects",
+    "investigations.replays_used": "Total replays consumed so far",
+    "investigations.outcome": "`confirmed`, `exhausted` or `no_candidate`; null until done",
+    "investigations.confirmed_step": "Step confirmed as the origin; null if not confirmed",
+    "investigations.attempts": "Each suspect in order: verdict, experiment id, or why it was skipped",
+    "investigations.error": "Why the investigation failed; empty otherwise",
+    "investigations.created_at": "When it was requested",
+    "investigations.finished_at": "When the outcome was stored",
+    "trace_links.id": "Sequence number",
+    "trace_links.connection_id": "Connection used for the exchange",
+    "trace_links.run_id": "Run that was imported or exported",
+    "trace_links.direction": "`imported` or `exported`",
+    "trace_links.external_trace_id": "Trace id on the external platform",
+    "trace_links.root_span_id": "Root span id on the external platform",
+    "trace_links.span_ids": "Step id to external span id mapping (JSON)",
+    "trace_links.lineage": "How each data-dependency read was established",
+    "trace_links.created_at": "When the link was recorded",
     "audit_log.id": "Sequence number",
     "audit_log.ts": "When the action happened (UTC)",
     "audit_log.actor": "`system`, `analyst` or the reviewer's name",
@@ -172,6 +217,9 @@ _POS = {
     "check_results": (650, 60), "findings": (650, 370), "reviews": (650, 650),
     "hypotheses": (960, 370), "evidence": (960, 650),
     "experiments": (1270, 370), "replays": (1270, 700),
+    "connections": (30, 950), "batches": (340, 950),
+    "batch_runs": (340, 1130), "trace_links": (960, 950),
+    "investigations": (1270, 950),
 }
 
 
@@ -201,7 +249,7 @@ def er_diagram() -> Sheet:
     band = max(_POS[n][1] + box_h(len(cols)) for n, cols in tables.items()) + 70
     height = int(band + max(box_h(len(r), True) for *_, r in planned) + 40)
     d = Diagram("database-schema", "Database schema (ER diagram)", 1550, height,
-                "The twelve tables, their keys and the relationships between them, and the tables planned for "
+                "The seventeen tables, their keys and the relationships between them, and the tables planned for "
                 "FYP-1 Final and FYP-2 Mid.")
     boxes = {}
     for name, cols in tables.items():
@@ -223,6 +271,22 @@ def er_diagram() -> Sheet:
         ("findings", "reviews"): [b["findings"].bottom(), b["reviews"].top()],
         ("hypotheses", "experiments"): [(1210, 420), (1270, 420)],
         ("experiments", "replays"): [b["experiments"].bottom(), b["replays"].top()],
+        ("batches", "batch_runs"): [b["batches"].bottom(), b["batch_runs"].top()],
+        ("runs", "batch_runs"): [b["runs"].left(0.5), (5, b["runs"].y + b["runs"].h * 0.5),
+                                 (5, b["batch_runs"].cy), b["batch_runs"].left(0.5)],
+        ("connections", "trace_links"): [b["connections"].top(0.8),
+                                         (b["connections"].x + b["connections"].w * 0.8, 930),
+                                         (b["trace_links"].cx, 930),
+                                         b["trace_links"].top()],
+        ("runs", "trace_links"): [b["runs"].right(0.95),
+                                  (620, b["runs"].y + b["runs"].h * 0.95),
+                                  (620, 930), (b["trace_links"].cx, 930),
+                                  b["trace_links"].top(0.3)],
+        ("findings", "investigations"): [b["findings"].right(0.1),
+                                         (910, b["findings"].y + b["findings"].h * 0.1),
+                                         (910, 930),
+                                         (b["investigations"].cx, 930),
+                                         b["investigations"].top()],
     }
     if fks != set(routes):
         raise SystemExit(f"ER diagram is out of date; foreign keys changed: {sorted(fks ^ set(routes))}")
@@ -293,7 +357,7 @@ def data_dictionary() -> str:
         "edit by hand.", "",
         "Contents: [stored data](#1-stored-data-12-tables) · [trace document](#2-trace-document-granite-trace-v1) · "
         "[request inputs](#3-request-inputs) · [enumerations](#4-enumerations) · [identifiers and hashes](#5-identifiers-and-hashes)", "",
-        "## 1. Stored data (12 tables)", "",
+        "## 1. Stored data (17 tables)", "",
     ]
     for name, cols in tables.items():
         out += [f"### {name}", "", "| Column | Type | Null | Key | Meaning |", "|---|---|---|---|---|"]

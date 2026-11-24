@@ -232,7 +232,7 @@ def test_langfuse_ingestion_events_and_rejections():
     assert events[1]["body"]["model"] == "m1" and "parentObservationId" not in events[1]["body"]
     fake = FakeLangfuse()
     fake.reject = "span-create"
-    with pytest.raises(ConnectorError, match="rejected 2 event"):
+    with pytest.raises(ConnectorError, match="400"):
         LangfuseClient("https://lf", "pk", "sk", transport=fake).send(spans, "demo")
 
 

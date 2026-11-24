@@ -23,7 +23,7 @@ from datetime import datetime
 from typing import Any
 
 from .export import hex_id
-from .http import ConnectorError, HttpClient, Transport
+from .http import HttpClient, Transport
 from .spans import SpanKind, SpanRecord
 
 RUNTIME = "langfuse"
@@ -138,9 +138,11 @@ def to_otlp(records: list[SpanRecord], trace_name: str) -> dict[str, Any]:
         for k, v in r.attributes.items():
             otlp_attrs.append({"key": k, "value": {"stringValue": str(v) if not isinstance(v, str) else v}})
         if r.input is not None:
-            otlp_attrs.append({"key": "langfuse.span.input", "value": {"stringValue": json.dumps(r.input, default=str)}})
+            otlp_attrs.append({"key": "langfuse.span.input",
+                               "value": {"stringValue": json.dumps(r.input, default=str)}})
         if r.output is not None:
-            otlp_attrs.append({"key": "langfuse.span.output", "value": {"stringValue": json.dumps(r.output, default=str)}})
+            otlp_attrs.append({"key": "langfuse.span.output",
+                               "value": {"stringValue": json.dumps(r.output, default=str)}})
         if r.status == "error":
             otlp_attrs.append({"key": "langfuse.observation.level", "value": {"stringValue": "ERROR"}})
         if r.error:

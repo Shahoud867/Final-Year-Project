@@ -160,8 +160,8 @@ class FakeLangfuse:
     def _ns_to_iso(ns: str | None) -> str | None:
         if ns is None:
             return None
-        from datetime import datetime, timezone
-        return datetime.fromtimestamp(int(ns) / 1e9, tz=timezone.utc).isoformat()
+        from datetime import UTC, datetime
+        return datetime.fromtimestamp(int(ns) / 1e9, tz=UTC).isoformat()
 
     def _ingest_otlp(self, doc: Any) -> Reply:
         if self.reject:

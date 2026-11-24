@@ -66,13 +66,15 @@ def check_pipeline() -> Sheet:
         o = d.node(f"o-{name}", 830 + i * 150, 250, 138, 56, name, [why], kind)
         d.edge([(n[4].cx, y + h), (n[4].cx, 222), (o.cx, 222), o.top()], src="eval", dst=o.id)
     example = next(c for c in CHECKS if c.id == "CHK-OUT-1")
-    d.label(30, 60, f"Example ({example.id}):", anchor="start", weight=700, color=INK, size=11.5, check=False)
-    d.label(150, 60, example.expression, anchor="start", mono=True, color=INK, size=11, check=False)
+    # label and expression on separate lines: on one line the bold label ran into the expression in print
+    d.label(30, 52, f"Example ({example.id}):", anchor="start", weight=700, color=INK, size=11.5, check=False)
+    d.label(30, 78, example.expression, anchor="start", mono=True, color=INK, size=11, check=False)
     funcs = ", ".join(sorted(dsl.FUNCTION_NAMES)) + ", truth.<name>()"
+    cut = funcs.rfind(", ", 0, 62) + 2  # wrap after a comma, never inside a function name
     d.note(30, 250, 420, ["Limits (from granite_core.dsl)", f"source at most {dsl.MAX_SOURCE_LEN} characters, {dsl.MAX_NODES} syntax nodes,",
                           f"nesting depth {dsl.MAX_DEPTH}; strings up to {dsl.MAX_STRING_LEN} characters",
                           "Allowed: arithmetic, comparison, and/or/not,", "field paths such as s3.items_to_refund, and the functions",
-                          funcs[:62], funcs[62:]], "plain", id="limits")
+                          funcs[:cut], funcs[cut:]], "plain", id="limits")
     d.note(30, 400, 800, ["Why not eval()", "A check is text typed by a user and run on data the system did not write. Python's eval would let it read files or run",
                           "commands. Here the text is only parsed; a small interpreter walks the tree and understands nothing but the whitelist.",
                           "25 hostile expressions (attribute access, imports, lambdas, comprehensions, f-strings, **) are rejected in the tests."],

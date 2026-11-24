@@ -22,6 +22,11 @@ desktop.ini
 .vscode/
 .idea/
 
+# Test / build artefacts
+.coverage
+*.db-shm
+*.db-wal
+
 # Notes
 # --------------------------------------------------------------------
 # dev/datasets/ is currently TRACKED in this repository (~46MB of

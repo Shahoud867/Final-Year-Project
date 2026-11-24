@@ -188,24 +188,34 @@ class LangfuseClient:
         return dict(health)
 
     def trace_ids(self, *, since: datetime | None = None, name: str | None = None, limit: int = 20) -> list[str]:
-        """Ids of the newest traces (optionally only those with ``name``), via v2 observations."""
+        """Ids of the newest traces (optionally only those with ``name``), via v2 observations.
+
+        The ``name`` parameter filters by **trace** name (stored as a metadata attribute on the
+        root observation), not by observation name, so we request metadata and filter client-side.
+        """
         ids: list[str] = []
         seen: set[str] = set()
         cursor: str | None = None
+        fields = "core,basic,metadata" if name else "core,basic"
         while len(ids) < limit:
-            params: dict[str, Any] = {"limit": min(PAGE, limit * 5), "fields": "core,basic"}
+            params: dict[str, Any] = {"limit": min(PAGE, limit * 5), "fields": fields}
             if since:
                 params["fromStartTime"] = _iso(since)
-            if name:
-                params["name"] = name
             if cursor:
                 params["cursor"] = cursor
             body = self.http.get("/api/public/v2/observations", params) or {}
             for obs in body.get("data") or []:
                 tid = str(obs["traceId"])
-                if obs.get("isRootObservation") and tid not in seen:
-                    seen.add(tid)
-                    ids.append(tid)
+                if not obs.get("isRootObservation") or tid in seen:
+                    continue
+                if name:
+                    meta = obs.get("metadata") or {}
+                    trace_name = meta.get("attributes.langfuse.trace.name",
+                                          meta.get("langfuse.trace.name"))
+                    if trace_name != name:
+                        continue
+                seen.add(tid)
+                ids.append(tid)
             cursor = (body.get("meta") or {}).get("cursor")
             if not cursor or not body.get("data"):
                 break

@@ -184,6 +184,7 @@ class FakeLangfuse:
                             "metadata": {k: v for k, v in attrs.items()
                                          if not k.startswith("langfuse.")},
                         }
+                    obs_meta = {f"attributes.{k}": v for k, v in attrs.items()}
                     obs: dict[str, Any] = {
                         "id": span_id, "traceId": trace_id,
                         "name": attrs.get("langfuse.span.name", span["name"]),
@@ -193,8 +194,7 @@ class FakeLangfuse:
                         "parentObservationId": span.get("parentSpanId") if not is_root else None,
                         "level": "ERROR" if span.get("status", {}).get("code") == 2 else "DEFAULT",
                         "statusMessage": attrs.get("langfuse.status.message"),
-                        "metadata": {k: v for k, v in attrs.items()
-                                     if not k.startswith("langfuse.")},
+                        "metadata": obs_meta,
                         "isRootObservation": is_root,
                     }
                     inp = attrs.get("langfuse.span.input")

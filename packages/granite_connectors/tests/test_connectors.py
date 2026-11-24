@@ -245,6 +245,74 @@ def test_langfuse_observation_mapping_and_auth_failure():
         LangfuseClient("https://lf", "pk", "sk", transport=lambda *a: (401, {}, b"{}")).ping()
 
 
+def test_langfuse_legacy_ingestion_and_read_paths():
+    """Cover FakeLangfuse legacy endpoints (traces, observations, pagination)."""
+    fake = FakeLangfuse(page=2)
+    body = json.dumps({"batch": [
+        {"id": "e1", "type": "trace-create", "timestamp": "2026-01-01T00:00:00Z",
+         "body": {"id": "t1", "name": "demo", "timestamp": "2026-01-01T00:00:00Z"}},
+        {"id": "e2", "type": "span-create", "timestamp": "2026-01-01T00:00:00Z",
+         "body": {"id": "o1", "traceId": "t1", "name": "step1"}},
+        {"id": "e3", "type": "generation-create", "timestamp": "2026-01-01T00:00:00Z",
+         "body": {"id": "o2", "traceId": "t1", "name": "llm1"}},
+    ]}).encode()
+    auth = {"Authorization": "Basic cGs6c2s="}
+    code, _, resp = fake("POST", "https://lf/api/public/ingestion", auth, body)
+    assert code == 207
+    data = json.loads(resp)
+    assert len(data["successes"]) == 3
+    code, _, resp = fake("GET", "https://lf/api/public/traces?name=demo", auth, None)
+    assert code == 200 and len(json.loads(resp)["data"]) == 1
+    code, _, resp = fake("GET", "https://lf/api/public/traces/t1", auth, None)
+    assert code == 200 and json.loads(resp)["id"] == "t1"
+    code, _, _ = fake("GET", "https://lf/api/public/traces/nonexistent", auth, None)
+    assert code == 404
+    code, _, resp = fake("GET", "https://lf/api/public/observations?traceId=t1&limit=1&page=1", auth, None)
+    assert code == 200 and len(json.loads(resp)["data"]) == 1
+    code, _, _ = fake("GET", "https://lf/api/public/unknown", auth, None)
+    assert code == 404
+
+
+def test_langfuse_v2_name_filter():
+    """Cover the name filter branch in _v2_observations."""
+    fake = FakeLangfuse()
+    auth = {"Authorization": "Basic cGs6c2s="}
+    body = json.dumps({"batch": [
+        {"id": "e1", "type": "trace-create", "timestamp": "2026-01-01T00:00:00Z",
+         "body": {"id": "t1", "name": "demo"}},
+        {"id": "e2", "type": "span-create", "timestamp": "2026-01-01T00:00:00Z",
+         "body": {"id": "o1", "traceId": "t1", "name": "alpha"}},
+        {"id": "e3", "type": "span-create", "timestamp": "2026-01-01T00:00:00Z",
+         "body": {"id": "o2", "traceId": "t1", "name": "beta"}},
+    ]}).encode()
+    fake("POST", "https://lf/api/public/ingestion", auth, body)
+    code, _, resp = fake("GET", "https://lf/api/public/v2/observations?name=alpha", auth, None)
+    assert code == 200
+    data = json.loads(resp)["data"]
+    assert len(data) == 1 and data[0]["name"] == "alpha"
+
+
+def test_fake_phoenix_list_projects_and_edge_cases():
+    """Cover FakePhoenix paths: list projects, missing project, project detail, duplicate spans."""
+    fake = FakePhoenix()
+    auth: dict[str, str] = {}
+    fake("POST", "http://px/v1/projects", auth, json.dumps({"name": "p1"}).encode())
+    code, _, resp = fake("GET", "http://px/v1/projects", auth, None)
+    assert code == 200 and len(json.loads(resp)["data"]) == 1
+    code, _, _ = fake("GET", "http://px/v1/projects/nonexistent/spans", auth, None)
+    assert code == 404
+    code, _, resp = fake("GET", "http://px/v1/projects/p1", auth, None)
+    assert code == 200 and json.loads(resp)["data"]["name"] == "p1"
+    code, _, _ = fake("GET", "http://px/v1/projects/p1/spans", auth, None)
+    assert code == 200
+    span = {"context": {"span_id": "s1", "trace_id": "t1"}, "attributes": {"a.b": 1}}
+    fake("POST", "http://px/v1/projects/p1/spans", auth, json.dumps({"data": [span]}).encode())
+    code, _, _ = fake("POST", "http://px/v1/projects/p1/spans", auth, json.dumps({"data": [span]}).encode())
+    assert code == 400
+    code, _, _ = fake("GET", "http://px/v1/unknown", auth, None)
+    assert code == 404
+
+
 def test_untimed_steps_are_placed_after_their_predecessor():
     trace = sample_trace()
     trace.steps[0].started_at, trace.steps[0].ended_at = T0 + timedelta(seconds=5), T0 + timedelta(seconds=6)

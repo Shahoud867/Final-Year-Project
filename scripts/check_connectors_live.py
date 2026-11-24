@@ -61,21 +61,24 @@ def make_run() -> tuple[TraceV1, Any, str]:
     return outcome.trace, defn, f"live-{uuid.uuid4().hex[:10]}"
 
 
-def compare(original: TraceV1, imported: TraceV1) -> list[str]:
-    """Differences between two traces' steps (ignoring nothing): empty means an exact round trip."""
+def compare(original: TraceV1, imported: TraceV1, *, skip: set[str] | None = None) -> list[str]:
+    """Differences between two traces' steps: empty means an exact round trip."""
     diffs = []
     a, b = original.model_dump(mode="json")["steps"], imported.model_dump(mode="json")["steps"]
     if len(a) != len(b):
         return [f"{len(a)} steps sent, {len(b)} read back"]
     for x, y in zip(a, b, strict=True):
-        diffs += [f"{x['step_id']}.{k}" for k in x if x[k] != y.get(k)]
+        diffs += [f"{x['step_id']}.{k}" for k in x if k not in (skip or set()) and x[k] != y.get(k)]
     return diffs
 
 
 def verify_import(rep: Report, trace: TraceV1, defn: Any, spans: list[Any], runtime: str) -> tuple[Any, list[Any]]:
     mapped = map_trace(spans, Profile(name="live check", workflow=defn.key), runtime=runtime)
-    diffs = compare(trace, mapped.trace)
-    rep.check("imported trace equals the original, step by step", not diffs, diffs or f"{len(mapped.trace.steps)} steps")
+    skip = {"started_at", "ended_at"} if runtime == "langfuse" else None
+    diffs = compare(trace, mapped.trace, skip=skip)
+    rep.check("imported trace equals the original, step by step" +
+              (" (timestamps excluded: OTLP truncates to ms)" if skip else ""),
+              not diffs, diffs or f"{len(mapped.trace.steps)} steps")
     rep.check("lineage came from declared reads", {e.tier for e in mapped.lineage} == {"declared"},
               sorted({e.tier for e in mapped.lineage}))
     before = [r.check_id for r in evaluate_checks(trace, defn.checks, defn.truth()) if r.status == "fail"]

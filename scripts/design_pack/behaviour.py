@@ -123,6 +123,10 @@ def investigation_flow() -> Sheet:
     rj = d.node("rejected", 60, 1378, 280, 50, "Rejected: closed with a reason", ["comment is mandatory"], "bad")
     n8 = proc("resolve", 1480, "Resolve, or close without fixing", ["confirmed by a person · level V3"], "ok")
     n9 = d.node("report", px - 20, 1576, pw + 40, 44, "Report with hashed evidence (Markdown, JSON)", [], "actor", shape="pill")
+    imp = d.node("imported", 60, 532, 280, 56, "Imported or SDK trace", ["skips the run · planned, FYP-1 Final"], "planned", dashed=True)
+    so = d.node("second", 60, 852, 280, 52, "LLM second opinion", ["one more hypothesis · planned, FYP-2 Mid"], "planned", dashed=True)
+    d.edge([imp.right(), (px, imp.cy)], src=imp.id, dst=n3.id, dashed=True)
+    d.edge([(px, so.cy), so.right()], src=n5.id, dst=so.id, dashed=True)
 
     down(n0, n1)
     down(n1, d1)
@@ -149,7 +153,8 @@ def investigation_flow() -> Sheet:
     d.edge([d6.left(), rj.right()], "no", d6.id, rj.id, label_dy=-7)
     down(n8, n9)
     d.legend(860, 40, [("api", "application step"), ("core", "granite_core step"), ("actor", "person"),
-                       ("warn", "open question"), ("bad", "failure outcome"), ("ok", "good outcome")], col_w=250)
+                       ("warn", "open question"), ("bad", "failure outcome"), ("ok", "good outcome"),
+                       ("planned", "planned (milestone in the box)")], col_w=250)
     return Sheet(
         d, "Behaviour", "Flow Diagram",
         "The flowchart is the product's one workflow, the answer to the panel's request to redefine it. It has "
@@ -157,7 +162,9 @@ def investigation_flow() -> Sheet:
         "error (the run stopped) and a silent failure (the run finished but an outcome check failed). Ranking "
         "comes before proof, and proof is optional only when no replay is defined for the suspected step, in "
         "which case the finding is marked evidence-supported and a person judges it. A refuted or inconclusive "
-        "result loops back to the ranked list rather than ending the investigation.",
+        "result loops back to the ranked list rather than ending the investigation. Two dashed steps are planned: "
+        "a trace imported from a file or sent by the SDK joins the flow at the checks (FYP-1 Final), and an LLM "
+        "second opinion adds one hypothesis next to the ranked list, unverified until replayed (FYP-2 Mid).",
         ["apps/api/granite_api/services/runs.py", "apps/api/granite_api/services/analysis.py",
          "apps/api/granite_api/services/experiments.py", "apps/api/granite_api/services/reviews.py",
          "packages/granite_core/granite_core/checks.py"],
@@ -188,6 +195,8 @@ def interaction_overview() -> Sheet:
     d.edge([r3.right(), (1521, 170)], src=r3.id, dst="end")
     d.edge([r2.top(0.3), (r2.x + r2.w * 0.3, 60), (r3.cx, 60), r3.top()], "no replay is defined for the step: review on the evidence",
            r2.id, r3.id, label_at=(1050, 54), dashed=True)
+    ri = d.ref("io-ingest", 100, 245, 240, 70, "sd Ingest a trace", ["planned · FYP-1 Final: file or SDK"], "planned")
+    d.edge([ri.right(), (380, ri.cy), (380, 185), (448, 185)], src=ri.id, dst=q1.id, dashed=True)
     d.note(100, 340, 380, ["Reading the diagram", "Each 'ref' box stands for a whole interaction that has its own",
                            "sequence diagram in this pack. Diamonds are decisions",
                            "taken from stored state, not from the user's memory."], "plain", id="read")
@@ -197,7 +206,8 @@ def interaction_overview() -> Sheet:
         "order. The first always happens. The second happens only if a finding was opened, and may repeat: each "
         "pass verifies one hypothesis. The third needs either a confirmed origin or, when the workflow defines no "
         "replay for the suspected step, the evidence alone. Because the decisions are stored states, the analyst "
-        "can stop after any box and continue another day.",
+        "can stop after any box and continue another day. The dashed box is planned for FYP-1 Final: a trace "
+        "imported from a file or sent by the SDK enters at the same decision as a local run.",
         ["apps/api/granite_api/routes.py", "packages/granite_core/granite_core/lifecycle.py"],
         "Curated; each 'ref' names a sequence diagram of this pack.",
     )

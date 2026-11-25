@@ -103,7 +103,7 @@ class FakePhoenix:
 
 
 class FakeLangfuse:
-    """Traces and observations from ingestion events, page-numbered lists, and scores."""
+    """In-memory Langfuse server supporting both legacy ingestion and OTLP/v2 endpoints."""
 
     def __init__(self, page: int = 100) -> None:
         self.traces: dict[str, dict[str, Any]] = {}
@@ -121,22 +121,17 @@ class FakeLangfuse:
         path = parts.path
         doc: Any = json.loads(body) if body else None
         if path == "/api/public/health":
-            return 200, {}, b'{"status": "OK", "version": "3.0.0"}'
+            return 200, {}, b'{"status": "OK", "version": "4.86.0"}'
+        if path == "/api/public/otel/v1/traces":
+            return self._ingest_otlp(doc)
         if path == "/api/public/ingestion":
-            errors, ok = [], []
-            for e in doc["batch"]:
-                if self.reject and e["type"] == self.reject:
-                    errors.append({"id": e["id"], "status": 400, "message": "invalid body"})
-                    continue
-                if e["type"] == "trace-create":
-                    self.traces[e["body"]["id"]] = e["body"]
-                else:
-                    self.observations[e["body"]["id"]] = {**e["body"], "type": e["type"].split("-")[0].upper()}
-                ok.append({"id": e["id"], "status": 201})
-            return 207, {}, json.dumps({"successes": ok, "errors": errors}).encode()
+            return self._ingest_legacy(doc)
         if path == "/api/public/scores":
-            self.scores[doc["id"]] = doc
-            return 200, {}, json.dumps({"id": doc["id"]}).encode()
+            if method == "POST":
+                self.scores[doc["id"]] = doc
+                return 200, {}, json.dumps({"id": doc["id"]}).encode()
+        if path == "/api/public/v2/observations":
+            return self._v2_observations(q)
         if path == "/api/public/traces":
             rows = [t for t in reversed(self.traces.values()) if "name" not in q or t["name"] == q["name"]]
             return self._page(rows, q)
@@ -147,6 +142,92 @@ class FakeLangfuse:
             rows = [o for o in self.observations.values() if o["traceId"] == q["traceId"]]
             return self._page(rows, q)
         return 404, {}, b"{}"
+
+    def _ingest_legacy(self, doc: Any) -> Reply:
+        errors, ok = [], []
+        for e in doc["batch"]:
+            if self.reject and e["type"] == self.reject:
+                errors.append({"id": e["id"], "status": 400, "message": "invalid body"})
+                continue
+            if e["type"] == "trace-create":
+                self.traces[e["body"]["id"]] = e["body"]
+            else:
+                self.observations[e["body"]["id"]] = {**e["body"], "type": e["type"].split("-")[0].upper()}
+            ok.append({"id": e["id"], "status": 201})
+        return 207, {}, json.dumps({"successes": ok, "errors": errors}).encode()
+
+    @staticmethod
+    def _ns_to_iso(ns: str | None) -> str | None:
+        if ns is None:
+            return None
+        from datetime import UTC, datetime
+        return datetime.fromtimestamp(int(ns) / 1e9, tz=UTC).isoformat()
+
+    def _ingest_otlp(self, doc: Any) -> Reply:
+        if self.reject:
+            return 400, {}, b'{"message": "rejected"}'
+        for rs in doc.get("resourceSpans", []):
+            for ss in rs.get("scopeSpans", []):
+                for span in ss.get("spans", []):
+                    attrs = {a["key"]: next(iter(a["value"].values())) for a in span.get("attributes", [])}
+                    trace_id = span["traceId"]
+                    span_id = span["spanId"]
+                    is_root = "parentSpanId" not in span or span.get("parentSpanId") == ""
+                    trace_name = attrs.get("langfuse.trace.name", attrs.get("langfuse.span.name", span["name"]))
+                    if is_root:
+                        inp = attrs.get("langfuse.span.input")
+                        outp = attrs.get("langfuse.span.output")
+                        self.traces[trace_id] = {
+                            "id": trace_id, "name": trace_name,
+                            "input": json.loads(inp) if inp else None,
+                            "output": json.loads(outp) if outp else None,
+                            "metadata": {k: v for k, v in attrs.items()
+                                         if not k.startswith("langfuse.")},
+                        }
+                    obs_meta = {f"attributes.{k}": v for k, v in attrs.items()}
+                    obs: dict[str, Any] = {
+                        "id": span_id, "traceId": trace_id,
+                        "name": attrs.get("langfuse.span.name", span["name"]),
+                        "type": "GENERATION" if span.get("kind") == 3 and "llm.model_name" in attrs else "SPAN",
+                        "startTime": self._ns_to_iso(span.get("startTimeUnixNano")),
+                        "endTime": self._ns_to_iso(span.get("endTimeUnixNano")),
+                        "parentObservationId": span.get("parentSpanId") if not is_root else None,
+                        "level": "ERROR" if span.get("status", {}).get("code") == 2 else "DEFAULT",
+                        "statusMessage": attrs.get("langfuse.status.message"),
+                        "metadata": obs_meta,
+                        "isRootObservation": is_root,
+                    }
+                    inp = attrs.get("langfuse.span.input")
+                    outp = attrs.get("langfuse.span.output")
+                    if inp:
+                        try:
+                            obs["input"] = json.loads(inp)
+                        except (ValueError, TypeError):
+                            obs["input"] = inp
+                    if outp:
+                        try:
+                            obs["output"] = json.loads(outp)
+                        except (ValueError, TypeError):
+                            obs["output"] = outp
+                    if "llm.model_name" in attrs:
+                        obs["model"] = attrs["llm.model_name"]
+                    self.observations[span_id] = obs
+        return _json(200, {"name": "otel-ingestion-job"})
+
+    def _v2_observations(self, q: dict[str, str]) -> Reply:
+        rows = list(reversed(self.observations.values()))
+        if "traceId" in q:
+            rows = [o for o in rows if o["traceId"] == q["traceId"]]
+        if "name" in q:
+            rows = [o for o in rows if o.get("name") == q["name"]]
+        limit = min(self.page, int(q.get("limit", "50")))
+        cursor = int(q.get("cursor", "0"))
+        chunk = rows[cursor:cursor + limit]
+        nxt = cursor + len(chunk)
+        meta: dict[str, Any] = {}
+        if nxt < len(rows):
+            meta["cursor"] = str(nxt)
+        return 200, {}, json.dumps({"data": chunk, "meta": meta}).encode()
 
     def _page(self, rows: list[dict[str, Any]], q: dict[str, str]) -> Reply:
         limit = min(self.page, int(q.get("limit", "50")))

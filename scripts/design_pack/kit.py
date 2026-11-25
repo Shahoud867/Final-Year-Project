@@ -205,7 +205,7 @@ class Diagram:
         elif shape == "store":  # DFD data store: open-ended box
             body = (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{fill}" stroke="none"/>'
                     f'<path d="M{x} {y} H{x + w} M{x} {y + h} H{x + w} M{x} {y} V{y + h} M{x + 26} {y} V{y + h}" '
-                    f'fill="none" stroke="{stroke}" stroke-width="1.4"/>')
+                    f'fill="none" stroke="{stroke}" stroke-width="1.4"{dash}/>')
         elif shape == "circle":
             body = f'<ellipse cx="{x + w / 2}" cy="{y + h / 2}" rx="{w / 2}" ry="{h / 2}" {base}/>'
         elif shape == "doc":
@@ -246,18 +246,19 @@ class Diagram:
         return node
 
     def compartments(self, id: str, x: float, y: float, w: float, title: str, rows: list[str], kind: str = "core",
-                     stereotype: str = "", footer: list[str] | None = None, tip: str = "") -> Node:
+                     stereotype: str = "", footer: list[str] | None = None, tip: str = "", dashed: bool = False) -> Node:
         """A class or table box: header, attribute rows (monospace), optional second compartment."""
         fill, stroke = KINDS[kind]
+        dash = ' stroke-dasharray="6 4"' if dashed else ""
         head = 40 if stereotype else 28
         row_h = 15.5
         body_h = 8 + row_h * len(rows) + 4
         foot = footer or []
         foot_h = (8 + row_h * len(foot) + 2) if foot else 0
         h = head + body_h + foot_h
-        parts = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="#ffffff" stroke="{stroke}" stroke-width="1.4"/>',
+        parts = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="#ffffff" stroke="{stroke}" stroke-width="1.4"{dash}/>',
                  f'<path d="M{x} {y + head} H{x + w} V{y + 6} Q{x + w} {y} {x + w - 6} {y} H{x + 6} Q{x} {y} {x} {y + 6} Z" '
-                 f'fill="{fill}" stroke="{stroke}" stroke-width="1.4"/>']
+                 f'fill="{fill}" stroke="{stroke}" stroke-width="1.4"{dash}/>']
         if stereotype:
             parts.append(self._text(x + w / 2, y + 15, f"«{stereotype}»", 10.5, 400, MUTED, italic=True))
             parts.append(self._text(x + w / 2, y + 31, title, 12.5, 700))

@@ -8,7 +8,7 @@ How the system behaves: the investigation flow, an activity diagram with respons
 
 *Handbook Table 1a item: Flow Diagram.*
 
-The flowchart is the product's one workflow, the answer to the panel's request to redefine it. It has six decision points and each one has a visible outcome in the UI. Two findings are possible: an explicit error (the run stopped) and a silent failure (the run finished but an outcome check failed). Ranking comes before proof, and proof is optional only when no replay is defined for the suspected step, in which case the finding is marked evidence-supported and a person judges it. A refuted or inconclusive result loops back to the ranked list rather than ending the investigation.
+The flowchart is the product's one workflow, the answer to the panel's request to redefine it. It has six decision points and each one has a visible outcome in the UI. Two findings are possible: an explicit error (the run stopped) and a silent failure (the run finished but an outcome check failed). Ranking comes before proof, and proof is optional only when no replay is defined for the suspected step, in which case the finding is marked evidence-supported and a person judges it. A refuted or inconclusive result loops back to the ranked list rather than ending the investigation. Two dashed steps are planned: a trace imported from a file or sent by the SDK joins the flow at the checks (FYP-1 Final), and an LLM second opinion adds one hypothesis next to the ranked list, unverified until replayed (FYP-2 Mid).
 
 ![Investigation flow](investigation-flow.svg)
 
@@ -19,7 +19,7 @@ The flowchart is the product's one workflow, the answer to the panel's request t
 
 *Handbook Table 1a item: Activity Diagram.*
 
-Each lane is a responsibility, and the diagram shows that the analyst acts only three times: to start a run, to ask for verification and to decide. Everything between those actions is automatic and happens in a background job, which is why the UI lane only sends a request and then displays results. The language model is used in exactly two activities, both started from the core. The decision 'Finding opened?' is where a clean run ends; there is no path from a clean run to a review.
+Each lane is a responsibility, and the diagram shows that the analyst acts only three times: to start a run, to ask for verification and to decide. Everything between those actions is automatic and happens in a background job, which is why the UI lane only sends a request and then displays results. The language model is used in exactly two activities, both started from the core. The decision 'Finding opened?' is where a clean run ends; there is no path from a clean run to a review. The dashed activities are planned: from FYP-1 Final the API also accepts a trace file or an SDK run, which goes straight to checking, and from FYP-2 Mid ranking can ask the model for a second-opinion hypothesis.
 
 ![Activity diagram: one investigation](activity-investigation.svg)
 
@@ -30,7 +30,7 @@ Each lane is a responsibility, and the diagram shows that the analyst acts only 
 
 *Handbook Table 1a item: Interaction Overview Diagram.*
 
-An investigation is three conversations between the analyst and the system, and this diagram shows their order. The first always happens. The second happens only if a finding was opened, and may repeat: each pass verifies one hypothesis. The third needs either a confirmed origin or, when the workflow defines no replay for the suspected step, the evidence alone. Because the decisions are stored states, the analyst can stop after any box and continue another day.
+An investigation is three conversations between the analyst and the system, and this diagram shows their order. The first always happens. The second happens only if a finding was opened, and may repeat: each pass verifies one hypothesis. The third needs either a confirmed origin or, when the workflow defines no replay for the suspected step, the evidence alone. Because the decisions are stored states, the analyst can stop after any box and continue another day. The dashed box is planned for FYP-1 Final: a trace imported from a file or sent by the SDK enters at the same decision as a local run.
 
 ![Interaction overview diagram](interaction-overview.svg)
 
@@ -41,7 +41,7 @@ An investigation is three conversations between the analyst and the system, and 
 
 *Handbook Table 1a item: Data Flow Diagram (DFD).*
 
-At context level Granite has three neighbours. The analyst supplies a task and decisions and receives everything needed to judge a run. The language model is the only non-deterministic neighbour; it receives prompts and returns text, and can be replaced by recorded answers. The retail data plays two roles on purpose: the workflow's tool step reads orders from it, and the checks read catalogue prices from it independently, which is what lets a stale tool answer be detected.
+At context level Granite has three neighbours. The analyst supplies a task and decisions and receives everything needed to judge a run. The language model is the only non-deterministic neighbour; it receives prompts and returns text, and can be replaced by recorded answers. The retail data plays two roles on purpose: the workflow's tool step reads orders from it, and the checks read catalogue prices from it independently, which is what lets a stale tool answer be detected. Two neighbours are planned (dashed): trace sources outside Granite, an application instrumented with the SDK or an imported file, from FYP-1 Final, and GitHub, which supplies the reviewer's identity from FYP-2 Mid.
 
 ![Data flow diagram: context (level 0)](dfd-context.svg)
 
@@ -52,7 +52,7 @@ At context level Granite has three neighbours. The analyst supplies a task and d
 
 *Handbook Table 1a item: Data Flow Diagram (DFD).*
 
-The top row is what happens automatically after a task is submitted: run, check, trace back. The bottom row is what a person starts later: verify, review, report. The two rows share only stored data, which is the reason a verification can be run on a trace recorded earlier. Process 4 never reads the fault record in D1, and process 3 never reads it either: the injected fault is kept only to score the analysis. The note on the right maps each store to real tables.
+The top row is what happens automatically after a task is submitted: run, check, trace back. The bottom row is what a person starts later: verify, review, report. The two rows share only stored data, which is the reason a verification can be run on a trace recorded earlier. Process 4 never reads the fault record in D1, and process 3 never reads it either: the injected fault is kept only to score the analysis. The note on the right maps each store to real tables. The dashed parts are planned: process 0 stores traces that arrive from files or the SDK in D1, so the rest of the diagram treats them like a local run (FYP-1 Final); process 7 scores labelled runs into D6 (FYP-1 Final); and reviewing a confirmed finding stores its fix in D7 for reuse (FYP-2 Mid).
 
 ![Data flow diagram: level 1](dfd-level-1.svg)
 

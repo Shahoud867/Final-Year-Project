@@ -26,7 +26,7 @@ MEANING: dict[str, str] = {
     "runs.project_id": "Project the run belongs to",
     "runs.workflow_key": "Workflow that was executed",
     "runs.status": "`queued`, `running`, `completed` or `errored`",
-    "runs.llm_mode": "What actually answered: `live` or `recorded`; `imported` for a trace read from a connected platform",
+    "runs.llm_mode": "What actually answered: `live` or `recorded`",
     "runs.model": "Model name, for example `llama3.2:3b`",
     "runs.seed": "Random seed passed to the model",
     "runs.fault_type": "Name of the injected fault; null for a clean run",
@@ -130,51 +130,51 @@ MEANING: dict[str, str] = {
     "jobs.created_at": "When the job was queued",
     "jobs.started_at": "When a worker picked it up",
     "jobs.finished_at": "When it ended",
-    "investigations.id": "`inv_` + 12 hex characters",
-    "investigations.finding_id": "Finding whose suspects are verified",
-    "investigations.status": "`queued`, `running`, `done` or `error`",
-    "investigations.llm_mode": "What answered in the replays: `live` or `recorded`",
-    "investigations.n": "Replays with the fix, per suspect",
-    "investigations.m": "Control replays without the fix, per suspect",
-    "investigations.budget": "Most replays the whole investigation may use",
-    "investigations.replays_used": "Replays spent so far",
-    "investigations.outcome": "`confirmed`, `exhausted` (budget spent) or `no_candidate` (nothing replayable)",
-    "investigations.confirmed_step": "Step confirmed as the origin, if any",
-    "investigations.attempts": "Each suspect tried, in rank order: verdict and experiment id, or why it was skipped",
-    "investigations.error": "Why the investigation stopped, if it failed",
-    "investigations.created_at": "When it was requested (UTC)",
-    "investigations.finished_at": "When it ended (UTC)",
-    "batches.id": "`bat_` + 12 hex characters",
-    "batches.workflow_key": "Workflow every run of the batch uses",
-    "batches.status": "`queued`, `running` or `done`",
-    "batches.llm_mode": "What answered: `live` or `recorded`",
-    "batches.faults": "Conditions generated, in order; `none` stands for clean runs",
-    "batches.task_count": "Number of example tasks in the batch",
-    "batches.seed": "Run seed used for every run",
-    "batches.created_at": "When it was requested (UTC)",
-    "batches.finished_at": "When its last run ended (UTC)",
-    "batch_runs.batch_id": "Batch the run belongs to",
-    "batch_runs.run_id": "A run of the batch",
-    "batch_runs.position": "Order in which the run was generated",
-    "connections.id": "`con_` + 12 hex characters",
+    "batches.id": "`bat_` plus 12 hex characters",
+    "batches.workflow_key": "Which workflow the batch runs",
+    "batches.status": "`queued`, `running`, `done` or `cancelled`",
+    "batches.llm_mode": "`live` or `recorded`",
+    "batches.faults": "List of fault names to inject; `none` means a clean run",
+    "batches.task_count": "Number of example tasks to run per fault",
+    "batches.seed": "Random seed for the batch",
+    "batches.created_at": "When the batch was requested",
+    "batches.finished_at": "When all runs ended",
+    "batch_runs.batch_id": "Batch this run belongs to",
+    "batch_runs.run_id": "The run",
+    "batch_runs.position": "Order within the batch, from 0",
+    "connections.id": "`con_` plus 12 hex characters",
     "connections.kind": "`phoenix` or `langfuse`",
-    "connections.name": "Name shown in the interface",
-    "connections.base_url": "Server URL of the platform (http or https)",
-    "connections.project": "Phoenix project; for Langfuse an optional trace name to import",
-    "connections.workflow_key": "Granite workflow whose checks apply to imported traces",
-    "connections.profile": "Span name to step alias mapping (`steps`)",
-    "connections.created_at": "When it was added (UTC)",
-    "connections.last_sync_at": "When traces were last imported (UTC)",
-    "connections.last_error": "Last platform error during a write-back; empty if none",
+    "connections.name": "Display name",
+    "connections.base_url": "Platform URL, for example `https://cloud.langfuse.com`",
+    "connections.project": "Phoenix project name or Langfuse trace-name filter",
+    "connections.workflow_key": "Workflow whose traces are exchanged",
+    "connections.profile": "Span name to step alias mapping (JSON)",
+    "connections.created_at": "Creation time (UTC)",
+    "connections.last_sync_at": "When the last import or export succeeded",
+    "connections.last_error": "Error from the most recent failed sync; empty on success",
+    "investigations.id": "`inv_` plus 12 hex characters",
+    "investigations.finding_id": "Finding being investigated",
+    "investigations.status": "`queued`, `running`, `done` or `error`",
+    "investigations.llm_mode": "`live` or `recorded`",
+    "investigations.n": "Replays with the fix applied (1 to 10)",
+    "investigations.m": "Control replays without it (0 to 5)",
+    "investigations.budget": "Maximum replays across all suspects",
+    "investigations.replays_used": "Total replays consumed so far",
+    "investigations.outcome": "`confirmed`, `exhausted` or `no_candidate`; null until done",
+    "investigations.confirmed_step": "Step confirmed as the origin; null if not confirmed",
+    "investigations.attempts": "Each suspect in order: verdict, experiment id, or why it was skipped",
+    "investigations.error": "Why the investigation failed; empty otherwise",
+    "investigations.created_at": "When it was requested",
+    "investigations.finished_at": "When the outcome was stored",
     "trace_links.id": "Sequence number",
-    "trace_links.connection_id": "Connection the run came from or went to",
-    "trace_links.run_id": "The Granite run",
+    "trace_links.connection_id": "Connection used for the exchange",
+    "trace_links.run_id": "Run that was imported or exported",
     "trace_links.direction": "`imported` or `exported`",
-    "trace_links.external_trace_id": "Trace id on the platform",
-    "trace_links.root_span_id": "Root span (Phoenix) or trace record (Langfuse)",
-    "trace_links.span_ids": "Step id to span id on the platform, used to write verdicts on the right span",
-    "trace_links.lineage": "Each read edge with how it was established: `declared`, `value` or `order`",
-    "trace_links.created_at": "When the link was made (UTC)",
+    "trace_links.external_trace_id": "Trace id on the external platform",
+    "trace_links.root_span_id": "Root span id on the external platform",
+    "trace_links.span_ids": "Step id to external span id mapping (JSON)",
+    "trace_links.lineage": "How each data-dependency read was established",
+    "trace_links.created_at": "When the link was recorded",
     "audit_log.id": "Sequence number",
     "audit_log.ts": "When the action happened (UTC)",
     "audit_log.actor": "`system`, `analyst` or the reviewer's name",
@@ -217,8 +217,9 @@ _POS = {
     "check_results": (650, 60), "findings": (650, 370), "reviews": (650, 650),
     "hypotheses": (960, 370), "evidence": (960, 650),
     "experiments": (1270, 370), "replays": (1270, 700),
-    "batches": (30, 1010), "batch_runs": (340, 1010), "investigations": (650, 1010),
-    "connections": (960, 1010), "trace_links": (1270, 1010),
+    "connections": (30, 950), "batches": (340, 950),
+    "batch_runs": (340, 1130), "trace_links": (960, 950),
+    "investigations": (1270, 950),
 }
 
 
@@ -234,8 +235,22 @@ def _columns() -> dict[str, list[Any]]:
 
 def er_diagram() -> Sheet:
     tables = _columns()
-    d = Diagram("database-schema", "Database schema (ER diagram)", 1550, 1400,
-                "The seventeen tables, their keys and the relationships between them.")
+
+    def box_h(rows: int, stereotype: bool = False) -> float:
+        return (40 if stereotype else 28) + 8 + 15.5 * rows + 4
+
+    # planned tables: not in the metadata yet, so drawn dashed below the real ones and never checked
+    planned = [
+        ("api_keys", 30, "FYP-2 Mid", ["PK id: VARCHAR(32)", "FK project_id: VARCHAR(32)", "   key_hash: VARCHAR", "   revoked_at: DATETIME?"]),
+        ("benchmark_items", 340, "FYP-1 Final", ["PK id: VARCHAR(32)", "FK run_id: VARCHAR(32)", "   fault_type: VARCHAR?", "   origin_step: VARCHAR?"]),
+        ("users", 650, "FYP-2 Mid", ["PK id: VARCHAR(32)", "   github_login: VARCHAR", "   role: VARCHAR"]),
+        ("known_fixes", 960, "FYP-2 Mid", ["PK id: VARCHAR(32)", "FK experiment_id: VARCHAR(32)", "   signature: VARCHAR", "   intervention: JSON"]),
+    ]
+    band = max(_POS[n][1] + box_h(len(cols)) for n, cols in tables.items()) + 70
+    height = int(band + max(box_h(len(r), True) for *_, r in planned) + 40)
+    d = Diagram("database-schema", "Database schema (ER diagram)", 1550, height,
+                "The seventeen tables, their keys and the relationships between them, and the tables planned for "
+                "FYP-1 Final and FYP-2 Mid.")
     boxes = {}
     for name, cols in tables.items():
         rows = []
@@ -256,14 +271,22 @@ def er_diagram() -> Sheet:
         ("findings", "reviews"): [b["findings"].bottom(), b["reviews"].top()],
         ("hypotheses", "experiments"): [(1210, 420), (1270, 420)],
         ("experiments", "replays"): [b["experiments"].bottom(), b["replays"].top()],
-        ("findings", "investigations"): [
-            b["findings"].right(0.9), (930, b["findings"].y + b["findings"].h * 0.9), (930, 1040), (900, 1040)],
-        ("batches", "batch_runs"): [(280, 1040), (340, 1040)],
-        ("runs", "batch_runs"): [
-            b["runs"].right(0.97), (612, b["runs"].y + b["runs"].h * 0.97), (612, 1070), (590, 1070)],
-        ("connections", "trace_links"): [(1210, 1040), (1270, 1040)],
-        ("runs", "trace_links"): [
-            b["runs"].right(0.93), (606, b["runs"].y + b["runs"].h * 0.93), (606, 985), (1395, 985), (1395, 1010)],
+        ("batches", "batch_runs"): [b["batches"].bottom(), b["batch_runs"].top()],
+        ("runs", "batch_runs"): [b["runs"].left(0.5), (5, b["runs"].y + b["runs"].h * 0.5),
+                                 (5, b["batch_runs"].cy), b["batch_runs"].left(0.5)],
+        ("connections", "trace_links"): [b["connections"].top(0.8),
+                                         (b["connections"].x + b["connections"].w * 0.8, 930),
+                                         (b["trace_links"].cx, 930),
+                                         b["trace_links"].top()],
+        ("runs", "trace_links"): [b["runs"].right(0.95),
+                                  (620, b["runs"].y + b["runs"].h * 0.95),
+                                  (620, 930), (b["trace_links"].cx, 930),
+                                  b["trace_links"].top(0.3)],
+        ("findings", "investigations"): [b["findings"].right(0.1),
+                                         (910, b["findings"].y + b["findings"].h * 0.1),
+                                         (910, 930),
+                                         (b["investigations"].cx, 930),
+                                         b["investigations"].top()],
     }
     if fks != set(routes):
         raise SystemExit(f"ER diagram is out of date; foreign keys changed: {sorted(fks ^ set(routes))}")
@@ -274,7 +297,18 @@ def er_diagram() -> Sheet:
            dashed=True, end="open", label_at=(970, 609))
     d.edge([b["jobs"].right(0.2), (310, b["jobs"].y + b["jobs"].h * 0.2), (310, 250), (340, 250)], src="jobs", dst="runs",
            dashed=True, end="open", tip="jobs.target_id names a run or an experiment")
+    for name, x, milestone, rows in planned:
+        boxes[name] = d.compartments(name, x, band, 250, name, rows, "planned", stereotype=f"planned · {milestone}",
+                                     dashed=True, tip=f"planned table {name} ({milestone})")
+    d.edge([b["users"].top(), b["reviews"].bottom()], src="users", dst="reviews", dashed=True, start="one", end="many",
+           tip="planned: reviews.reviewer_id refers to users.id")
+    d.label(b["users"].cx + 12, band - 30, "reviewer_id", anchor="start")
+    exp = b["experiments"]
+    d.edge([b["known_fixes"].top(0.88), (b["known_fixes"].x + 220, band - 25), (1240, band - 25), (1240, exp.y + exp.h * 0.7),
+            (exp.x, exp.y + exp.h * 0.7)], src="known_fixes", dst="experiments", dashed=True, start="many", end="one",
+           tip="planned: a known fix comes from one confirmed experiment")
     d.legend(960, 60, [("api", "investigation data"), ("store", "housekeeping"), ("warn", "evaluation ground truth"),
+                       ("planned", "planned table (milestone in «»)"),
                        ("line:solid", "foreign key (bar = one, fork = many)"), ("line:dashed", "reference by id, no constraint")],
              col_w=270)
     d.note(1270, 60, 250, ["Design choices", "The trace of a run is one JSON column", "(runs.trace); steps and edges are derived",
@@ -284,11 +318,12 @@ def er_diagram() -> Sheet:
         d, "Data", "Schema Design / ER Diagram",
         "Read it as a chain: a project has runs; a run has check results, at most one injected-fault record, and "
         "findings; a finding has ranked hypotheses and reviews; a hypothesis has experiments; an experiment has "
-        "replays. A finding may also have investigations, which record the order in which its suspects were verified; "
-        "a Fault Lab batch groups runs through batch_runs, so the runs table did not change. Evidence hangs off findings by id without a foreign key on purpose: evidence and the audit log "
+        "replays. Evidence hangs off findings by id without a foreign key on purpose: evidence and the audit log "
         "are append-only and must survive the rows they describe. The fault record (yellow) is kept in its own "
         "table so that no analysis query can read it by accident. The full column meanings are in the data "
-        "dictionary.",
+        "dictionary. The dashed tables along the bottom are planned: benchmark items for the evaluation at FYP-1 "
+        "Final, and for FYP-2 Mid the users behind signed-in reviews, API keys for SDK data, and known fixes taken "
+        "from confirmed experiments.",
         ["apps/api/granite_api/models.py", "apps/api/granite_api/db.py", "docs/adr/adr-003-persistence-sqlalchemy.md"],
         "Tables, columns, types, nullability, keys and foreign keys are read from the SQLAlchemy metadata when the "
         "pack is built; a new table, column or foreign key fails the build until the drawing and dictionary are updated.",
@@ -322,7 +357,7 @@ def data_dictionary() -> str:
         "edit by hand.", "",
         "Contents: [stored data](#1-stored-data-12-tables) · [trace document](#2-trace-document-granite-trace-v1) · "
         "[request inputs](#3-request-inputs) · [enumerations](#4-enumerations) · [identifiers and hashes](#5-identifiers-and-hashes)", "",
-        "## 1. Stored data (12 tables)", "",
+        "## 1. Stored data (17 tables)", "",
     ]
     for name, cols in tables.items():
         out += [f"### {name}", "", "| Column | Type | Null | Key | Meaning |", "|---|---|---|---|---|"]

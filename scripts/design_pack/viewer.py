@@ -14,7 +14,7 @@ _PAGE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Granite design pack (FYP-1 Mid)</title>
+<title>Granite design pack (FYP-1 and FYP-2)</title>
 <style>
 :root { --bg:#f4f6f9; --surface:#ffffff; --ink:#1b2430; --muted:#586474; --line:#d5dbe3; --accent:#3b6fd4; --accent-bg:#e8f0fe; }
 * { box-sizing: border-box; }
@@ -62,7 +62,7 @@ svg .hit > path { stroke: #d9480f; stroke-width: 2.4; }
 <div class="app">
 <header>
   <h1>Granite design pack</h1>
-  <p>FYP-1 Mid · __COUNT__ design artefacts generated from the code · handbook Table 1a, Iteration 1 design phase</p>
+  <p>__COUNT__ design artefacts generated from the code · handbook Table 1a · solid parts are built (FYP-1 Mid), dashed parts are planned for FYP-1 Final and FYP-2</p>
 </header>
 <nav aria-label="Design artefacts">
   <label class="hint" for="q">Search</label>

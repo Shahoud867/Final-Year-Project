@@ -327,7 +327,15 @@ Confirmed Python 3.13.7 + networkx 3.5 + scikit-learn 1.8.0 available locally (`
 - **Honesty notes.** The interface shows only values returned by the API; the comparison table says "not documented" where the source found no public description and claims no superiority; the panel-action list on the Evidence screen deliberately shows no status of its own. The Form 10 note added for A6 reports what GitHub's public API returned on 2026-10-14 and leaves the status word to the team.
 - **Not yet independently reviewed by the team.** Each member should be able to explain the screen that shows their module before presenting it (the code walkthrough, section 6).
 
-## Twenty-fourth session, 2026-11-11: final handbook filed, FYP-1 completion plan (Shahoud)
+## Twenty-fourth session, 2026-10-14 to 2026-10-22: Mid-1 preparation, report revision, design pack for FYP-2 (Noor)
+
+- **Activity type: Muhammad Noor directed the AI assistant (Claude Code) on his own laptop.** The assistant read the repository and the report, ran builds and checks, and drafted changes; Noor set every task, supplied the supervisor's comments and decided what to keep.
+- **Who did what.** The assistant wrote study notes for the Mid-1 evaluation (outside the repository); revised the report on the supervisor's seven comments, the rule that every section opens with context, the FYP-2 plan for Iterations 3 and 4 (use cases, work breakdown, weekly plans, exit criteria), chapter openings, the persona (renamed Hamza), the failure-classes and generality sections, and the supervisor-meeting rows of the meetings appendix; added the planned FYP-1 Final and FYP-2 parts to 12 design-pack diagrams (`scripts/design_pack/`), with dashed outlines for planned classes and tables in the drawing kit; and transcribed two team voice notes with a local Whisper model.
+- **What was checked by running it.** `build_design_pack.py --check` passes and the layout lint reports nothing; the report builds at 99 pages with no undefined reference, also from a clean unpacked copy of the Overleaf zip; the 465 automated tests were re-run on 21 October.
+- **Not done.** Nothing was committed. The meeting rows for 24 September and 1 October were written from the post-defense planning records and need the team's confirmation; the ratings of the complex computing problem characteristics, the Form 13 signatures and the supervisor's signature on C-01 are open.
+- **Not yet independently reviewed by another team member.** Each member should read the report sections and diagrams of their own module before presenting them.
+
+## Twenty-fifth session, 2026-11-11: final handbook filed, FYP-1 completion plan (Shahoud)
 
 - **Activity type: Shahoud Shahid asked the AI assistant (Claude Code) to file the final handbook and to assess the project critically for FYP-1 Final.** The assistant read the handbook (process, Appendix A, Forms 4 and 5), the repository, the registers, the feasibility notes and the datasets on disk, and wrote a plan.
 - **Who wrote what.** The assistant moved the final handbook to `references/university/bs-fyp-handbook-2026.pdf` and the draft to `archive/superseded/`, and wrote [`docs/plan/fyp1-completion-plan.md`](../plan/fyp1-completion-plan.md) with a pointer from master plan section 31. The poster deadline (15 November) came from Shahoud.

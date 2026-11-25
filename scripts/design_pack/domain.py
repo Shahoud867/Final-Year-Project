@@ -48,8 +48,9 @@ def domain_model() -> Sheet:
     _has(db_models.Review, "reviewer", "decision", "comment", "from_status", "to_status", "created_at")
     _has(db_models.Finding, "status")
 
-    d = Diagram("domain-model", "Domain model (class diagram)", 1550, 930,
-                "The concepts of an investigation and how they relate, from workflow definition to review.")
+    d = Diagram("domain-model", "Domain model (class diagram)", 1550, 1120,
+                "The concepts of an investigation and how they relate, from workflow definition to review, with the "
+                "classes planned for FYP-1 Final and FYP-2 Mid.")
     c, w = [30, 340, 650, 960, 1270], 250
     r1, r2, r3, r4 = 70, 310, 560, 800
     wf = d.compartments("WorkflowDef", c[0], r1, w, "WorkflowDef",
@@ -103,6 +104,22 @@ def domain_model() -> Sheet:
                         ["reviewer, decision, comment", "from_status, to_status", "created_at"], "api",
                         tip="granite_api.models.Review: a human decision on a finding")
     rp = d.compartments("RepairRule", c[4], r4, w, "RepairRule", ["field: str", "expression: str  (DSL)"], "workflow")
+    # planned classes: no code yet, so no field check; the stereotype names the milestone
+    r5 = 960
+    lh = d.compartments("LLMHypothesis", c[3], r4, w, "LLMHypothesis",
+                        ["method: llm  (second opinion)", "model, prompt_hash: str", "verified: False until replayed"],
+                        "planned", stereotype="planned · FYP-2 Mid", dashed=True)
+    bc = d.compartments("BenchmarkCase", c[0], r5, w, "BenchmarkCase",
+                        ["trace: TraceV1", "fault: FaultRecord | None", "origin_step: str  (label)", "workflow, runtime: str"],
+                        "planned", stereotype="planned · FYP-1 Final", dashed=True)
+    er = d.compartments("EvaluationResult", c[1], r5, w, "EvaluationResult",
+                        ["method: granite|last_agent|llm_judge", "metric, value: float", "ci_low, ci_high  (95%)",
+                         "n_cases: int"], "planned", stereotype="planned · FYP-1 Final", dashed=True)
+    rw = d.compartments("Reviewer", c[2], r5, w, "Reviewer", ["github_login: str", "role: reviewer | admin"],
+                        "planned", stereotype="planned · FYP-2 Mid", dashed=True)
+    kf = d.compartments("KnownFix", c[4], r5, w, "KnownFix",
+                        ["signature: str", "intervention: Intervention", "source_experiment: id", "verdict: CONFIRMED only"],
+                        "planned", stereotype="planned · FYP-2 Mid", dashed=True)
 
     # composition and association
     d.edge([wf.right(0.3), sd.left(0.4)], "1..*", "WorkflowDef", "StepDef", start="diamond", end="", label_dy=-6)
@@ -131,10 +148,20 @@ def domain_model() -> Sheet:
     d.label(fi.cx - 12, 755, "supported by  *", anchor="end")
     d.edge([fi.bottom(0.82), (fi.x + w * 0.82, 748), (rv.cx, 748), rv.top()], "decided in  *", "Finding", "Review",
            end="open", label_at=(680, 742))
+    # planned relationships
+    d.edge([lh.left(0.3), (925, lh.y + lh.h * 0.3), (925, 670), (hy.x + w, 670)], src="LLMHypothesis", dst="Hypothesis",
+           dashed=True, end="tri")
+    d.edge([er.left(0.3), bc.right(0.3)], "over *", "EvaluationResult", "BenchmarkCase", dashed=True, end="open", label_dy=-6)
+    d.edge([rv.bottom(), rw.top()], src="Review", dst="Reviewer", dashed=True, end="open")
+    d.label(rv.cx + 12, 930, "signed-in reviewer", anchor="start")
+    d.edge([kf.right(0.3), (1535, kf.y + kf.h * 0.3), (1535, 620), (iv.x + w, 620)], src="KnownFix", dst="Intervention",
+           dashed=True, end="open")
+    d.label(1531, 940, "reuses", anchor="end")
     d.note(c[4], 196, w, ["Ground truth, kept apart", "Recorded beside the trace for scoring.", "attribute() never receives it (a test",
                           "checks its signature)."], "warn", id="fault-note")
     d.legend(30, 560, [("workflow", "defined by a workflow"), ("core", "produced by granite_core"),
                        ("api", "stored by the API only"), ("warn", "evaluation ground truth"),
+                       ("planned", "planned class (milestone in «»)"),
                        ("line:solid", "association (filled diamond = owns)"), ("line:dashed", "derived from / may exist")],
              col_w=262)
     return Sheet(
@@ -145,18 +172,22 @@ def domain_model() -> Sheet:
         "Hypotheses to the finding, each blaming one recorded step. An Experiment verifies one hypothesis: an "
         "Intervention (built from a RepairRule) patches that step, N+M ReplayRecords each carry their own trace, "
         "and the ExperimentSummary holds the VR-1 verdict. EvidenceRecords and Reviews hang off the finding. The "
-        "FaultRecord is deliberately off to the side: it exists only to score the analysis.",
+        "FaultRecord is deliberately off to the side: it exists only to score the analysis. The dashed classes are "
+        "planned: BenchmarkCase and EvaluationResult for the evaluation at FYP-1 Final, and for FYP-2 Mid the "
+        "LLMHypothesis (a second opinion that stays unverified until a replay tests it), the signed-in Reviewer, and "
+        "the KnownFix that stores a confirmed intervention for reuse.",
         ["packages/granite_core/granite_core/runner.py", "packages/granite_core/granite_core/trace.py",
          "packages/granite_core/granite_core/checks.py", "packages/granite_core/granite_core/attribution.py",
          "packages/granite_core/granite_core/verification.py", "packages/granite_core/granite_core/experiment.py",
          "packages/granite_core/granite_core/evidence.py", "apps/api/granite_api/models.py"],
-        "Every field name shown is checked against the real class when the pack is built; a renamed or removed "
-        "field fails the build. Relationships and layout are curated.",
+        "Every field name shown on a solid class is checked against the real class when the pack is built; a renamed "
+        "or removed field fails the build. Dashed classes are planned and have no code yet. Relationships and layout "
+        "are curated.",
     )
 
 
 def structure_chart() -> Sheet:
-    d = Diagram("structure-chart", "Structure chart", 1490, 640,
+    d = Diagram("structure-chart", "Structure chart", 1490, 690,
                 "Functional decomposition of an investigation into modules, with the data passed down and up.")
     root = d.node("root", 545, 40, 400, 56, "Investigate a workflow run", ["granite_api.routes (HTTP entry points)"], "api")
     cols = [30, 320, 610, 900, 1190]
@@ -169,13 +200,17 @@ def structure_chart() -> Sheet:
     ]
     children = {
         "m-run": [("validate task", "registry.validate_task", "api"), ("choose model source", "llm_factory.build_provider", "api"),
-                  ("run workflow", "runner.run_workflow", "core"), ("record steps and reads", "runner._execute_steps", "core")],
+                  ("run workflow", "runner.run_workflow", "core"), ("record steps and reads", "runner._execute_steps", "core"),
+                  ("ingest a trace", "planned · FYP-1 Final", "planned")],
         "m-ana": [("evaluate checks", "checks.evaluate_checks → dsl", "core"), ("open findings", "checks.derive_findings", "core"),
-                  ("rank origins", "attribution.attribute", "core"), ("hash evidence", "evidence.make_evidence", "core")],
+                  ("rank origins", "attribution.attribute", "core"), ("hash evidence", "evidence.make_evidence", "core"),
+                  ("second opinion", "planned · FYP-2 Mid", "planned")],
         "m-ver": [("build the fix", "verification.build_intervention", "core"), ("plan the replay", "verification.plan_replay", "core"),
-                  ("replay and judge", "experiment.run_experiment", "core"), ("decide the verdict", "verification.decide (VR-1)", "core")],
+                  ("replay and judge", "experiment.run_experiment", "core"), ("decide the verdict", "verification.decide (VR-1)", "core"),
+                  ("suggest a fix", "planned · FYP-1 Final", "planned")],
         "m-rev": [("check comment rule", "reviews.apply_review", "api"), ("change status", "lifecycle.transition", "core"),
-                  ("write audit and note", "common.audit · add_evidence", "api")],
+                  ("write audit and note", "common.audit · add_evidence", "api"),
+                  ("store a known fix", "planned · FYP-2 Mid", "planned")],
         "m-rep": [("collect records", "models: Finding, Evidence", "api"), ("render", "report.finding_report", "api")],
     }
     bus_y = 130
@@ -189,11 +224,11 @@ def structure_chart() -> Sheet:
         kids = children[mid]
         for i, (name, fn, k) in enumerate(kids):
             ky = 290 + i * 78
-            kid = d.node(f"{mid}-{i}", x + 44, ky, 226, 58, name, [fn], k)
+            kid = d.node(f"{mid}-{i}", x + 44, ky, 226, 58, name, [fn], k, dashed=k == "planned")
             d.edge([(trunk_x, m.y + 60 if i == 0 else 290 + (i - 1) * 78 + 29), (trunk_x, kid.cy), kid.left()],
-                   src=mid, dst=kid.id, end="")
-    d.legend(1190, 470, [("api", "application module"), ("core", "granite_core module")], title="Module belongs to", col_w=200)
-    d.note(1190, 548, 270, ["Reading the chart", "Lines mean 'calls'. ↓ is data passed down,", "↑ is data returned. Order is left to right."],
+                   src=mid, dst=kid.id, end="", dashed=k == "planned")
+    d.legend(1190, 470, [("api", "application module"), ("core", "granite_core module"), ("planned", "planned module")], title="Module belongs to", col_w=200)
+    d.note(1190, 572, 270, ["Reading the chart", "Lines mean 'calls'. ↓ is data passed down,", "↑ is data returned. Order is left to right."],
            "plain", id="reading")
     return Sheet(
         d, "Structure", "Structure Chart",
@@ -201,7 +236,8 @@ def structure_chart() -> Sheet:
         "work themselves: they hand a run to module 1, whose result (a trace) is the only input module 2 needs. "
         "Verification (module 3) starts again from the stored trace, not from the run, which is what makes a "
         "replay possible days later. Modules 1 to 3 each end in a call into granite_core (blue): the application "
-        "modules only add validation, persistence and state changes around them.",
+        "modules only add validation, persistence and state changes around them. The dashed modules are planned: "
+        "ingesting a trace and suggesting a fix (FYP-1 Final), and the second opinion and storing a known fix (FYP-2 Mid).",
         ["apps/api/granite_api/services/runs.py", "apps/api/granite_api/services/analysis.py",
          "apps/api/granite_api/services/experiments.py", "apps/api/granite_api/services/reviews.py",
          "apps/api/granite_api/services/report.py"],

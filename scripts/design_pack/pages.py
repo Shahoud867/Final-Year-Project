@@ -197,7 +197,10 @@ def _index(sheets: list[Sheet], page_of: dict[str, str]) -> str:
         "used throughout and so that facts come from the code: tables, columns and keys from the database models; "
         "states and events from the lifecycle module; steps, reads and checks from the workflow definition; call edges "
         "from static analysis of the source; verdict regions and worked examples by calling the real functions on a "
-        "recorded run. A layout lint rejects overlapping boxes, text that overflows, and connectors through boxes.", "",
+        "recorded run. A layout lint rejects overlapping boxes, text that overflows, and connectors through boxes. "
+        "Diagrams whose content grows with the scope also show what is planned for FYP-1 Final and FYP-2, dashed and "
+        "tagged with its milestone; the algorithm, sequence and state diagrams describe mechanisms that FYP-2 does not "
+        "change.", "",
         "**Interactive version:** [`granite_design-pack_fyp1-mid_v1.0.html`](../../deliverables/stage-1-fyp1-mid/granite_design-pack_fyp1-mid_v1.0.html) "
         "(one self-contained file: navigation, search, zoom, and click a box to highlight what it connects to).", "",
         "## Handbook Table 1a coverage", "",

@@ -11,8 +11,8 @@ from .kit import Diagram
 
 
 def dfd_context() -> Sheet:
-    d = Diagram("dfd-context", "Data flow diagram: context (level 0)", 1240, 400,
-                "Granite as one process, with everything that crosses its boundary.")
+    d = Diagram("dfd-context", "Data flow diagram: context (level 0)", 1240, 520,
+                "Granite as one process, with everything that crosses its boundary now and the planned neighbours.")
     d.node("analyst", 40, 170, 190, 80, "Analyst", ["developer, QA or reviewer"], "actor")
     d.node("granite", 500, 130, 240, 160, "0   Granite", ["investigation workbench"], "core", shape="circle", title_size=14)
     d.node("llm", 1010, 120, 200, 70, "Language model", ["Ollama or hosted endpoint"], "external")
@@ -28,21 +28,30 @@ def dfd_context() -> Sheet:
     d.edge([(1010, 267), (709, 267)], "orders, catalogue prices (source of truth)", "retail", "granite", label_dy=-7)
     d.note(40, 300, 420, ["Boundary", "In recorded mode the language model is replaced by a file of saved",
                           "answers; nothing else about the flows changes."], "plain", id="boundary")
+    d.node("source", 250, 420, 230, 70, "Trace source", ["SDK events, imported files", "planned · FYP-1 Final"], "planned", dashed=True)
+    d.node("github", 1010, 420, 200, 70, "GitHub", ["sign-in, reviewer identity", "planned · FYP-2 Mid"], "planned", dashed=True)
+    d.edge([(480, 455), (570, 455), (570, 279)], src="source", dst="granite", dashed=True)
+    d.label(582, 380, "traces", anchor="start")
+    d.edge([(1010, 455), (680, 455), (680, 279)], src="github", dst="granite", dashed=True)
+    d.label(692, 380, "identity", anchor="start")
     return Sheet(
         d, "Behaviour", "Data Flow Diagram (DFD)",
         "At context level Granite has three neighbours. The analyst supplies a task and decisions and receives "
         "everything needed to judge a run. The language model is the only non-deterministic neighbour; it receives "
         "prompts and returns text, and can be replaced by recorded answers. The retail data plays two roles on "
         "purpose: the workflow's tool step reads orders from it, and the checks read catalogue prices from it "
-        "independently, which is what lets a stale tool answer be detected.",
+        "independently, which is what lets a stale tool answer be detected. Two neighbours are planned (dashed): "
+        "trace sources outside Granite, an application instrumented with the SDK or an imported file, from FYP-1 "
+        "Final, and GitHub, which supplies the reviewer's identity from FYP-2 Mid.",
         ["apps/api/granite_api/routes.py", "apps/api/granite_api/providers.py", "workflows/refund_desk/refund_desk/store.py"],
         "Curated; the level-1 diagram refines the single process.",
     )
 
 
 def dfd_level1() -> Sheet:
-    d = Diagram("dfd-level-1", "Data flow diagram: level 1", 1380, 800,
-                "The six processes inside Granite, the stores they share and the data that moves between them.")
+    d = Diagram("dfd-level-1", "Data flow diagram: level 1", 1380, 900,
+                "The six processes inside Granite, the stores they share, the data that moves between them, and the "
+                "planned processes and stores.")
     # processes
     d.node("p1", 290, 150, 180, 80, "1.0  Run workflow", ["runner.run_workflow"], "core", shape="pill")
     d.node("p2", 600, 150, 180, 80, "2.0  Check and detect", ["checks, findings"], "core", shape="pill")
@@ -56,7 +65,12 @@ def dfd_level1() -> Sheet:
     d.node("d3", 860, 380, 280, 46, "Investigation records", [], "store", shape="store")
     d.node("d4", 590, 577, 200, 46, "Audit log", [], "store", shape="store")
     d.node("d5", 430, 40, 230, 46, "Retail data snapshot", [], "store", shape="store")
-    for sid, tag in (("d1", "D1"), ("d2", "D2"), ("d3", "D3"), ("d4", "D4"), ("d5", "D5")):
+    # planned processes and stores
+    d.node("p0", 30, 280, 200, 74, "0.0  Ingest a trace", ["files, SDK · FYP-1 Final"], "planned", shape="pill", dashed=True)
+    d.node("p7", 600, 690, 200, 74, "7.0  Evaluate", ["Fault Lab · FYP-1 Final"], "planned", shape="pill", dashed=True)
+    d.node("d6", 585, 820, 230, 46, "Benchmark and results", [], "planned", shape="store", dashed=True)
+    d.node("d7", 1180, 380, 170, 46, "Known fixes", [], "planned", shape="store", dashed=True)
+    for sid, tag in (("d1", "D1"), ("d2", "D2"), ("d3", "D3"), ("d4", "D4"), ("d5", "D5"), ("d6", "D6"), ("d7", "D7")):
         n = d.nodes[sid]
         d.label(n.x + 13, n.cy + 4, tag, size=10.5, weight=700, check=False)
     # external entities
@@ -95,9 +109,18 @@ def dfd_level1() -> Sheet:
     d.edge([(1000, 720), (1000, 640)], src="a3", dst="p5")
     d.label(988, 688, "decision, comment", anchor="end")
     d.edge([(1265, 640), (1265, 750), (1065, 750)], "report", "p6", "a3", label_at=(1165, 744))
-    d.legend(1150, 40, [("core", "process"), ("store", "data store (tables, files)"), ("actor", "external entity")], col_w=200)
-    d.note(1150, 130, 200, ["Stores and tables", "D1 runs, fault_injections", "D2 check_results", "D3 findings, hypotheses,",
-                            "   experiments, replays,", "   evidence, reviews", "D4 audit_log, jobs", "D5 data/seed (read-only)"],
+    d.edge([(230, 317), (260, 317), (260, 403), (290, 403)], src="p0", dst="d1", dashed=True)
+    d.label(252, 372, "imported trace", anchor="end")
+    d.edge([(470, 418), (540, 418), (540, 727), (600, 727)], src="d1", dst="p7", dashed=True)
+    d.label(548, 660, "runs, fault records", anchor="start")
+    d.edge([(700, 764), (700, 820)], src="p7", dst="d6", dashed=True)
+    d.label(712, 796, "scores, intervals", anchor="start")
+    d.edge([(1060, 560), (1060, 470), (1300, 470), (1300, 426)], src="p5", dst="d7", dashed=True)
+    d.label(1180, 464, "confirmed fix · FYP-2 Mid")
+    d.legend(1150, 40, [("core", "process"), ("store", "data store (tables, files)"), ("actor", "external entity"),
+                        ("planned", "planned (milestone in the box)")], col_w=200)
+    d.note(1150, 152, 200, ["Stores and tables", "D1 runs, fault_injections", "D2 check_results", "D3 findings, hypotheses,",
+                            "   experiments, replays,", "   evidence, reviews", "D4 audit_log, jobs", "D5 seed data; D6, D7 planned"],
            "plain", id="stores")
     return Sheet(
         d, "Behaviour", "Data Flow Diagram (DFD)",
@@ -105,7 +128,10 @@ def dfd_level1() -> Sheet:
         "row is what a person starts later: verify, review, report. The two rows share only stored data, which "
         "is the reason a verification can be run on a trace recorded earlier. Process 4 never reads the fault "
         "record in D1, and process 3 never reads it either: the injected fault is kept only to score the "
-        "analysis. The note on the right maps each store to real tables.",
+        "analysis. The note on the right maps each store to real tables. The dashed parts are planned: process 0 "
+        "stores traces that arrive from files or the SDK in D1, so the rest of the diagram treats them like a "
+        "local run (FYP-1 Final); process 7 scores labelled runs into D6 (FYP-1 Final); and reviewing a confirmed "
+        "finding stores its fix in D7 for reuse (FYP-2 Mid).",
         ["apps/api/granite_api/services", "apps/api/granite_api/models.py", "packages/granite_core/granite_core"],
         "Curated; process names are the modules of the structure chart and the stores are the tables of the ER diagram.",
     )

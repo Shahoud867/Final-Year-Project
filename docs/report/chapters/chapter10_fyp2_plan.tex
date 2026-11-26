@@ -1,0 +1,161 @@
+\chapter{Remaining FYP Plan}
+
+This chapter sets out the plan for the rest of the project: the remaining scope and features, the iterations still to come, how they will be implemented, tested and deployed, the timeline to FYP-2, and the expected final deliverables.
+
+\section{Remaining Scope}
+
+Granite's full scope is eight product modules. Run executes a multi-agent workflow and records its trace. Import brings in traces from other tools through file upload, a Python SDK and framework adapters. Check evaluates executable checks and turns silent failures into findings. Trace back ranks origin hypotheses. Verify tests a hypothesis by controlled replay. Review and Resolve covers the human decision, fix suggestions, recovered runs and a library of known fixes. Report provides exports, regression tests and history. Fault Lab and Evaluation generates labelled benchmark runs and measures the system against baselines.
+
+Iteration 1 delivered the core path of Run, Check, Trace back, Verify, Review and Report. The remaining scope is the Import module, the second half of Review and Resolve, the PDF and regression exports, and the whole of Fault Lab and Evaluation. Several things are excluded from the FYP altogether: a multi-tenant SaaS product with billing, Kubernetes or message queues, applying fixes automatically to a user's production system, training custom models, benchmarking across seven frameworks, a preventive classifier, and real customer data on the public demo.
+
+\section{Remaining Modules and Features}
+
+The remaining features are prioritised by milestone using MoSCoW. The Must items for FYP-1 Final are:
+
+\begin{itemize}
+\item trace import using the Granite Trace v1 format
+\item a second workflow based on GSM8K maths problems
+\item a Fault Lab with three fault types and clean controls
+\item a Python SDK with a LangGraph adapter
+\item LLM-generated fix suggestions, each verified as a fix experiment
+\item recovered runs that apply a verified fix
+\item export of a finding as a regression test
+\item redaction of personal data
+\item PDF reports
+\item a first version of the evaluation module
+\end{itemize}
+
+For FYP-2 Mid, the CrewAI adapter and an LLM second-opinion hypothesis (a lightweight ErrorProbe reproduction) become Musts and the evaluation module reaches its full version. A known-fix library, GitHub login with reviewer identity, and retention controls are Should items for FYP-2. Notifications are a Could item, and support for further frameworks, a seven-framework compatibility layer and a leaderboard are left for future work.
+
+\section{Remaining Iterations}
+
+Three iterations remain. Iteration 2, "breadth and inputs", runs from Week 9 to Week 15 of FYP-1 and ends with release 0.2.0 at FYP-1 Final. Its goal is for about half of the committed effort to be implemented, with the core scenario working on real inputs from two sources (a live run and an imported trace), the comparison baseline measured, the deployment installed by someone other than its author, and the FYP-2 evaluation plan written. Iteration 3, "integration and evaluation", covers the first eight weeks of FYP-2. It adds the CrewAI adapter, the known-fix library, authentication, the LLM second opinion and a benchmark of at least 300 runs, and ends with release 0.5.0 at FYP-2 Mid. Iteration 4, "hardening and user acceptance", runs to the end of FYP-2 and covers acceptance testing with users, fixes and handover, ending with release 1.0.0 at FYP-2 Final.
+
+\section{Implementation Plan}
+
+Iteration 2 is planned week by week, with each member working in their own area.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.039\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.261\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.286\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.274\linewidth}}
+\caption{Implementation Plan}\label{tab:chapter10_fyp2_plan-1}\\
+\toprule
+\textbf{Week} & \textbf{Shahoud} & \textbf{Noor} & \textbf{Saif} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Week} & \textbf{Shahoud} & \textbf{Noor} & \textbf{Saif} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+9 & Trace import with a validation report & Check editor backend; fix D-25 & Resume interrupted experiments \\
+10 & Two more fault types; personal-data redaction & Check editor interface; cycle bound in attribution & Fix suggestion and fix experiments \\
+11 & SDK and LangGraph adapter & Second workflow's checks; metamorphic tests & Recovered runs; regression-test export \\
+12 & Fault Lab batch generation & Evaluation harness with last-agent and LLM-judge baselines & PDF reports; release pipeline; PostgreSQL testing \\
+13 & Benchmark v0 of at least 120 runs & Run evaluation v0; label 50 natural failures & Performance measurement; accessibility pass \\
+14 & Help page; SDK quickstart; UI fixes from the pilot & Evaluation screen & Install by a non-owner; rollback test \\
+\end{longtable}
+}
+
+In parallel, the team will act on the Mid-1 feedback in Week 9, interview stakeholders from Week 9, submit the poster in Week 13 after a usability pilot, and draft report version 2.0 in Week 14. Week 10 is kept light for sessional exams. The SDK and adapter work in Week 11 carries the highest technical risk and will be cut back to the SDK alone if it falls behind.
+
+All work follows the branching method described in Section 8.5. Every member opens pull requests from their own account, every pull request is reviewed by another member, and owners write the tests for their own code. A weekly owner demo, in which each member shows their own increment, doubles as rehearsal for the walkthrough the handbook requires. For the check, attribution and verification code, each owner must be able to explain it, propose an alternative, predict what breaks if it is removed, and modify it live.
+
+\section{Testing and Validation Plan}
+
+Testing, evaluation and acceptance are treated as three separate questions: whether the system behaves as specified, whether it performs well against baselines, and whether real users would adopt it.
+
+Testing continues at every level already in place. Unit tests cover the core library, services and components, with coverage held above the 90\% gate in CI. Integration tests require at least one success case and one failure case for every API endpoint. Component and accessibility tests cover the web interface. The system suite runs the user journeys against the deployed URL, and browser automation is planned. Regression testing runs everything on each pull request, together with a nightly recorded mini-benchmark that fails the build if origin accuracy drops by more than five points. Performance tests check the response-time requirements, and security tests cover the check-language attack set, input fuzzing, secrets, dependency audits and redaction. The techniques used include equivalence partitioning, boundary values at the verdict thresholds, a twenty-row decision table for the verdict rule, state-transition testing of every legal and illegal finding transition, property-based tests, metamorphic tests of attribution invariances and negative tests in which clean controls must produce no findings.
+
+Evaluation will grow through three benchmark versions. Version 0, at FYP-1 Final, has at least 120 runs. Version 1, at FYP-2 Mid, has at least 300, and version 2 may reach 500 at FYP-2 Final. Each version will contain 20\% clean controls, three fault types, two workflows and at least two runtimes. A further 50 natural failures will be labelled independently by two members, with inter-rater agreement reported, and a subset of at least 30 cases from the Who\&When benchmark will be used for the language-model attribution track. Granite's provenance attribution will be compared against blaming the last agent, an LLM judge reading the whole trace, and, at FYP-2 Mid, a lightweight ErrorProbe reproduction. Ablations will vary the number of replays and controls and remove the regression guard. Results will carry bootstrap 95\% confidence intervals with fixed seeds, and each analysis will be frozen and pre-registered before it is run, as the Mid-1 feasibility run was.
+
+Acceptance will be tested in two stages. A pilot with three peers takes place before FYP-1 Final. Full acceptance testing in FYP-2 will involve five to eight participants, including alumni developers, AI-course students and another FYP team, who are declared as proxies for real users. Sessions will be supervised, last 45 minutes and take place with consent. They will measure task completion, time, errors, assistance needed, the System Usability Scale and time to first finding. Every issue raised will be recorded as fixed or deferred, with a reason.
+
+\section{Deployment Plan}
+
+The public demo has run on Render's free plan at \url{https://granite-demo.onrender.com} since 11 October. It was created from the repository's render.yaml blueprint as a Docker service in recorded model mode, with a health check and automatic deploys switched off, so that only code that has passed CI is deployed. Deployment is driven by the continuous delivery workflow: after CI passes on main, the container image is built, smoke-tested and published, Render is triggered through its deploy hook, and the public URL is smoke-tested again. The only step remaining is to add the deploy hook to the repository's secrets.
+
+The project uses four environments. Developers run Granite locally or with Docker Compose, using Ollama or recorded answers. CI runs on GitHub's runners in recorded mode, and the public demo runs on Render. As a self-hosted product, Granite can be run on any machine with Docker Compose and a local Ollama model, following the setup manual. The demo currently stores its data in SQLite on temporary disk; PostgreSQL support will be tested in Week 12, before any shared deployment. Before FYP-1 Final, the system will be installed from the setup manual by someone who is not its author, a rollback will be tested and every release will be recorded in the deployment record. On each evaluation day the hosted instance will be woken in advance, with a laptop instance as a fallback; because recorded mode needs no network access to a model, the fallback is reliable.
+
+Figure~\ref{fig:deployment} shows the deployment, and Figure~\ref{fig:render} the live service.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{deployment-diagram.pdf}
+\caption{Deployment diagram: verified and planned parts}
+\label{fig:deployment}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{2026-10-11_render-service-live.png}
+\caption{The granite-demo service live on Render}
+\label{fig:render}
+\end{figure}
+
+
+\section{Tentative Timeline}
+
+The timeline assumes that Week 1 of the semester began on 24 August.
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.527\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.187\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.177\linewidth}}
+\caption{Tentative Timeline}\label{tab:chapter10_fyp2_plan-2}\\
+\toprule
+\textbf{Milestone} & \textbf{Week} & \textbf{Dates} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Milestone} & \textbf{Week} & \textbf{Dates} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FYP-1 Mid evaluation; tag v0.1.0-mid1 & FYP-1 Week 9 & 12--16 Oct 2026 \\
+Import, faults, check editor, redaction, fix suggestion & Weeks 9--10 & 19--30 Oct \\
+SDK and LangGraph adapter; recovered runs; poster draft & Week 11 & 2--6 Nov \\
+Fault Lab, evaluation harness, PDF export & Week 12 & 9--13 Nov \\
+Poster submission; benchmark v0; usability pilot & Week 13 & 16--20 Nov \\
+Report v2.0; non-owner install; evaluation screen & Week 14 & 23--27 Nov \\
+FYP-1 Final and poster evaluation; v0.2.0 & Week 15 & 30 Nov -- 4 Dec \\
+CrewAI, authentication, benchmark v1, evaluation v1 & FYP-2 Weeks 1--7 & Spring 2027 \\
+FYP-2 Mid / Pre-Job-Fair; v0.5.0 & FYP-2 Week 8 & Spring 2027 \\
+User acceptance testing & FYP-2 Weeks 9--11 & Spring 2027 \\
+Job Fair & FYP-2 Weeks 12--14 & Spring 2027 \\
+FYP-2 Final; v1.0.0 & FYP-2 Week 15 & Spring 2027 \\
+Final deliverables to the committee & FYP-2 Weeks 17--18 & Spring 2027 \\
+\end{longtable}
+}
+
+The team also sets internal deadlines ahead of external ones. Code is frozen 24 hours before every evaluation, report drafts go to the supervisor at least five days before each deadline, and the poster is sent to the supervisor at least five days before Week 13.
+
+\section{Expected Final Deliverables}
+
+Each remaining milestone has a defined set of deliverables. At FYP-1 Final the team will deliver:
+
+\begin{itemize}
+\item release 0.2.0, deployed
+\item report version 2.0, covering both iterations, implementation details, the user manual and the FYP-2 and evaluation plans
+\item the poster
+\item the first benchmark and an evaluation with measured baselines
+\item results of the usability pilot
+\item records of four to six stakeholder interviews
+\item a deployment record that includes an install by a non-owner
+\end{itemize}
+
+At FYP-2 Mid the deliverables are:
+
+\begin{itemize}
+\item release 0.5.0
+\item a benchmark of at least 300 runs with a datasheet
+\item an evaluation report with confidence intervals and ablations
+\item a system test report and a defect list by severity
+\item a security scan report
+\item the acceptance-testing plan
+\item an updated poster and report
+\end{itemize}
+
+For the Job Fair the team will prepare a booth demo with an offline fallback, a one-page handout with a QR code linking to the demo and repository, and the graduate directory materials.
+
+The project closes at FYP-2 Final with release 1.0.0 and a final report signed by the supervisor. That report covers traceability, evaluation, limitations and individual contributions, and is accompanied by the acceptance-testing report, a handover package (source code, build and run instructions, dependencies, licences, known limitations and future work) and package and deployment diagrams. In Weeks 17 and 18 the final submission to the committee will include the report, the full presentation, references, the complete code, an executable with its README and user manual, and a passed plagiarism check. Throughout the project, the working deployed system, its source on GitHub, its manuals, design pack and registers remain the core product deliverables.

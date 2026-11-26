@@ -1,0 +1,8 @@
+# Pins the lint rules for the repository utility scripts so results do not depend on a developer's global ruff config.
+# Only real errors are enforced (syntax, undefined names, unused imports, import order); the one-off migration scripts
+# predate the 120-column and bugbear rules the packages follow.
+line-length = 120
+target-version = "py311"
+
+[lint]
+select = ["E4", "E7", "E9", "F", "I"]

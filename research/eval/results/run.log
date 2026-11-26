@@ -1,0 +1,75 @@
+[    0s] #W1023987 clean-findings=0 rank=['s2', 's4', 's1', 's3', 's5'] origin=confirmed innocent=refuted
+[    0s] #W1052399 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=confirmed innocent=refuted
+[  267s] #W1067251 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=confirmed innocent=refuted
+[  514s] #W1166549 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=confirmed innocent=refuted
+[  833s] #W1326557 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=refuted innocent=refuted
+[ 1181s] #W1335809 clean-findings=1 rank=['s2', 's4', 's1', 's3', 's5'] origin=confirmed innocent=refuted
+[ 9088s] #W1341845 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=confirmed innocent=refuted
+[ 9374s] #W1504875 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=confirmed innocent=refuted
+[ 9755s] #W1519594 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=confirmed innocent=refuted
+[10137s] #W1523776 clean-findings=0 rank=['s2', 's1', 's3', 's4', 's5'] origin=confirmed innocent=refuted
+{
+ "M1_detection": {
+  "k": 10,
+  "n": 10,
+  "rate": 1.0,
+  "ci95": [
+   0.722,
+   1.0
+  ]
+ },
+ "M2_clean_runs_with_findings": {
+  "k": 1,
+  "n": 10,
+  "rate": 0.1,
+  "ci95": [
+   0.018,
+   0.404
+  ]
+ },
+ "M3_top1": {
+  "k": 10,
+  "n": 10,
+  "rate": 1.0,
+  "ci95": [
+   0.722,
+   1.0
+  ]
+ },
+ "M3_top3": {
+  "k": 10,
+  "n": 10,
+  "rate": 1.0,
+  "ci95": [
+   0.722,
+   1.0
+  ]
+ },
+ "M4_origin_confirmed": {
+  "k": 9,
+  "n": 10,
+  "rate": 0.9,
+  "ci95": [
+   0.596,
+   0.982
+  ]
+ },
+ "M5_innocent_refuted": {
+  "k": 10,
+  "n": 10,
+  "rate": 1.0,
+  "ci95": [
+   0.722,
+   1.0
+  ]
+ },
+ "M6_completion": {
+  "k": 20,
+  "n": 20,
+  "rate": 1.0,
+  "ci95": [
+   0.839,
+   1.0
+  ]
+ }
+}

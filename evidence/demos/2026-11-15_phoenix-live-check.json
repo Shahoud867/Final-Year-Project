@@ -1,0 +1,62 @@
+{
+  "checked_at": "2026-11-15T10:57:23.364988+00:00",
+  "ok": true,
+  "platforms": [
+    {
+      "platform": "phoenix",
+      "ok": true,
+      "steps": [
+        {
+          "step": "project exists or was created",
+          "ok": true,
+          "detail": "granite-live-check-2"
+        },
+        {
+          "step": "spans sent",
+          "ok": true,
+          "detail": "6 spans, trace 24bc8f57b88df42a791662b62ec60de6"
+        },
+        {
+          "step": "trace read back with every span",
+          "ok": true,
+          "detail": "6 of 6"
+        },
+        {
+          "step": "sending again adds nothing (idempotent)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "step": "imported trace equals the original, step by step",
+          "ok": true,
+          "detail": "5 steps"
+        },
+        {
+          "step": "lineage came from declared reads",
+          "ok": true,
+          "detail": [
+            "declared"
+          ]
+        },
+        {
+          "step": "checks on the imported trace fail exactly as on the original",
+          "ok": true,
+          "detail": [
+            "CHK-OUT-1",
+            "CT-LOOKUP",
+            "CT-CALC"
+          ]
+        },
+        {
+          "step": "verdict annotation on the origin span, updated in place",
+          "ok": true,
+          "detail": {
+            "label": "confirmed",
+            "score": 1.0,
+            "explanation": "live check: written twice"
+          }
+        }
+      ]
+    }
+  ]
+}

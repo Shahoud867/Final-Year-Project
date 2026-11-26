@@ -1,0 +1,88 @@
+\chapter{Proposal Feedback and Iteration Plan}
+
+This chapter summarises the feedback received at the proposal defense, records how each comment was addressed, and describes the iterative plan: what Iteration 1 delivered, what Iteration 2 will add, who is responsible for what, and how progress compares with the plan, including delays and the recovery actions taken.
+
+\section{Proposal Feedback Summary}
+
+The proposal was approved at the defense on 11 September 2026 with five comments from the panel: (1) "UI/UX needs improvement"; (2) "Features are not sufficiently clear"; (3) "It is unclear what inputs each feature will accept"; (4) "It is unclear how identified flaws/issues will be verified and how verification results will be captured"; and (5) "The overall project workflow must be redefined." We also recorded an implicit sixth point: the proof of concept demonstrated research results rather than a product.
+
+Analysing the comments together, we concluded that they shared one root cause: we had designed mechanisms, not a user workflow. The proof-of-concept console only displayed pre-recorded spike results; there was no screen where a user could give Granite something and get back a verified result. Our response was to redefine the product around one workflow and one unit of value, the verified finding.
+
+\section{Proposal Action Register}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.025\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.179\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.266\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.119\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.241\linewidth}}
+\caption{Proposal Action Register}\label{tab:chapter3_iteration_plan-1}\\
+\toprule
+\textbf{No.} & \textbf{Feedback / Required change} & \textbf{Action taken} & \textbf{Status} & \textbf{Evidence} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{No.} & \textbf{Feedback / Required change} & \textbf{Action taken} & \textbf{Status} & \textbf{Evidence} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+A1 & UI/UX needs improvement & Replaced the PoC console with five task-oriented screens (investigations, new run, run, finding, guide), a four-stage stepper, loading/empty/error states, light and dark themes, phone layout, keyboard-operable graph; automated accessibility checks; before/after comparison & Partly done (usability test with outside users pending) & Screenshots and before/after record in \texttt{evidence/\allowbreak{}demos/\allowbreak{}}; accessibility audit \\
+A2 & Features not sufficiently clear & Collapsed ten mechanism names into eight plainly named features in one fixed order; the same list is a page in the product & Done & Feature catalogue; in-app "How it works" page \\
+A3 & Unclear what inputs each feature accepts & Every input has a type, a limit and a refusal message, enforced by the server and covered by tests; published trace schema; API documentation & Done & Data dictionary; validation tests; \texttt{/\allowbreak{}docs} \\
+A4 & Unclear how flaws are verified and results captured & Verification levels V0--V3; replay with N fixes and M controls under rule VR-1 with a Wilson interval; hashed append-only evidence; review records; exportable report & Done & Verification sequence diagram; decision-table tests; feasibility results \\
+A5 & Overall workflow must be redefined & One workflow (run, check, detect, trace back, verify, review, resolve, record), enforced by a state machine and shown as a stepper & Done (change record C-01 awaits signature) & State machine; flow and activity diagrams \\
+A6 & PoC showed research, not a product & Working vertical slice with CI/CD, deployed publicly & Partly done (CD hook and tag pending) & Live URL; CI and CD runs; deployment record \\
+\end{longtable}
+}
+
+Figure~\ref{fig:ui-before-after} compares the screens shown at the defense with the product at Mid-1.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{2026-10-13_ui-before-after.png}
+\caption{Panel comment A1: the proposal-defense PoC (left) compared with the Mid-1 product (right)}
+\label{fig:ui-before-after}
+\end{figure}
+
+
+\section{Iteration Strategy}
+
+We follow an iterative, incremental strategy in which every iteration ends with a working, demonstrable product rather than documents. Iteration 1 builds one complete vertical slice, a single workflow and fault taken through every stage from run to report, so that the whole investigation loop is proven before breadth is added. Later iterations add inputs (import, SDK), more workflows and faults, repair and recovery, and the evaluation. Each iteration has a release tag, scope is prioritised with MoSCoW per milestone, and changes to scope or design are recorded in a change log before results are known.
+
+\section{Iteration 1 Plan}
+
+\textbf{Objective:} a working core investigation slice for Mid-1 (release v0.1.0). \textbf{Use cases:} UC-03 run a workflow, UC-05 inspect a run, UC-06 analyse a run, UC-07 investigate a finding, UC-08 verify a hypothesis, UC-09 review a finding, UC-12 browse history (and UC-11 export report as a Should). \textbf{Deliverables:} the core library (trace, runner, check language, checks, attribution, verification, lifecycle, evidence), the Refund Desk workflow on real data with a real local model, the API with database and background jobs, the web interface, CI/CD, a pre-registered feasibility run, the design artefacts of handbook Table 1a, system tests and manuals. \textbf{Evidence:} live demonstration, automated test results, CI runs, generated diagrams and the feasibility results.
+
+\section{Iteration 2 Plan}
+
+\textbf{Objective:} breadth and inputs, reaching FYP-1 Final (release v0.2.0) with about half of the committed effort implemented. \textbf{Use cases:} UC-01 configure project, UC-02 define and test checks, UC-04 import a trace, UC-10 suggest and verify a fix, UC-11 export report and regression test, UC-13 Fault Lab, UC-14 evaluation v0, UC-15 SDK with LangGraph. \textbf{Deliverables:} trace import, a second workflow, three fault types, a check editor, PII redaction, fix suggestion and recovered runs, PDF reports, the SDK and LangGraph adapter, a benchmark of at least 120 runs with baselines, a usability pilot and an install by a non-owner.
+
+\section{Work Breakdown and Responsibilities}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.093\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.127\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.320\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.320\linewidth}}
+\caption{Work Breakdown and Responsibilities}\label{tab:chapter3_iteration_plan-2}\\
+\toprule
+\textbf{Member} & \textbf{Area} & \textbf{Iteration 1 modules} & \textbf{Iteration 2 work} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Member} & \textbf{Area} & \textbf{Iteration 1 modules} & \textbf{Iteration 2 work} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Shahoud Shahid & Workflows, Data \& Experience & Runner, Refund Desk workflow, faults, LLM providers, web interface shell & Trace import, more fault types, redaction, SDK and LangGraph adapter, Fault Lab, help page \\
+Muhammad Noor Ul Haq & Investigation Engine & Check language and checks, attribution, feasibility evaluation & Check editor, attribution cycle bound, fix D-25, second workflow's checks, evaluation harness and baselines, evaluation screen \\
+Saif Shahzad & Verification \& Platform & Verification and verdict rule, lifecycle, API, database, jobs, CI/CD & Experiment resume, fix suggestion and recovered run, regression export, PDF reports, release pipeline, non-owner install \\
+\end{longtable}
+}
+
+\section{Progress Against Plan}
+
+Iteration 1 items 1 to 13 (planning, workspace, core library, attribution, verification, workflow, API, interface, feasibility run, CI, design artefacts, system tests and manuals, panel action register) were completed between 6 and 11 October, and the public deployment followed on 11 October. The items behind schedule are fully automated deployment (the CD workflow runs but its deploy step awaits a repository secret), branch protection and the release tag, pull requests from every member, the code walkthroughs, redaction before storage, and the usability check. All 381 automated tests pass and the feasibility run met every pre-registered threshold.
+
+\section{Delays, Deviations and Recovery Plan}
+
+\textbf{Delays.} No commits were made for three weeks after the defense, while the team redefined the workflow in response to the panel; the product was then built in a compressed, AI-assisted effort between 6 and 11 October, committed largely from one account. As a result, work is not yet visible under its planned owners and no member has yet demonstrated a file-level walkthrough.
+
+\textbf{Recovery.} Each owner completes the code-walkthrough exercise for their module before the evaluation and contributes from now on only through reviewed pull requests from their own account; the first two pull requests were opened on 11 October. A repository admin adds the deploy-hook secret, protects \texttt{main} and tags v0.1.0-mid1 before the meeting. The usability check runs in Week 9 and redaction is built in Week 10.
+
+\textbf{Deviations from the plan, recorded in the change log:} C-01 (workflow redefined around the verified finding; awaits the supervisor's signature); C-02 (implementation decisions such as a 120-second timeout for local models, one finding per failing outcome check, the policy step implemented as deterministic code, and redaction deferred); and C-03 (diagrams generated from code, simplified branching, an added system test level, a CD workflow, and enforced docstring and naming rules).

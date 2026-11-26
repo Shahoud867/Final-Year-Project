@@ -1,0 +1,94 @@
+/* Design tokens (FRONTEND_DESIGN_ROADMAP.md section 6). Light is the default theme; [data-theme="dark"] is the override.
+   Colour means state only: ok = passed or confirmed, bad = failed check or symptom, warn = suspect or awaiting review,
+   replay = verification and links. Every state is also shown with an icon and a word. Surfaces are flat: one border
+   colour, no translucency; --shadow-2 is reserved for drawers, menus and tooltips. */
+:root {
+  color-scheme: light;
+
+  --bg: #f7f6f3;
+  --bg-sunken: #efede8;
+  --surface: #ffffff;
+  --surface-2: #faf9f7;
+  --elevated: #efece6;
+  --line: #e2dfd8;
+  --line-strong: #c4beb2;
+
+  --text: #1c1a17;
+  --text-2: #403c36;
+  --text-3: #5a564e;
+
+  --ok: #1a8c3c; --ok-text: #0f7032; --ok-soft: rgb(26 140 60 / 0.10); --ok-line: rgb(26 140 60 / 0.42);
+  --bad: #d12b1f; --bad-text: #b3251a; --bad-soft: rgb(209 43 31 / 0.08); --bad-line: rgb(209 43 31 / 0.42);
+  --warn: #b26a00; --warn-text: #8a5200; --warn-soft: rgb(255 159 10 / 0.14); --warn-line: rgb(178 106 0 / 0.42);
+  --replay: #0a66d6; --replay-text: #0a52ad; --replay-soft: rgb(10 102 214 / 0.08); --replay-line: rgb(10 102 214 / 0.42);
+  --neutral-soft: rgb(90 86 78 / 0.08); --neutral-line: rgb(90 86 78 / 0.24);
+
+  --primary: #0071e3;        /* white label text clears 4.5:1 */
+  --primary-hover: #005bbd;
+  --on-primary: #ffffff;
+  --focus: #0071e3;
+  --link: #0a52ad;
+  --scrim: rgb(28 26 23 / 0.32);
+
+  --brand-ink: #10243e;
+  --brand-origin: #0a66d6;
+
+  --font-sans: "Inter Variable", Inter, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+
+  /* Type scale: 13 labels, 15 body, 17 card and section titles, 22 page titles, 30 verdicts and headline numbers. */
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.875rem;
+  --fs-xs: var(--fs-sm);
+  --fs-2xl: var(--fs-xl);
+
+  /* Space 4, 8, 12, 16, 24, 32, 48 */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-8: 48px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-pill: 999px;
+
+  --shadow-1: none;
+  --shadow-2: 0 12px 32px rgb(28 26 23 / 0.14);
+
+  --nav-w: 232px;
+  --topbar-h: 52px;
+  --rail-w: 320px;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --t-fast: 120ms;
+  --t-med: 220ms;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0a1220;
+  --bg-sunken: #070e1a;
+  --surface: #111e38;
+  --surface-2: #0e1a31;
+  --elevated: #1a2a4a;
+  --line: #22314f;
+  --line-strong: #36486c;
+
+  --text: #f4f7fb;
+  --text-2: #b9c6dc;
+  --text-3: #9aa8bf;
+
+  --ok: #35d07f; --ok-text: #35d07f; --ok-soft: rgb(53 208 127 / 0.12); --ok-line: rgb(53 208 127 / 0.42);
+  --bad: #ff5a4e; --bad-text: #ff7a70; --bad-soft: rgb(255 90 78 / 0.12); --bad-line: rgb(255 90 78 / 0.45);
+  --warn: #ffb020; --warn-text: #ffb020; --warn-soft: rgb(255 176 32 / 0.13); --warn-line: rgb(255 176 32 / 0.42);
+  --replay: #4f9dff; --replay-text: #7cc0ff; --replay-soft: rgb(124 192 255 / 0.12); --replay-line: rgb(124 192 255 / 0.42);
+  --neutral-soft: rgb(185 198 220 / 0.10); --neutral-line: rgb(185 198 220 / 0.26);
+
+  --primary: #0062cc;
+  --primary-hover: #0057b5;
+  --focus: #7cc0ff;
+  --link: #7cc0ff;
+  --scrim: rgb(0 0 0 / 0.55);
+
+  --brand-ink: #f4f7fb;
+  --brand-origin: #7cc0ff;
+
+  --shadow-2: 0 12px 32px rgb(0 0 0 / 0.45);
+}

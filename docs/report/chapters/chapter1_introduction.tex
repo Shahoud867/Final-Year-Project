@@ -1,0 +1,148 @@
+\chapter{Introduction and Project Vision}
+
+This chapter introduces Granite: the problem of silent failures in multi-agent LLM workflows, why it matters, what the project sets out to achieve, its scope and modules, the people it serves, how success will be measured, and the constraints and ethical considerations that shape it.
+
+\section{Project Overview}
+
+Granite is a self-hostable investigation workbench for multi-agent workflows built on large language models. Its purpose is summarised in its tagline: find the failure, prove the cause, verify the fix. Given a workflow in which several AI agents cooperate, Granite runs it, checks whether the result is actually correct, finds the step where an error first entered, proves that this step caused the failure by controlled re-execution, and records a human decision together with all the evidence. The unit of value is the \textbf{verified finding}: a recorded failure with its symptom, a root-cause hypothesis, reproducible evidence, a replay-tested verdict and a reviewer's decision.
+
+The first system under test is the Refund Desk, a five-agent customer-support workflow built on public retail data. The project is research-derived (Stream A): it starts from the ErrorProbe failure-attribution work and the gap its authors name, and turns it into a working product with a measured evaluation.
+
+\section{Problem Statement}
+
+Multi-agent LLM workflows can fail without any visible error. A wrong value produced early in a run is passed on by later agents that behave correctly on bad input, so the run completes with a confident, plausible answer that is wrong. We call this a \textbf{silent failure}: a run that completes normally and raises no error signal, but whose final output is incorrect with respect to the task. Teams currently find such failures only when a customer complains, then read logs by hand, tend to blame the step where the error surfaced rather than where it began, and accept a fix after a single re-run, which is weak evidence when the model is non-deterministic. Published attribution methods reach low step-level accuracy (the best reported is about 60\%) and mostly assume that failures leave a detectable anomaly. There is no self-hosted tool that detects silent failures, localises their origin, and verifies the cause under model non-determinism with a recorded, reviewable result.
+
+\textbf{Definitions used in this report.} A \textbf{failure} is a run whose final output is incorrect with respect to the task specification. A \textbf{fault} is the defect that causes it (for example, a stale price from a tool), an \textbf{error} is the wrong internal value the fault produces, the \textbf{origin} is the step where the error first appears, and the \textbf{symptom} is the step where the failure becomes observable. An \textbf{explicit failure} is signalled by the system (an exception, timeout or errored status); a \textbf{silent failure} is not.
+
+\section{Problem Context and Motivation}
+
+Consider a customer who asks a retail support system to return two delivered items. Five agents cooperate: Intake reads the request, Order Lookup fetches the order and prices, Policy decides eligibility, the Refund Calculator adds up the refund, and the Writer replies to the customer. If the lookup tool returns a price that is \$0.25 out of date, every later agent does its own job correctly, and the customer receives a fluent message with a refund that is \$0.25 short. The run's status is "completed" and no component reports an error. The symptom appears at the last step, but the cause is three steps earlier.
+
+Such workflows are moving into production in customer support, coding assistants and research tools, where wrong outputs move money or mislead people. Commercial observability tools capture traces well, and several now offer AI-generated root-cause suggestions, but their diagnoses are language-model opinions, they run as paid cloud services that some teams cannot send client data to, and they do not publish how accurate they are. Our motivation is to give developers and reviewers a way to reach a conclusion they can trust and defend: one backed by executable checks and controlled experiments rather than a single model's opinion, at no cost and on infrastructure they control.
+
+Figure~\ref{fig:refund-dataflow} shows the workflow and the data each step reads; the stale-price fault enters at Order Lookup and becomes visible only in the Writer's message.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{refund-desk-dataflow.pdf}
+\caption{The Refund Desk workflow: five agents, the data each step reads, and the seven checks}
+\label{fig:refund-dataflow}
+\end{figure}
+
+
+\section{Project Vision}
+
+When a multi-agent AI workflow produces a wrong result, even one that raises no error, Granite tells the team where it went wrong, proves it, and shows whether a fix actually works, on infrastructure the team controls.
+
+For developers and QA reviewers of multi-agent LLM workflows who need to know why a run produced a wrong result and whether a fix is real, Granite is a self-hostable investigation workbench that turns each suspected failure into a verified finding. Unlike debuggers whose diagnosis is mainly a language model's opinion over logs, Granite's findings rest on executable checks and controlled re-execution with controls, and it runs at zero cost on local or free models. Five principles guide the design: evidence before opinion; every finding is a record; say "inconclusive" when it is; a human decides; and every core path works offline.
+
+\section{Project Objectives}
+
+\begin{enumerate}
+\item Detect silent failures in multi-agent runs using executable checks against an independent source of truth, with no false alarms on clean runs.
+\item Localise the step where a failure began using deterministic data-flow provenance, and rank it first for faults that leave step-level evidence.
+\item Verify a root-cause hypothesis by controlled replay, comparing N intervention replays against M control replays under a fixed, versioned verdict rule, and report INCONCLUSIVE honestly.
+\item Record every finding as tamper-evident evidence with a human review and an exportable report.
+\item Deliver this as a working, deployed product with a task-oriented interface, automated tests and CI/CD, running at zero cost.
+\item Evaluate the system on a labelled benchmark with clean controls against baseline methods (from FYP-1 Final onward).
+\end{enumerate}
+
+\section{Project Scope}
+
+\textbf{In scope:} running registered multi-agent workflows with optional fault injection; importing traces (Iteration 2); executable checks and silent-failure findings; provenance-based trace-back; replay verification with controls; human review and resolution; evidence, reports and history; a Fault Lab and evaluation module; a Python SDK with LangGraph and CrewAI adapters; self-hosting with local or recorded models.
+
+\textbf{Out of scope for the whole FYP:} a multi-tenant SaaS with billing; Kubernetes or message queues; applying fixes automatically to a user's production system; training custom models; benchmarking on seven frameworks; a preventive classifier; and real customer data on the public demo.
+
+\textbf{Scope table}
+
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.094\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.056\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.196\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.088\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.159\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.292\linewidth}}
+\caption{Project Scope}\label{tab:chapter1_introduction-1}\\
+\toprule
+\textbf{Module} & \textbf{In / out at Mid-1} & \textbf{Proposal origin} & \textbf{Mid-1 status} & \textbf{Final-1 target} & \textbf{Success metric} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Module} & \textbf{In / out at Mid-1} & \textbf{Proposal origin} & \textbf{Mid-1 status} & \textbf{Final-1 target} & \textbf{Success metric} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+M1 Run & In & Fault-injection harness & Done (Refund Desk) & + second workflow, 3 fault types & Runs recorded completely; reproducible in recorded mode \\
+M2 Import & Out & SDK and adapters & Not started & Trace import, SDK + LangGraph & Imported runs validated with error paths \\
+M3 Check & In & Semantic Error Diagnostic & Done & + check editor & Detection $\geq$ 90\%, false alarms 0 on clean runs \\
+M4 Trace back & In & Culprit Agent, Error Step Localisation & Done & + cycle bound & Origin ranked first $\geq$ 80\% ($\geq$ 95\% over 20 runs as acceptance) \\
+M5 Verify & In & Verification Agent, Verified Automatic Repair & Done & + resume & Verdict precision $\geq$ 85\% (evaluation) \\
+M6 Review \& Resolve & In (review) & Repair Agent, Recovery Controller, Repair Memory & Review done & Fix suggestion, recovered run & Every decision recorded with reviewer and time \\
+M7 Report & In (basic) & Dashboard & MD/JSON done & PDF, regression export & Every finding carries $\geq$ 1 reproducible evidence item \\
+M8 Fault Lab \& Evaluation & Out & Cross-architecture benchmark & Feasibility run only & Benchmark v0 $\geq$ 120 runs, baselines & Metrics with confidence intervals \\
+\end{longtable}
+}
+
+\section{Project Modules}
+
+The ten mechanisms approved at the proposal were mapped one-to-one onto eight user-facing modules, so the approved idea is preserved while becoming understandable to users. \textbf{Run} executes a workflow on user input, optionally with an injected fault, and records a full trace. \textbf{Import} brings in traces from other tools through file upload, an SDK and framework adapters. \textbf{Check} evaluates executable checks on every run and turns silent failures into findings. \textbf{Trace back} ranks origin hypotheses by provenance, with an optional language-model second opinion labelled unverified. \textbf{Verify} tests a hypothesis or a proposed fix by controlled replay. \textbf{Review \& Resolve} records the human decision and, later, fix suggestions, recovered runs and a known-fix library. \textbf{Report} exports findings, regression tests and history. \textbf{Fault Lab \& Evaluation} generates labelled runs with clean controls and measures the system against baselines.
+
+\section{Stakeholders and User Classes}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.159\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.266\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.222\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.213\linewidth}}
+\caption{Stakeholders and User Classes}\label{tab:chapter1_introduction-2}\\
+\toprule
+\textbf{User class} & \textbf{Context} & \textbf{Goal with Granite} & \textbf{Key need} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{User class} & \textbf{Context} & \textbf{Goal with Granite} & \textbf{Key need} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Agent developer (primary) & Builds agent workflows at a software house, often for clients whose data cannot go to external services; small budget & Find why a run went wrong and prove a fix before shipping & Fast localisation, trustworthy verification, self-hosting \\
+QA / reliability reviewer (primary) & Reviews incidents and signs off fixes & Decide accept or reject on clear evidence & Plain-language evidence, verdicts, an audit trail \\
+Student / researcher & Builds multi-agent projects without paid tools & Learn why agents fail; test robustness & Free, local, explains failure modes \\
+Auditor / client representative (secondary) & Receives incident reports & Proof of what failed and what was done & Exportable, tamper-evident reports \\
+\end{longtable}
+}
+
+Other stakeholders are the end customers of the agent system (who need correct outcomes), privacy and compliance roles (redaction, retention, self-hosting), the supervisor and panel (academic standard and evaluation), the team (defensible individual ownership), and external parties such as model providers and framework maintainers (licences, rate limits). Four to six practitioner interviews are planned from Week 9 to validate these needs.
+
+\section{Success Criteria}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.157\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.534\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.199\linewidth}}
+\caption{Success Criteria}\label{tab:chapter1_introduction-3}\\
+\toprule
+\textbf{Area} & \textbf{Criterion} & \textbf{Mid-1 result} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Area} & \textbf{Criterion} & \textbf{Mid-1 result} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Detection & Injected faults detected in $\geq$ 90\% of faulty runs; 0 false alarms on clean runs & 10/10 detected; 0 false alarms \\
+Attribution & True origin ranked first in $\geq$ 80\% of runs & 10/10 \\
+Verification & True origin CONFIRMED in $\geq$ 80\%; innocent step REFUTED in $\geq$ 80\% & 9/10 and 10/10 \\
+Reliability & $\geq$ 95\% of runs complete & 20/20 \\
+Engineering & All automated tests pass; static analysis clean; CI green & 381/381; clean; green \\
+Product & Core journey works live with failure cases; deployed URL & Done; live on Render \\
+Usability (Final-1) & Task success $\geq$ 80\% unaided; SUS $\geq$ 68 & Protocol ready; sessions pending \\
+Evaluation (Final-1/Mid-2) & Measured against last-agent and LLM-judge baselines with confidence intervals & Planned \\
+\end{longtable}
+}
+
+\section{Constraints and Assumptions}
+
+\textbf{Constraints:} zero recurring cost, so only local models, recorded answers and free hosting tiers are used; small local models (llama3.2:3b on a CPU) that are slow and make mistakes; free hosting that sleeps when idle and resets its disk; a three-person team with other courses; and a fixed academic calendar.
+
+\textbf{Assumptions:} that a workflow can declare which earlier outputs each step reads, so data flow can be recorded rather than guessed; that a source of truth exists for the values being checked (here, the order and catalogue data); that replays can be made reproducible by pinning seeds and recording model answers; and that checks written by the operator capture what "correct" means. Granite can detect only failures that some check covers; this is a stated limit, not part of the definition of a failure.
+
+\section{Ethical, Legal and DEI Considerations}
+
+\textbf{Ethical.} Granite's output is advisory: a human reviews every finding, and the system never applies a fix to a production system on its own. Faults are injected only into the project's own workflows or, later, into those of consenting test participants. Trace data from a real system would be handled with redaction, retention limits and self-hosting, and any real user's data would require informed consent before use; the public demo uses synthetic data only.
+
+\textbf{Legal.} Dataset and component licences are recorded: tau-bench retail data and Who\&When are MIT-licensed, the Llama 3.2 model is used under Meta's community licence with only its recorded answers distributed, and every software dependency is permissive. Granite's own licence is still to be chosen.
+
+\textbf{DEI.} Automated failure diagnosis is today mostly sold as paid cloud services. Granite runs at zero cost on local models, so students, small teams and researchers in lower-resource settings get the same capability as well-funded teams. The interface does not convey status by colour alone, and automated accessibility checks run on every screen. We also state a coverage limit: the workflows and data are English-only, so results do not extend to non-English traces. The project aligns with SDG 9.5 (strengthening technological capability), as context rather than as a contribution claim.

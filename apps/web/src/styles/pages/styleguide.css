@@ -1,0 +1,7 @@
+/* Style guide page. */
+.sg-mark { color: var(--brand-ink); display: inline-flex; }
+.sg-swatches { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.sg-swatches li { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.sg-swatches i { width: 56px; height: 32px; border-radius: var(--r-sm); border: 1px solid var(--line-strong); }
+.sg-meters .meter { width: 220px; }
+.sg-gap { margin-top: var(--s-3); }

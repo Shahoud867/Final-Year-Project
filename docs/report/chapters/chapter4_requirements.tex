@@ -1,0 +1,299 @@
+\chapter{Software Requirements}
+
+Granite's requirements are organised by product module. Each functional requirement has an identifier, a priority (M Must, S Should), the milestone where it is due and a testable acceptance criterion. Requirements for Mid-1 are traced to the code that implements them and the tests that check them, and a script in CI fails if a traced file or test does not exist.
+
+\section{User Interactions / Use Cases}
+
+The system has two primary human actors and two external systems. The \textbf{Developer} runs and investigates workflows; the \textbf{Reviewer} decides whether a finding is accepted (in a small team, the same person may play both roles). An \textbf{Administrator} operates a self-hosted instance (FYP-2). The \textbf{LLM Provider} (a local Ollama model, a hosted endpoint or recorded answers) answers the workflow's language-model steps, and an \textbf{Instrumented Workflow} sends traces through the SDK (Iteration 2).
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.099\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.398\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.197\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.166\linewidth}}
+\caption{User Interactions / Use Cases}\label{tab:chapter4_requirements-1}\\
+\toprule
+\textbf{UC} & \textbf{Name} & \textbf{Actor} & \textbf{Milestone} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{UC} & \textbf{Name} & \textbf{Actor} & \textbf{Milestone} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+UC-01 & Configure project (workflow, settings) & Developer & Mid-1 seeded; Final-1 editable \\
+UC-02 & Define, edit and dry-run checks & Developer & Final-1 \\
+\textbf{UC-03} & \textbf{Run workflow with input (optional fault)} & Developer & \textbf{Mid-1} \\
+UC-04 & Import trace file & Developer & Final-1 \\
+\textbf{UC-05} & \textbf{Inspect run trace (graph, steps, checks)} & Developer, Reviewer & \textbf{Mid-1} \\
+\textbf{UC-06} & \textbf{Analyse run (checks $\rightarrow$ findings $\rightarrow$ hypotheses)} & System, included by UC-03/04 & \textbf{Mid-1} \\
+\textbf{UC-07} & \textbf{Investigate finding} & Developer, Reviewer & \textbf{Mid-1} \\
+\textbf{UC-08} & \textbf{Verify hypothesis by controlled replay} & Developer, LLM Provider & \textbf{Mid-1} \\
+\textbf{UC-09} & \textbf{Review finding (accept / reject / request information)} & Reviewer & \textbf{Mid-1} \\
+UC-10 & Suggest and verify a fix; produce a recovered run & Developer, LLM Provider & Final-1 \\
+UC-11 & Export report / regression test & Developer, Reviewer & Mid-1 (report); Final-1 (regression) \\
+\textbf{UC-12} & \textbf{Browse and search history} & Developer, Reviewer & \textbf{Mid-1} \\
+UC-13 & Generate labelled benchmark (Fault Lab) & Developer & Final-1 \\
+UC-14 & Run evaluation against baselines & Developer (research) & Final-1 v0 / Mid-2 \\
+UC-15 & Instrument own workflow via SDK & Developer, Instrumented Workflow & Final-1 (LangGraph), Mid-2 (CrewAI) \\
+UC-16 & Reuse a known verified fix & Developer & Mid-2 \\
+UC-17 & Manage API keys, retention, delete data & Administrator & Mid-2 \\
+\end{longtable}
+}
+
+\section{Use Case Diagram}
+
+Figure~\ref{fig:use-case-diagram} shows the Developer and Reviewer interacting with the Mid-1 use cases. Running a workflow (UC-03) always includes analysing the run (UC-06), which evaluates the checks, opens findings and ranks hypotheses. Investigating a finding (UC-07) extends to verification (UC-08), which involves the LLM Provider, and review (UC-09). Planned use cases for Iteration 2 and FYP-2 are shown separately.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{use-case-diagram.pdf}
+\caption{Use case diagram (implemented and planned use cases are drawn differently)}
+\label{fig:use-case-diagram}
+\end{figure}
+
+
+\section{Detailed Use Cases}
+
+\textbf{UC-03 Run workflow with input}
+
+\begin{itemize}
+\item \textit{Actor:} Developer. \textit{Precondition:} the Refund Desk workflow is registered; the server is reachable.
+\item \textit{Main flow:} (1) The developer opens New run and loads an example or types a request, e-mail and order number. (2) The developer optionally selects the fault "stale price" and the model mode. (3) The developer presses Run workflow. (4) The system validates the input, stores a queued run and returns a job. (5) The system executes the five steps, records each step's inputs, outputs and timing, and applies the fault if selected. (6) The system analyses the run (UC-06) and shows the run page with the pipeline graph, the check results and any findings.
+\item \textit{Alternative flows:} 4a. A field is invalid: the system refuses the run and shows one plain message per field. 5a. The model is unreachable or a task has no recorded answers: the run ends as "errored" with the reason and a "Run again" button. 5b. Too many requests in a minute: the system answers "too many requests" (429).
+\item \textit{Postcondition:} a completed or errored run is stored with its trace and SHA-256 hash.
+\end{itemize}
+
+\textbf{UC-07 Investigate finding}
+
+\begin{itemize}
+\item \textit{Actor:} Developer or Reviewer. \textit{Precondition:} a finding exists.
+\item \textit{Main flow:} (1) The user opens the finding from the run page or the investigations list. (2) The system shows why it was flagged (the failed check with observed and expected values), the stage in the four-step stepper, and the ranked hypotheses under "Where did it begin?", each with its step, evidence type, score and a plain-language reason. (3) The user opens the evidence records to see the computation and its hash status.
+\item \textit{Alternative flow:} 2a. No step has direct evidence: hypotheses are ranked structurally and labelled as needing verification.
+\end{itemize}
+
+\textbf{UC-08 Verify hypothesis by controlled replay}
+
+\begin{itemize}
+\item \textit{Actor:} Developer; LLM Provider. \textit{Precondition:} a hypothesis exists for a step with a repair rule.
+\item \textit{Main flow:} (1) The user sets the number of replays with the fix (default 5) and controls (default 2) and presses Verify. (2) The system builds an intervention that replaces the step's output with the corrected value, keeps all earlier outputs fixed, and re-executes the later steps N times with the fix and M times without it. (3) The system applies rule VR-1 to the pass counts and shows the verdict (CONFIRMED, REFUTED or INCONCLUSIVE), the per-replay results and a 95\% Wilson interval, and stores the verdict as evidence. (4) The finding moves to the matching state.
+\item \textit{Alternative flows:} 2a. The step has no repair rule: the system refuses the verification and says why. 2b. Replays need model answers that are not recorded: the experiment ends with no verdict and an explanation that a live model is required. 3a. REFUTED: the user verifies the next hypothesis.
+\end{itemize}
+
+\textbf{UC-09 Review finding}
+
+\begin{itemize}
+\item \textit{Actor:} Reviewer. \textit{Precondition:} the finding is CONFIRMED, INCONCLUSIVE or evidence-supported.
+\item \textit{Main flow:} (1) The reviewer reads the evidence and verdict. (2) The reviewer chooses Accept, Reject or Ask for information, with a name and a comment. (3) The system checks the comment rule, moves the finding to its new state, records the review with reviewer and time, adds the comment as evidence and writes an audit entry. (4) After acceptance, the reviewer can mark the finding resolved or close it without fixing.
+\item \textit{Alternative flows:} 2a. Reject, close or accepting an inconclusive finding without a comment of at least five characters: refused (422). 2b. An action not allowed in the current state (for example accepting before verification): refused (409) with the allowed actions.
+\end{itemize}
+
+Figures~\ref{fig:run-sequence} and~\ref{fig:verification-sequence-uc} show the system sequences for running a workflow and verifying a hypothesis.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{run-sequence.pdf}
+\caption{System sequence for UC-03, running a workflow}
+\label{fig:run-sequence}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{verification-sequence.pdf}
+\caption{System sequence for UC-08, verifying a hypothesis by controlled replay}
+\label{fig:verification-sequence-uc}
+\end{figure}
+
+
+\section{Functional Requirements}
+
+The functional requirements below are grouped by product module. Each has an identifier, a priority (M Must, S Should), a testable acceptance criterion and its status at Mid-1. Requirements planned for later milestones are listed in Appendix B.
+
+\subsection{Module 1: Run}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.062\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.320\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.027\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.320\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.101\linewidth}}
+\caption{Module 1: Run}\label{tab:chapter4_requirements-2}\\
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-RUN-01 & Execute the Refund Desk workflow from a validated input form and record every step's inputs, outputs, model, parameters and timings & M & A valid run yields 5 steps with inputs, outputs and timestamps & Done \\
+FR-RUN-02 & Let the user enable a named fault and record its ground truth without exposing it to attribution & M & Fault record exists; attribution has no read path to it (test) & Done \\
+FR-RUN-03 & Support live and recorded model modes; recorded mode replays cached answers & M & Same input in recorded mode gives byte-identical outputs across 3 runs & Done \\
+FR-RUN-04 & Mark a run errored with an actionable message when the model is unreachable or times out & M & Closed port ends errored within 35 s; UI shows message and retry & Done (timeout 120 s for local models, deviation C-02g) \\
+\end{longtable}
+}
+
+\subsection{Module 2: Check}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.069\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.348\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.028\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.295\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.090\linewidth}}
+\caption{Module 2: Check}\label{tab:chapter4_requirements-3}\\
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-CHK-01 & Evaluate all checks on every run; store pass/fail/abstain/error with observed and expected values & M & Fault run fails the outcome check with both values & Done \\
+FR-CHK-02 & Evaluate check expressions with a whitelisted syntax-tree evaluator; reject disallowed constructs & M & The malicious-expression set is rejected (25 tested; 15 required) & Done \\
+FR-CHK-03 & Missing referenced fields yield ABSTAIN, never PASS & M & Test with a missing field abstains & Done \\
+FR-CHK-04 & A completed run with a failing outcome check creates a silent-failure finding & M & Exactly one finding on the stale-price run & Partly (one finding per failing check, C-02h) \\
+FR-CHK-06 & Truth checks query source-of-truth functions on a pinned data snapshot and store query and answer as evidence & M & Evidence holds query, response and snapshot version & Done \\
+\end{longtable}
+}
+
+\subsection{Module 3: Trace back}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.060\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.344\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.031\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.234\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.161\linewidth}}
+\caption{Module 3: Trace back}\label{tab:chapter4_requirements-4}\\
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-ATT-01 & Produce 1--5 ranked origin hypotheses per finding, each with score, rationale and evidence & M & Order Lookup ranked first in $\geq$ 95\% of 20 runs & Partly (10/10 measured; 20-run criterion not yet measured) \\
+FR-ATT-02 & Compute scores from evidence weights and graph position, never from an LLM self-report & M & Same input gives byte-identical output & Done \\
+\end{longtable}
+}
+
+\subsection{Module 4: Verify}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.070\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.377\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.033\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.298\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.051\linewidth}}
+\caption{Module 4: Verify}\label{tab:chapter4_requirements-5}\\
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-VER-01 & Run a verification experiment under VR-1: freeze upstream, apply one intervention, re-execute downstream N times plus M controls & M & Fixing the faulty step is CONFIRMED and controls stay broken & Done \\
+FR-VER-02 & Compute the verdict with VR-1 and a Wilson 95\% interval; store the rule version & M & Table test over 20 (k, N, c, M) combinations & Done \\
+FR-VER-03 & A replay that introduces a new failing check counts as not passing (regression guard) & M & Test with a new failure counts as fail & Done \\
+\end{longtable}
+}
+
+\subsection{Module 5: Review, Report and History}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.070\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.356\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.029\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.259\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.116\linewidth}}
+\caption{Module 5: Review, Report and History}\label{tab:chapter4_requirements-6}\\
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Requirement} & \textbf{Pri.} & \textbf{Acceptance criterion} & \textbf{Status} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-REV-01 & Accept, reject or request information with comments (mandatory for reject and for accepting an inconclusive finding); store reviewer and time & M & Reject without comment refused; decision stored & Done \\
+FR-REV-02 & Finding transitions follow the state machine; illegal ones are rejected; every transition is audited & M & Accept before verification refused (409) & Done \\
+FR-REP-01 & Export a finding report in Markdown and JSON with evidence hashes (PDF at Final-1) & S & Report downloads with hashes & Partly (PDF at Final-1) \\
+FR-HIS-01 & List runs and findings with filters and search, 25 per page & M & Filters by status, severity, level, date, text & Partly (no project filter; one project) \\
+FR-SEC-01 & Redact personal data before storing step inputs and outputs & S & No seeded PII in the database after a run & Not met (D-07) \\
+\end{longtable}
+}
+
+Requirements for Iteration 2 and FYP-2 (import, SDK, check editor, fix suggestion, recovered run, regression export, Fault Lab, evaluation, authentication, retention) are listed in Appendix B.
+
+\section{Non-Functional Requirements}
+
+The non-functional requirements define measurable qualities that the system must have. Each is stated with a target and the way it is measured; the status at Mid-1 is noted where it has been checked.
+
+\subsection{Reliability}
+
+NFR-04: no unhandled exception reaches the user; the named failure modes (model down, model timeout, malformed input, check error, database unavailable, partial replay) each end in a documented state. At Mid-1, model down, unrecorded task, illegal transitions, limits and restart recovery are covered by system tests SYS-ERR-01 to 07 and SYS-REL-01 to 03. NFR-05: deterministic components (checks, attribution, verdict) give byte-identical output on re-evaluation, checked by golden-file tests.
+
+\subsection{Usability}
+
+NFR-09: SUS score of at least 68 and at least 80\% of core-journey tasks completed without help (pilot with 3 participants at Final-1; protocol ready). NFR-10: WCAG 2.2 AA, with contrast of at least 4.5:1, a full keyboard path through the core journey and status never shown by colour alone; automated axe-core checks pass on every screen in light and dark themes.
+
+\subsection{Performance}
+
+NFR-01: checks and attribution for a run of up to 50 steps complete with a 95th percentile of at most 2 seconds. NFR-02: a VR-1 verification with N = 5 and M = 2 completes within 3 minutes with a hosted model (a local 3B model on a CPU is reported, not targeted). NFR-03: first contentful paint within 3 seconds after the server wakes; interactions within 200 ms.
+
+\subsection{Security}
+
+NFR-07: zero high or critical findings from bandit, pip-audit, npm audit and gitleaks on \texttt{main} (met); the check language rejects every expression in the malicious set (met); input and upload limits are enforced (met). NFR-08: no unredacted personal data in the database after a run (not yet met; synthetic data only on the public demo).
+
+\subsection{Other qualities}
+
+NFR-11 maintainability: core library line coverage of at least 80\% (measured 97.5\%), lint and strict type checks clean, complexity limit enforced. NFR-12 portability: \texttt{docker compose up} on a clean machine reaches a working interface within 15 minutes following the setup manual, verified by a non-owner (Final-1). NFR-13 availability: health checks green at evaluation time, with a warm-up before demos. NFR-14 cost: zero recurring cost.
+
+\section{Acceptance Criteria}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.086\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.494\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.215\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.065\linewidth}}
+\caption{Acceptance Criteria}\label{tab:chapter4_requirements-7}\\
+\toprule
+\textbf{Feature} & \textbf{Acceptance check} & \textbf{Verified by} & \textbf{Result} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Feature} & \textbf{Acceptance check} & \textbf{Verified by} & \textbf{Result} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Run & A valid example run completes with 5 recorded steps and a trace hash & SYS-CORE-01, test\_runner & Pass \\
+Detect & The stale-price run opens one silent-failure finding; a clean run opens none & SYS-CORE-01, SYS-CORE-02 & Pass \\
+Trace back & Order Lookup is ranked first with a truth-mismatch reason & SYS-CORE-01, feasibility M3 (10/10) & Pass \\
+Verify & Verifying Order Lookup gives CONFIRMED (5/5 fixed, 0/2 controls); verifying the calculator gives REFUTED & SYS-CORE-03, feasibility M4/M5 & Pass \\
+Review & Accept before verification is refused; reject needs a comment; decisions are recorded & SYS-ERR-03 & Pass \\
+Evidence & Evidence is append-only and hashes match; ground truth never appears in evidence & SYS-SEC-02, SYS-SEC-03 & Pass \\
+Errors & Invalid input refused per field; model down ends errored with a reason & SYS-ERR-01, SYS-ERR-07 & Pass \\
+History & Runs and findings can be found again with filters & SYS-CORE-05 & Pass \\
+\end{longtable}
+}
+
+\section{Requirements Traceability}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.096\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.182\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.265\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.316\linewidth}}
+\caption{Requirements Traceability}\label{tab:chapter4_requirements-8}\\
+\toprule
+\textbf{Requirement} & \textbf{Design element} & \textbf{Implementation} & \textbf{Test} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Requirement} & \textbf{Design element} & \textbf{Implementation} & \textbf{Test} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+FR-RUN-01 & Runner, Trace v1 & \texttt{runner.\allowbreak{}py::run\_\allowbreak{}workflow}, \texttt{refund\_\allowbreak{}desk/\allowbreak{}definition.\allowbreak{}py} & \texttt{test\_\allowbreak{}runner.\allowbreak{}py}, \texttt{test\_\allowbreak{}journeys.\allowbreak{}py} \\
+FR-RUN-02 & Fault record hidden from analysis & \texttt{faults.\allowbreak{}py::StalePriceFault} & \texttt{test\_\allowbreak{}attribution\_\allowbreak{}never\_\allowbreak{}sees\_\allowbreak{}fault\_\allowbreak{}ground\_\allowbreak{}truth} \\
+FR-RUN-03 & Provider layer, cassette & \texttt{llm.\allowbreak{}py::RecordedProvider} & \texttt{test\_\allowbreak{}fr\_\allowbreak{}run\_\allowbreak{}03\_\allowbreak{}recorded\_\allowbreak{}mode\_\allowbreak{}gives\_\allowbreak{}byte\_\allowbreak{}identical\ldots{}} \\
+FR-CHK-02 & Check language (ADR-004) & \texttt{dsl.\allowbreak{}py::compile\_\allowbreak{}expression} & \texttt{test\_\allowbreak{}dsl.\allowbreak{}py::test\_\allowbreak{}malicious\_\allowbreak{}expressions\_\allowbreak{}are\_\allowbreak{}rejected} \\
+FR-CHK-03 & Check results & \texttt{checks.\allowbreak{}py::evaluate\_\allowbreak{}check} & \texttt{test\_\allowbreak{}missing\_\allowbreak{}field\_\allowbreak{}abstains\_\allowbreak{}never\_\allowbreak{}passes} \\
+FR-ATT-01/02 & Provenance attribution (ADR-005) & \texttt{attribution.\allowbreak{}py::attribute} & \texttt{test\_\allowbreak{}attribution.\allowbreak{}py}, \texttt{test\_\allowbreak{}attribution\_\allowbreak{}ranks\_\allowbreak{}the\_\allowbreak{}injected\_\allowbreak{}step\_\allowbreak{}first\ldots{}} \\
+FR-VER-01/02 & VR-1 (ADR-006), replay plan & \texttt{verification.\allowbreak{}py::decide}, \texttt{experiment.\allowbreak{}py::run\_\allowbreak{}experiment} & \texttt{test\_\allowbreak{}verification.\allowbreak{}py}, \texttt{test\_\allowbreak{}experiment.\allowbreak{}py} \\
+FR-REV-01/02 & Finding state machine & \texttt{lifecycle.\allowbreak{}py::transition}, \texttt{services/\allowbreak{}reviews.\allowbreak{}py} & \texttt{test\_\allowbreak{}lifecycle\_\allowbreak{}\ldots{}}, SYS-ERR-03 \\
+FR-REP-01 & Report service & \texttt{services/\allowbreak{}report.\allowbreak{}py} & \texttt{test\_\allowbreak{}journeys.\allowbreak{}py} \\
+\end{longtable}
+}
+
+The full matrix for all 19 Mid-1 requirements is generated from the code by \texttt{scripts/\allowbreak{}check\_\allowbreak{}traceability.\allowbreak{}py} (\texttt{docs/\allowbreak{}plan/\allowbreak{}requirements-trace.\allowbreak{}md}); see Appendix B.

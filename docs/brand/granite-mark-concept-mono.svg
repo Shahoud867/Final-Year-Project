@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 6 80 84" width="320" height="336" role="img" aria-labelledby="t">
+  <title id="t">Granite mark (concept), one colour</title>
+  <!-- Same geometry as granite-mark-concept.svg; one colour (currentColor). The ring around the origin disc stays transparent. -->
+  <g fill="currentColor" color="#000">
+    <path fill-rule="evenodd" d="M20 14H41V50H63V90H20L8 78V26ZM38 69A10 10 0 1 0 18 69A10 10 0 1 0 38 69Z"/>
+    <path d="M47 6H76L88 18V70L76 82H69V44H47Z"/>
+    <circle cx="28" cy="69" r="7"/>
+  </g>
+</svg>

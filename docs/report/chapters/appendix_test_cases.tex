@@ -1,0 +1,39 @@
+\chapter{Detailed Test Cases}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.146\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.452\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.165\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.098\linewidth}}
+\caption{Detailed Test Cases}\label{tab:appendix_test_cases-1}\\
+\toprule
+\textbf{ID} & \textbf{Test case} & \textbf{Requirement area} & \textbf{Result} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Test case} & \textbf{Requirement area} & \textbf{Result} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+SYS-CORE-01 & Full investigation of a silent failure & Run, detect, trace back, verify, review, report & Pass \\
+SYS-CORE-02 & A clean run raises no alarm & Detect & Pass \\
+SYS-CORE-03 & Refute a wrong hypothesis, then confirm the right one & Verify & Pass \\
+SYS-CORE-04 & The run graph marks the failing steps & Inspect & Pass \\
+SYS-CORE-05 & Runs and findings can be found again & History & Pass \\
+SYS-CORE-06 & The interface is documented by the running system & Guide / API docs & Pass \\
+SYS-CORE-07 & The web interface is delivered by the same server & Deployment & Pass \\
+SYS-ERR-01 & Invalid input is refused with one message per field & Input validation & Pass \\
+SYS-ERR-02 & Asking for something that does not exist & Errors & Pass \\
+SYS-ERR-03 & The lifecycle cannot be skipped & Review, lifecycle & Pass (intermittent failure fixed as D-26) \\
+SYS-ERR-04 & Recorded mode cannot answer a task nobody recorded & Run & Pass \\
+SYS-ERR-05 & A hypothesis that cannot be tested is refused, not guessed & Verify & Pass \\
+SYS-ERR-06 & Limits are enforced & Security & Pass \\
+SYS-ERR-07 & The language model is down & Reliability & Pass \\
+SYS-SEC-01 & Every response carries the security headers & Security & Pass \\
+SYS-SEC-02 & Evidence is append-only & Evidence & Pass \\
+SYS-SEC-03 & Ground truth stays out of the evidence & Attribution integrity & Pass \\
+SYS-SEC-04 & With a token configured, nothing but health is public & Security & Pass \\
+SYS-SEC-05 & Too many state-changing requests are throttled & Security & Pass \\
+SYS-REL-01 & A restart loses nothing & Reliability & Pass \\
+SYS-REL-02 & Concurrent work is not lost & Reliability & Pass \\
+SYS-REL-03 & Recorded runs are reproducible & Determinism & Pass \\
+\end{longtable}
+}

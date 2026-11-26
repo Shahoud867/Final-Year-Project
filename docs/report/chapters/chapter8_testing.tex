@@ -1,0 +1,67 @@
+\chapter{Testing and Early Validation}
+
+This chapter describes how Granite was tested and validated: the strategy, the test levels and techniques, the test cases and their results, the pre-registered feasibility validation, the edge and failure cases covered, the defects found and fixed, and what the current evidence does and does not support.
+
+\section{Testing Strategy}
+
+We separate three questions: \textbf{testing} asks whether Granite behaves as specified; \textbf{evaluation} asks whether it is accurate against baselines; \textbf{acceptance} asks whether users can and will use it. At Mid-1, testing is complete for the implemented slice, evaluation is a pre-registered feasibility run, and acceptance has a ready protocol. Every requirement has at least one test that can fail, failure and edge cases are tested at every level, and all suites run in CI on every push and pull request with a 90\% coverage gate.
+
+\section{Test Levels and Techniques}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.170\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.437\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.200\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.053\linewidth}}
+\caption{Test Levels and Techniques}\label{tab:chapter8_testing-1}\\
+\toprule
+\textbf{Level} & \textbf{Scope} & \textbf{Tools} & \textbf{Count} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Level} & \textbf{Scope} & \textbf{Tools} & \textbf{Count} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Unit and property & Core library: check language, checks, attribution, verdict rule, lifecycle, evidence, redaction & pytest, Hypothesis & 207 \\
+Unit and integration & Refund Desk steps, store, fault, verification & pytest & 49 \\
+Integration & API with database, runner with recorded model, job runner & pytest, HTTP test client & 71 \\
+System (black box) & User journeys and failure modes over real HTTP against a running server & pytest & 22 \\
+UI component and accessibility & Screens, components, axe-core checks in light and dark & Vitest, Testing Library, axe-core & 32 \\
+Static and security analysis & Lint, strict types, security, dependency vulnerabilities, secrets & ruff, mypy, ESLint, tsc, bandit, pip-audit, npm audit, gitleaks & every push \\
+\end{longtable}
+}
+
+Techniques: equivalence partitioning (check statuses, fault types, input validity classes); boundary values (verdict thresholds at 0.2 and 0.8, input length limits); a decision table for VR-1 (20 rows); state-transition testing of every legal transition and several illegal ones; property-based testing (the check language never crashes on arbitrary text and never accepts forbidden syntax); error guessing (non-JSON model output, unreachable model, unrecorded task); and negative tests (clean runs must produce no findings).
+
+\section{Test Cases}
+
+The 22 system test cases cover three groups. \textbf{Core journeys:} full investigation of a silent failure (SYS-CORE-01); a clean run raises no alarm (02); refute a wrong hypothesis, then confirm the right one (03); the run graph marks failing steps (04); runs and findings can be found again (05); the interface is documented by the running system (06); the web interface is served by the same server (07). \textbf{Errors:} invalid input refused per field (SYS-ERR-01); requests for missing items (02); the lifecycle cannot be skipped (03); recorded mode cannot answer an unrecorded task (04); an untestable hypothesis is refused, not guessed (05); limits are enforced (06); the model is down (07). \textbf{Security and reliability:} security headers on every response (SYS-SEC-01); evidence is append-only (02); ground truth stays out of evidence (03); with a token configured only health is public (04); excessive requests are throttled (05); a restart loses nothing (SYS-REL-01); concurrent work is not lost (02); recorded runs are reproducible (03). Each case names its requirement, steps and expected result (Appendix C).
+
+\section{Test Results}
+
+On 11 October all 381 automated tests passed: core library 207 (97.5\% line coverage), Refund Desk 49 (95.4\%), API 71 (96.8\%), system 22 and web 32. Static analysis reported no findings. CI passed on GitHub for the latest commits, including the container build and a smoke test inside the container. Against the public deployment, the smoke test passed and the system suite gave 18 passed and 4 skipped by design (those four cases start their own server). The suites were also run on a second machine, where repetition exposed one intermittent defect (D-26, below).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{2026-10-11_render-smoke-test.png}
+\caption{Smoke test passing against the public deployment}
+\label{fig:smoke}
+\end{figure}
+
+
+\section{Acceptance Testing / Validation}
+
+A feasibility validation was pre-registered before it was run: ten tasks, each run clean and with the stale-price fault, with the local model llama3.2:3b, N = 5 and M = 2, and thresholds fixed in advance. Results: the fault was detected in 10/10 faulty runs (threshold $\geq$ 90\%); there were no false alarms on clean runs (threshold 0); the true origin was ranked first in 10/10 ($\geq$ 80\%); it was CONFIRMED in 9/10 ($\geq$ 80\%); the innocent step was REFUTED in 10/10 ($\geq$ 80\%); and 20/20 runs completed ($\geq$ 95\%). The single finding on a clean run was a genuine error: the model told a customer 4,047.67 instead of 3,047.67, which Granite caught although nobody injected it.
+
+We state the limits plainly: ten tasks, one fault type, one small model and synthetic data, so intervals are wide (the lower bound for M4 is 60\%); four tasks were not blind; attribution is easy here because the origin step has its own check; and the refutation test is weak. User acceptance testing has a ready protocol (five tasks, the SUS questionnaire, thresholds fixed in advance) and will run with three outside participants before FYP-1 Final.
+
+\section{Edge and Failure Cases}
+
+Tested and shown in the demonstration: a clean run produces no finding; invalid input is refused with one message per field; an unreachable model or an unrecorded task ends the run as "errored" with a reason and a retry button; verifying an innocent step gives REFUTED; a step without a repair rule cannot be verified, and the system says why; accepting before verification and rejecting without a comment are refused; hostile check expressions are rejected; tampered evidence is detected; excessive requests are throttled; and a restart marks interrupted work as failed instead of losing it. The feasibility run also exposed a real design limit: with two faults in a chain, correcting one step cannot produce a CONFIRMED verdict (D-19).
+
+\section{Defects and Corrective Actions}
+
+Twenty-six defects have been logged. Examples of fixed defects: the stale-price fault hit the first item instead of the requested one (D-01, fixed with a regression test); a non-ASCII token caused a server error instead of 401 (D-15); oversized request bodies were read into memory (D-16, now refused with 413); a slow health check on machines without a model (D-22, now cached); a verification with no verdict gave no reason (D-23); validator wording was shown to users (D-24); and a review decision was answered before it was saved, so an immediate next request could see the old state (D-26, found by repeating system tests on a second machine, fixed by committing before responding; the test then passed 15 of 15 runs). Open defects include the redaction gap (D-07), untested PostgreSQL (D-08), recorded answers tied to exact prompts (D-10), the two-fault limit (D-19) and rank/score disagreement for low-ranked steps (D-25), each with a plan.
+
+\section{Current Validation Status}
+
+The implemented slice is fully tested at every level and works on a live deployment; the feasibility run supports the claim that the run, check, trace-back and verify loop works end to end on a real small model and public data. It does not yet support claims about accuracy in general, harder faults, other workflows or usability with real users. Those are the targets of the Iteration 2 benchmark (at least 120 runs with baselines) and the usability pilot.

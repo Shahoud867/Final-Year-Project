@@ -1,0 +1,17 @@
+# LaTeX build artefacts (kept out of the repository; rebuild with pdflatex + bibtex)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+main.pdf

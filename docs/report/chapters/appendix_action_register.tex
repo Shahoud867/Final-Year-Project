@@ -1,0 +1,25 @@
+\chapter{Proposal Action Register}
+
+\begin{landscape}
+{\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash\hspace{0pt}}p{0.018\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.043\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.141\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.048\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.028\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.028\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.199\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.173\linewidth}>{\raggedright\arraybackslash\hspace{0pt}}p{0.147\linewidth}}
+\caption{Proposal Action Register}\label{tab:appendix_action_register-1}\\
+\toprule
+\textbf{ID} & \textbf{Source} & \textbf{Panel comment} & \textbf{Owner} & \textbf{Due} & \textbf{Status} & \textbf{Action taken} & \textbf{Evidence} & \textbf{Remaining step} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Source} & \textbf{Panel comment} & \textbf{Owner} & \textbf{Due} & \textbf{Status} & \textbf{Action taken} & \textbf{Evidence} & \textbf{Remaining step} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+A1 & Defense, 11 Sep 2026 & "UI/UX needs improvement." & Shahoud (design system); all for their screens & Mid-1 & Partly & Five task-oriented screens; one vocabulary; four-stage stepper; loading, empty and error states; light/dark; keyboard-operable graph; phone layout; plain field messages; automated accessibility checks; before/after comparison with the defense PoC; usability protocol with thresholds & \texttt{evidence/\allowbreak{}demos/\allowbreak{}} screenshots; \texttt{2026-10-13\_\allowbreak{}ui-before-after.\allowbreak{}md}; accessibility audit; usability protocol & Run the usability check with three outside participants \\
+A2 & Defense & "Features are not sufficiently clear." & All & Mid-1 & Done & Eight features in one fixed order with purpose, inputs and outputs; same list as an in-app page & Feature catalogue; guide page & Report section (this report) \\
+A3 & Defense & "Unclear what inputs each feature will accept." & All & Mid-1 & Done & Every input typed, limited and refused with a message; trace JSON Schema; API docs; test keeps the guide equal to server limits & Data dictionary; validation tests & Inputs of features not yet built \\
+A4 & Defense & "Unclear how flaws will be verified and results captured." & Saif & Mid-1 & Done & Levels V0--V3; N replays + M controls; VR-1; Wilson interval; hashed evidence; review records; report & Verification sequence; decision-table tests; feasibility results & Larger evaluation \\
+A5 & Defense & "Overall workflow must be redefined." & All & Mid-1 & Done & One workflow enforced by a state machine and shown as a stepper; flow and activity diagrams & State machine; activity diagram & Supervisor signature on change record C-01 \\
+A6 & Implicit & PoC showed research, not a product & Saif; all & Mid-1 & Partly & Working slice; CI on GitHub; public deployment on Render (11 Oct); CD workflow & Live URL; CI/CD runs; deployment record (PR \#1) & Deploy-hook secret, branch protection, tag v0.1.0-mid1, PRs from every member \\
+\end{longtable}
+}
+\end{landscape}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 6 80 84" width="320" height="336" role="img" aria-labelledby="t">
+  <title id="t">Granite mark (concept): a stone block split by a stepped fault, with an origin marker upstream</title>
+  <!-- Concept geometry on a 96 x 96 grid; the mark occupies x 8..88, y 6..90. Colours: ink #10243E, origin blue #0A66D6.
+       Left piece: upstream (earlier steps), with the origin marker cut out as a ring. Right piece: downstream, raised 8 units:
+       the displacement is where the failure shows. The gap between the pieces is 6 units wide everywhere and is the trace path. -->
+  <path fill="#10243E" fill-rule="evenodd" d="M20 14H41V50H63V90H20L8 78V26ZM38 69A10 10 0 1 0 18 69A10 10 0 1 0 38 69Z"/>
+  <path fill="#10243E" d="M47 6H76L88 18V70L76 82H69V44H47Z"/>
+  <circle fill="#0A66D6" cx="28" cy="69" r="7"/>
+</svg>

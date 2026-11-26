@@ -1,0 +1,171 @@
+# Setup manual
+
+| | |
+|---|---|
+| Version | 0.9 draft |
+| Date | 2026-10-07 |
+| Status | Written by the author of the code and checked on one Windows machine. **It has not yet been followed by a second person on a clean machine**; the handbook asks for that (record the result in `docs/registers/deployment-record.md`) |
+
+Everything below is free of charge and needs no account or key. Two ways to run Granite: from source (developers) or in a container (anyone, once the image has been built; see the note under "Docker").
+
+## 1. What you need
+
+| Tool | Version | Needed for |
+|---|---|---|
+| Python | 3.11 | API, core library, tests |
+| Node.js and npm | 22 or newer | Web UI build and tests |
+| Git | any recent | getting the code |
+| Ollama and the model `llama3.2:3b` | optional | *live* mode only. Without it Granite runs in *recorded* mode on saved real answers |
+| Docker | optional | container run |
+
+## 2. Install from source
+
+```bash
+git clone <repository-url> && cd Final-Year-Project
+python -m venv .venv
+# Windows PowerShell:  .venv\Scripts\Activate.ps1      macOS/Linux: source .venv/bin/activate
+python -m pip install --upgrade pip setuptools wheel
+pip install -e "packages/granite_core[dev]" -e "packages/granite_connectors[dev]" -e "workflows/refund_desk[dev]" -e "apps/api[dev]"
+cd apps/web && npm ci && npm run build && cd ../..
+```
+
+Keep the virtual environment **outside OneDrive-synced folders** if you can: OneDrive slows installs and can lock files.
+
+## 3. Start Granite
+
+```bash
+cd apps/api
+GRANITE_LLM_MODE=recorded GRANITE_STATIC_DIR=../web/dist uvicorn granite_api.main:app_from_env --factory --port 8000
+```
+
+PowerShell: set the two variables first with `$env:GRANITE_LLM_MODE="recorded"; $env:GRANITE_STATIC_DIR="../web/dist"`.
+
+Open <http://127.0.0.1:8000>. The API documentation is at <http://127.0.0.1:8000/docs>. The database is created on first start in `apps/api/.granite/granite.db`.
+
+For UI development run the API as above on port 8000, and in another terminal `cd apps/web && npm run dev` (port 5173; requests to `/api` are forwarded to port 8000). Open it as `http://localhost:5173`; on some machines `127.0.0.1` does not reach the Vite server. To forward elsewhere set `GRANITE_API_URL`.
+
+## 4. Modes and settings
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `GRANITE_LLM_MODE` | `auto` | `recorded` answers only from the saved cassette (works offline, only for the 12 example tasks); `live` calls the model; `auto` uses live if Ollama answers, else recorded |
+| `GRANITE_MODEL` | `llama3.2:3b` | Ollama model name |
+| `GRANITE_OLLAMA_URL` | `http://127.0.0.1:11434` | Ollama address (http or https only) |
+| `GRANITE_OPENAI_BASE_URL`, `GRANITE_OPENAI_API_KEY` | empty | Use a hosted OpenAI-compatible endpoint instead (set both). **Never commit the key**; use a `.env` file (git-ignored) or the host's secret store |
+| `GRANITE_DB_URL` | SQLite file | Any SQLAlchemy URL. Only SQLite has been tested |
+| `GRANITE_API_TOKEN` | empty | If set, every `/api` call needs `Authorization: Bearer <token>`; the UI shows a token box |
+| `GRANITE_RECORD` | off | `1` also saves live answers into the cassette |
+| `GRANITE_RATE_LIMIT` | 120 | State-changing requests per minute per client; 0 turns it off |
+
+See `.env.example` for the full list.
+
+### Live mode
+
+```bash
+ollama serve            # once; leave it running
+ollama pull llama3.2:3b
+```
+
+In the UI use "Test model" (top right). Expect 5 to 15 seconds per model call on a laptop CPU, so one run takes about a minute and a verification about three.
+
+### Connect Arize Phoenix or Langfuse (optional)
+
+Phoenix runs locally with no account. Use a separate environment, because it brings many dependencies:
+
+```bash
+python -m venv ~/venvs/phoenix && ~/venvs/phoenix/bin/pip install "arize-phoenix==21.0.0"
+PYTHONUTF8=1 ~/venvs/phoenix/bin/phoenix serve          # http://localhost:6006
+python scripts/check_connectors_live.py --phoenix http://localhost:6006   # 8 checks, all must pass
+```
+
+On Windows set `PYTHONUTF8=1` (Phoenix 21 crashes printing its banner to a non-UTF-8 console). Then open **Connections** in Granite, add "Arize Phoenix" with that URL and a project name, send a run from its run page ("Send to"), press **Import traces**, investigate the imported finding and press **Send verdict**: the annotation `granite.verdict` appears on the origin span in Phoenix.
+
+Langfuse: create a project in Langfuse Cloud or a self-hosted Langfuse, put its keys in `GRANITE_LANGFUSE_PUBLIC_KEY` and `GRANITE_LANGFUSE_SECRET_KEY` where the Granite server runs, and add a Langfuse connection. Keys are never stored in Granite's database. The Langfuse connector has been tested only against an in-memory stand-in so far; run `scripts/check_connectors_live.py --langfuse <host>` once you have keys.
+
+## 5. Check that it works
+
+```bash
+bash scripts/smoke-test.sh http://127.0.0.1:8000
+```
+
+It checks health, the UI, and a recorded run that must open one finding. Expected last line: `OK: run run_... completed with finding fnd_... hypothesized`. If your default `python3` is broken, run it as `PYTHON=/path/to/python bash scripts/smoke-test.sh ...`.
+
+## 6. Run the quality gates
+
+```bash
+(cd packages/granite_core && pytest --cov=granite_core && ruff check . && mypy granite_core)
+(cd packages/granite_connectors && pytest --cov=granite_connectors && ruff check . && mypy granite_connectors)
+(cd workflows/refund_desk && pytest && ruff check . && mypy refund_desk)
+(cd apps/api && pytest --cov=granite_api && ruff check . && mypy granite_api)
+(cd apps/web && npm test && npm run lint && npm run typecheck)
+bandit -q -r packages/granite_core/granite_core workflows/refund_desk/refund_desk apps/api/granite_api -ll
+pytest tests/system                                   # black box: starts the real server, 22 cases
+python scripts/check_architecture.py                  # the core imports no web, database or network code
+python scripts/check_workspace.py && python scripts/check_links.py
+python scripts/export_trace_schema.py --check && python scripts/build_design_pack.py --check
+python scripts/build_test_docs.py --check && python scripts/check_traceability.py --check
+```
+
+To run every suite and write a dated results record into `evidence/reports/`:
+
+```bash
+python scripts/build_test_docs.py --run
+```
+
+The system suite can also test a server that is already running, for example a container or a deployed instance (cases that need their own server configuration are skipped):
+
+```bash
+GRANITE_SYSTEM_BASE_URL=http://127.0.0.1:8000 pytest tests/system
+```
+
+## 7. Re-record the model answers
+
+Needed after **any** change to a prompt or a step (recorded mode fails otherwise):
+
+```bash
+python scripts/record_cassettes.py            # about 15 minutes, needs Ollama
+```
+
+## Docker
+
+```bash
+docker compose up --build        # then open http://localhost:8000
+```
+
+**Status on 2026-10-11:** the image is built and smoke-tested by the CI workflow on GitHub (first green run 2026-10-09, see `evidence/repo/`). It has **not** been built on a team laptop yet (the Docker daemon was off on the authoring machine), so `docker compose up` itself is untested locally.
+
+## Deploy a public demo (Render, free)
+
+Prepared, **not yet done** (an account is needed and only a team member can create it):
+
+1. Sign in at render.com with GitHub and give Render access to this repository.
+2. New, then Blueprint, select the repository; Render reads [`render.yaml`](../../render.yaml). Apply.
+3. Wait for the build (several minutes), open the URL, run the smoke test against it: `bash scripts/smoke-test.sh https://<your-service>.onrender.com`.
+4. Record URL, date, who deployed it and the smoke-test line in `docs/registers/deployment-record.md`.
+
+Recorded mode is the default, so no model key is needed. The free instance sleeps when idle and its database resets on restart; warm it up before a demo.
+
+## Continuous delivery
+
+Written on 2026-10-11 in [`.github/workflows/cd.yml`](../../.github/workflows/cd.yml); **it has not run on GitHub yet**, so treat it as untested until the first run is recorded in `evidence/repo/`.
+
+What it does once CI has passed on `main`: builds the image, smoke-tests that exact image, publishes it to the GitHub Container Registry (`ghcr.io/shahoud867/final-year-project`), then asks Render to deploy and smoke-tests the public URL. Pushing a tag such as `v0.1.0-mid1` publishes the image under that tag and creates a GitHub Release.
+
+One-time setup by a repository admin, after the Render service exists:
+
+1. Render dashboard, the service, Settings, Deploy Hook: copy the URL. In GitHub: Settings, Secrets and variables, Actions, new **secret** `RENDER_DEPLOY_HOOK_URL`.
+2. Same page, Variables tab: new **variable** `GRANITE_DEMO_URL` with the public address (no trailing slash).
+3. Keep `autoDeploy: false` in `render.yaml`, so only a commit that passed CI is deployed.
+
+Without the secret and the variable the deploy job prints "not configured" and passes; the image is still published. The team's working method (branches, pull requests, reviews, tags) is in [CONTRIBUTING](../../.github/CONTRIBUTING.md).
+
+## Troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| Run ends with "this exact request was never recorded" | Recorded mode with your own task or after a prompt change. Use an example task, switch to live, or re-record |
+| Run ends with "model endpoint unreachable or too slow" | Ollama is not running or the model is not pulled. `ollama serve`, `ollama pull llama3.2:3b`, then "Test model" |
+| UI shows "Cannot reach the Granite server" | The API is not running on the port the UI expects (dev server forwards to 8000) |
+| `ModuleNotFoundError: granite_core` | The packages were not installed into the active virtual environment (step 2) |
+| 401 on every call | `GRANITE_API_TOKEN` is set; paste the token into the box in the UI header |
+| Port already in use | Choose another with `--port` |

@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-11-24T20:40:32.268493+00:00",
+  "ok": true,
+  "platforms": [
+    {
+      "platform": "langfuse",
+      "ok": true,
+      "steps": [
+        {
+          "step": "keys present in the environment",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "step": "health and authentication",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "step": "ingestion accepted every event",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "step": "trace read back with every observation",
+          "ok": true,
+          "detail": "6 of 6"
+        },
+        {
+          "step": "imported trace equals the original, step by step (timestamps excluded: OTLP truncates to ms)",
+          "ok": true,
+          "detail": "5 steps"
+        },
+        {
+          "step": "lineage came from declared reads",
+          "ok": true,
+          "detail": [
+            "declared"
+          ]
+        },
+        {
+          "step": "checks on the imported trace fail exactly as on the original",
+          "ok": true,
+          "detail": [
+            "CHK-OUT-1",
+            "CT-LOOKUP",
+            "CT-CALC"
+          ]
+        },
+        {
+          "step": "verdict score written",
+          "ok": true,
+          "detail": "b1f285d1dfa457e42d86b3d7eb0afd19"
+        }
+      ]
+    }
+  ]
+}

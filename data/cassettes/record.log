@@ -1,0 +1,15 @@
+[   53s] #W1023987 (delivered): Luggage Set, Pet Bed fault=None status=completed failed=[] findings=0
+[   98s] #W1023987 (delivered): Luggage Set, Pet Bed fault=stale_price status=completed failed=['CHK-OUT-1', 'CT-LOOKUP', 'CT-CALC'] findings=1
+[  298s]   replay from s2: confirmed k=5/5 c=0/2
+[  329s]   replay from s4: refuted k=0/5 c=0/2
+[  371s] #W1052399 (delivered): Tea Kettle, Makeup Kit fault=None status=completed failed=[] findings=0
+[  412s] #W1052399 (delivered): Tea Kettle, Makeup Kit fault=stale_price status=completed failed=['CHK-OUT-1', 'CT-LOOKUP'] findings=1
+[  597s]   replay from s2: confirmed k=5/5 c=0/2
+[  628s]   replay from s4: refuted k=0/5 c=0/2
+[  669s] #W1067251 (delivered): Wireless Earbuds, Grill fault=None status=completed failed=[] findings=0
+[  711s] #W1067251 (delivered): Wireless Earbuds, Grill fault=stale_price status=completed failed=['CHK-OUT-1', 'CT-LOOKUP'] findings=1
+[  752s] #W1166549 (delivered): E-Reader, Electric Kettle fault=None status=completed failed=[] findings=0
+[  793s] #W1166549 (delivered): E-Reader, Electric Kettle fault=stale_price status=completed failed=['CHK-OUT-1', 'CT-LOOKUP'] findings=1
+[  820s] #W1006327 (pending): Action Camera fault=None status=completed failed=[] findings=0
+[  846s] #W1106948 (cancelled): Laptop fault=None status=completed failed=[] findings=0
+done: 64 recorded responses in C:\Users\shaho\OneDrive - FAST National University\Attachments\@Fast\Final Year Project\Final-Year-Project\data\cassettes\refund_desk_v1.json (846s)

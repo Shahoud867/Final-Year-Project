@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GRANITE Usability Test</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #f8f7f4; --fg: #2d2a26; --muted: #8a8580; --muted2: #b5b0aa;
+  --accent: #3b82c8; --accent-hover: #2b6cb0; --accent-soft: #e8f0fb; --accent-glow: rgba(59,130,200,0.12);
+  --surface: #ffffff; --surface2: #f1efec; --border: #e4e0db; --border-focus: #3b82c8;
+  --success: #22a06b; --success-soft: #e6f9f0; --success-bg: #d4f5e4;
+  --warn: #e6950f; --warn-soft: #fef6e6; --warn-bg: #fcecc8;
+  --danger: #de4057; --danger-soft: #fde8eb; --danger-bg: #f9cdd4;
+  --radius: 14px; --radius-sm: 10px; --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.06); --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121010; --fg: #e8e4df; --muted: #9a958f; --muted2: #5c5751;
+  --accent: #6aacf0; --accent-hover: #89bff4; --accent-soft: #1a2a3e; --accent-glow: rgba(106,172,240,0.1);
+  --surface: #1e1b18; --surface2: #2a2622; --border: #3a3632; --border-focus: #6aacf0;
+  --success: #36d183; --success-soft: #0f2a1d; --success-bg: #164a2e;
+  --warn: #f5b73b; --warn-soft: #2a1f0c; --warn-bg: #3d2e14;
+  --danger: #f06b7e; --danger-soft: #2e1318; --danger-bg: #4a1c24;
+  --shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.3);
+  color-scheme: dark;
+}}
+:root[data-theme="dark"] {
+  --bg: #121010; --fg: #e8e4df; --muted: #9a958f; --muted2: #5c5751;
+  --accent: #6aacf0; --accent-hover: #89bff4; --accent-soft: #1a2a3e; --accent-glow: rgba(106,172,240,0.1);
+  --surface: #1e1b18; --surface2: #2a2622; --border: #3a3632; --border-focus: #6aacf0;
+  --success: #36d183; --success-soft: #0f2a1d; --success-bg: #164a2e;
+  --warn: #f5b73b; --warn-soft: #2a1f0c; --warn-bg: #3d2e14;
+  --danger: #f06b7e; --danger-soft: #2e1318; --danger-bg: #4a1c24;
+  --shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0; max-width: 640px; margin: 0 auto; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.header { padding: 32px 0 20px; }
+.header-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); color: var(--accent); padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
+.header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; margin: 0 0 2px; letter-spacing: -0.01em; }
+.header p { color: var(--muted); font-size: 0.85rem; margin: 0; }
+.progress-bar { display: flex; align-items: center; gap: 0; margin: 0 0 28px; padding: 0; position: relative; }
+.progress-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; cursor: pointer; padding: 0 2px; }
+.progress-step .dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; border: 2px solid var(--border); background: var(--surface); color: var(--muted2); position: relative; z-index: 2; transition: all var(--transition); }
+.progress-step .lbl { font-size: 0.6rem; color: var(--muted2); margin-top: 4px; font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap; transition: color var(--transition); }
+.progress-step.active .dot { border-color: var(--accent); background: var(--accent); color: #fff; box-shadow: 0 0 0 4px var(--accent-glow); }
+.progress-step.active .lbl { color: var(--accent); font-weight: 600; }
+.progress-step.done .dot { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+.progress-step.done .lbl { color: var(--success); }
+.progress-line { position: absolute; top: 14px; left: 0; right: 0; height: 2px; background: var(--border); z-index: 1; }
+.progress-fill { height: 100%; background: var(--success); transition: width var(--transition); border-radius: 1px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow); animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.card-icon { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.card-icon.teal { background: var(--accent-soft); color: var(--accent); }
+.card-icon.green { background: var(--success-soft); color: var(--success); }
+.card-icon.orange { background: var(--warn-soft); color: var(--warn); }
+.card-icon.red { background: var(--danger-soft); color: var(--danger); }
+.card-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; margin: 0; }
+.card-sub { font-size: 0.8rem; color: var(--muted); margin: 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.18s; font-family: inherit; text-decoration: none; white-space: nowrap; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: transparent; color: var(--muted); padding: 11px 16px; }
+.btn-ghost:hover { color: var(--fg); background: var(--surface2); }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--fg); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.btn-sm { padding: 8px 14px; font-size: 0.8rem; border-radius: 8px; }
+.btn-lg { padding: 14px 28px; font-size: 0.95rem; border-radius: var(--radius); }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.field input, .field textarea, .field select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--fg); font-family: inherit; font-size: 0.9rem; transition: border-color var(--transition), box-shadow var(--transition); }
+.field textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 3px var(--accent-glow); }
+.script { background: var(--accent-soft); border-radius: var(--radius); padding: 18px 20px; font-size: 0.9rem; line-height: 1.65; position: relative; margin-bottom: 20px; color: var(--fg); }
+.script::before { content: '\201C'; font-family: 'Space Grotesk', serif; font-size: 3rem; color: var(--accent); opacity: 0.3; position: absolute; top: 4px; left: 14px; line-height: 1; }
+.script p { margin: 0; padding-left: 24px; }
+.timer-wrap { text-align: center; padding: 20px 0 8px; }
+.timer-display { font-family: 'Space Grotesk', monospace; font-size: 3.2rem; font-weight: 700; color: var(--accent); letter-spacing: 0.02em; line-height: 1; transition: color var(--transition); }
+.timer-display.running { color: var(--danger); }
+.timer-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-top: 4px; }
+.timer-btns { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+.outcomes { display: flex; gap: 10px; margin: 16px 0 20px; }
+.outcome { flex: 1; padding: 16px 8px; border-radius: var(--radius); border: 2px solid var(--border); background: var(--surface); cursor: pointer; text-align: center; transition: all 0.18s; font-family: inherit; }
+.outcome:hover { border-color: var(--muted2); }
+.outcome .letter { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; display: block; margin-bottom: 2px; }
+.outcome .word { font-size: 0.72rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; }
+.outcome.sel-S { border-color: var(--success); background: var(--success-soft); }
+.outcome.sel-S .letter, .outcome.sel-S .word { color: var(--success); }
+.outcome.sel-A { border-color: var(--warn); background: var(--warn-soft); }
+.outcome.sel-A .letter, .outcome.sel-A .word { color: var(--warn); }
+.outcome.sel-F { border-color: var(--danger); background: var(--danger-soft); }
+.outcome.sel-F .letter, .outcome.sel-F .word { color: var(--danger); }
+.criteria-toggle { font-size: 0.8rem; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 8px 0; user-select: none; }
+.criteria-toggle .arrow { transition: transform 0.2s; display: inline-block; }
+.criteria-toggle[open] .arrow { transform: rotate(90deg); }
+.criteria-body { font-size: 0.85rem; color: var(--muted); padding: 10px 16px; background: var(--surface2); border-radius: 8px; margin-top: 6px; line-height: 1.5; }
+.sus-item { padding: 14px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.sus-item:last-child { border-bottom: none; }
+.sus-num { width: 26px; height: 26px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: var(--muted); flex-shrink: 0; }
+.sus-q { flex: 1; min-width: 180px; font-size: 0.88rem; line-height: 1.45; }
+.sus-btns { display: flex; gap: 6px; flex-shrink: 0; }
+.sus-btn { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface); color: var(--fg); font-weight: 600; cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+.sus-btn:hover { border-color: var(--muted); }
+.sus-btn.on { border-color: var(--accent); background: var(--accent); color: #fff; }
+.sus-score-box { text-align: center; padding: 20px; background: var(--surface2); border-radius: var(--radius); margin-top: 20px; }
+.sus-score-num { font-family: 'Space Grotesk', sans-serif; font-size: 2.4rem; font-weight: 700; color: var(--accent); line-height: 1; }
+.sus-score-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; margin-top: 6px; }
+.badge-pass { background: var(--success-bg); color: var(--success); }
+.badge-fail { background: var(--danger-bg); color: var(--danger); }
+.checklist { list-style: none; padding: 0; margin: 0 0 20px; }
+.checklist li { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 0.85rem; color: var(--muted); }
+.checklist li .check { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.65rem; color: transparent; }
+.checklist li.ok .check { border-color: var(--success); color: var(--success); background: var(--success-soft); }
+.checklist li.ok { color: var(--fg); }
+.nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+.rtable { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.82rem; overflow-x: auto; display: block; }
+.rtable th { text-align: left; padding: 10px 12px; color: var(--muted); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; background: var(--surface2); position: sticky; top: 0; }
+.rtable th:first-child { border-radius: 8px 0 0 8px; }
+.rtable th:last-child { border-radius: 0 8px 8px 0; }
+.rtable td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; white-space: nowrap; }
+.threshold { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--surface2); border-radius: var(--radius-sm); margin-bottom: 8px; }
+.threshold .t-label { flex: 1; font-size: 0.85rem; }
+.threshold .t-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; min-width: 48px; text-align: right; }
+.prev-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+.prev-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; flex-shrink: 0; }
+.prev-info { flex: 1; min-width: 0; }
+.prev-info .name { font-weight: 600; font-size: 0.85rem; }
+.prev-info .meta { font-size: 0.75rem; color: var(--muted); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="header">
+    <div class="header-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Usability Test</div>
+    <h1>GRANITE</h1>
+    <p>Moderator tool for usability testing sessions</p>
+  </div>
+  <div class="progress-bar" id="progress-bar">
+    <div class="progress-line"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+  <div id="page-content"></div>
+</div>
+
+<script>
+const TASKS = [
+  { id:"T1", read:"Start a new check using the first example customer request (order W1023987), with the fault called 'stale price' switched on, and wait until it finishes.", success:"A run reaches status completed (one finding, Order Lookup ranked first, verdict Confirmed)" },
+  { id:"T2", read:"The agents finished without any error. Is their answer to the customer correct? How can you tell?", success:"Says the refund amount is wrong, pointing at a failed check or the finding" },
+  { id:"T3", read:"Find out which agent caused the problem.", success:"Names Order Lookup (the first-ranked step on the finding page)" },
+  { id:"T4", read:"Prove that this agent really is the cause, and tell me what the result means.", success:"Starts verification on Order Lookup and explains the Confirmed result" },
+  { id:"T5", read:"You agree with the finding. Record your decision and download a report of it.", success:"Finding status becomes accepted and the report file is downloaded" }
+];
+const SUS = [
+  "I think that I would like to use this system frequently.",
+  "I found the system unnecessarily complex.",
+  "I thought the system was easy to use.",
+  "I think that I would need the support of a technical person to be able to use this system.",
+  "I found the various functions in this system were well integrated.",
+  "I thought there was too much inconsistency in this system.",
+  "I would imagine that most people would learn to use this system very quickly.",
+  "I found the system very cumbersome to use.",
+  "I felt very confident using the system.",
+  "I needed to learn a lot of things before I could get going with this system."
+];
+const PAGES=["setup","consent","intro","T1","T2","T3","T4","T5","sus","open","summary"];
+const LABELS={setup:"Setup",consent:"Consent",intro:"Brief",T1:"1",T2:"2",T3:"3",T4:"4",T5:"5",sus:"SUS",open:"Qs",summary:"✓"};
+let S={page:0,participants:[]}, cur=null, tInt=null, tSec=0, tOn=false;
+function load(){try{const s=localStorage.getItem("g_usab");if(s)S=JSON.parse(s)}catch{}}
+function save(){try{localStorage.setItem("g_usab",JSON.stringify(S))}catch{}}
+function newP(){return{id:"P"+(S.participants.length+1),role:"",date:new Date().toISOString().slice(0,10),consent:false,tasks:{T1:{o:"",s:0,n:""},T2:{o:"",s:0,n:""},T3:{o:"",s:0,n:""},T4:{o:"",s:0,n:""},T5:{o:"",s:0,n:""}},sus:[0,0,0,0,0,0,0,0,0,0],confuse:"",change:""}}
+function go(i){S.page=i;save();render()}
+function renderProgress(){
+  const bar=document.getElementById("progress-bar");
+  const fill=document.getElementById("progress-fill");
+  const pct=S.page/(PAGES.length-1)*100;
+  fill.style.width=pct+"%";
+  const dots=bar.querySelectorAll(".progress-step");
+  dots.forEach(d=>d.remove());
+  PAGES.forEach((p,i)=>{
+    const d=document.createElement("div");
+    d.className="progress-step"+(i===S.page?" active":"")+(i<S.page?" done":"");
+    d.onclick=()=>go(i);
+    d.innerHTML='<div class="dot">'+(i<S.page?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg>':LABELS[p])+'</div><div class="lbl">'+(p.startsWith("T")?"Task "+p[1]:LABELS[p])+'</div>';
+    bar.appendChild(d);
+  });
+}
+function render(){
+  if(!cur)cur=newP();
+  renderProgress();
+  const p=PAGES[S.page], el=document.getElementById("page-content");
+  if(p==="setup")el.innerHTML=pgSetup();
+  else if(p==="consent")el.innerHTML=pgConsent();
+  else if(p==="intro")el.innerHTML=pgIntro();
+  else if(p.startsWith("T"))el.innerHTML=pgTask(p);
+  else if(p==="sus")el.innerHTML=pgSUS();
+  else if(p==="open")el.innerHTML=pgOpen();
+  else if(p==="summary")el.innerHTML=pgSummary();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function pgSetup(){
+  const prevHtml=S.participants.map(p=>'<div class="prev-card"><div class="prev-avatar">'+p.id+'</div><div class="prev-info"><div class="name">'+(p.role||"No role recorded")+'</div><div class="meta">'+p.date+' &middot; SUS '+scoreSUS(p.sus).toFixed(0)+'</div></div></div>').join("");
+  return '<div class="card"><div class="card-header"><div class="card-icon teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg></div><div><div class="card-title">New Session</div><div class="card-sub">Set up before the participant arrives</div></div></div><div class="field"><label>Participant</label><input value="'+cur.id+'" readonly style="opacity:0.5;cursor:default"></div><div class="field"><label>Role</label><input value="'+cur.role+'" oninput="cur.role=this.value" placeholder="e.g. BS(CS) 7th semester, has used ChatGPT APIs"></div><div class="field"><label>Date</label><input value="'+cur.date+'" oninput="cur.date=this.value"></div><ul class="checklist"><li class="ok"><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg></span>Granite running and awake</li><li class="ok"><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg></span>Fresh browser tab on Investigations page</li><li class="ok"><span class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg></span>Timer and this tool ready</li></ul><button class="btn btn-primary btn-lg" style="width:100%" onclick="go(1)">Begin Session &rarr;</button></div>'+(prevHtml?'<div style="margin-top:8px"><div style="font-size:0.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px">Previous Sessions</div>'+prevHtml+'</div>':"");
+}
+function pgConsent(){
+  return '<div class="card"><div class="card-header"><div class="card-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="card-title">Consent</div><div class="card-sub">Read aloud, then ask "Do you agree?"</div></div></div><div class="script"><p>We are testing our final-year project, not you. You will do five short tasks on a website while saying what you think. If you get stuck, that tells us what to fix. It takes about 15 minutes. We will write down whether each task worked, how long it took, and your comments, under a code like '+cur.id+' with no name. Nothing is recorded on video. You can stop at any time.</p></div><button class="btn '+(cur.consent?'btn-primary':'btn-outline')+' btn-lg" style="width:100%" onclick="cur.consent=true;render()">'+(cur.consent?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg> Consent Recorded':'Record Consent')+'</button>'+(cur.consent?'<div class="nav"><span></span><button class="btn btn-primary" onclick="go(2)">Continue &rarr;</button></div>':"")+'</div>';
+}
+function pgIntro(){
+  return '<div class="card"><div class="card-header"><div class="card-icon teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div><div class="card-title">Briefing</div><div class="card-sub">Read this aloud before starting tasks</div></div></div><div class="script"><p>Granite is a tool for checking the work of a team of AI agents. In this example, five AI agents handle a customer who wants a refund. Sometimes they give a wrong answer that looks right. Please think aloud as you work. I can\'t help during the tasks, but you can say \'I give up\' at any time.</p></div><div class="nav"><button class="btn btn-ghost" onclick="go(1)">&larr; Back</button><button class="btn btn-primary btn-lg" onclick="go(3)">Start Tasks &rarr;</button></div></div>';
+}
+function fmt(s){var m=Math.floor(s/60),r=s%60;return String(m).padStart(2,"0")+":"+String(r).padStart(2,"0")}
+function startT(){if(tOn)return;tOn=true;tInt=setInterval(function(){tSec++;updT()},1000);updT()}
+function stopT(){tOn=false;clearInterval(tInt);var p=PAGES[S.page];if(cur.tasks[p])cur.tasks[p].s=tSec;updT()}
+function resetT(){stopT();tSec=0;updT()}
+function updT(){var e=document.getElementById("td");if(e){e.textContent=fmt(tSec);e.className="timer-display"+(tOn?" running":"")}}
+function setO(t,v){cur.tasks[t].o=v;cur.tasks[t].s=tSec;stopT();render()}
+function pgTask(tid){
+  var task=TASKS.find(function(t){return t.id===tid}), d=cur.tasks[tid], idx=PAGES.indexOf(tid), num=parseInt(tid[1]);
+  tSec=d.s||0;
+  return '<div class="card"><div class="card-header"><div class="card-icon teal" style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:1.1rem">'+num+'</div><div><div class="card-title">Task '+num+' of 5</div><div class="card-sub">Read aloud, then start timer</div></div></div><div class="script"><p>'+task.read+'</p></div><div class="timer-wrap"><div class="timer-display" id="td">'+fmt(tSec)+'</div><div class="timer-label">'+(tOn?"Recording…":"Ready")+'</div><div class="timer-btns"><button class="btn btn-primary btn-sm" onclick="startT()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Start</button><button class="btn btn-outline btn-sm" onclick="stopT()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Pause</button><button class="btn btn-ghost btn-sm" onclick="resetT()">Reset</button></div></div><div style="margin-top:20px"><div style="font-size:0.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px">Outcome</div><div class="outcomes"><button class="outcome '+(d.o==="S"?"sel-S":"")+'" onclick="setO(\''+tid+'\',\'S\')"><span class="letter">S</span><span class="word">Success</span></button><button class="outcome '+(d.o==="A"?"sel-A":"")+'" onclick="setO(\''+tid+'\',\'A\')"><span class="letter">A</span><span class="word">Assisted</span></button><button class="outcome '+(d.o==="F"?"sel-F":"")+'" onclick="setO(\''+tid+'\',\'F\')"><span class="letter">F</span><span class="word">Failed</span></button></div></div><details style="margin-bottom:16px"><summary class="criteria-toggle"><span class="arrow">▶</span> Success criteria</summary><div class="criteria-body">'+task.success+'</div></details><div class="field"><label>Observations</label><textarea oninput="cur.tasks[\''+tid+'\'].n=this.value" placeholder="What did they say? Where did they hesitate?">'+d.n+'</textarea></div><div class="nav"><button class="btn btn-ghost" onclick="go('+(idx-1)+')">&larr; Back</button><button class="btn btn-primary" onclick="go('+(idx+1)+')">'+(idx<7?"Next Task":"Questionnaire")+' &rarr;</button></div></div>';
+}
+function setSUS(i,v){cur.sus[i]=v;render()}
+function scoreSUS(a){var t=0;for(var i=0;i<10;i++){if(!a[i])return 0;t+=(i%2===0)?(a[i]-1):(5-a[i])}return t*2.5}
+function pgSUS(){
+  var rows=SUS.map(function(q,i){
+    var btns=[1,2,3,4,5].map(function(v){return '<button class="sus-btn'+(cur.sus[i]===v?' on':'')+'" onclick="setSUS('+i+','+v+')">'+v+'</button>'}).join("");
+    return '<div class="sus-item"><div class="sus-num">'+(i+1)+'</div><div class="sus-q">'+q+'</div><div class="sus-btns">'+btns+'</div></div>';
+  }).join("");
+  var sc=scoreSUS(cur.sus);
+  return '<div class="card"><div class="card-header"><div class="card-icon orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div><div class="card-title">System Usability Scale</div><div class="card-sub">1 = strongly disagree &middot; 5 = strongly agree</div></div></div>'+rows+'<div class="sus-score-box"><div class="sus-score-num">'+(sc>0?sc.toFixed(1):"—")+'</div><div class="sus-score-label">out of 100</div>'+(sc>0?'<span class="badge '+(sc>=68?'badge-pass':'badge-fail')+'">'+(sc>=68?'Above average':'Below 68 threshold')+'</span>':'')+'</div><div class="nav"><button class="btn btn-ghost" onclick="go('+(PAGES.indexOf('sus')-1)+')">&larr; Back</button><button class="btn btn-primary" onclick="go('+(PAGES.indexOf('sus')+1)+')">Open Questions &rarr;</button></div></div>';
+}
+function pgOpen(){
+  return '<div class="card"><div class="card-header"><div class="card-icon teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5"/></svg></div><div><div class="card-title">Open Questions</div><div class="card-sub">Record answers word for word</div></div></div><div class="field"><label>"What was the most confusing part?"</label><textarea oninput="cur.confuse=this.value" placeholder="Their exact words…">'+cur.confuse+'</textarea></div><div class="field"><label>"What one thing would you change?"</label><textarea oninput="cur.change=this.value" placeholder="Their exact words…">'+cur.change+'</textarea></div><div class="nav"><button class="btn btn-ghost" onclick="go('+(PAGES.indexOf('open')-1)+')">&larr; Back</button><button class="btn btn-primary btn-lg" onclick="finish()">Complete Session &rarr;</button></div></div>';
+}
+function finish(){S.participants.push(JSON.parse(JSON.stringify(cur)));cur=newP();S.page=PAGES.indexOf("summary");save();render()}
+function pgSummary(){
+  var ps=S.participants;
+  if(!ps.length)return '<div class="card"><div class="card-title" style="margin-bottom:16px">No sessions recorded yet</div><button class="btn btn-primary" onclick="go(0)">Start First Session</button></div>';
+  var total=0,succ=0,t3=0,susArr=[];
+  var tRows=ps.map(function(p){
+    var cells=["T1","T2","T3","T4","T5"].map(function(t){
+      var d=p.tasks[t];total++;
+      if(d.o==="S")succ++;
+      if(t==="T3"&&d.o==="S")t3++;
+      var c=d.o==="S"?"var(--success)":d.o==="A"?"var(--warn)":d.o==="F"?"var(--danger)":"var(--muted2)";
+      return '<td><span style="color:'+c+';font-weight:700">'+(d.o||"—")+'</span> <span style="color:var(--muted);font-size:0.75rem">'+d.s+'s</span></td>';
+    }).join("");
+    var sc=scoreSUS(p.sus);susArr.push(sc);
+    return '<tr><td style="font-weight:600">'+p.id+'</td>'+cells+'<td style="font-weight:700;color:var(--accent)">'+sc.toFixed(0)+'</td></tr>';
+  }).join("");
+  var mean=susArr.reduce(function(a,b){return a+b},0)/susArr.length;
+  var pct=total>0?(succ/total*100):0;
+  var ths=[
+    {name:"Tasks without help",req:"≥ 80%",val:pct.toFixed(0)+"%",ok:pct>=80},
+    {name:"Mean SUS score",req:"≥ 68",val:mean.toFixed(1),ok:mean>=68},
+    {name:"T3 (find cause)",req:"≥ 2/3",val:t3+"/"+ps.length,ok:t3>=Math.ceil(ps.length*2/3)},
+  ];
+  return '<div class="card"><div class="card-header"><div class="card-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div><div class="card-title">Results</div><div class="card-sub">'+ps.length+' participant'+(ps.length>1?"s":"")+ ' completed</div></div></div><div style="overflow-x:auto"><table class="rtable"><tr><th>ID</th><th>T1</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>SUS</th></tr>'+tRows+'</table></div></div><div class="card"><div class="card-title" style="margin-bottom:14px">Thresholds</div>'+ths.map(function(t){return '<div class="threshold"><div class="t-label">'+t.name+' <span style="color:var(--muted);font-size:0.78rem">'+t.req+'</span></div><div class="t-val">'+t.val+'</div><span class="badge '+(t.ok?'badge-pass':'badge-fail')+'">'+(t.ok?'PASS':'FAIL')+'</span></div>'}).join("")+'</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px"><button class="btn btn-primary" onclick="S.page=0;cur=newP();save();render()">New Participant</button><button class="btn btn-outline" id="csv-btn" onclick="cpCSV()">Copy CSV</button></div>';
+}
+function cpCSV(){
+  var h="participant,role,date,consent,t1,t1_s,t2,t2_s,t3,t3_s,t4,t4_s,t5,t5_s,sus1,sus2,sus3,sus4,sus5,sus6,sus7,sus8,sus9,sus10,most_confusing,would_change";
+  var rows=S.participants.map(function(p){
+    var ts=["T1","T2","T3","T4","T5"].map(function(t){return p.tasks[t].o+","+p.tasks[t].s}).join(",");
+    var sus=p.sus.join(",");
+    function e(s){return '"'+((s||"").replace(/"/g,'""'))+'"'}
+    return p.id+","+e(p.role)+","+p.date+","+(p.consent?"yes":"no")+","+ts+","+sus+","+e(p.confuse)+","+e(p.change);
+  }).join("\n");
+  var csv=h+"\n"+rows+"\n";
+  try{navigator.clipboard.writeText(csv).then(function(){
+    var b=document.getElementById("csv-btn");b.textContent="Copied!";setTimeout(function(){b.textContent="Copy CSV"},2000);
+  }).catch(function(){})}catch(ex){}
+}
+load();if(!cur)cur=newP();render();
+</script>
+</body>
+</html>

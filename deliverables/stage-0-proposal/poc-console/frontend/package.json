@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build:static": "vite build --config vite.config.static.ts",
+    "dev": "node init && vite",
+    "build": "node init && tsc -b && vite build",
+    "build:static": "node init && vite build --config vite.config.static.ts",
     "preview": "vite preview"
   },
   "dependencies": {
